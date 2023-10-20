@@ -91,3 +91,103 @@ window.addEventListener("keyup", function(evt) {
 		windowStyles("", "all");
 	}
 });
+
+// const registerBtn = document.querySelector("#register");
+// registerBtn.addEventListener("mousedown", function() {
+// 	getNameValue();
+// });
+//
+// function getNameValue(){
+// 	fetch('https://www.codeproject.com')
+// 		.then(response => response.text())
+// 		.then(data => console.log(data))
+// 		.catch(reason => console.log(errorMsgs));
+// }
+
+//Asynchronous requesting
+$(document).ready(function() {
+	$.ajaxSetup({
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		}
+	});
+
+	// TODO: Using jQuery POST method
+	// $('#registerForm').submit(function (evt) {
+	// 	evt.preventDefault();
+	//
+	// 	const email = $('#emailRegister').val();
+	// 	const username = $('#usernameRegister').val();
+	// 	const password = $('#passwordRegister').val();
+	//
+	// 	const dataObj = {
+	// 		email: email,
+	// 		username: username,
+	// 		password: password
+	// 	};
+	//
+	// 	const jsonStr = JSON.stringify(dataObj);
+	//
+	// 	$.post("register", jsonStr, function(result) {
+	//
+	// 	}).done(function() {
+	// 		alert( "second success" );
+	// 	}).fail(function() {
+	// 		alert( "error" );
+	// 	})
+	// });
+
+	// TODO: Using jQuery AJAX method
+	$('#register').on('click', function(evt) {
+
+		const email = $('#emailRegister').val();
+		const username = $('#usernameRegister').val();
+		const password = $('#passwordRegister').val();
+
+		const dataObj = {
+			email: email,
+			username: username,
+			password: password
+		};
+
+		const jsonStr = JSON.stringify(dataObj);
+
+		$.ajax({
+			type: 'POST',
+			url: "register",
+			data: jsonStr,
+			cache:false,
+			beforeSend: function(xhr) {
+				// xhr.setRequestHeader('X-CSRF-Token', csrf_token);
+				xhr.setRequestHeader("Accept", "application/json");
+				xhr.setRequestHeader("Content-Type", "application/json");
+			},
+			success: function (response) {
+				// console.log(response);
+				// document.open();
+				// document.write(response);
+				// document.close();
+
+				const errorMessages = document.querySelectorAll(".register-error");
+				for (const errorMessage of errorMessages) {
+					errorMessage.innerText = "";
+				}
+
+				if(response.errors.length > 0) {
+					console.log(response.errors);
+
+					for (const error of response.errors) {
+						document.querySelector(`.${error.field}Register-error`).innerText += error.defaultMessage + '\n';
+					}
+				} else {
+					location.reload();
+				}
+			},
+			error: function (response) {
+				console.log("failed response");
+			}
+		});
+
+	});
+});

@@ -358,7 +358,7 @@
 
                             <div class="form__body">
                                 <div class="form__row">
-                                    <label for="username" class="form__label">Username</label>
+                                    <label for="usernameLogin" class="form__label">Username</label>
 
                                     <div class="form__controls">
                                         <input type="text" id="usernameLogin" name="username" class="field field--login">
@@ -366,7 +366,7 @@
                                 </div>
 
                                 <div class="form__row">
-                                    <label for="password" class="form__label">Password</label>
+                                    <label for="passwordLogin" class="form__label">Password</label>
 
                                     <div class="form__controls">
                                         <input type="password" id="passwordLogin" name="password" class="field field--login">
@@ -401,33 +401,41 @@
 
                 <div class="popup__body">
                     <div class="form-login">
-                        <form action="" method="POST" name="registerForm">
+<!--                        <form id="registerForm" name="registerForm">-->
+                            <div th:each="error: ${#fields.errors()}" th:text="${error}" class="text-danger">Error messages</div>
+
                             <div class="form__body">
                                 <div class="form__row">
-                                    <label for="email" class="form__label">Email</label>
+                                    <label for="emailRegister" class="form__label">Email</label>
 
                                     <div class="form__controls">
-                                        <input type="email" id="emailRegister" name="email" class="field field--register" placeholder="example@gmail.com" pattern=".{7,50}" title="Email must be between 7 and 50 characters!">
+                                        <input value="test@gmail.com" type="email" id="emailRegister" name="email" class="field field--register" placeholder="example@gmail.com" pattern=".{7,50}" title="Email must be between 7 and 50 characters!">
+
+                                        <small class="register-error emailRegister-error text-danger"></small>
 
                                         <p class="fieldInfo hidden">No whitespaces allowed</p>
                                     </div>
                                 </div>
 
                                 <div class="form__row">
-                                    <label for="username" class="form__label">Username</label>
+                                    <label for="usernameRegister" class="form__label">Username</label>
 
                                     <div class="form__controls">
-                                        <input type="text" id="usernameRegister" name="username" class="field field--register" pattern=".{5,15}" title="Username must be between 5 and 15 characters!">
+                                        <input value="testUser" type="text" id="usernameRegister" name="username" class="field field--register" pattern=".{5,15}" title="Username must be between 5 and 15 characters!">
+
+                                        <small class="register-error usernameRegister-error text-danger"></small>
 
                                         <p class="fieldInfo hidden">No whitespaces allowed</p>
                                     </div>
                                 </div>
 
                                 <div class="form__row">
-                                    <label for="password" class="form__label">Password</label>
+                                    <label for="passwordRegister" class="form__label">Password</label>
 
                                     <div class="form__controls">
-                                        <input type="password" id="passwordRegister" name="password" class="field field--register" pattern=".{7,20}" title="Password must be between 7 and 20 characters!">
+                                        <input value="test123" type="password" id="passwordRegister" name="password" class="field field--register" pattern=".{7,20}" title="Password must be between 7 and 20 characters!">
+
+                                        <small class="register-error passwordRegister-error text-danger"></small>
 
                                         <p class="fieldInfo hidden">No whitespaces allowed</p>
                                     </div>
@@ -435,13 +443,13 @@
                             </div>
 
                             <div class="form__actions">
-                                <input type="submit" value="Register" name="submitRegisterForm" class="btn form__btn" id="register">
+                                <input type="button" value="Register" name="submitRegisterForm" class="btn form__btn" id="register">
                             </div>
 
                             <div class="form__foot">
 
                             </div>
-                        </form>
+<!--                        </form>-->
                     </div>
                 </div>
             </div>
