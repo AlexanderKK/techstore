@@ -20,7 +20,7 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:}/tech_store?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
     username: ${MYSQL_USER:}
     password: ${MYSQL_PASSWORD:}
-  thymeleaf: # Thymeleaf
+  thymeleaf:
     cache: false
     mode: HTML
     encoding: UTF-8

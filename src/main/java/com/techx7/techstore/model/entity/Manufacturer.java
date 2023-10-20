@@ -1,20 +1,22 @@
-package com.techx7.techstore.model.dto;
+package com.techx7.techstore.model.entity;
 
-import jakarta.validation.Valid;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
-@Valid
-public class ImportRolesJsonDTO {
+@Entity
+@Table(name = "manufacturers")
+public class Manufacturer extends BaseEntity {
 
     @NotBlank
-    @Size(max = 25)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @NotBlank
+    @Column
     private String description;
 
-    public ImportRolesJsonDTO() {}
+    public Manufacturer() {}
 
     public String getName() {
         return name;

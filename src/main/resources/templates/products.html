@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragments/commons::head}"></head>
+
+<body>
+	<header th:replace="~{fragments/commons::header(activeLink='products')}"></header>
+
+	<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Products')}"></div>
+
+	<div class="container-fluid">
+		<div class="row px-xl-5">
+			<div class="col-lg-3 col-md-4">
+				<h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by price</span></h5>
+				<div class="bg-light p-4 mb-30">
+					<form>
+						<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+							<input type="checkbox" class="custom-control-input" checked id="price-all">
+							<label class="custom-control-label" for="price-all">All Price</label>
+							<span class="badge border font-weight-normal">1000</span>
+						</div>
+						<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+							<input type="checkbox" class="custom-control-input" id="price-1">
+							<label class="custom-control-label" for="price-1">$0 - $100</label>
+							<span class="badge border font-weight-normal">150</span>
+						</div>
+						<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+							<input type="checkbox" class="custom-control-input" id="price-2">
+							<label class="custom-control-label" for="price-2">$100 - $200</label>
+							<span class="badge border font-weight-normal">295</span>
+						</div>
+						<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+							<input type="checkbox" class="custom-control-input" id="price-3">
+							<label class="custom-control-label" for="price-3">$200 - $300</label>
+							<span class="badge border font-weight-normal">246</span>
+						</div>
+						<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+							<input type="checkbox" class="custom-control-input" id="price-4">
+							<label class="custom-control-label" for="price-4">$300 - $400</label>
+							<span class="badge border font-weight-normal">145</span>
+						</div>
+						<div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+							<input type="checkbox" class="custom-control-input" id="price-5">
+							<label class="custom-control-label" for="price-5">$400 - $500</label>
+							<span class="badge border font-weight-normal">168</span>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="col-lg-9 col-md-8">
+				<div class="row pb-3">
+					<div class="col-12 pb-1">
+						<div class="row align-items-center justify-content-space-between mb-4">
+							<div class="col-lg-auto mb-4 mb-lg-0">
+								<form action="">
+									<div class="input-group">
+										<input type="text" class="form-control input-search" placeholder="Search for products" style="width: 350px">
+										<div class="input-group-append">
+											<span class="input-group-text bg-transparent text-primary">
+												<i class="fa fa-search"></i>
+											</span>
+										</div>
+									</div>
+								</form>
+							</div>
+
+							<div class="col-lg-auto ml-auto">
+								<div class="btn-group">
+									<button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Sorting</button>
+									<div class="dropdown-menu dropdown-menu-right">
+										<button class="dropdown-item">Latest</button>
+										<button class="dropdown-item">Popularity</button>
+										<button class="dropdown-item">Best Rating</button>
+									</div>
+								</div>
+
+								<div class="btn-group ml-2">
+									<button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Showing</button>
+									<div class="dropdown-menu dropdown-menu-right">
+										<button class="dropdown-item">10</button>
+										<button class="dropdown-item">20</button>
+										<button class="dropdown-item">30</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-4 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/img/op.jpg" alt="">
+								<div class="product-action">
+									<a href="#" class="d-block w-100 h-100 position-absolute"></a>
+
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+							<div class="text-center pt-0 pb-4 px-2">
+								<a class="h6 text-decoration-none" href="#">Acer Nitro M60</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>£1999.99</h5><h6 class="text-muted ml-2"><del>£2499.99</del></h6>
+								</div>
+								<div class="d-flex align-items-center justify-content-center mb-1">
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star-half-alt text-primary mr-1"></small>
+									<small class="far fa-star text-primary mr-1"></small>
+									<small>(78)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-4 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/img/ideapad.jpg" alt="">
+								<div class="product-action">
+									<a href="laptops/lenovoV15.html" class="d-block w-100 h-100 position-absolute"></a>
+
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+
+							<div class="text-center pt-0 pb-4 px-2">
+								<a class="h6 text-decoration-none" href="laptops/lenovoV15.html">Lenovo V15</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>£1499.99</h5><h6 class="text-muted ml-2"><del>£1999.99</del></h6>
+								</div>
+								<div class="d-flex align-items-center justify-content-center mb-1">
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star-half-alt text-primary mr-1"></small>
+									<small class="far fa-star text-primary mr-1"></small>
+									<small>(78)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-4 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/img/Asus%20Minibook.png" alt="">
+								<div class="product-action">
+									<a href="laptops/lenovoIdeaPad3_15_UltraSlim.html" class="d-block w-100 h-100 position-absolute"></a>
+
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+
+							<div class="text-center pt-0 pb-4 px-2">
+								<a class="h6 text-decoration-none" href="laptops/lenovoIdeaPad3_15_UltraSlim.html">Lenovo Ideapad 3 15 UltraSlim</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>£2499.99</h5><h6 class="text-muted ml-2"><del>£2799.99</del></h6>
+								</div>
+								<div class="d-flex align-items-center justify-content-center mb-1">
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star-half-alt text-primary mr-1"></small>
+									<small class="far fa-star text-primary mr-1"></small>
+									<small>(78)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/img/Dell%20Precision%2015%205550.png" alt="">
+								<div class="product-action">
+									<a href="#" class="d-block w-100 h-100 position-absolute"></a>
+
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+							<div class="text-center pt-0 pb-4 px-2">
+								<a class="h6 text-decoration-none" href="#">Dell Precision 15 5550</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>£2999.99</h5><h6 class="text-muted ml-2"><del>£$3399.99</del></h6>
+								</div>
+								<div class="d-flex align-items-center justify-content-center mb-1">
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="far fa-star text-primary mr-1"></small>
+									<small class="far fa-star text-primary mr-1"></small>
+									<small>(90)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/img/Lenovo%20Yoga%206.png" alt="">
+								<div class="product-action">
+									<a href="#" class="d-block w-100 h-100 position-absolute"></a>
+
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+							<div class="text-center pt-0 pb-4 px-2">
+								<a class="h6 text-decoration-none" href="#">Lenovo Yoga 6</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>£1399.99</h5><h6 class="text-muted ml-2"><del>£1599.99</del></h6>
+								</div>
+								<div class="d-flex align-items-center justify-content-center mb-1">
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small>(114)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/img/Dell%20XPS%2015.png" alt="">
+								<div class="product-action">
+									<a href="laptops/DellXPS15.html" class="d-block w-100 h-100 position-absolute"></a>
+
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+							<div class="text-center pt-0 pb-4 px-2">
+								<a class="h6 text-decoration-none" href="laptops/DellXPS15.html">Dell XPS 15</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>£2999.99</h5><h6 class="text-muted ml-2"><del>£3199.99</del></h6>
+								</div>
+								<div class="d-flex align-items-center justify-content-center mb-1">
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star-half-alt text-primary mr-1"></small>
+									<small>(77)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/img/Acer%20Predator%20Helios%20700.png" alt="">
+								<div class="product-action">
+									<a href="#" class="d-block w-100 h-100 position-absolute"></a>
+
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+							<div class="text-center pt-0 pb-4 px-2">
+								<a class="h6 text-decoration-none" href="#">Acer Predator Helios 700</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>£3999.99</h5><h6 class="text-muted ml-2"><del>$4329.99</del></h6>
+								</div>
+								<div class="d-flex align-items-center justify-content-center mb-1">
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star-half-alt text-primary mr-1"></small>
+									<small class="far fa-star text-primary mr-1"></small>
+									<small>(134)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 col-sm-6 pb-1">
+						<div class="product-item bg-light mb-4">
+							<div class="product-img position-relative overflow-hidden">
+								<img class="img-fluid w-100" src="/img/Lenovo%20MiniBook.png" alt="">
+								<div class="product-action">
+									<a href="#" class="d-block w-100 h-100 position-absolute"></a>
+
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+								</div>
+							</div>
+							<div class="text-center pt-0 pb-4 px-2">
+								<a class="h6 text-decoration-none" href="#">Lenovo MiniBook</a>
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>£3499.99</h5><h6 class="text-muted ml-2"><del>£3899.99</del></h6>
+								</div>
+								<div class="d-flex align-items-center justify-content-center mb-1">
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="fa fa-star text-primary mr-1"></small>
+									<small class="far fa-star text-primary mr-1"></small>
+									<small class="far fa-star text-primary mr-1"></small>
+									<small>(121)</small>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12">
+						<nav>
+						  <ul class="pagination justify-content-center">
+							<li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
+							<li class="page-item active"><a class="page-link" href="#">1</a></li>
+							<li class="page-item"><a class="page-link" href="#">2</a></li>
+							<li class="page-item"><a class="page-link" href="#">3</a></li>
+							<li class="page-item"><a class="page-link" href="#">Next</a></li>
+						  </ul>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="~{fragments/commons::footer}"></footer>
+
+	<div th:replace="~{fragments/commons::popups}"></div>
+</body>
+
+</html>

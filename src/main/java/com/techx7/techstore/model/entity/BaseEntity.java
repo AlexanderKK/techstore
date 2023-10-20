@@ -1,9 +1,6 @@
 package com.techx7.techstore.model.entity;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Type;
@@ -20,7 +17,8 @@ public abstract class BaseEntity {
 
     @NotNull
     @JdbcTypeCode(Types.VARCHAR)
-    private UUID uuid;
+    @Column(nullable = false, unique = true)
+    private UUID uuid = UUID.randomUUID();
 
     public Long getId() {
         return id;
