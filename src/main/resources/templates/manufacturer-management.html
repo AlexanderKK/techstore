@@ -32,8 +32,18 @@
                                         <b>Manufacturer Photo</b>
                                         <p>Accepted file type .png. Less than 5MB</p>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="customFileInput" aria-describedby="customFileInput">
+                                            <input th:name="image"
+                                                   th:field="*{image}"
+                                                   type="file" class="custom-file-input" id="customFileInput" aria-describedby="customFileInput">
+
                                             <label class="custom-file-label" for="customFileInput">Upload</label>
+                                        </div>
+
+                                        <div>
+                                            <small th:if="${#fields.hasErrors('image')}"
+                                                   th:errors="*{image}"
+                                                   class="text-danger">
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
@@ -45,7 +55,6 @@
 
                             <input th:name="name"
                                    th:field="*{name}"
-                                   th:errorclass="bg-danger"
                                    id="manufacturer-name" class="form-control" type="text" placeholder="Dell">
                             <small th:if="${#fields.hasErrors('name')}"
                                    th:errors="*{name}"
@@ -88,12 +97,18 @@
                         </thead>
 
                         <tbody class="align-middle" style="font-size: 18px">
-                        <tr>
-                            <td><img src="../static/img/ideapad.jpg" alt="Manufacturer Logo" width="100"></td>
-                            <td class="align-middle">Dell</td>
-                            <td class="align-middle"><button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button></td>
-                            <td class="align-middle"><button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button></td>
-                        </tr>
+<!--                        <tr th:each="model: ${models}">
+                            <td th:text="${model.getName()}"></td>
+                            <td th:text="${model.getCategory()}"></td>
+                            <td th:text="${model.getStartYear()}"></td>
+                            <td th:text="${model.getEndYear()}"></td>-->
+                            <tr th:each="manufacturer : ${manufacturers}"
+                                th:object="${manufacturer}">
+                                <td><img th:src="@{|/img/*{imageUrl}|}" th:alt="|*{name} Logo|" width="100"></td>
+                                <td th:text="*{name}" class="align-middle"></td>
+                                <td class="align-middle"><button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button></td>
+                                <td class="align-middle"><button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

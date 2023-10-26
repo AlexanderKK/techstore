@@ -1,7 +1,7 @@
 package com.techx7.techstore.web;
 
 import com.google.gson.Gson;
-import com.techx7.techstore.model.dto.RegisterDTO;
+import com.techx7.techstore.model.dto.user.RegisterDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

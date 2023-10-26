@@ -1,4 +1,4 @@
-package com.techx7.techstore.model.dto;
+package com.techx7.techstore.model.dto.role;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;

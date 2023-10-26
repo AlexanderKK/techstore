@@ -1,7 +1,7 @@
 package com.techx7.techstore.service.impl;
 
 import com.google.gson.Gson;
-import com.techx7.techstore.model.dto.ImportRolesJsonDTO;
+import com.techx7.techstore.model.dto.role.ImportRolesJsonDTO;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.service.SeedService;
