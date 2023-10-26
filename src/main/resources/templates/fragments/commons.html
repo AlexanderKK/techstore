@@ -80,6 +80,18 @@
                                 <a th:href="@{/contact}"
                                    th:classappend="${#strings.equals(activeLink, 'contact') ? 'active' : ''}"
                                    class="nav-item nav-link">Contact</a>
+                                <a th:href="@{/manufacturers/manage/add}"
+                                   th:classappend="${#strings.equals(activeLink, 'manufacturer-management') ? 'active' : ''}"
+                                   class="nav-item nav-link">Manufacturer Management</a>
+                                <a th:href="@{/models/manage}"
+                                   th:classappend="${#strings.equals(activeLink, 'model-management') ? 'active' : ''}"
+                                   class="nav-item nav-link">Model Management</a>
+                                <a th:href="@{/categories/manage}"
+                                   th:classappend="${#strings.equals(activeLink, 'category-management') ? 'active' : ''}"
+                                   class="nav-item nav-link">Category Management</a>
+                                <a th:href="@{/products/manage/add}"
+                                   th:classappend="${#strings.equals(activeLink, 'product-management-add') ? 'active' : ''}"
+                                   class="nav-item nav-link">Add Product</a>
                             </div>
 
                             <div class="col-6 col-lg-auto d-lg-none navbar-nav py-0 text-end">
@@ -253,7 +265,7 @@
     </header>
 
     <div th:fragment="breadcrumb" class="container-fluid">
-        <div class="row px-xl-5">
+        <div class="row px-xl-5 pb-3">
             <div class="col-12">
                 <nav class="breadcrumb bg-light mb-30">
                     <a class="breadcrumb-item text-dark" th:href="@{/}">Home</a>
@@ -283,6 +295,8 @@
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Home</a>
                                 <a th:href="@{/products}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
+                                <a th:href="@{/products/add}"
+                                   class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Add Product</a>
                                 <a th:href="@{/contact}"
                                    class="text-secondary"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                             </div>

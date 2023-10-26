@@ -20,10 +20,6 @@ public class Model extends BaseEntity {
     @ManyToOne(optional = false)
     private Manufacturer manufacturer;
 
-    @Column(name = "image_url")
-    @Size(min = 8, max = 512)
-    private String imageUrl;
-
     @NotNull
     @Column(nullable = false)
     private LocalDateTime created;
@@ -47,14 +43,6 @@ public class Model extends BaseEntity {
 
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public LocalDateTime getCreated() {

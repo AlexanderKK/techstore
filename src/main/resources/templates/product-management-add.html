@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragments/commons::head(title = 'Product management | Tech x7')}"></head>
+
+<body>
+<header th:replace="~{fragments/commons::header(activeLink = 'product-management-add')}"></header>
+
+<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Add Product')}"></div>
+
+<div class="container-fluid">
+    <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Product Data</span></h2>
+    <div class="row px-xl-5">
+        <div class="col-lg-7 mb-5">
+            <div class="contact-form bg-light p-30">
+                <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                    <div class="row align-items-start py-3">
+                        <div class="col-md-12 form-group">
+                            <div class="row align-items-center">
+                                <div class="col-auto mb-3 mb-md-0">
+                                    <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=200" class="img" alt="">
+                                </div>
+
+                                <div class="col-auto">
+                                    <div id="img-section">
+                                        <b>Product Photo</b>
+                                        <p>Accepted file type .png. Less than 5MB</p>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="customFileInput" aria-describedby="customFileInput">
+                                            <label class="custom-file-label" for="customFileInput">Upload</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Model</label>
+
+                            <select th:name="model"
+                                    th:field="*{model}"
+                                    th:errorclass="bg-danger"
+                                    class="custom-select">
+                                <option value="" selected>Select a model</option>
+                                <optgroup th:each="manufacturer : ${manufacturers}"
+                                          th:label="${manufacturer.name}"
+                                          label="Manufacturer name">
+                                    <option th:each="model : ${manufacturer.models()}"
+                                            th:text="${model.name}"
+                                            th:value="${model.id}">Model</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>First Name</label>
+                            <input class="form-control" type="text" value="John">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Last Name</label>
+                            <input class="form-control" type="text" value="Doe">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>E-mail</label>
+                            <input class="form-control" type="text" value="example@email.com">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Phone</label>
+                            <input class="form-control" type="text" value="+359 456 78 38 90">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Address</label>
+                            <input class="form-control" type="text" value="Street №">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Secondary Address</label>
+                            <input class="form-control" type="text" value="Street №">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>Country</label>
+                            <select class="custom-select">
+                                <option selected>Bulgaria</option>
+                                <option>Russia</option>
+                                <option>Japan</option>
+                                <option>Greenland</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>City</label>
+                            <input class="form-control" type="text" value="Sofia">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>State</label>
+                            <input class="form-control" type="text" value="Karelia">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label>ZIP Code</label>
+                            <input class="form-control" type="text" value="1000">
+                        </div>
+
+                        <div class="col-md-12 mt-4 form-actions">
+                            <a href="#" class="text-decoration-none"><button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Edit Billing Info</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-5 mb-5">
+            <div class="bg-light p-30">
+                <h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">Edit credentials</span></h5>
+
+                <div class="col-md-12 form-group">
+                    <label>Username</label>
+                    <input class="form-control" type="text" placeholder="Your new username">
+                </div>
+
+                <div class="col-md-12 form-group">
+                    <label>Email</label>
+                    <input class="form-control" type="text" placeholder="Your new email">
+                </div>
+
+                <div class="col-md-12 form-group">
+                    <label>Password</label>
+                    <input class="form-control" type="password" placeholder="Your new password">
+                </div>
+
+                <div class="col-md-12 mt-5 form-actions">
+                    <a href="#" class="text-decoration-none"><button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Edit Credentials</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/commons::footer}"></footer>
+
+<div th:replace="~{fragments/commons::popups}"></div>
+</body>
+
+</html>

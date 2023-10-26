@@ -3,6 +3,7 @@ package com.techx7.techstore.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -21,6 +22,10 @@ public class Product extends BaseEntity {
 
     @Column
     private String description;
+
+    @Column(name = "image_url")
+    @Size(min = 8, max = 512)
+    private String imageUrl;
 
     @NotNull
     @OneToOne(optional = false)
@@ -55,6 +60,14 @@ public class Product extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Specification getSpecification() {

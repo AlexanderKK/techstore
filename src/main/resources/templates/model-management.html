@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragments/commons::head(title = 'Model management | Tech x7')}"></head>
+
+<body>
+<header th:replace="~{fragments/commons::header(activeLink = 'model-management')}"></header>
+
+<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Model Management')}"></div>
+
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <h2 class="section-title position-relative text-uppercase mb-4"><span class="bg-secondary px-1">Model</span></h2>
+
+        <div class="col-lg-5 mb-5">
+            <div class="model-form bg-light p-30">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Add Model</span></h5>
+
+                <form name="modelForm" id="modelForm">
+                    <div class="row align-items-start py-3">
+                        <div class="col-md-12 form-group">
+                            <label for="model-name">Name</label>
+                            <input id="model-name" class="form-control" type="text" placeholder="Inspiron 2024">
+                        </div>
+
+                        <div class="col-md-12 form-group">
+                            <label>Manufacturer</label>
+
+                            <select class="custom-select">
+                                <option value="" selected>Select a manufacturer</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 mt-4 form-actions">
+                            <a href="#" class="text-decoration-none"><button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Add model</button></a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-7 mb-5">
+            <div class="bg-light p-30">
+                <h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">All Models</span></h5>
+
+                <div class="table-responsive mb-5" style="max-height: 450px">
+                    <table class="table table-light table-borderless table-hover text-center mb-0">
+                        <thead class="thead" style="background: #F5F5F5;">
+                        <tr style="border-bottom: 1px solid #dee2e6;">
+                            <th>Logo</th>
+                            <th>Manufacturer</th>
+                            <th>Model</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+
+                        <tbody class="align-middle" style="font-size: 18px">
+                        <tr>
+                            <td><img src="../static/img/ideapad.jpg" alt="Manufacturer Logo" width="100"></td>
+                            <td class="align-middle">Dell</td>
+                            <td class="align-middle">Inspiron 2024</td>
+                            <td class="align-middle"><button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button></td>
+                            <td class="align-middle"><button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-12 mt-5 form-actions">
+                    <a href="#" class="text-decoration-none"><button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Remove All</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/commons::footer}"></footer>
+
+<div th:replace="~{fragments/commons::popups}"></div>
+</body>
+
+</html>
