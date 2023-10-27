@@ -8,8 +8,7 @@ public class MultipartFileContentTypeValidator implements ConstraintValidator<Mu
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        return value.getContentType().equals("image/png") ||
-                value.getContentType().equals("image/jpeg");
+        return value.getContentType().equals("image/png");
     }
 
 }

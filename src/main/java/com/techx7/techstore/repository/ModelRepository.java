@@ -1,16 +1,13 @@
 package com.techx7.techstore.repository;
 
-import com.techx7.techstore.model.entity.Manufacturer;
+import com.techx7.techstore.model.entity.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ManufacturerRepository extends JpaRepository<Manufacturer, Long> {
-
-    Optional<Manufacturer> findByName(String value);
+public interface ModelRepository extends JpaRepository<Model, Long> {
 
     void deleteByUuid(UUID uuid);
 

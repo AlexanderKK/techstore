@@ -1,11 +1,11 @@
-package com.techx7.techstore.model.dto.manufacturer;
+package com.techx7.techstore.model.dto.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public class ManufacturerHomeDTO {
+public class ModelHomeDTO {
 
     @NotNull
     private Long id;
@@ -14,12 +14,9 @@ public class ManufacturerHomeDTO {
     private UUID uuid;
 
     @NotBlank
-    private String imageUrl;
-
-    @NotBlank
     private String name;
 
-    public ManufacturerHomeDTO() {}
+    public ModelHomeDTO() {}
 
     public Long getId() {
         return id;
@@ -35,14 +32,6 @@ public class ManufacturerHomeDTO {
 
     public void setUuid(UUID uuid) {
         this.uuid = uuid;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
     }
 
     public String getName() {

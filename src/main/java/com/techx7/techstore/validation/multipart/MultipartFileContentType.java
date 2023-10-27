@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = MultipartFileContentTypeValidator.class)
 public @interface MultipartFileContentType {
 
-    String message() default "File type can be png or jpeg!";
+    String message() default "File type can only be .png!";
 
     Class<?>[] groups() default {};
 

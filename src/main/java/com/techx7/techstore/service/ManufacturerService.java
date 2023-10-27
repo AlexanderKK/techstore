@@ -4,6 +4,7 @@ import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerHomeDTO;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ManufacturerService {
 
@@ -13,6 +14,6 @@ public interface ManufacturerService {
 
     void deleteAllManufacturers();
 
-    void deleteManufacturerById(Long id);
+    void deleteManufacturerByUuid(UUID uuid);
 
 }

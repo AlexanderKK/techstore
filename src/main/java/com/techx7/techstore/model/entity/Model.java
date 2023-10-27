@@ -1,12 +1,14 @@
 package com.techx7.techstore.model.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.Calendar;
 
 @Entity
 @Table(name = "models")
@@ -21,11 +23,12 @@ public class Model extends BaseEntity {
     private Manufacturer manufacturer;
 
     @NotNull
-    @Column(nullable = false)
-    private LocalDateTime created;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    private Calendar created = Calendar.getInstance();
 
-    @Column
-    private LocalDateTime modified;
+    @Column(columnDefinition = "TIMESTAMP")
+    private Calendar modified;
 
     public Model() {}
 
@@ -45,19 +48,19 @@ public class Model extends BaseEntity {
         this.manufacturer = manufacturer;
     }
 
-    public LocalDateTime getCreated() {
+    public Calendar getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Calendar created) {
         this.created = created;
     }
 
-    public LocalDateTime getModified() {
+    public Calendar getModified() {
         return modified;
     }
 
-    public void setModified(LocalDateTime modified) {
+    public void setModified(Calendar modified) {
         this.modified = modified;
     }
 

@@ -29,7 +29,7 @@
 
                                 <div class="col-auto">
                                     <div id="img-section">
-                                        <b>Manufacturer Photo</b>
+                                        <b>Manufacturer Logo</b>
                                         <p>Accepted file type .png. Less than 5MB</p>
                                         <div class="custom-file">
                                             <input th:name="image"
@@ -88,27 +88,22 @@
                 <div class="table-responsive mb-5" style="max-height: 450px">
                     <table class="table table-light table-borderless table-hover text-center mb-0">
                         <thead class="thead" style="background: #F5F5F5;">
-                        <tr style="border-bottom: 1px solid #dee2e6;">
-                            <th>Logo</th>
-                            <th>Name</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
+                            <tr style="border-bottom: 1px solid #dee2e6;">
+                                <th>Logo</th>
+                                <th>Name</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
                         </thead>
 
                         <tbody class="align-middle" style="font-size: 18px">
-<!--                        <tr th:each="model: ${models}">
-                            <td th:text="${model.getName()}"></td>
-                            <td th:text="${model.getCategory()}"></td>
-                            <td th:text="${model.getStartYear()}"></td>
-                            <td th:text="${model.getEndYear()}"></td>-->
                             <tr th:each="manufacturer : ${manufacturers}"
                                 th:object="${manufacturer}">
-                                <td><img th:src="@{|/img/*{imageUrl}|}" th:alt="|*{name} Logo|" width="100"></td>
+                                <td><img th:src="@{|/img/*{imageUrl}|}" th:alt="|*{name} Logo|" width="70"></td>
                                 <td th:text="*{name}" class="align-middle"></td>
                                 <td class="align-middle"><button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button></td>
                                 <td class="align-middle">
-                                    <form th:action="@{/manufacturers/manage/delete/{id}(id = *{id})}"
+                                    <form th:action="@{/manufacturers/manage/delete/{id}(id = *{uuid})}"
                                           th:method="DELETE">
                                         <button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button>
                                     </form>

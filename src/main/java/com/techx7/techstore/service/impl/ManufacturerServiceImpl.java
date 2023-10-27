@@ -5,12 +5,13 @@ import com.techx7.techstore.model.dto.manufacturer.ManufacturerHomeDTO;
 import com.techx7.techstore.model.entity.Manufacturer;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.service.ManufacturerService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,8 +49,9 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     }
 
     @Override
-    public void deleteManufacturerById(Long id) {
-        manufacturerRepository.deleteById(id);
+    @Transactional
+    public void deleteManufacturerByUuid(UUID uuid) {
+        manufacturerRepository.deleteByUuid(uuid);
     }
 
 }

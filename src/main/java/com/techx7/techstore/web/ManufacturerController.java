@@ -16,6 +16,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 import static com.techx7.techstore.constant.FilePaths.RESOURCES_IMAGES_DIRECTORY;
 
@@ -83,9 +84,9 @@ public class ManufacturerController {
         return "redirect:/manufacturers/manage";
     }
 
-    @DeleteMapping("/manage/delete/{id}")
-    public String deleteAllManufacturers(@PathVariable("id") Long id) {
-        manufacturerService.deleteManufacturerById(id);
+    @DeleteMapping("/manage/delete/{uuid}")
+    public String deleteManufacturer(@PathVariable("uuid") UUID uuid) {
+        manufacturerService.deleteManufacturerByUuid(uuid);
 
         return "redirect:/manufacturers/manage";
     }

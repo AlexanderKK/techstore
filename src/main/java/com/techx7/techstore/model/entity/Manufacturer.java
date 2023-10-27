@@ -1,14 +1,14 @@
 package com.techx7.techstore.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Set;
 
 @Entity
 @Table(name = "manufacturers")
@@ -27,11 +27,14 @@ public class Manufacturer extends BaseEntity {
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @Column(nullable = false)
-    private LocalDateTime created = LocalDateTime.now();
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    private Calendar created = Calendar.getInstance();
 
-    @Column
-    private LocalDateTime modified;
+    @Column(columnDefinition = "TIMESTAMP")
+    private Calendar modified;
+
+    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private Set<Model> models;
 
     public Manufacturer() {}
 
@@ -59,20 +62,28 @@ public class Manufacturer extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public LocalDateTime getCreated() {
+    public Calendar getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Calendar created) {
         this.created = created;
     }
 
-    public LocalDateTime getModified() {
+    public Calendar getModified() {
         return modified;
     }
 
-    public void setModified(LocalDateTime modified) {
+    public void setModified(Calendar modified) {
         this.modified = modified;
+    }
+
+    public Set<Model> getModels() {
+        return models;
+    }
+
+    public void setModels(Set<Model> models) {
+        this.models = models;
     }
 
 }
