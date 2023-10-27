@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -33,7 +31,7 @@ public class ManufacturerController {
     }
 
     @GetMapping("/manage")
-    public String addManufacturer(Model model) {
+    public String manageManufacturer(Model model) {
         List<ManufacturerHomeDTO> manufacturerHomeDTOs = manufacturerService.getAllManufacturers();
         model.addAttribute("manufacturers", manufacturerHomeDTOs);
 
@@ -41,11 +39,12 @@ public class ManufacturerController {
             model.addAttribute("addManufacturerDTO", new AddManufacturerDTO());
         }
 
-        return "manufacturer-management";
+
+        return "manufacturers";
     }
 
     @PostMapping("/manage/add")
-    public String manageManufacturer(@Valid AddManufacturerDTO addManufacturerDTO,
+    public String addManufacturer(@Valid AddManufacturerDTO addManufacturerDTO,
                                      BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes) throws IOException {
         if(bindingResult.hasErrors()) {
@@ -75,6 +74,20 @@ public class ManufacturerController {
             bufferedWriter.write(imgBytes);
             bufferedWriter.close();
         }
+    }
+
+    @DeleteMapping("/manage/delete-all")
+    public String deleteAllManufacturers() {
+        manufacturerService.deleteAllManufacturers();
+
+        return "redirect:/manufacturers/manage";
+    }
+
+    @DeleteMapping("/manage/delete/{id}")
+    public String deleteAllManufacturers(@PathVariable("id") Long id) {
+        manufacturerService.deleteManufacturerById(id);
+
+        return "redirect:/manufacturers/manage";
     }
 
 }

@@ -15,7 +15,7 @@ public class ProductController {
 
     @GetMapping("/manage/add")
     public String addProduct() {
-        return "product-management-add";
+        return "product-add";
     }
 
 }

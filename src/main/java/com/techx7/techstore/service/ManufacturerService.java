@@ -11,4 +11,8 @@ public interface ManufacturerService {
 
     List<ManufacturerHomeDTO> getAllManufacturers();
 
+    void deleteAllManufacturers();
+
+    void deleteManufacturerById(Long id);
+
 }

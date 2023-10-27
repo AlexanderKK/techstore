@@ -42,4 +42,14 @@ public class ManufacturerServiceImpl implements ManufacturerService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteAllManufacturers() {
+        manufacturerRepository.deleteAll();
+    }
+
+    @Override
+    public void deleteManufacturerById(Long id) {
+        manufacturerRepository.deleteById(id);
+    }
+
 }

@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="~{fragments/commons::head(title = 'Manufacturer management | Tech x7')}"></head>
+<head th:replace="~{fragments/commons::head(title = 'Manufacturers | Tech x7')}"></head>
 
 <body>
-<header th:replace="~{fragments/commons::header(activeLink = 'manufacturer-management')}"></header>
+<header th:replace="~{fragments/commons::header(activeLink = 'manufacturers')}"></header>
 
-<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Manufacturer Management')}"></div>
+<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Manufacturers')}"></div>
 
 <div class="container-fluid">
     <div class="row px-xl-5 pb-3">
@@ -107,14 +107,22 @@
                                 <td><img th:src="@{|/img/*{imageUrl}|}" th:alt="|*{name} Logo|" width="100"></td>
                                 <td th:text="*{name}" class="align-middle"></td>
                                 <td class="align-middle"><button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button></td>
-                                <td class="align-middle"><button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button></td>
+                                <td class="align-middle">
+                                    <form th:action="@{/manufacturers/manage/delete/{id}(id = *{id})}"
+                                          th:method="DELETE">
+                                        <button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button>
+                                    </form>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <div class="col-md-12 mt-5 form-actions">
-                    <a href="#" class="text-decoration-none"><button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Remove All</button></a>
+                    <form th:action="@{/manufacturers/manage/delete-all}"
+                          th:method="DELETE">
+                        <button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Remove All</button>
+                    </form>
                 </div>
             </div>
         </div>

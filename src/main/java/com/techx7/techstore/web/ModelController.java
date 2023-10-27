@@ -10,7 +10,7 @@ public class ModelController {
 
     @GetMapping("/manage")
     public String manageModel() {
-        return "model-management";
+        return "models";
     }
 
 }

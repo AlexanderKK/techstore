@@ -10,7 +10,7 @@ public class CategoryController {
 
     @GetMapping("/manage")
     public String manageCategory() {
-        return "category-management";
+        return "categories";
     }
 
 }

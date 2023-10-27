@@ -1,5 +1,6 @@
 package com.techx7.techstore.model.dto.manufacturer;
 
+import com.techx7.techstore.validation.multipart.MultipartFileContentType;
 import com.techx7.techstore.validation.multipart.MultipartFileMaxSize;
 import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
 import com.techx7.techstore.validation.manufacturer.UniqueManufacturerName;
@@ -15,6 +16,7 @@ public class AddManufacturerDTO {
 
     @MultipartFileNotNull
     @MultipartFileMaxSize
+    @MultipartFileContentType
     private MultipartFile image;
 
     private String description;

@@ -81,16 +81,16 @@
                                    th:classappend="${#strings.equals(activeLink, 'contact') ? 'active' : ''}"
                                    class="nav-item nav-link">Contact</a>
                                 <a th:href="@{/manufacturers/manage}"
-                                   th:classappend="${#strings.equals(activeLink, 'manufacturer-management') ? 'active' : ''}"
-                                   class="nav-item nav-link">Manufacturer Management</a>
+                                   th:classappend="${#strings.equals(activeLink, 'manufacturers') ? 'active' : ''}"
+                                   class="nav-item nav-link">Manufacturers</a>
                                 <a th:href="@{/models/manage}"
-                                   th:classappend="${#strings.equals(activeLink, 'model-management') ? 'active' : ''}"
-                                   class="nav-item nav-link">Model Management</a>
+                                   th:classappend="${#strings.equals(activeLink, 'models') ? 'active' : ''}"
+                                   class="nav-item nav-link">Models</a>
                                 <a th:href="@{/categories/manage}"
-                                   th:classappend="${#strings.equals(activeLink, 'category-management') ? 'active' : ''}"
-                                   class="nav-item nav-link">Category Management</a>
+                                   th:classappend="${#strings.equals(activeLink, 'categories') ? 'active' : ''}"
+                                   class="nav-item nav-link">Categories</a>
                                 <a th:href="@{/products/manage/add}"
-                                   th:classappend="${#strings.equals(activeLink, 'product-management-add') ? 'active' : ''}"
+                                   th:classappend="${#strings.equals(activeLink, 'product-add') ? 'active' : ''}"
                                    class="nav-item nav-link">Add Product</a>
                             </div>
 
