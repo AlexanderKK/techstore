@@ -75,9 +75,11 @@
 
                         <tbody class="align-middle" style="font-size: 18px">
                             <tr th:each="model : ${models}">
-                                <td><img th:src="@{|/img/${model.manufacturerDTO.imageUrl}|}" th:alt="|${model.manufacturerDTO.name} Logo|" width="70"></td>
+                                <td><img th:src="@{|/images/${model.manufacturerDTO.imageUrl}|}" th:alt="|${model.manufacturerDTO.name} Logo|" width="70"></td>
                                 <td th:text="${model.name}" class="align-middle"></td>
-                                <td class="align-middle"><button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button></td>
+                                <td class="align-middle">
+                                    <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
+                                </td>
                                 <td class="align-middle">
                                     <form th:action="@{/models/manage/delete/{id}(id = ${model.uuid})}"
                                           th:method="DELETE">

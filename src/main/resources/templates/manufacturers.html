@@ -99,7 +99,7 @@
                         <tbody class="align-middle" style="font-size: 18px">
                             <tr th:each="manufacturer : ${manufacturers}"
                                 th:object="${manufacturer}">
-                                <td><img th:src="@{|/img/*{imageUrl}|}" th:alt="|*{name} Logo|" width="70"></td>
+                                <td><img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Logo|" width="70"></td>
                                 <td th:text="*{name}" class="align-middle"></td>
                                 <td class="align-middle"><button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button></td>
                                 <td class="align-middle">

@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title th:text="${title}"></title>
-    <link href="/img/favicon.ico" rel="icon">
+    <link href="/images/favicon.ico" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -123,7 +123,7 @@
                                                         <div class="cart__info col-12 col-sm-auto">
                                                             <div class="row align-items-center">
                                                                 <div class="cart__img col-5">
-                                                                    <img src="/img/ideapad.jpg" alt="Lenovo V15">
+                                                                    <img src="/images/ideapad.jpg" alt="Lenovo V15">
                                                                 </div>
 
                                                                 <div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
@@ -161,7 +161,7 @@
                                                         <div class="cart__info col-12 col-sm-auto">
                                                             <div class="row align-items-center">
                                                                 <div class="cart__img col-5">
-                                                                    <img src="/img/Asus%20Minibook.png" alt="Lenovo Ideapad 3 15 UltraSlim">
+                                                                    <img src="/images/Asus%20Minibook.png" alt="Lenovo Ideapad 3 15 UltraSlim">
                                                                 </div>
 
                                                                 <div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
@@ -199,7 +199,7 @@
                                                         <div class="cart__info col-12 col-sm-auto">
                                                             <div class="row align-items-center">
                                                                 <div class="cart__img col-5">
-                                                                    <img src="/img/Dell%20XPS%2015.png" alt="Dell XPS 15">
+                                                                    <img src="/images/Dell%20XPS%2015.png" alt="Dell XPS 15">
                                                                 </div>
 
                                                                 <div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
@@ -340,7 +340,7 @@
                 </div>
 
                 <div class="col-md-6 px-xl-0 text-center text-md-right">
-                    <img class="img-fluid" src="/img/payments.png" alt="">
+                    <img class="img-fluid" src="/images/payments.png" alt="">
                 </div>
             </div>
         </div>
@@ -352,7 +352,7 @@
         <div class="popup popup--login">
             <div class="popup__inner">
                 <div class="popup__close">
-                    <img src="/img/close.png" alt="Close Icon">
+                    <img src="/images/close.png" alt="Close Icon">
                 </div>
 
                 <div class="popup__head">
@@ -404,7 +404,7 @@
         <div class="popup popup--register">
             <div class="popup__inner">
                 <div class="popup__close">
-                    <img src="/img/close.png" alt="Close Icon">
+                    <img src="/images/close.png" alt="Close Icon">
                 </div>
 
                 <div class="popup__head">
@@ -416,7 +416,7 @@
                 <div class="popup__body">
                     <div class="form-login">
 <!--                        <form id="registerForm" name="registerForm">-->
-                            <div th:each="error: ${#fields.errors()}" th:text="${error}" class="text-danger">Error messages</div>
+<!--                            <div th:each="error: ${#fields.errors()}" th:text="${error}" class="text-danger">Error messages</div>-->
 
                             <div class="form__body">
                                 <div class="form__row">

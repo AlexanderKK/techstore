@@ -155,7 +155,7 @@ $(document).ready(function() {
 
 		$.ajax({
 			type: 'POST',
-			url: "register",
+			url: "/register",
 			data: jsonStr,
 			cache:false,
 			beforeSend: function(xhr) {
@@ -175,7 +175,7 @@ $(document).ready(function() {
 				}
 
 				if(response.errors.length > 0) {
-					// console.log(response.errors);
+					console.log(response.errors);
 
 					for (const error of response.errors) {
 						document.querySelector(`.${error.field}Register-error`).innerText += error.defaultMessage + '\n';

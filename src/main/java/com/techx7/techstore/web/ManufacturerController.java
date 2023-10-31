@@ -67,7 +67,7 @@ public class ManufacturerController {
 
         if(imgBytes.length != 0) {
 //            String imgDir = Objects.requireNonNull(
-//                    getClass().getResource("/static/img/")).toURI().getPath();
+//                    getClass().getResource("/static/images/")).toURI().getPath();
 
             BufferedOutputStream bufferedWriter = new BufferedOutputStream(
                     new FileOutputStream(RESOURCES_IMAGES_DIRECTORY + image.getOriginalFilename()));
