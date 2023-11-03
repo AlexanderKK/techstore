@@ -202,13 +202,4 @@
 		}
 	});
 
-	// categories.children().each(function() {
-	// 	const categoryLink = $(this).children().children().first();
-	//
-	// 	categoryLink.on('click', function() {
-	// 		console.log($(this).children().first());
-	// 		// $(this).remove();
-	// 	});
-	// });
-
 })(jQuery);
