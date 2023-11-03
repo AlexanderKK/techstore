@@ -1,6 +1,6 @@
 package com.techx7.techstore.service.impl;
 
-import com.techx7.techstore.model.dto.manufacturer.ManufacturerHomeDTO;
+import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.model.ModelsWithManufacturersDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
 import com.techx7.techstore.model.entity.Manufacturer;
@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -56,7 +54,7 @@ public class ModelServiceImpl implements ModelService {
         for (Model model : modelRepository.findAll(Sort.by("manufacturerName", "name"))) {
             ModelsWithManufacturersDTO modelDTO = mapper.map(model, ModelsWithManufacturersDTO.class);
 
-            ManufacturerHomeDTO manufacturerDTO = mapper.map(model.getManufacturer(), ManufacturerHomeDTO.class);
+            ManufacturerDTO manufacturerDTO = mapper.map(model.getManufacturer(), ManufacturerDTO.class);
             modelDTO.setManufacturerDTO(manufacturerDTO);
 
             modelDTOs.add(modelDTO);

@@ -1,21 +1,20 @@
 package com.techx7.techstore.model.dto.model;
 
-import com.techx7.techstore.model.dto.manufacturer.ManufacturerHomeDTO;
-import com.techx7.techstore.model.dto.model.ModelHomeDTO;
+import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import jakarta.validation.constraints.NotNull;
 
-public class ModelsWithManufacturersDTO extends ModelHomeDTO {
+public class ModelsWithManufacturersDTO extends ModelDTO {
 
     @NotNull
-    private ManufacturerHomeDTO manufacturerDTO;
+    private ManufacturerDTO manufacturerDTO;
 
     public ModelsWithManufacturersDTO() {}
 
-    public ManufacturerHomeDTO getManufacturerDTO() {
+    public ManufacturerDTO getManufacturerDTO() {
         return manufacturerDTO;
     }
 
-    public void setManufacturerDTO(ManufacturerHomeDTO manufacturerDTO) {
+    public void setManufacturerDTO(ManufacturerDTO manufacturerDTO) {
         this.manufacturerDTO = manufacturerDTO;
     }
 

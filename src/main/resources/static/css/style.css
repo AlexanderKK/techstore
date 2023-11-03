@@ -10279,6 +10279,42 @@ a.text-dark:hover, a.text-dark:focus {
   z-index: -1;
 }
 
+/* ------------------------------------------------------------ *\
+  Category Section
+\* ------------------------------------------------------------ */
+
+.featured-section{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.featured{
+  background: #fff;
+  height: 300px;
+  display: block;
+  border: 1px solid #FFD333;
+}
+.category a{
+  background: #fff;
+  height: 95px;
+  display: block;
+  margin: 5px 0;
+  border: 1px solid #FFD333;
+  position: relative;
+}
+.category a span{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #000;
+}
+.category a span i{
+  display: block;
+  font-size: 20px;
+}
+
 @media(max-width: 991.9px) {
   .hero .hero__inner {
       padding: 0 !important;

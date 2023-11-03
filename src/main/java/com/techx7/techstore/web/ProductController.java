@@ -1,6 +1,10 @@
 package com.techx7.techstore.web;
 
+import com.techx7.techstore.model.dto.category.CategoryDTO;
+import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
+import com.techx7.techstore.service.CategoryService;
+import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ProductService;
 import com.techx7.techstore.util.FileUtils;
 import jakarta.validation.Valid;
@@ -12,17 +16,23 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
-import java.util.UUID;
+import java.util.List;
 
 @Controller
 @RequestMapping("/products")
 public class ProductController {
 
     private final ProductService productService;
+    private final ManufacturerService manufacturerService;
+    private final CategoryService categoryService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,
+                             ManufacturerService manufacturerService,
+                             CategoryService categoryService) {
         this.productService = productService;
+        this.manufacturerService = manufacturerService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
@@ -30,8 +40,14 @@ public class ProductController {
         return "products";
     }
 
-    @GetMapping("/manage")
+    @GetMapping("/manage/add")
     public String manageProduct(Model model) {
+        List<ManufacturerWithModelsDTO> manufacturerWithModelsDTOs = manufacturerService.getManufacturersWithModelsDTO();
+        List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
+
+        model.addAttribute("categories", categoryDTOs);
+        model.addAttribute("manufacturers", manufacturerWithModelsDTOs);
+
         if(!model.containsAttribute("addProductDTO")) {
             model.addAttribute("addProductDTO", new AddProductDTO());
         }
@@ -47,28 +63,14 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("addProductDTO", addProductDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addProductDTO", bindingResult);
 
-            return "redirect:/products/manage";
+            return "redirect:/products/manage/add";
         }
 
         FileUtils.saveImageLocally(addProductDTO.getImage());
 
         productService.createProduct(addProductDTO);
 
-        return "redirect:/manufacturers/manage";
-    }
-
-    @DeleteMapping("/manage/delete-all")
-    public String deleteAllProducts() {
-        productService.deleteAllManufacturers();
-
-        return "redirect:/manufacturers/manage";
-    }
-
-    @DeleteMapping("/manage/delete/{uuid}")
-    public String deleteProduct(@PathVariable("uuid") UUID uuid) {
-        productService.deleteProductByUuid(uuid);
-
-        return "redirect:/products/manage";
+        return "redirect:/products/manage/add";
     }
 
 }

@@ -33,7 +33,7 @@ public class Manufacturer extends BaseEntity {
     @Column(columnDefinition = "TIMESTAMP")
     private Calendar modified;
 
-    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Model> models;
 
     public Manufacturer() {}

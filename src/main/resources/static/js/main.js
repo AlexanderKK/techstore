@@ -78,6 +78,10 @@
 		});
 	});
 
+
+	/**
+	 * Image load on file input change
+	 */
 	$('.custom-file-input').each(function() {
 		$(this).on('change', function(e) {
 			loadFileImage(e);
@@ -111,4 +115,56 @@
 
 		reader.readAsDataURL(selectedFile);
 	}
+
+
+	const categories = $('.categories-container');
+
+	// btnAddProduct.on('click', function(evt) {
+	// 	evt.preventDefault();
+	//
+	// 	if(categories.children().length === 0) {
+	// 		console.log('Invalid categories');
+	// 	}
+	// })
+
+	const categoriesSelect = $('#product-category');
+	const categoryIds = [];
+
+	categoriesSelect.on('change', function(evt) {
+		const selectedOption = this.selectedOptions[0];
+
+		if(selectedOption.text.trim() === "Select a category" || selectedOption.value === "") {
+			return;
+		}
+
+		let isCategoryPresent = false;
+
+		categories.children().each(function() {
+			const categorySpan = $(this).children().children().first();
+
+			if(categorySpan.attr("data-id") && categorySpan.data("id") === Number(selectedOption.value)) {
+				// console.log(categorySpan.data("id"));
+
+				isCategoryPresent = true;
+
+				return false;
+			}
+		});
+
+		if(!isCategoryPresent) {
+			categories.append(`<div class="col-6 mt-3 category"><a><span data-id="${selectedOption.value}"><i class="fa fa-cogs"></i>${selectedOption.text}</span></a></div>`)
+			categoryIds.push(selectedOption.value);
+		}
+
+		categories.children().each(function() {
+			if($(this).prop('nodeName') === 'INPUT') {
+				this.remove();
+			}
+		});
+
+		if($(categories).length) {
+			categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
+		}
+	});
+
 })(jQuery);

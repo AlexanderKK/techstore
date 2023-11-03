@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public class ModelHomeDTO {
+public class ModelDTO {
 
     @NotNull
     private Long id;
@@ -16,7 +16,7 @@ public class ModelHomeDTO {
     @NotBlank
     private String name;
 
-    public ModelHomeDTO() {}
+    public ModelDTO() {}
 
     public Long getId() {
         return id;

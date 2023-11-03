@@ -1,7 +1,7 @@
 package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
-import com.techx7.techstore.model.dto.category.CategoryHomeDTO;
+import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.entity.Category;
 import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.service.CategoryService;
@@ -35,10 +35,10 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public List<CategoryHomeDTO> getAllCategories() {
+    public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll()
                 .stream()
-                .map(category -> mapper.map(category, CategoryHomeDTO.class))
+                .map(category -> mapper.map(category, CategoryDTO.class))
                 .toList();
     }
 

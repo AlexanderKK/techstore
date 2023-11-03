@@ -29,7 +29,6 @@ public class Product extends BaseEntity {
     @Size(min = 8, max = 512)
     private String imageUrl;
 
-    @NotNull
     @OneToOne
     private Specification specification;
 

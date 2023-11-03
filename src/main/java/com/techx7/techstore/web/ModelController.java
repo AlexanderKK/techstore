@@ -1,6 +1,6 @@
 package com.techx7.techstore.web;
 
-import com.techx7.techstore.model.dto.manufacturer.ManufacturerHomeDTO;
+import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.model.ModelsWithManufacturersDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
 import com.techx7.techstore.service.ManufacturerService;
@@ -33,8 +33,8 @@ public class ModelController {
 
     @GetMapping("/manage")
     public String manageModel(Model model) {
-        List<ManufacturerHomeDTO> manufacturerHomeDTOs = manufacturerService.getAllManufacturers();
-        model.addAttribute("manufacturers", manufacturerHomeDTOs);
+        List<ManufacturerDTO> manufacturerDTOS = manufacturerService.getAllManufacturers();
+        model.addAttribute("manufacturers", manufacturerDTOS);
 
         List<ModelsWithManufacturersDTO> modelsWithManufacturersDTOs = modelService.getModelsWithManufacturers();
         model.addAttribute("models", modelsWithManufacturersDTOs);

@@ -1,11 +1,14 @@
-package com.techx7.techstore.model.dto.category;
+package com.techx7.techstore.model.dto.manufacturer;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public class CategoryHomeDTO {
+public class ManufacturerDTO {
+
+    @NotNull
+    private Long id;
 
     @NotNull
     private UUID uuid;
@@ -16,7 +19,15 @@ public class CategoryHomeDTO {
     @NotBlank
     private String name;
 
-    public CategoryHomeDTO() {}
+    public ManufacturerDTO() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public UUID getUuid() {
         return uuid;

@@ -1,7 +1,7 @@
 package com.techx7.techstore.web;
 
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
-import com.techx7.techstore.model.dto.manufacturer.ManufacturerHomeDTO;
+import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.util.FileUtils;
 import jakarta.validation.Valid;
@@ -29,8 +29,8 @@ public class ManufacturerController {
 
     @GetMapping("/manage")
     public String manageManufacturer(Model model) {
-        List<ManufacturerHomeDTO> manufacturerHomeDTOs = manufacturerService.getAllManufacturers();
-        model.addAttribute("manufacturers", manufacturerHomeDTOs);
+        List<ManufacturerDTO> manufacturerDTOS = manufacturerService.getAllManufacturers();
+        model.addAttribute("manufacturers", manufacturerDTOS);
 
         if(!model.containsAttribute("addManufacturerDTO")) {
             model.addAttribute("addManufacturerDTO", new AddManufacturerDTO());

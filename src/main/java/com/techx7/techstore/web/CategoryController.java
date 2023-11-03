@@ -1,7 +1,7 @@
 package com.techx7.techstore.web;
 
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
-import com.techx7.techstore.model.dto.category.CategoryHomeDTO;
+import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,8 @@ public class CategoryController {
 
     @GetMapping("/manage")
     public String manageCategory(Model model) {
-        List<CategoryHomeDTO> categoryHomeDTOs = categoryService.getAllCategories();
-        model.addAttribute("categories", categoryHomeDTOs);
+        List<CategoryDTO> categoryDTOS = categoryService.getAllCategories();
+        model.addAttribute("categories", categoryDTOS);
 
         if(!model.containsAttribute("addCategoryDTO")) {
             model.addAttribute("addCategoryDTO", new AddCategoryDTO());

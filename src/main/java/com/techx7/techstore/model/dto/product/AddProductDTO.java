@@ -1,16 +1,19 @@
 package com.techx7.techstore.model.dto.product;
 
-import com.techx7.techstore.model.entity.Model;
 import com.techx7.techstore.model.entity.Specification;
 import com.techx7.techstore.validation.multipart.MultipartFileContentType;
 import com.techx7.techstore.validation.multipart.MultipartFileMaxSize;
 import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
+import com.techx7.techstore.validation.product.ProductPrice;
+import com.techx7.techstore.validation.product.UniqueProductModel;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 public class AddProductDTO {
 
@@ -19,19 +22,23 @@ public class AddProductDTO {
     @MultipartFileContentType
     private MultipartFile image;
 
-    @NotNull
-    private Set<String> categories;
+    @NotNull(message = "You must choose at least one category!")
+    private String categories;
 
-    @NotNull
-    private Model model;
+    @NotNull(message = "You must choose a model!")
+    @UniqueProductModel
+    private Long model;
 
     private String description;
 
     private Specification specification;
 
-    @NotNull
-    @Positive
-    private BigDecimal price;
+    @ProductPrice
+    @NotNull(message = "Cannot be empty!")
+    @DecimalMin(value = "1", message = "Price must be a positive number!")
+    @DecimalMax(value = "1000000", message = "Price limit is 1000000!")
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "####.##")
+    private String price;
 
     public AddProductDTO() {}
 
@@ -43,19 +50,19 @@ public class AddProductDTO {
         this.image = image;
     }
 
-    public Set<String> getCategories() {
+    public String getCategories() {
         return categories;
     }
 
-    public void setCategories(Set<String> categories) {
+    public void setCategories(String categories) {
         this.categories = categories;
     }
 
-    public Model getModel() {
+    public Long getModel() {
         return model;
     }
 
-    public void setModel(Model model) {
+    public void setModel(Long model) {
         this.model = model;
     }
 
@@ -75,11 +82,11 @@ public class AddProductDTO {
         this.specification = specification;
     }
 
-    public BigDecimal getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

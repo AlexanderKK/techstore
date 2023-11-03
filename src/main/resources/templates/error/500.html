@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace="~{fragments/commons::head(title = 'Internal Error | Tech x7')}"></head>
+
+<body>
+<header th:replace="~{fragments/commons::header(activeLink = 'home')}"></header>
+
+<div class="hero-404">
+    <div class="hero__background" style="background-image: url('/images/404-hero.jpg')"></div>
+
+    <div class="hero__content">
+        <h1>500 Server Error</h1>
+        <h2>Try to find your way using the navigation. Contact us for more information</h2>
+    </div>
+</div>
+
+<footer th:insert="~{fragments/commons::footer}"></footer>
+</body>
+</html>

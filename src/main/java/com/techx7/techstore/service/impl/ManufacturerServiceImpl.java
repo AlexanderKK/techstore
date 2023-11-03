@@ -1,7 +1,9 @@
 package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
-import com.techx7.techstore.model.dto.manufacturer.ManufacturerHomeDTO;
+import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
+import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
+import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.entity.Manufacturer;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.service.ManufacturerService;
@@ -10,9 +12,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ManufacturerServiceImpl implements ManufacturerService {
@@ -36,10 +38,10 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     }
 
     @Override
-    public List<ManufacturerHomeDTO> getAllManufacturers() {
+    public List<ManufacturerDTO> getAllManufacturers() {
         return manufacturerRepository.findAll()
                 .stream()
-                .map(manufacturer -> mapper.map(manufacturer, ManufacturerHomeDTO.class))
+                .map(manufacturer -> mapper.map(manufacturer, ManufacturerDTO.class))
                 .toList();
     }
 
@@ -52,6 +54,25 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     @Transactional
     public void deleteManufacturerByUuid(UUID uuid) {
         manufacturerRepository.deleteByUuid(uuid);
+    }
+
+    @Override
+    public List<ManufacturerWithModelsDTO> getManufacturersWithModelsDTO() {
+        List<ManufacturerWithModelsDTO> manufacturerWithModelsDTOList = new ArrayList<>();
+
+        for (Manufacturer manufacturer : manufacturerRepository.findAll()) {
+            ManufacturerWithModelsDTO manufacturerWithModelsDTO = mapper.map(manufacturer, ManufacturerWithModelsDTO.class);
+
+            List<ModelDTO> modelDTOs = manufacturer.getModels().stream()
+                    .map(model -> mapper.map(model, ModelDTO.class))
+                    .toList();
+
+            manufacturerWithModelsDTO.setModelDTOs(modelDTOs);
+
+            manufacturerWithModelsDTOList.add(manufacturerWithModelsDTO);
+        }
+
+        return manufacturerWithModelsDTOList;
     }
 
 }

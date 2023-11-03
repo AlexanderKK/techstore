@@ -61,7 +61,6 @@
 
                             <textarea th:name="description"
                                       th:field="*{description}"
-                                      th:errorclass="bg-danger"
                                       id="category-description" class="form-control"></textarea>
                             <small th:if="${#fields.hasErrors('description')}"
                                    th:errors="*{description}"

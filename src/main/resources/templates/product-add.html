@@ -46,12 +46,20 @@
                         </div>
 
                         <div class="col-md-12 form-group">
-                            <label for="product-description">Categories</label>
+                            <label for="product-category">Category</label>
 
-                            <textarea th:name="categories"
-                                      th:field="*{categories}"
-                                      th:errorclass="bg-danger"
-                                      id="product-categories" class="form-control"></textarea>
+                            <select th:name="category"
+                                    class="custom-select"
+                                    id="product-category">
+                                <option value="">Select a category</option>
+
+                                <option th:each="category : ${categories}"
+                                        th:text="${category.name}"
+                                        th:value="${category.id}"></option>
+                            </select>
+
+                            <div class="row categories-container"></div>
+
                             <small th:if="${#fields.hasErrors('categories')}"
                                    th:errors="*{categories}"
                                    class="text-danger"></small>
@@ -60,9 +68,20 @@
                         <div class="col-md-12 form-group">
                             <label for="product-model">Model</label>
 
-                            <input th:name="model"
-                                   th:field="*{model}"
-                                   id="product-model" class="form-control" type="text" placeholder="Desktop computers">
+                            <select th:name="model"
+                                    th:field="*{model}"
+                                    class="custom-select"
+                                    id="product-model">
+                                <option value="">Select a model</option>
+
+                                <optgroup th:each="manufacturer : ${manufacturers}"
+                                          th:label="${manufacturer.name}">
+                                    <option th:each="model : ${manufacturer.models}"
+                                            th:text="${model.name}"
+                                            th:value="${model.id}"></option>
+                                </optgroup>
+                            </select>
+
                             <small th:if="${#fields.hasErrors('model')}"
                                    th:errors="*{model}"
                                    class="text-danger"></small>
@@ -73,7 +92,6 @@
 
                             <textarea th:name="description"
                                       th:field="*{description}"
-                                      th:errorclass="bg-danger"
                                       id="product-description" class="form-control"></textarea>
                             <small th:if="${#fields.hasErrors('description')}"
                                    th:errors="*{description}"
@@ -84,16 +102,15 @@
                             <label for="product-price">Price</label>
 
                             <input th:name="price"
-                                      th:field="*{price}"
-                                      th:errorclass="bg-danger"
-                                      id="product-price" class="form-control" type="text">
+                                   th:field="*{price}"
+                                   id="product-price" class="form-control" type="text">
                             <small th:if="${#fields.hasErrors('price')}"
                                    th:errors="*{price}"
                                    class="text-danger"></small>
                         </div>
 
                         <div class="col-md-12 mt-4 form-actions">
-                            <button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Add product</button>
+                            <button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase btn-add-product">Add product</button>
                         </div>
                     </div>
                 </form>
