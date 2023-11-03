@@ -70,6 +70,7 @@
 
                             <select th:name="model"
                                     th:field="*{model}"
+                                    th:errorclass="is-invalid"
                                     class="custom-select"
                                     id="product-model">
                                 <option value="">Select a model</option>
@@ -92,6 +93,7 @@
 
                             <textarea th:name="description"
                                       th:field="*{description}"
+                                      th:errorclass="is-invalid"
                                       id="product-description" class="form-control"></textarea>
                             <small th:if="${#fields.hasErrors('description')}"
                                    th:errors="*{description}"
@@ -103,10 +105,9 @@
 
                             <input th:name="price"
                                    th:field="*{price}"
+                                   th:errorclass="is-invalid"
                                    id="product-price" class="form-control" type="text">
-                            <small th:if="${#fields.hasErrors('price')}"
-                                   th:errors="*{price}"
-                                   class="text-danger"></small>
+                            <small class="invalid-feedback text-danger">Invalid price!</small>
                         </div>
 
                         <div class="col-md-12 mt-4 form-actions">

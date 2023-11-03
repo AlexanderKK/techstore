@@ -78,7 +78,6 @@
 		});
 	});
 
-
 	/**
 	 * Image load on file input change
 	 */
@@ -119,17 +118,53 @@
 
 	const categories = $('.categories-container');
 
-	// btnAddProduct.on('click', function(evt) {
-	// 	evt.preventDefault();
-	//
-	// 	if(categories.children().length === 0) {
-	// 		console.log('Invalid categories');
-	// 	}
-	// })
-
 	const categoriesSelect = $('#product-category');
-	const categoryIds = [];
 
+	const categoryIds= [];
+
+	/**
+	 * Remove category from container before adding to product
+	 */
+	categories.delegate('.category', 'click', function(evt) {
+		if(evt.target) {
+			fadeOutAndRemove(this);
+			categoriesSelect.prop("selectedIndex", 0);
+		}
+	});
+
+	function fadeOutAndRemove(category) {
+		$(category).fadeOut(350, function () {
+			$(category).remove();
+		});
+	}
+
+	/**
+	 * Reset inputs -> remove is-invalid class
+	 */
+	$('.form-group').children().each(function() {
+		$(this).on('blur', function() {
+			console.log($(this).next())
+
+			if($(this).next().hasClass("categories-container")) {
+				return false;
+			}
+
+			$(this).removeClass("is-invalid")
+			$(this).parent().children().last().hide();
+		});
+	});
+
+	/**
+	 * Add is-invalid class to inputs
+	 */
+	if($('#product-category + div + small').text().length !== 0) {
+		categoriesSelect.addClass("is-invalid");
+	}
+
+	/**
+	 * Select categories
+	 * Add categories to product
+	 */
 	categoriesSelect.on('change', function(evt) {
 		const selectedOption = this.selectedOptions[0];
 
@@ -166,5 +201,14 @@
 			categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
 		}
 	});
+
+	// categories.children().each(function() {
+	// 	const categoryLink = $(this).children().children().first();
+	//
+	// 	categoryLink.on('click', function() {
+	// 		console.log($(this).children().first());
+	// 		// $(this).remove();
+	// 	});
+	// });
 
 })(jQuery);
