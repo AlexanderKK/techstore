@@ -47,8 +47,6 @@ public class ModelServiceImpl implements ModelService {
             model.setManufacturer(manufacturer.get());
             modelRepository.save(model);
         }
-
-        OffsetDateTime odt = OffsetDateTime.now( ZoneOffset.UTC );
     }
 
     @Override

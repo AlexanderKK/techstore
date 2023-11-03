@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Set;
 
 @Entity
@@ -28,13 +30,21 @@ public class Product extends BaseEntity {
     private String imageUrl;
 
     @NotNull
-    @OneToOne(optional = false)
+    @OneToOne
     private Specification specification;
 
     @NotNull
     @Positive
     @Column(nullable = false)
     private BigDecimal price;
+
+    @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    private Calendar created = Calendar.getInstance();
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private Calendar modified;
 
     public Product() {}
 
@@ -84,6 +94,22 @@ public class Product extends BaseEntity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Calendar getCreated() {
+        return created;
+    }
+
+    public void setCreated(Calendar created) {
+        this.created = created;
+    }
+
+    public Calendar getModified() {
+        return modified;
+    }
+
+    public void setModified(Calendar modified) {
+        this.modified = modified;
     }
 
 }

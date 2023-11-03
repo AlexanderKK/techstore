@@ -32,40 +32,8 @@
 		}
 		button.parent().parent().find('input').val(newVal);
 	});
-
-	//Open / Close Cart On Hover
-	// function hoverCart() {
-	// 	//Show / Hide Cart
-	// 	if($('#cart-trigger.hover').hasClass('hover')) {
-	// 		$('#cart-trigger').unbind('click');
-	//
-	// 		$('#cart-trigger').attr('href', 'cart.html');
-	//
-	// 		if($('#cart-trigger').hasClass('detail')) {
-	// 			$('#cart-trigger').attr('href', '../cart.html');
-	// 		}
-	//
-	// 		$('#cart-trigger.hover').on('mouseenter', function() {
-	// 			$('.cart-menu').addClass('is-active');
-	// 		});
-	//
-	// 		$('#cart-trigger.hover').on('mouseleave', function() {
-	// 			$('.cart-menu').removeClass('is-active');
-	// 		});
-	//
-	// 		$('.cart-menu .cart__display').on('mouseover', function() {
-	// 			$('.cart-menu').addClass('is-active');
-	// 		});
-	//
-	// 		$('.cart-menu .cart__display').on('mouseout', function() {
-	// 			$('.cart-menu').removeClass('is-active');
-	// 		});
-	//
-	// 	}
-	// }
 	
 	//Open / Close Cart On Click
-
 	$('#cart-trigger').on('click',function(evt) {
 		evt.preventDefault();
 
@@ -103,47 +71,44 @@
 		$('.navbar-collapse.show .cart-menu').removeClass('is-active');
 	});
 
-	//Initial Statement - Hover Cart On Large Display | Click Cart On Smaller One
-	// if($(window).width() > 974) {
-	// 	$('#cart-trigger').addClass('hover');
-	// 	$('#cart-trigger').removeClass('click');
-	//
-	// 	hoverCart();
-	// } else {
-	//
-	// 	$('#cart-trigger').addClass('click');
-	// 	$('#cart-trigger').removeClass('hover');
-	//
-	// 	clickCart();
-	// }
-	
-	//Get Width On Resize
-	// $(window).resize(function() {
-	//   $(window).width();
-	//
-	//   //Hover Cart On Large Display | Click Cart On Smaller One
-	//   if($(window).width() > 974) {
-	//
-	// 	$('#cart-trigger').addClass('hover');
-	// 	$('#cart-trigger').removeClass('click');
-	//
-	// 	hoverCart();
-	//   } else {
-	//
-	// 	$('#cart-trigger').addClass('click');
-	// 	$('#cart-trigger').removeClass('hover');
-	//
-	// 	clickCart();
-	//   }
-	//
-	//   //Display window width on screen resize
-	//   console.log($(window).width());
-	// });
-
 	//On Load Add class "is-loaded" To Children of ".hero content"
 	$(window).on('load', function() {
 		$.each($('.hero-content').children(), function(index, value){
 			$(value).addClass('is-loaded');
 		});
 	});
+
+	$('.custom-file-input').each(function() {
+		$(this).on('change', function(e) {
+			loadFileImage(e);
+		});
+	});
+
+	function loadFileImage(evt) {
+		const selectedFile = evt.target.files[0];
+
+		const categoryImg = $(evt.target).parent().parent().parent().parent().children().first().children().first();
+
+		const categoryImgError = $(evt.target).parent().parent().children().get(3);
+		$(categoryImgError).empty();
+
+		if (!selectedFile || selectedFile.type !== 'image/png') {
+			categoryImg.attr('src', 'https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175');
+			categoryImg.title = '';
+
+			$(categoryImgError).append('<small class="text-danger">File type should be .png!</small>');
+
+			return;
+		}
+
+		const reader = new FileReader();
+
+		reader.onload = function (evt) {
+			categoryImg.attr('src', evt.target.result);
+			categoryImg.title = selectedFile.name;
+			categoryImg.width(175);
+		}
+
+		reader.readAsDataURL(selectedFile);
+	}
 })(jQuery);

@@ -40,7 +40,7 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         return manufacturerRepository.findAll()
                 .stream()
                 .map(manufacturer -> mapper.map(manufacturer, ManufacturerHomeDTO.class))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

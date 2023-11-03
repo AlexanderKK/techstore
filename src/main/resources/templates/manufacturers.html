@@ -23,8 +23,10 @@
                     <div class="row align-items-start py-3">
                         <div class="col-md-12 form-group">
                             <div class="row align-items-center">
-                                <div class="col-auto mb-3 mb-md-0">
-                                    <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175" class="img" alt="Manufacturer photo">
+                                <div class="col-auto my-2 input-image">
+                                    <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175"
+                                         alt="Manufacturer photo"
+                                         class="img">
                                 </div>
 
                                 <div class="col-auto">
@@ -39,12 +41,7 @@
                                             <label class="custom-file-label" for="customFileInput">Upload</label>
                                         </div>
 
-                                        <div>
-                                            <small th:if="${#fields.hasErrors('image')}"
-                                                   th:errors="*{image}"
-                                                   class="text-danger">
-                                            </small>
-                                        </div>
+                                        <div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
                                     </div>
                                 </div>
                             </div>
