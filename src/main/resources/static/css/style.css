@@ -1973,7 +1973,7 @@ select.form-control[size], select.form-control[multiple] {
 }
 
 textarea.form-control {
-  height: auto;
+  min-height: 90px;
 }
 
 .form-group {
@@ -10295,13 +10295,14 @@ a.text-dark:hover, a.text-dark:focus {
 }
 .category a {
   background: #fff;
-  height: 95px;
-  display: block;
+  min-height: 90px;
+  /*display: block;*/
   margin: 5px 0;
+  padding: 12px 4px;
   border: 1px solid #FFD333;
-  position: relative;
+  /*position: relative;*/
   pointer-events: all;
-  cursor: no-drop;
+  cursor: pointer;
   transition: .3s opacity;
 }
 

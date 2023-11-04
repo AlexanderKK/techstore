@@ -145,12 +145,13 @@
 		$(this).on('blur', function() {
 			console.log($(this).next())
 
+			$(this).removeClass("is-invalid")
+
 			if($(this).next().hasClass("categories-container")) {
 				return false;
 			}
 
-			$(this).removeClass("is-invalid")
-			$(this).parent().children().last().hide();
+			$(this).next().hide();
 		});
 	});
 
@@ -175,7 +176,8 @@
 		let isCategoryPresent = false;
 
 		categories.children().each(function() {
-			const categorySpan = $(this).children().children().first();
+			const categorySpan = $(this).children().first().first().first().children().last().children().first();
+			console.log(categorySpan);
 
 			if(categorySpan.attr("data-id") && categorySpan.data("id") === Number(selectedOption.value)) {
 				// console.log(categorySpan.data("id"));
@@ -187,7 +189,7 @@
 		});
 
 		if(!isCategoryPresent) {
-			categories.append(`<div class="col-6 mt-3 category"><a><span data-id="${selectedOption.value}"><i class="fa fa-cogs"></i>${selectedOption.text}</span></a></div>`)
+			categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='/images/${$(selectedOption).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${selectedOption.value}">${selectedOption.text}</span></div></a></div>`)
 			categoryIds.push(selectedOption.value);
 		}
 

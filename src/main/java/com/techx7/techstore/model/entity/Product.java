@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -15,12 +16,12 @@ import java.util.Set;
 public class Product extends BaseEntity {
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.REMOVE)
     private Model model;
 
     @NotNull
     @ManyToMany
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     @Column
     private String description;
