@@ -8,6 +8,7 @@ import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.repository.ModelRepository;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.service.ProductService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void createProduct(AddProductDTO addProductDTO) {
         Product product = mapper.map(addProductDTO, Product.class);
 

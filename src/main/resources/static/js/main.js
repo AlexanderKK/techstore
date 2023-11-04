@@ -135,7 +135,14 @@
 	function fadeOutAndRemove(category) {
 		$(category).fadeOut(350, function () {
 			$(category).remove();
-		});
+			const inputField = categories.children().last();
+			const categoryId = $(this).children().first().first().first().children().last().children().first().attr("data-id");
+
+			inputField.val(inputField.val().replaceAll(`${categoryId},`,""));
+			if(inputField.val().length === 1 || inputField.val().indexOf(categoryId) === inputField.val().length - 1) {
+				inputField.val(inputField.val().replaceAll(`${categoryId}`,""));
+			}
+		})
 	}
 
 	/**
@@ -166,6 +173,25 @@
 	 * Select categories
 	 * Add categories to product
 	 */
+	// console.log(categories.attr('field').textContent);
+	const attrField = categories.attr('field');
+	let inputValue = "";
+
+	if(categoryIds.length === 0 && attrField) {
+		const ids = attrField.split(",");
+
+		const options = $(`#product-category option`);
+		for (const option of options) {
+			if(ids.includes(option.value)) {
+				categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='/images/${$(option).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${option.value}">${option.text}</span></div></a></div>`)
+				inputValue += option.value + ',';
+			}
+		}
+
+		inputValue = inputValue.substring(0, inputValue.length - 1);
+		categories.append(`<input type="hidden" name="categories" value="${inputValue}"/>`);
+	}
+
 	categoriesSelect.on('change', function(evt) {
 		const selectedOption = this.selectedOptions[0];
 
@@ -177,7 +203,6 @@
 
 		categories.children().each(function() {
 			const categorySpan = $(this).children().first().first().first().children().last().children().first();
-			console.log(categorySpan);
 
 			if(categorySpan.attr("data-id") && categorySpan.data("id") === Number(selectedOption.value)) {
 				// console.log(categorySpan.data("id"));
@@ -199,9 +224,8 @@
 			}
 		});
 
-		if($(categories).length) {
-			categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
-		}
+
+		categories.append(`<input type="hidden" name="categories" value="${inputValue + categoryIds}"/>`);
 	});
 
 })(jQuery);

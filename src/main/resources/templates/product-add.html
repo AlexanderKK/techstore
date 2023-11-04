@@ -59,7 +59,7 @@
                                         th:attr="data-imageUrl=${category.imageUrl}"></option>
                             </select>
 
-                            <div class="row categories-container"></div>
+                            <div class="row categories-container" th:field="*{categories}"></div>
 
                             <small th:if="${#fields.hasErrors('categories')}"
                                    th:errors="*{categories}"

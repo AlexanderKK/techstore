@@ -1,14 +1,12 @@
 package com.techx7.techstore.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Calendar;
+import java.util.Set;
 
 @Entity
 @Table(name = "models")
@@ -21,6 +19,9 @@ public class Model extends BaseEntity {
     @NotNull
     @ManyToOne(optional = false)
     private Manufacturer manufacturer;
+
+    @OneToMany(mappedBy = "model", cascade = CascadeType.REMOVE)
+    private Set<Product> products;
 
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
@@ -46,6 +47,14 @@ public class Model extends BaseEntity {
 
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     public Calendar getCreated() {
