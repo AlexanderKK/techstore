@@ -71,17 +71,27 @@
 		$('.navbar-collapse.show .cart-menu').removeClass('is-active');
 	});
 
+	const fileInput = $('.custom-file-input');
+
 	//On Load Add class "is-loaded" To Children of ".hero content"
 	$(window).on('load', function() {
 		$.each($('.hero-content').children(), function(index, value){
 			$(value).addClass('is-loaded');
 		});
+
+		// fileInput.each(function() {
+		// 	console.log($(this).attr("field"))
+		// 	if($(this).val() !== "") {
+		// 		const selectedFile = fileInput.val();
+		// 		// console.log(selectedFile);
+		// 	}
+		// });
 	});
 
 	/**
 	 * Image load on file input change
 	 */
-	$('.custom-file-input').each(function() {
+	fileInput.each(function() {
 		$(this).on('change', function(e) {
 			loadFileImage(e);
 		});
@@ -162,6 +172,18 @@
 		});
 	});
 
+	$(window).on('mouseover', function(evt) {
+		if(categories.children().length === 1 && evt.target !== $(categoriesSelect)) {
+			categoriesSelect.addClass("is-invalid");
+		}
+	});
+
+	// $(categoriesSelect).on('mouseover', function(evt) {
+	// 	if(categories.children().length > 1) {
+	// 		categoriesSelect.removeClass("is-invalid");
+	// 	}
+	// });
+
 	/**
 	 * Add is-invalid class to inputs
 	 */
@@ -175,21 +197,21 @@
 	 */
 	// console.log(categories.attr('field').textContent);
 	const attrField = categories.attr('field');
-	let inputValue = "";
 
 	if(categoryIds.length === 0 && attrField) {
 		const ids = attrField.split(",");
 
 		const options = $(`#product-category option`);
 		for (const option of options) {
+			// console.log(ids, option.value);
+
 			if(ids.includes(option.value)) {
 				categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='/images/${$(option).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${option.value}">${option.text}</span></div></a></div>`)
-				inputValue += option.value + ',';
+				categoryIds.push(option.value);
 			}
 		}
 
-		inputValue = inputValue.substring(0, inputValue.length - 1);
-		categories.append(`<input type="hidden" name="categories" value="${inputValue}"/>`);
+		categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
 	}
 
 	categoriesSelect.on('change', function(evt) {
@@ -206,7 +228,6 @@
 
 			if(categorySpan.attr("data-id") && categorySpan.data("id") === Number(selectedOption.value)) {
 				// console.log(categorySpan.data("id"));
-
 				isCategoryPresent = true;
 
 				return false;
@@ -215,7 +236,10 @@
 
 		if(!isCategoryPresent) {
 			categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='/images/${$(selectedOption).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${selectedOption.value}">${selectedOption.text}</span></div></a></div>`)
-			categoryIds.push(selectedOption.value);
+
+			if(!categoryIds.includes(selectedOption.value)) {
+				categoryIds.push(selectedOption.value);
+			}
 		}
 
 		categories.children().each(function() {
@@ -224,8 +248,9 @@
 			}
 		});
 
+		categoryIds.sort();
 
-		categories.append(`<input type="hidden" name="categories" value="${inputValue + categoryIds}"/>`);
+		categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
 	});
 
 })(jQuery);

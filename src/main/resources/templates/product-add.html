@@ -90,6 +90,16 @@
                         </div>
 
                         <div class="col-md-12 form-group">
+                            <label for="product-price">Price</label>
+
+                            <input th:name="price"
+                                   th:field="*{price}"
+                                   th:errorclass="is-invalid"
+                                   id="product-price" class="form-control" type="text">
+                            <small class="invalid-feedback text-danger">Invalid price!</small>
+                        </div>
+
+                        <div class="col-md-12 form-group">
                             <label for="product-description">Description</label>
 
                             <textarea th:name="description"
@@ -99,16 +109,6 @@
                             <small th:if="${#fields.hasErrors('description')}"
                                    th:errors="*{description}"
                                    class="text-danger"></small>
-                        </div>
-
-                        <div class="col-md-12 form-group">
-                            <label for="product-price">Price</label>
-
-                            <input th:name="price"
-                                   th:field="*{price}"
-                                   th:errorclass="is-invalid"
-                                   id="product-price" class="form-control" type="text">
-                            <small class="invalid-feedback text-danger">Invalid price!</small>
                         </div>
 
                         <div class="col-md-12 mt-4 form-actions">
