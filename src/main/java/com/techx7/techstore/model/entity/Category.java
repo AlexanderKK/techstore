@@ -23,7 +23,7 @@ public class Category extends BaseEntity {
     private String description;
 
     @Column(name = "image_url")
-    @Size(min = 8, max = 512)
+    @Size(min = 5, max = 512)
     private String imageUrl;
 
     @NotNull

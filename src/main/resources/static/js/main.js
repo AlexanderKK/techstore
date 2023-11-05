@@ -93,6 +93,7 @@
 	 */
 	fileInput.each(function() {
 		$(this).on('change', function(e) {
+			console.dir(e.target)
 			loadFileImage(e);
 		});
 	});
@@ -105,11 +106,12 @@
 		const categoryImgError = $(evt.target).parent().parent().children().get(3);
 		$(categoryImgError).empty();
 
-		if (!selectedFile || selectedFile.type !== 'image/png') {
+		if (!selectedFile || selectedFile.type !== 'image/png' || evt.target.size > 2097152) {
 			categoryImg.attr('src', 'https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175');
 			categoryImg.title = '';
+			evt.target.value = '';
 
-			$(categoryImgError).append('<small class="text-danger">File type should be .png!</small>');
+			$(categoryImgError).append('<small class="text-danger">Invalid format or size!</small>');
 
 			return;
 		}
@@ -119,7 +121,6 @@
 		reader.onload = function (evt) {
 			categoryImg.attr('src', evt.target.result);
 			categoryImg.title = selectedFile.name;
-			categoryImg.width(175);
 		}
 
 		reader.readAsDataURL(selectedFile);
@@ -160,13 +161,11 @@
 	 */
 	$('.form-group').children().each(function() {
 		$(this).on('blur', function() {
-			console.log($(this).next())
-
-			$(this).removeClass("is-invalid")
-
 			if($(this).next().hasClass("categories-container")) {
 				return false;
 			}
+
+			$(this).removeClass("is-invalid")
 
 			$(this).next().hide();
 		});
@@ -187,9 +186,9 @@
 	/**
 	 * Add is-invalid class to inputs
 	 */
-	if($('#product-category + div + small').text().length !== 0) {
-		categoriesSelect.addClass("is-invalid");
-	}
+	// if($('#product-category + div + small').text().length !== 0) {
+	// 	categoriesSelect.addClass("is-invalid");
+	// }
 
 	/**
 	 * Select categories
@@ -240,6 +239,9 @@
 			if(!categoryIds.includes(selectedOption.value)) {
 				categoryIds.push(selectedOption.value);
 			}
+
+			categoriesSelect.removeClass("is-invalid");
+			$('#product-category + small').hide();
 		}
 
 		categories.children().each(function() {

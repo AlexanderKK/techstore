@@ -30,7 +30,7 @@
                                 <div class="col-auto">
                                     <div id="img-section">
                                         <b>Product Photo</b>
-                                        <p>Accepted file type .png. Less than 5MB</p>
+                                        <p>Accepted file type .png. Less than 2MB</p>
                                         <div class="custom-file">
                                             <input th:name="image"
                                                    th:field="*{image}"
@@ -59,11 +59,11 @@
                                         th:attr="data-imageUrl=${category.imageUrl}"></option>
                             </select>
 
-                            <div class="row categories-container" th:field="*{categories}"></div>
-
                             <small th:if="${#fields.hasErrors('categories')}"
                                    th:errors="*{categories}"
                                    class="text-danger"></small>
+
+                            <div class="row categories-container" th:field="*{categories}"></div>
                         </div>
 
                         <div class="col-md-12 form-group">

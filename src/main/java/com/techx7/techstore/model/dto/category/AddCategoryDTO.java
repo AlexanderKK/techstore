@@ -14,8 +14,6 @@ public class AddCategoryDTO {
     private String name;
 
     @MultipartFileNotNull
-    @MultipartFileMaxSize
-    @MultipartFileContentType
     private MultipartFile image;
 
     private String description;

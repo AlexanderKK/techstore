@@ -15,8 +15,6 @@ public class AddManufacturerDTO {
     private String name;
 
     @MultipartFileNotNull
-    @MultipartFileMaxSize
-    @MultipartFileContentType
     private MultipartFile image;
 
     private String description;

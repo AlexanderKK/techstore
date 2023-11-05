@@ -1,28 +1,22 @@
 package com.techx7.techstore.model.dto.product;
 
 import com.techx7.techstore.model.entity.Specification;
-import com.techx7.techstore.validation.multipart.MultipartFileContentType;
-import com.techx7.techstore.validation.multipart.MultipartFileMaxSize;
 import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
 import com.techx7.techstore.validation.product.ProductPrice;
 import com.techx7.techstore.validation.product.UniqueProductModel;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.math.BigDecimal;
 
 public class AddProductDTO {
 
     @MultipartFileNotNull
-    @MultipartFileMaxSize
-    @MultipartFileContentType
     private MultipartFile image;
 
-    @NotNull(message = "You must choose at least one category!")
+    @NotBlank(message = "You must choose at least one category!")
     private String categories;
 
     @NotNull(message = "You must choose a model!")

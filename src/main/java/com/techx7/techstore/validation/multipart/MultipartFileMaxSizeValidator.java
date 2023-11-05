@@ -8,7 +8,7 @@ public class MultipartFileMaxSizeValidator implements ConstraintValidator<Multip
 
     @Override
     public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
-        return value.getSize() <= 5000000;
+        return value.getSize() <= 2097152;
     }
 
 }

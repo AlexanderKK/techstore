@@ -17,8 +17,8 @@ spring:
         enabled: true
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
+      max-file-size: 2MB
+      max-request-size: 2MB
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:}/tech_store?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
@@ -46,5 +46,5 @@ logging:
     blog: WARN
 server:
   port: 8080
-  tomcat:
-    max-swallow-size: '-1'
+#  tomcat:
+#    max-swallow-size: -1
