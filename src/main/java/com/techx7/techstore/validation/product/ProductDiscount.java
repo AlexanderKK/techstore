@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@Constraint(validatedBy = ProductPriceValidator.class)
-public @interface ProductPrice {
+@Constraint(validatedBy = ProductDiscountValidator.class)
+public @interface ProductDiscount {
 
     String message() default "Invalid format!";
 

@@ -255,4 +255,33 @@
 		categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
 	});
 
+	$('textarea').each(function() {
+		$(this).on('scroll', function() {
+			$('body').addClass("stop-scrolling");
+		});
+
+		$(this).on('mouseout', function() {
+			$('body').removeClass("stop-scrolling");
+		});
+	});
+
+	/**
+	 * Scrolling
+	 */
+	function disableScroll() {
+		// Get the current page scroll position
+		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+		const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+
+
+		// if any scroll is attempted, set this to the previous value
+		window.onscroll = function() {
+			window.scrollTo(scrollLeft, scrollTop);
+		};
+	}
+
+	function enableScroll() {
+		window.onscroll = function() {};
+	}
+
 })(jQuery);

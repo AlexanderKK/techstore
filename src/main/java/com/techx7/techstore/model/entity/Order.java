@@ -4,9 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "specifications")
-public class Specification extends BaseEntity {
-
-
+@Table(name = "orders")
+public class Order extends BaseEntity {
 
 }

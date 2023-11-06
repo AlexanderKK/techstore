@@ -54,6 +54,8 @@ public class ProductServiceImpl implements ProductService {
         Optional<Model> model = modelRepository.findById(addProductDTO.getModel());
         model.ifPresent(product::setModel);
 
+
+
         productRepository.save(product);
     }
 

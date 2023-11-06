@@ -1,7 +1,7 @@
 package com.techx7.techstore.model.dto.product;
 
-import com.techx7.techstore.model.entity.Specification;
 import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
+import com.techx7.techstore.validation.product.ProductDiscount;
 import com.techx7.techstore.validation.product.ProductPrice;
 import com.techx7.techstore.validation.product.UniqueProductModel;
 import jakarta.validation.constraints.DecimalMax;
@@ -25,7 +25,8 @@ public class AddProductDTO {
 
     private String description;
 
-    private Specification specification;
+    @NotBlank(message = "You need to add technical characteristics!")
+    private String specification;
 
     @ProductPrice
     @NotNull(message = "Cannot be empty!")
@@ -33,6 +34,10 @@ public class AddProductDTO {
     @DecimalMax(value = "1000000", message = "Price limit is 1000000!")
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "####.##")
     private String price;
+
+    @ProductDiscount
+    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "###.##")
+    private String discountPercentage;
 
     public AddProductDTO() {}
 
@@ -68,11 +73,11 @@ public class AddProductDTO {
         this.description = description;
     }
 
-    public Specification getSpecification() {
+    public String getSpecification() {
         return specification;
     }
 
-    public void setSpecification(Specification specification) {
+    public void setSpecification(String specification) {
         this.specification = specification;
     }
 
@@ -82,6 +87,14 @@ public class AddProductDTO {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(String discountPercentage) {
+        this.discountPercentage = discountPercentage;
     }
 
 }

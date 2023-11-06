@@ -31,6 +31,7 @@ public class Category extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private Calendar created = Calendar.getInstance();
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
     private Calendar modified;
 

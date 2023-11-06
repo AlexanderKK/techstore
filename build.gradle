@@ -22,7 +22,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.modelmapper:modelmapper:3.1.1'
-    implementation 'org.apache.commons:commons-fileupload2-jakarta:2.0.0-M1'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

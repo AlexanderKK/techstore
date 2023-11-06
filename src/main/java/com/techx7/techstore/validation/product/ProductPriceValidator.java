@@ -3,8 +3,6 @@ package com.techx7.techstore.validation.product;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.math.BigDecimal;
-
 public class ProductPriceValidator implements ConstraintValidator<ProductPrice, String> {
 
     @Override
@@ -13,9 +11,7 @@ public class ProductPriceValidator implements ConstraintValidator<ProductPrice, 
             return true;
         }
 
-        boolean matches = value.matches("^\\d+[.,]*(?:[.,]\\d+)?$");
-
-        return matches;
+        return value.matches("^\\d+[.,]*(?:[.,]\\d+)?$");
     }
 
 }
