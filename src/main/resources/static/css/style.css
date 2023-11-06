@@ -163,6 +163,11 @@ img {
   border-style: none;
 }
 
+.table img {
+  object-fit: cover;
+  max-height: 70px;
+}
+
 svg {
   overflow: hidden;
   vertical-align: middle;
@@ -10349,9 +10354,16 @@ a.text-dark:hover, a.text-dark:focus {
   text-align: center;
   color: #000;
 }
+
 .category a span i {
   display: block;
   font-size: 20px;
+}
+
+@media(max-width: 500px) {
+  /*.category a div:first-of-type {*/
+  /*  display: none;*/
+  /*}*/
 }
 
 #product-add #product-description {

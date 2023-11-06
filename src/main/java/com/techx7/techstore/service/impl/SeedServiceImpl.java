@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static com.techx7.techstore.constant.FilePaths.*;
+import static com.techx7.techstore.constant.Paths.*;
 import static com.techx7.techstore.constant.Messages.ENTITIES_SEEDED_SUCCESSFULLY;
 
 @Service

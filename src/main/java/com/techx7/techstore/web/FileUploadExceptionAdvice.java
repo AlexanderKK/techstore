@@ -16,10 +16,12 @@ public class FileUploadExceptionAdvice {
             HttpServletRequest request,
             HttpServletResponse response) {
 
-        ModelAndView modelAndView = new ModelAndView("manufacturers");
-        modelAndView.getModel().put("fileMessage", "File too large!");
+//        ModelAndView modelAndView = new ModelAndView("manufacturers");
+//        modelAndView.getModel().put("fileMessage", "File too large!");
+//
+//        return modelAndView;
 
-        return modelAndView;
+        return null;
     }
 
 }

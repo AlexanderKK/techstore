@@ -17,10 +17,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import static com.techx7.techstore.constant.Paths.BINDING_RESULT_PATH;
+import static com.techx7.techstore.constant.Paths.DOT;
+
 @Controller
 @RequestMapping("/models")
 public class ModelController {
 
+    private final static String flashAttributeDTO = "addModelDTO";
     private final ModelService modelService;
     private final ManufacturerService manufacturerService;
 
@@ -39,8 +43,8 @@ public class ModelController {
         List<ModelsWithManufacturersDTO> modelsWithManufacturersDTOs = modelService.getModelsWithManufacturers();
         model.addAttribute("models", modelsWithManufacturersDTOs);
 
-        if(!model.containsAttribute("addModelDTO")) {
-            model.addAttribute("addModelDTO", new AddModelDTO());
+        if(!model.containsAttribute(flashAttributeDTO)) {
+            model.addAttribute(flashAttributeDTO, new AddModelDTO());
         }
 
         return "models";
@@ -52,7 +56,7 @@ public class ModelController {
                                   RedirectAttributes redirectAttributes) throws IOException {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addModelDTO", addModelDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addModelDTO", bindingResult);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
 
             return "redirect:/models/manage";
         }

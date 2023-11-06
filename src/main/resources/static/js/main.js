@@ -106,7 +106,9 @@
 		const categoryImgError = $(evt.target).parent().parent().children().get(3);
 		$(categoryImgError).empty();
 
-		if (!selectedFile || selectedFile.type !== 'image/png' || evt.target.size > 2097152) {
+		if (!selectedFile ||
+			(selectedFile.type !== 'image/png' && selectedFile.type !== 'image/jpeg') ||
+			evt.target.size > 2097152) {
 			categoryImg.attr('src', 'https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175');
 			categoryImg.title = '';
 			evt.target.value = '';

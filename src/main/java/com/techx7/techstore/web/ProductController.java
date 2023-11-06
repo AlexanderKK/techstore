@@ -18,10 +18,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.List;
 
+import static com.techx7.techstore.constant.Paths.BINDING_RESULT_PATH;
+import static com.techx7.techstore.constant.Paths.DOT;
+
 @Controller
 @RequestMapping("/products")
 public class ProductController {
 
+    private final static String flashAttributeDTO = "addProductDTO";
     private final ProductService productService;
     private final ManufacturerService manufacturerService;
     private final CategoryService categoryService;
@@ -48,8 +52,8 @@ public class ProductController {
         model.addAttribute("categories", categoryDTOs);
         model.addAttribute("manufacturers", manufacturerWithModelsDTOs);
 
-        if(!model.containsAttribute("addProductDTO")) {
-            model.addAttribute("addProductDTO", new AddProductDTO());
+        if(!model.containsAttribute(flashAttributeDTO)) {
+            model.addAttribute(flashAttributeDTO, new AddProductDTO());
         }
 
         return "product-add";
@@ -60,8 +64,8 @@ public class ProductController {
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) throws IOException {
         if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("addProductDTO", addProductDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addProductDTO", bindingResult);
+            redirectAttributes.addFlashAttribute(flashAttributeDTO, addProductDTO);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
 
             return "redirect:/products/manage/add";
         }

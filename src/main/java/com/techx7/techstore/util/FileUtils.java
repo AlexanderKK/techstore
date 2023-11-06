@@ -6,7 +6,7 @@ import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static com.techx7.techstore.constant.FilePaths.RESOURCES_IMAGES_DIRECTORY;
+import static com.techx7.techstore.constant.Paths.RESOURCES_IMAGES_DIRECTORY;
 
 public class FileUtils {
 

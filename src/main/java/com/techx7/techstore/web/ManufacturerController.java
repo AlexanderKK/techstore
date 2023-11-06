@@ -16,10 +16,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+import static com.techx7.techstore.constant.Paths.*;
+
 @Controller
 @RequestMapping("/manufacturers")
 public class ManufacturerController {
 
+    private final static String flashAttributeDTO = "addManufacturerDTO";
     private final ManufacturerService manufacturerService;
 
     @Autowired
@@ -32,10 +35,9 @@ public class ManufacturerController {
         List<ManufacturerDTO> manufacturerDTOS = manufacturerService.getAllManufacturers();
         model.addAttribute("manufacturers", manufacturerDTOS);
 
-        if(!model.containsAttribute("addManufacturerDTO")) {
-            model.addAttribute("addManufacturerDTO", new AddManufacturerDTO());
+        if(!model.containsAttribute(flashAttributeDTO)) {
+            model.addAttribute(flashAttributeDTO, new AddManufacturerDTO());
         }
-
 
         return "manufacturers";
     }
@@ -45,8 +47,8 @@ public class ManufacturerController {
                                      BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes) throws IOException {
         if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("addManufacturerDTO", addManufacturerDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.addManufacturerDTO", bindingResult);
+            redirectAttributes.addFlashAttribute(flashAttributeDTO, addManufacturerDTO);
+            redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
 
             return "redirect:/manufacturers/manage";
         }

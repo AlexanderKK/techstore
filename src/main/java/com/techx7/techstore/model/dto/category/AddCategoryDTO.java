@@ -2,7 +2,6 @@ package com.techx7.techstore.model.dto.category;
 
 import com.techx7.techstore.validation.category.UniqueCategoryName;
 import com.techx7.techstore.validation.multipart.MultipartFileContentType;
-import com.techx7.techstore.validation.multipart.MultipartFileMaxSize;
 import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +13,7 @@ public class AddCategoryDTO {
     private String name;
 
     @MultipartFileNotNull
+    @MultipartFileContentType
     private MultipartFile image;
 
     private String description;
