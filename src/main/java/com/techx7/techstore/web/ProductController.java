@@ -3,6 +3,7 @@ package com.techx7.techstore.web;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
+import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.service.CategoryService;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ProductService;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -40,7 +43,11 @@ public class ProductController {
     }
 
     @GetMapping
-    public String index() {
+    public String index(Model model) {
+        List<ProductDTO> products = productService.getAllProducts();
+
+        model.addAttribute("products", products);
+
         return "products";
     }
 

@@ -1,6 +1,7 @@
 package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.model.dto.product.AddProductDTO;
+import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.entity.Category;
 import com.techx7.techstore.model.entity.Model;
 import com.techx7.techstore.model.entity.Product;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -57,6 +59,13 @@ public class ProductServiceImpl implements ProductService {
 
 
         productRepository.save(product);
+    }
+
+    @Override
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream()
+                .map(product -> mapper.map(product, ProductDTO.class))
+                .toList();
     }
 
 }

@@ -20,12 +20,14 @@ public class Product extends BaseEntity {
     private Model model;
 
     @NotNull(message = "Cannot be empty!")
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH},
+            fetch = FetchType.EAGER)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     @Valid
-    private Set<Category> categories = new HashSet<>();
+    private Set<Category> categories;
 
     @NotBlank(message = "Cannot be empty!")
     @Size(min = 5, max = 512)
@@ -61,7 +63,9 @@ public class Product extends BaseEntity {
     @Column(columnDefinition = "TIMESTAMP")
     private Calendar modified;
 
-    public Product() {}
+    public Product() {
+        this.categories = new HashSet<>();
+    }
 
     public Model getModel() {
         return model;

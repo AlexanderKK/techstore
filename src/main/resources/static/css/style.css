@@ -9677,6 +9677,8 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .product-item .product-img img {
+  /*max-height: 250px;*/
+  /*object-fit: cover;*/
   transition: .5s;
 }
 

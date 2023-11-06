@@ -42,7 +42,9 @@ public class Category extends BaseEntity {
     @Valid
     private Set<Product> products;
 
-    public Category() {}
+    public Category() {
+        this.products = new HashSet<>();
+    }
 
     public String getName() {
         return name;
