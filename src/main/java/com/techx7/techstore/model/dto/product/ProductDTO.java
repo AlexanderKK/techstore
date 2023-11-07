@@ -1,19 +1,35 @@
 package com.techx7.techstore.model.dto.product;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
 public class ProductDTO {
 
+    @NotNull
     private UUID uuid;
+
+    @NotBlank
     private String imageUrl;
+
+    @NotNull
     private Set<String> categories;
+
+    @NotBlank
     private String manufacturer;
+
+    @NotBlank
     private String model;
+
+    @NotNull
     private BigDecimal price;
-    private BigDecimal discountPercentage;
+
+    private BigDecimal discountPrice;
 
     public ProductDTO() {
         this.categories = new HashSet<>();
@@ -67,12 +83,12 @@ public class ProductDTO {
         this.price = price;
     }
 
-    public BigDecimal getDiscountPercentage() {
-        return discountPercentage;
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
     }
 
-    public void setDiscountPercentage(BigDecimal discountPercentage) {
-        this.discountPercentage = discountPercentage;
+    public void setDiscountPrice(BigDecimal discountPrice) {
+        this.discountPrice = discountPrice;
     }
 
 }

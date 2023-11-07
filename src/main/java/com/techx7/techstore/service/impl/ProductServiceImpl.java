@@ -14,6 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +67,23 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream()
-                .map(product -> mapper.map(product, ProductDTO.class))
+                .map(product -> {
+                    ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+
+                    if (productDTO.getDiscountPrice() != null &&
+                            productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) > 0) {
+                        BigDecimal discountPrice = productDTO.getPrice().multiply(
+                                BigDecimal.ONE.subtract(
+                                        productDTO.getDiscountPrice().divide(
+                                                BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)));
+
+                        String formattedDiscountPrice = new DecimalFormat("######.00").format(discountPrice);
+
+                        productDTO.setDiscountPrice(new BigDecimal(formattedDiscountPrice));
+                    }
+
+                    return productDTO;
+                })
                 .toList();
     }
 

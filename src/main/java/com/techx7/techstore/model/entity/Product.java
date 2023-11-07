@@ -37,13 +37,11 @@ public class Product extends BaseEntity {
     @NotNull(message = "Cannot be empty!")
     @DecimalMin(value = "1", message = "Price must be a positive number!")
     @DecimalMax(value = "1000000", message = "Price limit is 1000000!")
-    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "####.##")
     @Column(nullable = false)
     private BigDecimal price;
 
     @DecimalMin(value = "1", message = "Discount must be at least 1%!")
     @DecimalMax(value = "100", message = "Discount limit is 100%!")
-    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "###.##")
     @Column(name="discount_percentage")
     private BigDecimal discountPercentage;
 

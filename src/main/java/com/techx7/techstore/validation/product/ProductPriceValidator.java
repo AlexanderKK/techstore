@@ -11,7 +11,7 @@ public class ProductPriceValidator implements ConstraintValidator<ProductPrice, 
             return true;
         }
 
-        return value.matches("^\\d+[.,]*(?:[.,]\\d+)?$");
+        return value.matches("^\\d+[.,]*(?:[.,]\\d{0,2})?$");
     }
 
 }

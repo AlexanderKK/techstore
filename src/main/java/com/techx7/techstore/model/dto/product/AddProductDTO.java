@@ -8,7 +8,6 @@ import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 public class AddProductDTO {
@@ -32,11 +31,9 @@ public class AddProductDTO {
     @NotNull(message = "Cannot be empty!")
     @DecimalMin(value = "1", message = "Price must be a positive number!")
     @DecimalMax(value = "1000000", message = "Price limit is 1000000!")
-    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "####.##")
     private String price;
 
     @ProductDiscount
-    @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "###.##")
     private String discountPercentage;
 
     public AddProductDTO() {}

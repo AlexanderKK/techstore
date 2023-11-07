@@ -1,9 +1,8 @@
 package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
-import com.techx7.techstore.model.dto.model.ModelsWithManufacturersDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
-import com.techx7.techstore.model.entity.Manufacturer;
+import com.techx7.techstore.model.dto.model.ModelsWithManufacturersDTO;
 import com.techx7.techstore.model.entity.Model;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -39,12 +37,7 @@ public class ModelServiceImpl implements ModelService {
     public void createModel(AddModelDTO addModelDTO) {
         Model model = mapper.map(addModelDTO, Model.class);
 
-        Optional<Manufacturer> manufacturer = manufacturerRepository.findById(addModelDTO.getManufacturer());
-
-        if(manufacturer.isPresent()) {
-            model.setManufacturer(manufacturer.get());
-            modelRepository.save(model);
-        }
+        modelRepository.save(model);
     }
 
     @Override

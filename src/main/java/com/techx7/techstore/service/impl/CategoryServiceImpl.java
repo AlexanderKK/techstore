@@ -29,7 +29,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void createCategory(AddCategoryDTO addCategoryDTO) {
         Category category = mapper.map(addCategoryDTO, Category.class);
-        category.setImageUrl(addCategoryDTO.getImage().getOriginalFilename());
 
         categoryRepository.save(category);
     }

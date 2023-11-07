@@ -32,7 +32,6 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     @Override
     public void createManufacturer(AddManufacturerDTO addManufacturerDTO) {
         Manufacturer manufacturer = mapper.map(addManufacturerDTO, Manufacturer.class);
-        manufacturer.setImageUrl(addManufacturerDTO.getImage().getOriginalFilename());
 
         manufacturerRepository.save(manufacturer);
     }

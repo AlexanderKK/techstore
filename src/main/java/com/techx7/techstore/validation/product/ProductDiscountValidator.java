@@ -13,7 +13,7 @@ public class ProductDiscountValidator implements ConstraintValidator<ProductDisc
             return true;
         }
 
-        boolean matches = value.matches("^\\d+[.,]*(?:[.,]\\d+)?$");
+        boolean matches = value.matches("^\\d{1,3}[.,]*(?:[.,]\\d{0,2})?$");
 
         if(matches) {
             BigDecimal decimal = new BigDecimal(value);
