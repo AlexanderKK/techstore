@@ -34,6 +34,13 @@ public class SeedServiceImpl implements SeedService {
         this.roleRepository = roleRepository;
     }
 
+    private static BufferedReader readFileFromResources(String fileName) {
+        return new BufferedReader(
+                new InputStreamReader(
+                        Objects.requireNonNull(
+                                ClassLoader.getSystemResourceAsStream(fileName))));
+    }
+
     @Override
     public String seedRoles() {
         if(roleRepository.count() != 0) {
@@ -51,13 +58,6 @@ public class SeedServiceImpl implements SeedService {
         roleRepository.saveAll(roles);
 
         return String.format(ENTITIES_SEEDED_SUCCESSFULLY, "Roles");
-    }
-
-    private static BufferedReader readFileFromResources(String fileName) {
-        return new BufferedReader(
-                new InputStreamReader(
-                        Objects.requireNonNull(
-                                ClassLoader.getSystemResourceAsStream(fileName))));
     }
 
 }

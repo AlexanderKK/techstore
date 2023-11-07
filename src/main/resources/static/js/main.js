@@ -257,15 +257,15 @@
 		categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
 	});
 
-	$('textarea').each(function() {
-		$(this).on('scroll', function() {
-			$('body').addClass("stop-scrolling");
-		});
-
-		$(this).on('mouseout', function() {
-			$('body').removeClass("stop-scrolling");
-		});
-	});
+	// $('textarea, .table-responsive').each(function() {
+	// 	$(this).on('scroll', function() {
+	// 		$('body').addClass("stop-scrolling");
+	// 	});
+	//
+	// 	$(this).on('mouseout', function() {
+	// 		$('body').removeClass("stop-scrolling");
+	// 	});
+	// });
 
 	/**
 	 * Scrolling

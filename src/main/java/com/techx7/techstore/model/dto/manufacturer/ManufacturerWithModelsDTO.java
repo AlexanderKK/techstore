@@ -3,14 +3,14 @@ package com.techx7.techstore.model.dto.manufacturer;
 import com.techx7.techstore.model.dto.model.ModelDTO;
 import jakarta.validation.constraints.NotBlank;
 
-import java.util.List;
+import java.util.Set;
 
 public class ManufacturerWithModelsDTO {
 
     @NotBlank
     private String name;
 
-    private List<ModelDTO> models;
+    private Set<ModelDTO> models;
 
     public ManufacturerWithModelsDTO() {}
 
@@ -22,11 +22,11 @@ public class ManufacturerWithModelsDTO {
         this.name = name;
     }
 
-    public List<ModelDTO> getModels() {
+    public Set<ModelDTO> getModels() {
         return models;
     }
 
-    public void setModelDTOs(List<ModelDTO> models) {
+    public void setModelDTOs(Set<ModelDTO> models) {
         this.models = models;
     }
 

@@ -1,6 +1,6 @@
 package com.techx7.techstore.service;
 
-import com.techx7.techstore.model.dto.model.ModelsWithManufacturersDTO;
+import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public interface ModelService {
 
     void createModel(AddModelDTO addModelDTO);
 
-    List<ModelsWithManufacturersDTO> getModelsWithManufacturers();
+    List<ModelWithManufacturerDTO> getModelsWithManufacturers();
 
     void deleteAllModels();
 

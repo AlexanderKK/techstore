@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.NumberFormat;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -16,7 +15,7 @@ import java.util.Set;
 public class Product extends BaseEntity {
 
     @NotNull(message = "Cannot be empty!")
-    @ManyToOne(optional = false, cascade = CascadeType.REMOVE)
+    @ManyToOne(optional = false)
     private Model model;
 
     @NotNull(message = "Cannot be empty!")

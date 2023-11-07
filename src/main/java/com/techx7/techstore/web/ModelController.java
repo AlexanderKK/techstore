@@ -1,7 +1,7 @@
 package com.techx7.techstore.web;
 
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
-import com.techx7.techstore.model.dto.model.ModelsWithManufacturersDTO;
+import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ModelService;
@@ -40,8 +40,8 @@ public class ModelController {
         List<ManufacturerDTO> manufacturerDTOS = manufacturerService.getAllManufacturers();
         model.addAttribute("manufacturers", manufacturerDTOS);
 
-        List<ModelsWithManufacturersDTO> modelsWithManufacturersDTOs = modelService.getModelsWithManufacturers();
-        model.addAttribute("models", modelsWithManufacturersDTOs);
+        List<ModelWithManufacturerDTO> modelWithManufacturerDTOs = modelService.getModelsWithManufacturers();
+        model.addAttribute("models", modelWithManufacturerDTOs);
 
         if(!model.containsAttribute(flashAttributeDTO)) {
             model.addAttribute(flashAttributeDTO, new AddModelDTO());

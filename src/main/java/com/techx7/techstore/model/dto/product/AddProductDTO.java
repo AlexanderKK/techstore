@@ -3,7 +3,6 @@ package com.techx7.techstore.model.dto.product;
 import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
 import com.techx7.techstore.validation.product.ProductDiscount;
 import com.techx7.techstore.validation.product.ProductPrice;
-import com.techx7.techstore.validation.product.UniqueProductModel;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +18,6 @@ public class AddProductDTO {
     private String categories;
 
     @NotNull(message = "You must choose a model!")
-    @UniqueProductModel
     private Long model;
 
     private String description;

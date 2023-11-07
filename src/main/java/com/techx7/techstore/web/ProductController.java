@@ -54,6 +54,7 @@ public class ProductController {
     @GetMapping("/manage/add")
     public String manageProduct(Model model) {
         List<ManufacturerWithModelsDTO> manufacturerWithModelsDTOs = manufacturerService.getManufacturersWithModelsDTO();
+
         List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
 
         model.addAttribute("categories", categoryDTOs);

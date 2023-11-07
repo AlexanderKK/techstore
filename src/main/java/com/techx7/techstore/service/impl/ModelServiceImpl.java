@@ -1,8 +1,7 @@
 package com.techx7.techstore.service.impl;
 
-import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
-import com.techx7.techstore.model.dto.model.ModelsWithManufacturersDTO;
+import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.entity.Model;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,7 +19,6 @@ import java.util.UUID;
 public class ModelServiceImpl implements ModelService {
 
     private final ModelRepository modelRepository;
-    private final ManufacturerRepository manufacturerRepository;
     private final ModelMapper mapper;
 
     @Autowired
@@ -29,7 +26,6 @@ public class ModelServiceImpl implements ModelService {
                             ManufacturerRepository manufacturerRepository,
                             ModelMapper mapper) {
         this.modelRepository = modelRepository;
-        this.manufacturerRepository = manufacturerRepository;
         this.mapper = mapper;
     }
 
@@ -41,19 +37,11 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public List<ModelsWithManufacturersDTO> getModelsWithManufacturers() {
-        List<ModelsWithManufacturersDTO> modelDTOs = new ArrayList<>();
-
-        for (Model model : modelRepository.findAll(Sort.by("manufacturerName", "name"))) {
-            ModelsWithManufacturersDTO modelDTO = mapper.map(model, ModelsWithManufacturersDTO.class);
-
-            ManufacturerDTO manufacturerDTO = mapper.map(model.getManufacturer(), ManufacturerDTO.class);
-            modelDTO.setManufacturerDTO(manufacturerDTO);
-
-            modelDTOs.add(modelDTO);
-        }
-
-        return modelDTOs;
+    public List<ModelWithManufacturerDTO> getModelsWithManufacturers() {
+        return modelRepository.findAll(Sort.by("manufacturerName", "name"))
+                .stream()
+                .map(model -> mapper.map(model, ModelWithManufacturerDTO.class))
+                .toList();
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.techx7.techstore.service.CategoryService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDTO> getAllCategories() {
-        return categoryRepository.findAll()
+        return categoryRepository.findAll(Sort.by("name"))
                 .stream()
                 .map(category -> mapper.map(category, CategoryDTO.class))
                 .toList();
