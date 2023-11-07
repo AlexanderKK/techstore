@@ -1,5 +1,7 @@
 package com.techx7.techstore.web;
 
+import com.techx7.techstore.exception.CategoryNotFoundException;
+import com.techx7.techstore.exception.ModelNotFoundException;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +43,20 @@ public class ProductController {
         this.productService = productService;
         this.manufacturerService = manufacturerService;
         this.categoryService = categoryService;
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public String handleCategoryError(CategoryNotFoundException e) {
+        System.out.println(e.getMessage());
+
+        return "redirect:/products/manage/add";
+    }
+
+    @ExceptionHandler(ModelNotFoundException.class)
+    public String handleModelError(ModelNotFoundException e) {
+        System.out.println(e.getMessage());
+
+        return "redirect:/products/manage/add";
     }
 
     @GetMapping

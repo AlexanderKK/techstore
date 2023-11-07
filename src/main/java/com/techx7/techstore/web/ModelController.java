@@ -1,5 +1,7 @@
 package com.techx7.techstore.web;
 
+import com.techx7.techstore.exception.ManufacturerNotFoundException;
+import com.techx7.techstore.exception.ModelNotFoundException;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
@@ -33,6 +35,13 @@ public class ModelController {
                            ManufacturerService manufacturerService) {
         this.modelService = modelService;
         this.manufacturerService = manufacturerService;
+    }
+
+    @ExceptionHandler(ManufacturerNotFoundException.class)
+    public String handleModelError(ManufacturerNotFoundException e) {
+        System.out.println(e.getMessage());
+
+        return "redirect:/models/manage";
     }
 
     @GetMapping("/manage")
