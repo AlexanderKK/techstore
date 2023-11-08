@@ -14,18 +14,19 @@ import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
-import com.techx7.techstore.model.entity.Category;
-import com.techx7.techstore.model.entity.Manufacturer;
-import com.techx7.techstore.model.entity.Model;
-import com.techx7.techstore.model.entity.Product;
+import com.techx7.techstore.model.dto.user.RegisterDTO;
+import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.Provider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
@@ -172,7 +173,22 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .map(Product::getDiscountPercentage, ProductDTO::setDiscountPrice));
 
+        // RegisterDTO -> User
+        Provider<String> encodedPasswordProvider =
+                request -> passwordEncoder().encode(String.valueOf(request.getSource()));
+
+        modelMapper
+                .createTypeMap(RegisterDTO.class, User.class)
+                .addMappings(mapper -> mapper
+                        .with(encodedPasswordProvider)
+                        .map(RegisterDTO::getPassword, User::setPassword));
+
         return modelMapper;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
 
 }

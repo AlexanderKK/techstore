@@ -106,12 +106,12 @@ window.addEventListener("keyup", function(evt) {
 
 //Asynchronous requesting
 $(document).ready(function() {
-	$.ajaxSetup({
-		headers: {
-			'Content-Type': 'application/json',
-			'Accept': 'application/json'
-		}
-	});
+	// $.ajaxSetup({
+	// 	headers: {
+	// 		'Content-Type': 'application/json',
+	// 		'Accept': 'application/json'
+	// 	}
+	// });
 
 	// TODO: Using jQuery POST method
 	// $('#registerForm').submit(function (evt) {
@@ -139,55 +139,55 @@ $(document).ready(function() {
 	// });
 
 	// TODO: Using jQuery AJAX method
-	$('#register').on('click', function(evt) {
-
-		const email = $('#emailRegister').val();
-		const username = $('#usernameRegister').val();
-		const password = $('#passwordRegister').val();
-
-		const dataObj = {
-			email: email,
-			username: username,
-			password: password
-		};
-
-		const jsonStr = JSON.stringify(dataObj);
-
-		$.ajax({
-			type: 'POST',
-			url: "/register",
-			data: jsonStr,
-			cache:false,
-			beforeSend: function(xhr) {
-				// xhr.setRequestHeader('X-CSRF-Token', csrf_token);
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			},
-			success: function (response) {
-				// console.log(response);
-				// document.open();
-				// document.write(response);
-				// document.close();
-
-				const errorMessages = document.querySelectorAll(".register-error");
-				for (const errorMessage of errorMessages) {
-					errorMessage.innerText = "";
-				}
-
-				if(response.errors.length > 0) {
-					console.log(response.errors);
-
-					for (const error of response.errors) {
-						document.querySelector(`.${error.field}Register-error`).innerText += error.defaultMessage + '\n';
-					}
-				} else {
-					location.reload();
-				}
-			},
-			error: function (response) {
-				console.log("failed response");
-			}
-		});
-
-	});
+	// $('#register').on('click', function(evt) {
+	//
+	// 	const email = $('#emailRegister').val();
+	// 	const username = $('#usernameRegister').val();
+	// 	const password = $('#passwordRegister').val();
+	//
+	// 	const dataObj = {
+	// 		email: email,
+	// 		username: username,
+	// 		password: password
+	// 	};
+	//
+	// 	const jsonStr = JSON.stringify(dataObj);
+	//
+	// 	$.ajax({
+	// 		type: 'POST',
+	// 		url: "/register",
+	// 		data: jsonStr,
+	// 		cache:false,
+	// 		beforeSend: function(xhr) {
+	// 			// xhr.setRequestHeader('X-CSRF-Token', csrf_token);
+	// 			xhr.setRequestHeader("Accept", "application/json");
+	// 			xhr.setRequestHeader("Content-Type", "application/json");
+	// 		},
+	// 		success: function (response) {
+	// 			// console.log(response);
+	// 			// document.open();
+	// 			// document.write(response);
+	// 			// document.close();
+	//
+	// 			const errorMessages = document.querySelectorAll(".register-error");
+	// 			for (const errorMessage of errorMessages) {
+	// 				errorMessage.innerText = "";
+	// 			}
+	//
+	// 			if(response.errors.length > 0) {
+	// 				console.log(response.errors);
+	//
+	// 				for (const error of response.errors) {
+	// 					document.querySelector(`.${error.field}Register-error`).innerText += error.defaultMessage + '\n';
+	// 				}
+	// 			} else {
+	// 				location.reload();
+	// 			}
+	// 		},
+	// 		error: function (response) {
+	// 			console.log("failed response");
+	// 		}
+	// 	});
+	//
+	// });
 });
