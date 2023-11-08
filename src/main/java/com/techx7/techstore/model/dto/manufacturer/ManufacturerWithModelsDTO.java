@@ -2,6 +2,7 @@ package com.techx7.techstore.model.dto.manufacturer;
 
 import com.techx7.techstore.model.dto.model.ModelDTO;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Set;
 
@@ -10,6 +11,7 @@ public class ManufacturerWithModelsDTO {
     @NotBlank
     private String name;
 
+    @NotNull
     private Set<ModelDTO> models;
 
     public ManufacturerWithModelsDTO() {}

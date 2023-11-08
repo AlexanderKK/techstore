@@ -10,10 +10,14 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@Constraint(validatedBy = MultipartFileMaxSizeValidator.class)
-public @interface MultipartFileMaxSize {
+@Constraint(validatedBy = MultiPartFileValidator.class)
+public @interface MultiPartFile {
 
-    String message() default "Image size limit is 5MB!";
+    long size() default 5 * 1024 * 1024;
+
+    String[] contentTypes();
+
+    String message() default "Invalid file!";
 
     Class<?>[] groups() default {};
 

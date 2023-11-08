@@ -5,10 +5,10 @@ import jakarta.validation.constraints.NotNull;
 
 public class AddModelDTO {
 
-    @NotBlank(message = "Cannot be empty!")
+    @NotBlank(message = "Please enter a model")
     private String name;
 
-    @NotNull(message = "Choose a manufacturer!")
+    @NotNull(message = "Please choose a manufacturer")
     private Long manufacturer;
 
     public AddModelDTO() {}

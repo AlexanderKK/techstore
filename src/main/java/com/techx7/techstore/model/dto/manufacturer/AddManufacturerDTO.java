@@ -1,32 +1,28 @@
 package com.techx7.techstore.model.dto.manufacturer;
 
-import com.techx7.techstore.validation.multipart.MultipartFileContentType;
-import com.techx7.techstore.validation.multipart.MultipartFileMaxSize;
-import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
 import com.techx7.techstore.validation.manufacturer.UniqueManufacturerName;
+import com.techx7.techstore.validation.multipart.MultiPartFile;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 public class AddManufacturerDTO {
 
-    @NotBlank(message = "Cannot be empty!")
+    @NotBlank(message = "Please enter a manufacturer")
     @UniqueManufacturerName
     private String name;
 
-    @MultipartFileNotNull
-    @MultipartFileContentType
+    @MultiPartFile(contentTypes = {"image/png", "image/jpeg"})
     private MultipartFile image;
 
     private String description;
 
     public AddManufacturerDTO() {}
 
-    public MultipartFile getImage() {
+    public org.springframework.web.multipart.MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(org.springframework.web.multipart.MultipartFile image) {
         this.image = image;
     }
 

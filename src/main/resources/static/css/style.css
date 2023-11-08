@@ -29,6 +29,7 @@ body {
   color: #6C757D;
   text-align: left;
   background-color: #F5F5F5;
+  display: none;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {

@@ -286,4 +286,6 @@
 		window.onscroll = function() {};
 	}
 
+	$('body').show();
+
 })(jQuery);

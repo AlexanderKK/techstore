@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ProductPriceValidator.class)
 public @interface ProductPrice {
 
-    String message() default "Invalid format!";
+    String message() default "Invalid price format!";
 
     Class<?>[] groups() default {};
 

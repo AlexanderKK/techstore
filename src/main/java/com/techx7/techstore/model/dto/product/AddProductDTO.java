@@ -1,6 +1,6 @@
 package com.techx7.techstore.model.dto.product;
 
-import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
+import com.techx7.techstore.validation.multipart.MultiPartFile;
 import com.techx7.techstore.validation.product.ProductDiscount;
 import com.techx7.techstore.validation.product.ProductPrice;
 import jakarta.validation.constraints.DecimalMax;
@@ -11,24 +11,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class AddProductDTO {
 
-    @MultipartFileNotNull
+    @MultiPartFile(contentTypes = {"image/png", "image/jpeg"})
     private MultipartFile image;
 
-    @NotBlank(message = "You must choose at least one category!")
+    @NotBlank(message = "Please choose at least one category")
     private String categories;
 
-    @NotNull(message = "You must choose a model!")
+    @NotNull(message = "Please choose a model")
     private Long model;
 
     private String description;
 
-    @NotBlank(message = "You need to add technical characteristics!")
+    @NotBlank(message = "Please describe technical characteristics")
     private String specification;
 
     @ProductPrice
-    @NotNull(message = "Cannot be empty!")
-    @DecimalMin(value = "1", message = "Price must be a positive number!")
-    @DecimalMax(value = "1000000", message = "Price limit is 1000000!")
+    @DecimalMin(value = "1", message = "Price should be a positive number")
+    @DecimalMax(value = "1000000", message = "Price should not exceed 1000000")
     private String price;
 
     @ProductDiscount
@@ -36,11 +35,11 @@ public class AddProductDTO {
 
     public AddProductDTO() {}
 
-    public MultipartFile getImage() {
+    public org.springframework.web.multipart.MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(org.springframework.web.multipart.MultipartFile image) {
         this.image = image;
     }
 

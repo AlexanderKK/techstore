@@ -1,19 +1,17 @@
 package com.techx7.techstore.model.dto.category;
 
 import com.techx7.techstore.validation.category.UniqueCategoryName;
-import com.techx7.techstore.validation.multipart.MultipartFileContentType;
-import com.techx7.techstore.validation.multipart.MultipartFileNotNull;
+import com.techx7.techstore.validation.multipart.MultiPartFile;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.web.multipart.MultipartFile;
 
 public class AddCategoryDTO {
 
-    @NotBlank(message = "Cannot be empty!")
+    @NotBlank(message = "Please enter a category")
     @UniqueCategoryName
     private String name;
 
-    @MultipartFileNotNull
-    @MultipartFileContentType
+    @MultiPartFile(contentTypes = {"image/png", "image/jpeg"})
     private MultipartFile image;
 
     private String description;
@@ -28,11 +26,11 @@ public class AddCategoryDTO {
         this.name = name;
     }
 
-    public MultipartFile getImage() {
+    public org.springframework.web.multipart.MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(MultipartFile image) {
+    public void setImage(org.springframework.web.multipart.MultipartFile image) {
         this.image = image;
     }
 
