@@ -10,13 +10,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/users")
-@CrossOrigin("http://localhost:8080")
+//@CrossOrigin("http://localhost:8080")
 public class UserController {
 
     private final Gson gson;
@@ -45,25 +50,39 @@ public class UserController {
 //        return gson.toJson(bindingResult);
 //    }
 
-    @ResponseBody
-    @PostMapping(value = "/register", consumes = "application/json")
-    public ResponseEntity<BindingResult> registerUser(@Valid @RequestBody RegisterDTO registerDTO,
-                                                    UriComponentsBuilder uriComponentsBuilder,
-                                                    BindingResult bindingResult) {
-//        userService.register(registerDTO);
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public Map<String, String> handleValidationExceptions(
+//            MethodArgumentNotValidException ex) {
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach((error) -> {
+//            String fieldName = ((FieldError) error).getField();
+//            String errorMessage = error.getDefaultMessage();
+//            errors.put(fieldName, errorMessage);
+//        });
+//        return errors;
+//    }
 
-        if(bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().body(bindingResult);
-        }
+//    @ResponseBody
+//    @PostMapping("/register")
+//    public ResponseEntity<RegisterDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO) {
+////        userService.register(registerDTO);
+//
+//        return ResponseEntity.ok(registerDTO);
+
+//        if(bindingResult.hasErrors()) {
+//            return new ResponseEntity<>(registerDTO, HttpStatus.OK);
+////            return ResponseEntity.badRequest().body(bindingResult);
+//        }
 
 //        HttpHeaders headers = new HttpHeaders();
 //        headers.add("Location", "http://localhost:8080/users/login");
 
 //        return ResponseEntity.ok().headers(headers).build();
 //        return new ResponseEntity<BindingResult>(null, headers, HttpStatus.FOUND);
-        return ResponseEntity.created(
-                uriComponentsBuilder.path("/").build().toUri()
-        ).build();
-    }
+//        return ResponseEntity.created(
+//                uriComponentsBuilder.path("/").build().toUri()
+//        ).build();
+//    }
 
 }

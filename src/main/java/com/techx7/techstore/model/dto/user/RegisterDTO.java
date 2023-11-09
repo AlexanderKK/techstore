@@ -2,20 +2,21 @@ package com.techx7.techstore.model.dto.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class RegisterDTO {
 
-    @NotBlank(message = "Cannot be empty!")
-    @Email(message = "Must be a valid email!")
+    @NotBlank(message = "Please enter an email")
+    @Email(message = "Please enter a valid email")
     private String email;
 
-    @NotBlank(message = "Cannot be empty!")
-    @Size(min = 5, message = "Must have at least 5 length")
+    @NotNull(message = "Please enter an username")
+    @Size(min = 5, message = "Username should consist of at least 5 characters")
     private String username;
 
-    @NotBlank(message = "Cannot be empty!")
-    @Size(min = 8, message = "Must have at least 8 length")
+    @NotNull(message = "Please enter an password")
+    @Size(min = 8, message = "Password should consist of at least 8 characters")
     private String password;
 
     public RegisterDTO() {}

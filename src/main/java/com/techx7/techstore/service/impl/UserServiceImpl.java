@@ -25,7 +25,8 @@ public class UserServiceImpl implements UserService {
     public void register(RegisterDTO registerDTO) {
         User user = mapper.map(registerDTO, User.class);
 
-        userRepository.save(user);
+        System.out.println();
+//        userRepository.save(user);
     }
 
 }
