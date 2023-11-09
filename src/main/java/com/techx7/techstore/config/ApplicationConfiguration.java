@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.techx7.techstore.exception.CategoryNotFoundException;
 import com.techx7.techstore.exception.ManufacturerNotFoundException;
 import com.techx7.techstore.exception.ModelNotFoundException;
+import com.techx7.techstore.exception.RoleNotFoundException;
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
@@ -19,6 +20,7 @@ import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
+import com.techx7.techstore.repository.RoleRepository;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;
@@ -30,6 +32,7 @@ import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -41,14 +44,17 @@ public class ApplicationConfiguration {
     private final ManufacturerRepository manufacturerRepository;
     private final CategoryRepository categoryRepository;
     private final ModelRepository modelRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
     public ApplicationConfiguration(ManufacturerRepository manufacturerRepository,
                                     CategoryRepository categoryRepository,
-                                    ModelRepository modelRepository) {
+                                    ModelRepository modelRepository,
+                                    RoleRepository roleRepository) {
         this.manufacturerRepository = manufacturerRepository;
         this.categoryRepository = categoryRepository;
         this.modelRepository = modelRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Bean
@@ -174,11 +180,22 @@ public class ApplicationConfiguration {
                         .map(Product::getDiscountPercentage, ProductDTO::setDiscountPrice));
 
         // RegisterDTO -> User
+        Provider<User> newUserWithRoleProvider = req -> {
+            Role role = roleRepository.findByName("USER")
+                    .orElseThrow(() -> new RoleNotFoundException(ROLE_NOT_PRESENT));
+
+            User user = new User();
+            user.setRoles(Set.of(role));
+
+            return user;
+        };
+
         Provider<String> encodedPasswordProvider =
                 request -> passwordEncoder().encode(String.valueOf(request.getSource()));
 
         modelMapper
                 .createTypeMap(RegisterDTO.class, User.class)
+                .setProvider(newUserWithRoleProvider)
                 .addMappings(mapper -> mapper
                         .with(encodedPasswordProvider)
                         .map(RegisterDTO::getPassword, User::setPassword));

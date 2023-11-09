@@ -17,13 +17,13 @@ import java.util.Calendar;
 @Table(name = "coupons")
 public class Coupon extends BaseEntity {
 
-    @NotNull(message = "Cannot be empty!")
-    @DecimalMin(value = "1", message = "Price must be a positive number!")
-    @DecimalMax(value = "1000000", message = "Price limit is 1000000!")
+    @NotNull(message = "Should not be empty")
+    @DecimalMin(value = "1", message = "Price should be a positive number")
+    @DecimalMax(value = "1000000", message = "Price limit is 1000000")
     @NumberFormat(style = NumberFormat.Style.NUMBER, pattern = "####.##")
     private BigDecimal amount;
 
-    @NotNull(message = "Cannot be empty!")
+    @NotNull(message = "Should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Column(name="date_sold", nullable = false, columnDefinition = "TIMESTAMP")
     private Calendar dateSold;
@@ -32,7 +32,7 @@ public class Coupon extends BaseEntity {
     @Column(name="date_redeemed", columnDefinition = "TIMESTAMP")
     private Calendar dateRedeemed;
 
-    @NotNull(message = "Cannot be empty!")
+    @NotNull(message = "Should not be empty")
     @ManyToOne(optional = false)
     private User user;
 

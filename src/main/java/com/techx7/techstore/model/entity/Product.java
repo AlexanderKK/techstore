@@ -14,11 +14,11 @@ import java.util.Set;
 @Table(name = "products")
 public class Product extends BaseEntity {
 
-    @NotNull(message = "Cannot be empty!")
+    @NotNull(message = "Should not be empty")
     @ManyToOne(optional = false)
     private Model model;
 
-    @NotNull(message = "Cannot be empty!")
+    @NotNull(message = "Should not be empty")
     @ManyToMany(
             cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH},
             fetch = FetchType.EAGER)
@@ -28,30 +28,30 @@ public class Product extends BaseEntity {
     @Valid
     private Set<Category> categories;
 
-    @NotBlank(message = "Cannot be empty!")
+    @NotBlank(message = "Should not be empty")
     @Size(min = 5, max = 512)
     @Column(name = "image_url", nullable = false)
     private String imageUrl;
 
-    @NotNull(message = "Cannot be empty!")
-    @DecimalMin(value = "1", message = "Price must be a positive number!")
-    @DecimalMax(value = "1000000", message = "Price limit is 1000000!")
+    @NotNull(message = "Should not be empty")
+    @DecimalMin(value = "1", message = "Price should be a positive number")
+    @DecimalMax(value = "1000000", message = "Price limit is 1000000")
     @Column(nullable = false)
     private BigDecimal price;
 
-    @DecimalMin(value = "1", message = "Discount must be at least 1%!")
-    @DecimalMax(value = "100", message = "Discount limit is 100%!")
+    @DecimalMin(value = "1", message = "Discount should be at least 1%")
+    @DecimalMax(value = "100", message = "Discount limit is 100%")
     @Column(name="discount_percentage")
     private BigDecimal discountPercentage;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @NotBlank(message = "You need to add technical characteristics!")
+    @NotBlank(message = "Please add technical characteristics")
     @Column(nullable = false, columnDefinition = "TEXT")
     private String specification;
 
-    @NotNull(message = "Cannot be empty!")
+    @NotNull(message = "Should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private Calendar created = Calendar.getInstance();

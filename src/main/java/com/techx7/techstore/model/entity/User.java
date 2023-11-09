@@ -3,45 +3,52 @@ package com.techx7.techstore.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
 
-    @NotBlank
+    @NotBlank(message = "Should not be empty")
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Should not be empty")
     @Column(nullable = false, unique = true)
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Should not be empty")
     @Column(nullable = false)
     private String password;
 
-    @NotNull
-    @Column(nullable = false)
-    private LocalDateTime created;
+    @NotNull(message = "Should not be empty")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    private Calendar created = Calendar.getInstance();
 
-    @Column
-    private LocalDateTime modified;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Column(columnDefinition = "TIMESTAMP")
+    private Calendar modified;
 
-    @NotNull
-    @Column(nullable = false)
-    private LocalDateTime lastLogin;
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Column(name = "last_login", columnDefinition = "TIMESTAMP")
+    private Calendar lastLogin;
 
-    @Column
+    @Column(name = "failed_login_attempts")
     private Integer failedLoginAttempts;
 
-    @NotNull
-    @OneToMany
+    @NotNull(message = "Should not be empty")
+    @ManyToMany
     private Set<Role> roles;
 
-    public User() {}
+    public User() {
+        this.roles = new HashSet<>();
+    }
 
     public String getEmail() {
         return email;
@@ -67,27 +74,27 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public LocalDateTime getCreated() {
+    public Calendar getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDateTime created) {
+    public void setCreated(Calendar created) {
         this.created = created;
     }
 
-    public LocalDateTime getModified() {
+    public Calendar getModified() {
         return modified;
     }
 
-    public void setModified(LocalDateTime modified) {
+    public void setModified(Calendar modified) {
         this.modified = modified;
     }
 
-    public LocalDateTime getLastLogin() {
+    public Calendar getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(LocalDateTime lastLogin) {
+    public void setLastLogin(Calendar lastLogin) {
         this.lastLogin = lastLogin;
     }
 

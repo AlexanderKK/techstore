@@ -1,5 +1,6 @@
 package com.techx7.techstore.model.dto.user;
 
+import com.techx7.techstore.validation.user.UniqueEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,6 +8,7 @@ import jakarta.validation.constraints.Size;
 
 public class RegisterDTO {
 
+    @UniqueEmail
     @NotBlank(message = "Please enter an email")
     @Email(message = "Please enter a valid email")
     private String email;

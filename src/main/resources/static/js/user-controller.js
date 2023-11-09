@@ -59,5 +59,8 @@ function registerUser(evt) {
 				document.querySelector(`.${field}Register-error`).innerText += `${errorMessage}\n`;
 			}
 		})
-		.catch(error => console.log('error', error));
+		.catch(error => console.log('error', error))
+		.finally(() => {
+			// console.clear();
+		});
 }
