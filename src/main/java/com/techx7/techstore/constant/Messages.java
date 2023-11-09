@@ -4,9 +4,6 @@ public enum Messages {
 
     ;
     public static final String ENTITIES_SEEDED_SUCCESSFULLY = "%s seeded successfully";
-    public static final String MANUFACTURER_NOT_PRESENT = "Manufacturer not present";
-    public static final String CATEGORY_NOT_PRESENT = "Category not present";
-    public static final String MODEL_NOT_PRESENT = "Model not present";
-    public static final String ROLE_NOT_PRESENT = "Role not present";
+    public static final String ENTITY_NOT_FOUND = "%s not found";
 
 }

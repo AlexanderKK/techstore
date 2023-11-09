@@ -2,10 +2,7 @@ package com.techx7.techstore.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.techx7.techstore.exception.CategoryNotFoundException;
-import com.techx7.techstore.exception.ManufacturerNotFoundException;
-import com.techx7.techstore.exception.ModelNotFoundException;
-import com.techx7.techstore.exception.RoleNotFoundException;
+import com.techx7.techstore.exception.*;
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
@@ -102,7 +99,7 @@ public class ApplicationConfiguration {
                 = context -> context.getSource() == null
                 ? null
                 : manufacturerRepository.findById(context.getSource())
-                .orElseThrow(() -> new ManufacturerNotFoundException(MANUFACTURER_NOT_PRESENT));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Manufacturer")));
 
         modelMapper
                 .createTypeMap(AddModelDTO.class, Model.class)
@@ -129,14 +126,14 @@ public class ApplicationConfiguration {
                 : Arrays.stream(context.getSource().split(","))
                 .mapToLong(Long::parseLong)
                 .mapToObj(categoryId -> categoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new CategoryNotFoundException(CATEGORY_NOT_PRESENT)))
+                        .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Category"))))
                 .collect(Collectors.toSet());
 
         Converter<Long, Model> toModel
                 = context -> context.getSource() == null
                 ? null
                 : modelRepository.findById(context.getSource())
-                .orElseThrow(() -> new ModelNotFoundException(MODEL_NOT_PRESENT));
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Model")));
 
         modelMapper.createTypeMap(AddProductDTO.class, Product.class)
                 .addMappings(mapper -> mapper
@@ -182,7 +179,7 @@ public class ApplicationConfiguration {
         // RegisterDTO -> User
         Provider<User> newUserWithRoleProvider = req -> {
             Role role = roleRepository.findByName("USER")
-                    .orElseThrow(() -> new RoleNotFoundException(ROLE_NOT_PRESENT));
+                    .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
 
             User user = new User();
             user.setRoles(Set.of(role));

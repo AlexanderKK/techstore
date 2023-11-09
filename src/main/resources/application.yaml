@@ -1,5 +1,5 @@
+# Spring
 spring:
-  # Spring JPA
   jpa:
     properties:
       hibernate:
@@ -49,10 +49,14 @@ spring:
       static-locations: file:src/main/resources/static/
       cache:
         period: 0
+# Server
 server:
+  error:
+    whitelabel:
+      enabled: off
+    include-message: always
+    include-stacktrace: always
   port: 8080
-#  tomcat:
-#    max-swallow-size: -1
 logging:
   level:
     web: DEBUG

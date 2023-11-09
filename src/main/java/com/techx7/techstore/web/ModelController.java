@@ -1,10 +1,9 @@
 package com.techx7.techstore.web;
 
-import com.techx7.techstore.exception.ManufacturerNotFoundException;
-import com.techx7.techstore.exception.ModelNotFoundException;
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
-import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
+import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ModelService;
 import jakarta.validation.Valid;
@@ -37,8 +36,8 @@ public class ModelController {
         this.manufacturerService = manufacturerService;
     }
 
-    @ExceptionHandler(ManufacturerNotFoundException.class)
-    public String handleModelError(ManufacturerNotFoundException e) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handleModelError(EntityNotFoundException e) {
         System.out.println(e.getMessage());
 
         return "redirect:/models/manage";

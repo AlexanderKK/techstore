@@ -10037,7 +10037,7 @@ a.text-dark:hover, a.text-dark:focus {
   background-color: #312f2f87;
   opacity: 0;
   pointer-events: none;
-  transition: opacity .6s;
+  transition: opacity .5s;
   overflow-y: auto;
 }
 
@@ -10047,7 +10047,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .popup.is-active .popup__inner {
-  transform: translateY(0%);
+  transform: translateX(0%);
 }
 
 .popup .popup__inner {
@@ -10057,8 +10057,8 @@ a.text-dark:hover, a.text-dark:focus {
   background-color: #3D464D;
   color: #FFF;
   position: relative;
-  transform: translateY(-100%);
-  transition: transform .5s ease-in-out;
+  transform: translateX(-60%);
+  transition: transform .4s ease-in-out;
 }
 
 @media(max-width: 768px) {

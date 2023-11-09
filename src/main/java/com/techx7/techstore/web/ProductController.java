@@ -1,7 +1,6 @@
 package com.techx7.techstore.web;
 
-import com.techx7.techstore.exception.CategoryNotFoundException;
-import com.techx7.techstore.exception.ModelNotFoundException;
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
@@ -45,15 +44,8 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
-    @ExceptionHandler(CategoryNotFoundException.class)
-    public String handleCategoryError(CategoryNotFoundException e) {
-        System.out.println(e.getMessage());
-
-        return "redirect:/products/manage/add";
-    }
-
-    @ExceptionHandler(ModelNotFoundException.class)
-    public String handleModelError(ModelNotFoundException e) {
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handleModelError(EntityNotFoundException e) {
         System.out.println(e.getMessage());
 
         return "redirect:/products/manage/add";
