@@ -14,7 +14,7 @@ function windowStyles(overflow, pointerEvents) {
 }
 
 // Login Popup
-for (linkLogin of linksLogin) {
+for (const linkLogin of linksLogin) {
 	linkLogin.addEventListener("mousedown", function() {
 		for	(const popup of popups) {
 			
@@ -36,7 +36,7 @@ closeBtnLogin.addEventListener("mousedown", function() {
 });
 
 // Register Popup
-for (linkRegister of linksRegister) {
+for (const linkRegister of linksRegister) {
 	linkRegister.addEventListener("mousedown", function() {
 		for	(const popup of popups) {
 			
@@ -77,7 +77,7 @@ window.addEventListener("mousedown", function(evt) {
 
 // Close Popups On Escape Key
 window.addEventListener("keyup", function(evt) {
-	if(evt.code == "Escape") {
+	if(evt.code === "Escape") {
 		for	(const popup of popups) {
 			popup.classList.remove("is-active");
 		}

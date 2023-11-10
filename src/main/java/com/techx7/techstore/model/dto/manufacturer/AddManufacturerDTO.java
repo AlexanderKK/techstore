@@ -11,7 +11,7 @@ public class AddManufacturerDTO {
     @UniqueManufacturerName
     private String name;
 
-    @MultiPartFile(contentTypes = {"image/png", "image/jpeg"})
+    @MultiPartFile(contentTypes = "image/png")
     private MultipartFile image;
 
     private String description;

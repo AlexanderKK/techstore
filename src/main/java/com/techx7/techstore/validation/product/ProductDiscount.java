@@ -13,7 +13,11 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = ProductDiscountValidator.class)
 public @interface ProductDiscount {
 
-    String message() default "Invalid format!";
+    long min() default 1;
+
+    long max() default 100;
+
+    String message() default "Invalid discount";
 
     Class<?>[] groups() default {};
 

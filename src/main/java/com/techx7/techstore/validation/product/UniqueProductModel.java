@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = UniqueProductModelValidator.class)
 public @interface UniqueProductModel {
 
-    String message() default "Product with this model already exists!";
+    String message() default "Product with this model already exists";
 
     Class<?>[] groups() default {};
 

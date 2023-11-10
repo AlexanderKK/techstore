@@ -25,9 +25,7 @@ public class AddProductDTO {
     @NotBlank(message = "Please describe technical characteristics")
     private String specification;
 
-    @ProductPrice
-    @DecimalMin(value = "1", message = "Price should be a positive number")
-    @DecimalMax(value = "1000000", message = "Price should not exceed 1000000")
+    @ProductPrice(min = 1, max = 1000000)
     private String price;
 
     @ProductDiscount

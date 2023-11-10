@@ -88,6 +88,9 @@
 		// });
 	});
 
+
+	// Image upload
+
 	/**
 	 * Image load on file input change
 	 */
@@ -128,7 +131,7 @@
 		reader.readAsDataURL(selectedFile);
 	}
 
-
+	// Categories
 	const categories = $('.categories-container');
 
 	const categoriesSelect = $('#product-category');
@@ -151,10 +154,16 @@
 			const inputField = categories.children().last();
 			const categoryId = $(this).children().first().first().first().children().last().children().first().attr("data-id");
 
-			inputField.val(inputField.val().replaceAll(`${categoryId},`,""));
-			if(inputField.val().length === 1 || inputField.val().indexOf(categoryId) === inputField.val().length - 1) {
-				inputField.val(inputField.val().replaceAll(`${categoryId}`,""));
+			const categoryIndex = categoryIds.indexOf(categoryId);
+			if (categoryIndex > -1) {
+				categoryIds.splice(categoryIndex, 1);
 			}
+
+			inputField.val(categoryIds);
+			// inputField.val(inputField.val().replaceAll(`${categoryId},`,""));
+			// if(inputField.val().length === 1 || inputField.val().indexOf(categoryId) === inputField.val().length - 1) {
+			// 	inputField.val(inputField.val().replaceAll(`${categoryId}`,""));
+			// }
 		})
 	}
 

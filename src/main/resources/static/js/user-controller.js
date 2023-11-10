@@ -47,10 +47,7 @@ function registerUser(evt) {
 				return;
 			}
 
-			const errorMessages = document.querySelectorAll(".register-error");
-			for (const errorMessage of errorMessages) {
-				errorMessage.innerText = "";
-			}
+			clearPopupsFieldsErrors();
 
 			for (let field in fields) {
 				const errorMessage = fields[field];
@@ -63,4 +60,12 @@ function registerUser(evt) {
 		.finally(() => {
 			// console.clear();
 		});
+}
+
+function clearPopupsFieldsErrors() {
+	const errorMessages = document.querySelectorAll(".popup__error");
+
+	for (const errorMessage of errorMessages) {
+		errorMessage.innerText = "";
+	}
 }
