@@ -53,9 +53,9 @@ spring:
 server:
   error:
     whitelabel:
-      enabled: off
+      enabled: on
     include-message: always
-    include-stacktrace: always
+    include-stacktrace: never
   port: 8080
 logging:
   level:
