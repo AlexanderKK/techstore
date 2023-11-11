@@ -42,16 +42,19 @@ public class ApplicationConfiguration {
     private final CategoryRepository categoryRepository;
     private final ModelRepository modelRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public ApplicationConfiguration(ManufacturerRepository manufacturerRepository,
                                     CategoryRepository categoryRepository,
                                     ModelRepository modelRepository,
-                                    RoleRepository roleRepository) {
+                                    RoleRepository roleRepository,
+                                    PasswordEncoder passwordEncoder) {
         this.manufacturerRepository = manufacturerRepository;
         this.categoryRepository = categoryRepository;
         this.modelRepository = modelRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Bean
@@ -188,7 +191,7 @@ public class ApplicationConfiguration {
         };
 
         Provider<String> encodedPasswordProvider =
-                request -> passwordEncoder().encode(String.valueOf(request.getSource()));
+                request -> passwordEncoder.encode(String.valueOf(request.getSource()));
 
         modelMapper
                 .createTypeMap(RegisterDTO.class, User.class)
@@ -198,11 +201,6 @@ public class ApplicationConfiguration {
                         .map(RegisterDTO::getPassword, User::setPassword));
 
         return modelMapper;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return Pbkdf2PasswordEncoder.defaultsForSpringSecurity_v5_8();
     }
 
 }

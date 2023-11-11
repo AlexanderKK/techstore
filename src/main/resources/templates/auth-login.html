@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{fragments/commons::head(title = 'Login | Tech x7')}"></head>
+
+<body>
+    <header th:replace="~{fragments/commons::header(activeLink = 'login')}"></header>
+
+    <div class="popup__inner px-5">
+        <div class="popup__head">
+            <h2>Sign In</h2>
+        </div>
+
+        <div class="popup__body">
+            <div class="form-login">
+                <form th:action="@{/users/login}"
+                      th:method="POST"
+                      name="loginForm">
+                    <div class="form__head">
+                        <p>Not Registered? <a href="#" class="link-register">Sign up from here</a></p>
+
+                        <p class="loginMsg">Please enter your username and password</p>
+
+                        <p th:if="${bad_credentials}" class="errors alert alert-danger">Invalid username or password.</p>
+                    </div>
+
+                    <div class="form__body">
+                        <div class="form__row">
+                            <label for="usernameLogin" class="form__label">Username</label>
+
+                            <div class="form__controls">
+                                <input th:value="${username}"
+                                       type="text" id="usernameLogin" name="username" class="field field--login">
+                            </div>
+                        </div>
+
+                        <div class="form__row">
+                            <label for="passwordLogin" class="form__label">Password</label>
+
+                            <div class="form__controls">
+                                <input type="password" id="passwordLogin" name="password" class="field field--login">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__actions">
+                        <input type="submit" value="Log in" name="submitLoginForm" class="btn form__btn" id="login">
+                    </div>
+
+                    <div class="form__foot"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+
+</html>

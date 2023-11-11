@@ -25,6 +25,7 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.modelmapper:modelmapper:3.1.1'
     implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:4.0.1'
+    implementation 'com.github.holgerbrandl:jsonbuilder:0.10'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

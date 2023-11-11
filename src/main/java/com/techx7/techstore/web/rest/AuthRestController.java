@@ -1,23 +1,20 @@
-package com.techx7.techstore.web;
+package com.techx7.techstore.web.rest;
 
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
-public class UserRestController {
+public class AuthRestController {
 
     private final UserService userService;
 
     @Autowired
-    public UserRestController(UserService userService) {
+    public AuthRestController(UserService userService) {
         this.userService = userService;
     }
 
