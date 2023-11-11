@@ -43,7 +43,7 @@ public class User extends BaseEntity {
     private Integer failedLoginAttempts;
 
     @NotNull(message = "Should not be empty")
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
     public User() {

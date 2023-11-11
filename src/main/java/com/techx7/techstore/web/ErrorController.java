@@ -13,4 +13,9 @@ public class ErrorController {
         return "error/no-javascript";
     }
 
+    @GetMapping("/forbidden")
+    public String forbidden() {
+        return "cart";
+    }
+
 }

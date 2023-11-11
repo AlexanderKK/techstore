@@ -1,3 +1,5 @@
+// if(document.querySelector)
+
 // Declarations
 const linksLogin = document.querySelectorAll(".link-login");
 const linksRegister = document.querySelectorAll(".link-register");
@@ -14,70 +16,88 @@ function windowStyles(overflow, pointerEvents) {
 }
 
 // Login Popup
-for (const linkLogin of linksLogin) {
-	linkLogin.addEventListener("mousedown", function() {
-		for	(const popup of popups) {
-			
-			const popupClasses = popup.classList;
-			if(popupClasses.contains("popup--login")) {
-				popup.classList.add("is-active");
-			}
+if(linksLogin) {
+	for (const linkLogin of linksLogin) {
+		if (!linkLogin) {
+			break;
 		}
 
-		windowStyles("hidden", "none");
-	});
+		linkLogin.addEventListener("mousedown", function () {
+			for (const popup of popups) {
+
+				const popupClasses = popup.classList;
+				if (popupClasses.contains("popup--login")) {
+					popup.classList.add("is-active");
+				}
+			}
+
+			windowStyles("hidden", "none");
+		});
+	}
 }
 
 // Close Btn Login
-closeBtnLogin.addEventListener("mousedown", function() {
-	this.parentElement.parentElement.classList.remove("is-active");
+if(closeBtnLogin) {
+	closeBtnLogin.addEventListener("mousedown", function() {
+		this.parentElement.parentElement.classList.remove("is-active");
 
-	windowStyles("", "all");
-});
-
-// Register Popup
-for (const linkRegister of linksRegister) {
-	linkRegister.addEventListener("mousedown", function() {
-		for	(const popup of popups) {
-			
-			const popupClasses = popup.classList;
-			if(popupClasses.contains("popup--register")) {
-				popup.classList.add("is-active");
-			}
-			if(popup.classList.contains("popup--login")) {
-				popup.classList.remove("is-active");
-			}
-		}
-
-		windowStyles("hidden", "none");
+		windowStyles("", "all");
 	});
 }
 
-// Close Btn Register
-closeBtnRegister.addEventListener("mousedown", function() {
-	this.parentElement.parentElement.classList.remove("is-active");
+// Register Popup
+if(linksRegister) {
+	for (const linkRegister of linksRegister) {
+		if (!linkRegister) {
+			break;
+		}
 
-	windowStyles("", "all");
-});
+		linkRegister.addEventListener("mousedown", function () {
+			for (const popup of popups) {
+
+				const popupClasses = popup.classList;
+				if (popupClasses.contains("popup--register")) {
+					popup.classList.add("is-active");
+				}
+				if (popup.classList.contains("popup--login")) {
+					popup.classList.remove("is-active");
+				}
+			}
+
+			windowStyles("hidden", "none");
+		});
+	}
+}
+
+// Close Btn Register
+if(closeBtnRegister) {
+	closeBtnRegister.addEventListener("mousedown", function () {
+		this.parentElement.parentElement.classList.remove("is-active");
+
+		windowStyles("", "all");
+	});
+}
 
 // Close Popups On Background Click
 window.addEventListener("mousedown", function(evt) {
-	for	(const popup of popups) {
-		if(evt.target === popup) {
-			popup.classList.remove("is-active");
+	if(popups) {
+		for (const popup of popups) {
+			if (evt.target === popup) {
+				popup.classList.remove("is-active");
 
-			document.querySelector('html').style.overflowY = "";
-			document.querySelector('body').style.overflowY = "";
-			
-			document.querySelector('html').style.pointerEvents = "all";
-			document.querySelector('body').style.pointerEvents = "all";
+				document.querySelector('html').style.overflowY = "";
+				document.querySelector('body').style.overflowY = "";
+
+				document.querySelector('html').style.pointerEvents = "all";
+				document.querySelector('body').style.pointerEvents = "all";
+			}
 		}
 	}
 });
 
 // Close Popups On Escape Key
 window.addEventListener("keyup", function(evt) {
-	if(evt.code === "Escape") {
+	if(evt.code === "Escape" && popups) {
 		for	(const popup of popups) {
 			popup.classList.remove("is-active");
 		}

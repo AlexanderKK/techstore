@@ -67,3 +67,6 @@ logging:
         SQL: DEBUG
       nodeValue: WARN
     blog: WARN
+techstore:
+  rememberme:
+    key: ${REMEMBER_ME_KEY:chamber-of-secrets}

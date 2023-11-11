@@ -1,6 +1,8 @@
 const registerForm = document.getElementById('registerForm');
 
-registerForm.addEventListener('submit', registerUser);
+if(registerForm) {
+	registerForm.addEventListener('submit', registerUser);
+}
 
 function registerUser(evt) {
 	evt.preventDefault();

@@ -1,11 +1,15 @@
 package com.techx7.techstore.web;
 
+import com.techx7.techstore.exception.ForbiddenException;
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.util.FileUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -73,5 +77,13 @@ public class ManufacturerController {
 
         return "redirect:/manufacturers/manage";
     }
+
+//    @ResponseStatus(HttpStatus.FORBIDDEN)
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public ResponseEntity<String> handleConflict (
+//            ForbiddenException ex) {
+//        System.out.println(ex.getMessage());
+//        return ResponseEntity.status(403).body(ex.getMessage());
+//    }
 
 }
