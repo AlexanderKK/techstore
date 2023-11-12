@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -60,6 +61,14 @@ public class ProductServiceImpl implements ProductService {
 
                     return productDTO;
                 })
+                .toList();
+    }
+
+    @Override
+    public List<ProductDTO> getAllProductsWithDiscount() {
+        return getAllProducts().stream()
+                .filter(productDTO -> productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) > 0)
+                .sorted(Comparator.comparing(ProductDTO::getDiscountPrice))
                 .toList();
     }
 

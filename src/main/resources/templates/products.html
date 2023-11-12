@@ -89,10 +89,12 @@
 
 					<div th:each="product : ${products}"
 						 th:object="${product}"
-						 class="col-lg-4 col-sm-6 pb-1">
+						 class="col-lg-3 col-sm-6 pb-1">
 						<div class="product-item bg-light mb-4">
 							<div class="product-img position-relative overflow-hidden">
-								<img class="img-fluid w-100" th:src="@{|/images/*{imageUrl}|}" alt="Product Photo">
+								<object class="img-fluid w-100" th:data="@{|/images/*{imageUrl}|}" type="image/jpg">
+									<img src="https://placehold.co/325x325" alt="Product Photo">
+								</object>
 
 								<div class="product-action">
 									<a class="d-block w-100 h-100 position-absolute" href="#"></a>
@@ -132,7 +134,7 @@
 					<div class="col-12">
 						<nav>
 						  <ul class="pagination justify-content-center">
-							<li class="page-item disabled"><a class="page-link" href="#">Previous</span></a></li>
+							<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
 							<li class="page-item active"><a class="page-link" href="#">1</a></li>
 							<li class="page-item"><a class="page-link" href="#">2</a></li>
 							<li class="page-item"><a class="page-link" href="#">3</a></li>

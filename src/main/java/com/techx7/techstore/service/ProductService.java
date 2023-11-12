@@ -11,4 +11,6 @@ public interface ProductService {
 
     List<ProductDTO> getAllProducts();
 
+    List<ProductDTO> getAllProductsWithDiscount();
+
 }
