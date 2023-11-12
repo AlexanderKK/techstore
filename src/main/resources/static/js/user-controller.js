@@ -7,6 +7,7 @@ if(registerForm) {
 function registerUser(evt) {
 	evt.preventDefault();
 
+	const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
 	const emailInput = document.getElementById('emailRegister');
 	const usernameInput = document.getElementById('usernameRegister');
 	const passwordInput = document.getElementById('passwordRegister');
@@ -15,7 +16,8 @@ function registerUser(evt) {
 		method: "POST",
 		headers: {
 			'Accept': 'application/json',
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json',
+			'X-XSRF-TOKEN': csrfToken
 		},
 		body: JSON.stringify({
 			email: emailInput.value,
@@ -24,20 +26,17 @@ function registerUser(evt) {
 		})
 	}
 
-	fetch("http://localhost:8080/users/register", requestOptions)
+	fetch(`${window.location.origin}/users/register`, requestOptions)
 		.then(response => {
 			if(response.ok) {
 				emailInput.value = "";
 				usernameInput.value = "";
 				passwordInput.value = "";
 
-				const popupLogin = document.querySelector(".popup.popup--login");
 				const popupRegister = document.querySelector(".popup.popup--register");
-
-				popupLogin.classList.add("is-active");
 				popupRegister.classList.remove("is-active");
 
-				windowStyles("hidden", "none");
+				location.replace("/users/login");
 
 				return;
 			}

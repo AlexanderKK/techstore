@@ -130,6 +130,7 @@ a {
 a:hover {
   color: #e6b400;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 a:not([href]):not([class]) {
@@ -10105,7 +10106,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .popup .popup__head {
-  margin-bottom: 60px;
+  margin-bottom: 35px;
   position: relative;
 }
 
@@ -10125,11 +10126,31 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 /* ------------------------------------------------------------ *\
+  Auth login
+\* ------------------------------------------------------------ */
+
+.popup.auth-login {
+  padding: 0;
+  position: static;
+  opacity: 1;
+  background-color: #3D464D;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.popup.auth-login .popup__inner {
+  margin: 0 auto;
+  pointer-events: all;
+  transform: none;
+  max-width: inherit;
+}
+
+/* ------------------------------------------------------------ *\
   Form Login
 \* ------------------------------------------------------------ */
 
 .form-login .form__head {
-  margin-bottom: 40px;
+  margin-bottom: 25px;
 }
 
 .form-login .form__head p {
@@ -10140,7 +10161,7 @@ a.text-dark:hover, a.text-dark:focus {
   margin-bottom: 15px;
 }
 
-.form-login .form__head p + p {
+.form-login .form__head a {
   font-style: italic;
 }
 

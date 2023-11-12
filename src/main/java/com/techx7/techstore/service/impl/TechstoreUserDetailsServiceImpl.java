@@ -3,12 +3,13 @@ package com.techx7.techstore.service.impl;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
 
 public class TechstoreUserDetailsServiceImpl implements UserDetailsService {
 
@@ -19,10 +20,10 @@ public class TechstoreUserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username)
+    public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
+        return userRepository.findByEmailOrUsername(emailOrUsername)
                 .map(TechstoreUserDetailsServiceImpl::map)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("User %s not found!", username)));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
     }
 
     private static UserDetails map(User user) {

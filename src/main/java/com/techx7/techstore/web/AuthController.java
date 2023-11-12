@@ -1,11 +1,11 @@
 package com.techx7.techstore.web;
 
-import com.techx7.techstore.exception.ForbiddenException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -22,9 +22,9 @@ public class AuthController {
     }
 
     @PostMapping("/login-error")
-    public String onFailure(@ModelAttribute("username") String username, RedirectAttributes redirectAttributes) {
+    public String onFailure(@ModelAttribute("emailOrUsername") String emailOrUsername, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("bad_credentials", "true");
-        redirectAttributes.addFlashAttribute("username", username);
+        redirectAttributes.addFlashAttribute("emailOrUsername", emailOrUsername);
 
         return "redirect:login";
     }

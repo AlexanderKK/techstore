@@ -1,5 +1,6 @@
 package com.techx7.techstore.config;
 
+import com.techx7.techstore.config.csrf.CsrfRequestMatcher;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.impl.TechstoreUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfiguration {
@@ -26,33 +28,37 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                .requestMatchers(
-                        "/", "/users/login", "/users/register", "/users/login-error", "/products")
-                .permitAll()
-                .requestMatchers("/products/manage/**").hasRole("MANAGER")
-                .requestMatchers("/manufacturers/manage/**").hasRole("MANAGER")
-                .requestMatchers("/models/manage/**").hasRole("MANAGER")
-                .requestMatchers("/categories/manage/**").hasRole("MANAGER")
-                .anyRequest().authenticated()
-        ).formLogin(formLogin -> formLogin
-                    .loginPage("/users/login")
-                    .usernameParameter("username")
-                    .passwordParameter("password")
-                    .defaultSuccessUrl("/", true)
-                    .failureForwardUrl("/users/login-error")
-        ).logout(logout -> logout
-                    .logoutUrl("/users/logout")
-                    .logoutSuccessUrl("/")
-                    .invalidateHttpSession(true)
-//        ).exceptionHandling(exceptionHandling -> exceptionHandling
-//                .authenticationEntryPoint(authenticationEntryPoint())
-        ).rememberMe(rememberMe -> rememberMe
-                    .key(rememberMeKey)
-                    .rememberMeParameter("rememberme")
-                    .rememberMeCookieName("rememberme")
-        ).build();
+        return httpSecurity
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        // User
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers("/users/login", "/users/register", "/users/login-error", "/users/login-rest").permitAll()
+                        .requestMatchers("/", "/products").permitAll()
+                        .requestMatchers("/", "/contact").permitAll()
+                        // Manager
+                        .requestMatchers("/products/manage/**").hasRole("MANAGER")
+                        .requestMatchers("/manufacturers/**").hasRole("MANAGER")
+                        .requestMatchers("/models/manage/**").hasRole("MANAGER")
+                        .requestMatchers("/categories/manage/**").hasRole("MANAGER")
+                        .anyRequest().authenticated()
+                ).formLogin(formLogin -> formLogin
+                        .loginPage("/users/login")
+                        .usernameParameter("emailOrUsername")
+                        .passwordParameter("password")
+                        .defaultSuccessUrl("/", true)
+                        .failureForwardUrl("/users/login-error")
+                ).logout(logout -> logout
+                        .logoutUrl("/users/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
+                ).rememberMe(rememberMe -> rememberMe
+                        .key(rememberMeKey)
+                        .rememberMeParameter("rememberme")
+                        .rememberMeCookieName("rememberme")
+                ).csrf(csrf -> csrf
+                        .requireCsrfProtectionMatcher(matcher -> new CsrfRequestMatcher().buildMatcher(matcher))
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                ).build();
     }
 
     @Bean

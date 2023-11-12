@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="head">
     <meta charset="utf-8">
@@ -48,19 +48,30 @@
 
                     <div class="col-lg-8 col-6 text-right flex-row">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-light dropdown-toggle pr-2 pr-lg-0" data-toggle="dropdown" style="font-size: 18px">My Account</button>
+                            <button type="button" class="btn btn-light dropdown-toggle pr-2 pr-lg-0" data-toggle="dropdown" style="font-size: 18px">Account</button>
+
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a th:href="@{/profile}"
+                                <a th:if="${loginPage != 'true'}"
+                                   th:href="@{/users/login}"
+                                   sec:authorize="!authenticated"
+                                   class="btn-link link-login"><button class="dropdown-item" type="button">Sign In</button></a>
+
+                                <a sec:authorize="!authenticated"
+                                   class="btn-link link-register"><button class="dropdown-item" type="button">Sign Up</button></a>
+
+                                <a sec:authorize="authenticated"
+                                   th:href="@{/profile}"
                                    class="btn-link"><button class="dropdown-item" type="button">Profile</button></a>
 
-                                <a class="btn-link link-login"><button class="dropdown-item" type="button">Sign In</button></a>
-
-                                <a class="btn-link link-register"><button class="dropdown-item" type="button">Sign Up</button></a>
-
-                                <form th:action="@{/users/logout}"
-                                      th:method="POST">
-                                    <input type="submit" class="btn btn-link" value="Logout">
-                                </form>
+                                <a sec:authorize="authenticated"
+                                   class="btn-link position-relative">
+                                    <div class="dropdown-item" style="height: 32px">
+                                        <form th:action="@{/users/logout}"
+                                              th:method="POST">
+                                            <button class="dropdown-item bg-transparent border-0 outline-0 position-absolute" style="top: 0; left: 0; width: 100%; height: 32px">Logout</button>
+                                        </form>
+                                    </div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -314,7 +325,8 @@
                             <div class="d-flex flex-column justify-content-start">
                                 <a th:href="@{/profile}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Profile</a>
-                                <a class="text-secondary mb-2 link-login"><i class="fa fa-angle-right mr-2"></i>Sign In</a>
+                                <a th:href="@{/users/login}"
+                                   class="text-secondary mb-2 link-login"><i class="fa fa-angle-right mr-2"></i>Sign In</a>
                                 <a class="text-secondary link-register"><i class="fa fa-angle-right mr-2"></i>Sign Up</a>
                             </div>
                         </div>
@@ -357,7 +369,8 @@
     </footer>
 
     <div th:fragment="popups" class="popups">
-        <div class="popup popup--login">
+        <div th:if="${loginPage != 'true'}"
+             class="popup popup--login">
             <div class="popup__inner">
                 <div class="popup__close">
                     <img src="/images/close.png" alt="Close Icon">
@@ -400,9 +413,7 @@
                                 <input type="submit" value="Log in" name="submitLoginForm" class="btn form__btn" id="login">
                             </div>
 
-                            <div class="form__foot">
-
-                            </div>
+                            <div class="form__foot"></div>
                         </form>
                     </div>
                 </div>
@@ -462,9 +473,7 @@
                                 <input type="submit" value="Register" name="submitRegisterForm" class="btn form__btn" id="register">
                             </div>
 
-                            <div class="form__foot">
-
-                            </div>
+                            <div class="form__foot"></div>
                         </form>
                     </div>
                 </div>
