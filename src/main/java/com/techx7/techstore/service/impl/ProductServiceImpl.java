@@ -8,6 +8,10 @@ import com.techx7.techstore.service.ProductService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,6 +19,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -43,6 +48,16 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    private Function<Product, ProductDTO> toProductDTO() {
+        return product -> {
+            ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+
+            setDiscountPrice(productDTO);
+
+            return productDTO;
+        };
+    }
+
     @Override
     @Transactional
     public void createProduct(AddProductDTO addProductDTO) {
@@ -52,24 +67,33 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getAllProducts() {
-        return productRepository.findAll().stream()
-                .map(product -> {
-                    ProductDTO productDTO = mapper.map(product, ProductDTO.class);
-
-                    setDiscountPrice(productDTO);
-
-                    return productDTO;
-                })
-                .toList();
+    public Page<ProductDTO> getAllProducts(Pageable pageable) {
+        return productRepository.findAll(pageable)
+                .map(toProductDTO());
     }
 
     @Override
     public List<ProductDTO> getAllProductsWithDiscount() {
-        return getAllProducts().stream()
-                .filter(productDTO -> productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) > 0)
+        return productRepository.findAll().stream()
+                .map(toProductDTO())
+                .filter(productDTO -> productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) >= 0)
                 .sorted(Comparator.comparing(ProductDTO::getDiscountPrice))
                 .toList();
+    }
+
+    @Override
+    public Page<ProductDTO> findPaginated(Pageable pageable) {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+
+        List<ProductDTO> productDTOs = getAllProducts(pageable).stream().toList();
+
+        List<ProductDTO> resultList = productDTOs.subList(0, productDTOs.size());
+
+        Page<ProductDTO> productPage =
+                new PageImpl<>(resultList, PageRequest.of(currentPage, pageSize), productDTOs.size());
+
+        return productPage;
     }
 
 }

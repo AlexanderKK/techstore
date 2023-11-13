@@ -11,17 +11,20 @@ import com.techx7.techstore.service.ProductService;
 import com.techx7.techstore.util.FileUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static com.techx7.techstore.constant.Paths.BINDING_RESULT_PATH;
 import static com.techx7.techstore.constant.Paths.DOT;
@@ -52,10 +55,30 @@ public class ProductController {
     }
 
     @GetMapping
-    public String index(Model model) {
-        List<ProductDTO> products = productService.getAllProducts();
+    public String index(Model model,
+                        @PageableDefault(size = 4, sort= "discountPercentage") Pageable pageable,
+                        @RequestParam("page") Optional<Integer> page,
+                        @RequestParam("size") Optional<Integer> size) {
+        Page<ProductDTO> products = productService.getAllProducts(pageable);
 
         model.addAttribute("products", products);
+
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(4);
+
+        Page<ProductDTO> productPage =
+                productService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+
+        model.addAttribute("productPage", productPage);
+
+        int totalPages = products.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .toList();
+
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
 
         return "products";
     }
