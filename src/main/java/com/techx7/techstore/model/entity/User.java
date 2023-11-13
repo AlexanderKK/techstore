@@ -46,6 +46,9 @@ public class User extends BaseEntity {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
+    @Column(name = "is_active")
+    private boolean isActive = false;
+
     public User() {
         this.roles = new HashSet<>();
     }
@@ -112,6 +115,14 @@ public class User extends BaseEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
 }

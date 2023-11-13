@@ -1,4 +1,4 @@
-package com.techx7.techstore.model.entity.enums;
+package com.techx7.techstore.model.enums;
 
 public enum GenderEnum {
 

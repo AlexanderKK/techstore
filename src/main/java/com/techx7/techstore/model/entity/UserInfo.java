@@ -1,6 +1,6 @@
 package com.techx7.techstore.model.entity;
 
-import com.techx7.techstore.model.entity.enums.GenderEnum;
+import com.techx7.techstore.model.enums.GenderEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -74,6 +74,14 @@ public class UserInfo extends BaseEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public GenderEnum getGender() {
+        return gender;
+    }
+
+    public void setGender(GenderEnum gender) {
+        this.gender = gender;
     }
 
     public String getPhoneNumber() {
