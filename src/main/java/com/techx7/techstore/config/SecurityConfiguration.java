@@ -34,7 +34,7 @@ public class SecurityConfiguration {
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers("/users/login", "/users/register", "/users/login-error", "/users/login-rest").permitAll()
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers("/", "/products", "/products?*").permitAll()
+                        .requestMatchers("/", "/products").permitAll()
                         .requestMatchers("/", "/contact").permitAll()
                         // Manager
                         .requestMatchers("/products/manage/**").hasRole("MANAGER")
