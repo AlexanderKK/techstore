@@ -38,7 +38,7 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setFrom(techstoreEmail);
             mimeMessageHelper.setReplyTo(techstoreEmail);
             mimeMessageHelper.setSubject("Welcome to Tech x7!");
-            mimeMessageHelper.setText(generateRegistrationEmailBody(userName));
+            mimeMessageHelper.setText(generateRegistrationEmailBody(userName), true);
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException e) {

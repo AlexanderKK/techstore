@@ -77,5 +77,5 @@ mail:
   techstore: "techstore@example.com"
   host: 127.0.0.1
   port: 1025
-  username: ${MAIL_USERNAME:test}
-  password: ${MAIL_PASSWORD:test}
+  username: ${MAIL_USERNAME}
+  password: ${MAIL_PASSWORD}
