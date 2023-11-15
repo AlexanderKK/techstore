@@ -1,13 +1,14 @@
 package com.techx7.techstore.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SourceType;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.*;
 import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Table(name = "user_activation_code")
@@ -17,14 +18,13 @@ public class UserActivationCode extends BaseEntity {
     @Column(nullable = false)
     private String activationCode;
 
-    @NotNull(message = "Should not be empty")
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @Column(nullable = false, columnDefinition = "TIMESTAMP")
-    private Calendar created = Calendar.getInstance();
+    @Column(name="timestamp", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @CreationTimestamp
+    private LocalDateTime created;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @Column(columnDefinition = "TIMESTAMP")
-    private Calendar modified;
+    @Column
+    private Instant modified;
 
     @NotNull(message = "Should not be empty")
     @ManyToOne(optional = false)
@@ -40,19 +40,19 @@ public class UserActivationCode extends BaseEntity {
         this.activationCode = activationCode;
     }
 
-    public Calendar getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Calendar created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public Calendar getModified() {
+    public Instant getModified() {
         return modified;
     }
 
-    public void setModified(Calendar modified) {
+    public void setModified(Instant modified) {
         this.modified = modified;
     }
 

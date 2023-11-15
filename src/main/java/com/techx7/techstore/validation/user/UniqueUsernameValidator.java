@@ -5,12 +5,12 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
+public class UniqueUsernameValidator implements ConstraintValidator<UniqueUsername, String> {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UniqueEmailValidator(UserRepository userRepository) {
+    public UniqueUsernameValidator(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -20,7 +20,7 @@ public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, St
             return true;
         }
 
-        return userRepository.findByEmail(value).isEmpty();
+        return userRepository.findByUsername(value).isEmpty();
     }
 
 }

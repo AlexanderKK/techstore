@@ -1,5 +1,6 @@
 package com.techx7.techstore.model.dto.user;
 
+import com.techx7.techstore.validation.user.UniqueUsername;
 import com.techx7.techstore.validation.user.UniqueEmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ public class RegisterDTO {
     @Email(message = "Please enter a valid email")
     private String email;
 
+    @UniqueUsername
     @NotNull(message = "Please enter an username")
     @Size(min = 5, message = "Username should consist of at least 5 characters")
     private String username;

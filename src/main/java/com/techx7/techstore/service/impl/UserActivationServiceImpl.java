@@ -10,12 +10,15 @@ import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.EmailService;
 import com.techx7.techstore.service.UserActivationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.Random;
-import java.util.Set;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
+import java.util.*;
 
 import static com.techx7.techstore.constant.Messages.*;
 
@@ -48,7 +51,37 @@ public class UserActivationServiceImpl implements UserActivationService {
 
     @Override
     public void cleanUpObsoleteActivationLinks() {
-//        TODO: Implement
+        List<UserActivationCode> userActivationCodes = userActivationCodeRepository.findAll().stream()
+                .filter(userActivationCode -> {
+//                    long currentTimeInMillis = System.currentTimeMillis();
+//                    long creationTimeInMillis = userActivationCode.getCreated().getTimeInMillis();
+//
+//                    long lifetimeInMillis = currentTimeInMillis - creationTimeInMillis;
+//
+//                    long lifetimeMinutes = Math.round(lifetimeInMillis / 60000.0);
+//
+//                    System.out.println(lifetimeMinutes);
+
+//
+//                    ZoneId zoneId = ZoneId.from(userActivationCode.getCreated().atZone(ZoneOffset.UTC));
+
+                    Instant instant = userActivationCode.getCreated().toInstant(ZoneOffset.UTC);
+
+                    OffsetDateTime createdOffset = instant.atOffset(ZoneOffset.UTC);
+                    OffsetDateTime currentOffsetDateTime = Instant.now().atOffset(ZoneOffset.UTC);
+//
+                    LocalDateTime timeOfCreation = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                    LocalDateTime currentTime = LocalDateTime.ofInstant(Instant.now(), ZonedDateTime.now().getZone());
+
+                    System.out.println(userActivationCode.getCreated().toString());
+                    System.out.println(currentOffsetDateTime);
+
+                    System.out.println(ChronoUnit.MINUTES.between(timeOfCreation, ZonedDateTime.now()));
+
+                    return true;
+                }).toList();
+
+//        userActivationCodeRepository.saveAll(userActivationCodes);
     }
 
     @Override
