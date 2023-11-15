@@ -1,5 +1,6 @@
 package com.techx7.techstore.service.impl;
 
+import com.techx7.techstore.exception.UserNotActivatedException;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.UserRepository;
@@ -21,23 +22,28 @@ public class TechstoreUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
-        return userRepository.findByEmailOrUsername(emailOrUsername)
-                .map(TechstoreUserDetailsServiceImpl::map)
+        User user = userRepository.findByEmailOrUsername(emailOrUsername)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        if(!user.isActive()) {
+            throw new UserNotActivatedException("Account not verified. Check your email for activation link");
+        }
+
+        return mapToUserDetails(user);
     }
 
-    private static UserDetails map(User user) {
+    private static UserDetails mapToUserDetails(User user) {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
                 .password(user.getPassword())
                 .authorities(
                         user.getRoles().stream()
-                        .map(TechstoreUserDetailsServiceImpl::map)
+                        .map(TechstoreUserDetailsServiceImpl::mapToAuthority)
                         .toList())
                 .build();
     }
 
-    private static GrantedAuthority map(Role role) {
+    private static GrantedAuthority mapToAuthority(Role role) {
         return new SimpleGrantedAuthority(
                 "ROLE_" + role.getName()
         );

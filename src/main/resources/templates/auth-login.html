@@ -12,10 +12,6 @@
          th:text="${userActivated}"
          class="alert alert-success"></div>
 
-    <div th:if="${userAlreadyActivated}"
-         th:text="${userAlreadyActivated}"
-         class="alert alert-warning"></div>
-
     <header th:replace="~{fragments/commons::header(activeLink = 'login', loginPage = 'true')}"></header>
 
     <div class="popup auth-login">

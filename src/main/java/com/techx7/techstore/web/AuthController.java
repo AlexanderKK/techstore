@@ -2,10 +2,9 @@ package com.techx7.techstore.web;
 
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.UserAlreadyActivatedException;
+import com.techx7.techstore.exception.UserNotActivatedException;
 import com.techx7.techstore.service.UserActivationService;
-import com.techx7.techstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +58,14 @@ public class AuthController {
             RedirectAttributes redirectAttributes) {
         String userName = userActivationService.activateUser(activationCode);
 
-        redirectAttributes.addFlashAttribute("userActivated", String.format(USER_ACTIVATED, userName));
+        redirectAttributes.addFlashAttribute("userActivated", USER_VERIFIED);
+
+        return "redirect:/users/login";
+    }
+
+    @ExceptionHandler(UserNotActivatedException.class)
+    public String handleUserNotActivatedError(RuntimeException ex) {
+        System.out.println(ex.getMessage());
 
         return "redirect:/users/login";
     }
@@ -77,7 +83,7 @@ public class AuthController {
                                   RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("userAlreadyActivated", ex.getMessage());
 
-        return "redirect:/users/login";
+        return "redirect:/";
     }
 
 }

@@ -5,6 +5,10 @@
 <head th:replace="~{fragments/commons::head(title = 'Tech x7')}"></head>
 
 <body>
+	<div th:if="${userAlreadyActivated}"
+		 th:text="${userAlreadyActivated}"
+		 class="alert alert-warning"></div>
+
 	<div th:if="${activationCodeErrorMessage}"
 	 th:text="${activationCodeErrorMessage}"
 	 class="alert alert-danger"></div>

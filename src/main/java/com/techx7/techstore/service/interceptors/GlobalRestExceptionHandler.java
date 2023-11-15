@@ -1,4 +1,4 @@
-package com.techx7.techstore.web;
+package com.techx7.techstore.service.interceptors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;

@@ -70,14 +70,14 @@ public class UserActivationServiceImpl implements UserActivationService {
     @Override
     public String activateUser(String activationCode) {
         UserActivationCode userActivationCode = userActivationCodeRepository.findByActivationCode(activationCode)
-                .orElseThrow(() -> new EntityNotFoundException(ACTIVATION_CODE_NOT_VALID));
+                .orElseThrow(() -> new EntityNotFoundException(VERIFICATION_CODE_NOT_VALID));
 
         User user = userRepository
                 .findByActivationCodesIn(Set.of(userActivationCode))
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
         if(user.isActive()) {
-            throw new UserAlreadyActivatedException(USER_ALREADY_ACTIVATED);
+            throw new UserAlreadyActivatedException(USER_ALREADY_VERIFIED);
         }
 
         user.setActive(true);

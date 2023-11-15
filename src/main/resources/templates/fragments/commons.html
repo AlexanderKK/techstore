@@ -64,11 +64,12 @@
                                    class="btn-link"><button class="dropdown-item" type="button">Profile</button></a>
 
                                 <a sec:authorize="authenticated"
-                                   class="btn-link position-relative">
+                                   class="btn-link">
                                     <div class="dropdown-item" style="height: 32px">
                                         <form th:action="@{/users/logout}"
                                               th:method="POST">
-                                            <button class="dropdown-item bg-transparent border-0 outline-0 position-absolute" style="top: 0; left: 0; width: 100%; height: 32px">Logout</button>
+                                            <button class="dropdown-item bg-transparent border-0 outline-0"
+                                                    style="position: absolute; margin-top: -5px; left: 0; width: 100%; height: 32px">Logout</button>
                                         </form>
                                     </div>
                                 </a>
