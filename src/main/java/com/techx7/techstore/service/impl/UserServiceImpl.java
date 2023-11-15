@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService {
         applicationEventPublisher.publishEvent(new UserRegisteredEvent(
                 "UserService",
                 registerDTO.getEmail(),
-                registerDTO.getUsername()
-        ));
+                registerDTO.getUsername())
+        );
     }
 
 }

@@ -12,18 +12,18 @@ import java.util.Set;
 @Table(name = "models")
 public class Model extends BaseEntity {
 
-    @NotBlank
+    @NotBlank(message = "Should not be empty")
     @Column(nullable = false)
     private String name;
 
-    @NotNull
+    @NotNull(message = "Should not be empty")
     @ManyToOne(optional = false)
     private Manufacturer manufacturer;
 
     @OneToMany(mappedBy = "model", cascade = CascadeType.REMOVE)
     private Set<Product> products;
 
-    @NotNull
+    @NotNull(message = "Should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
     private Calendar created = Calendar.getInstance();

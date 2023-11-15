@@ -6,6 +6,6 @@
 </head>
 <body>
     <h1>Welcome, <th-block th:text="${username}"></th-block></h1>
-    <p>Please follow the link in order to activate your account.</p>
+    <p>Please follow the <a th:href="@{http://localhost:8080/users/activate(activation_code=*{activationCode})}" class="card-link">link</a> in order to activate your account.</p>
 </body>
 </html>

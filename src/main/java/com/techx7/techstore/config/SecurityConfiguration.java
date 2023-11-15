@@ -35,7 +35,13 @@ public class SecurityConfiguration {
                 ).authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         // User
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/users/login", "/users/register", "/users/login-error", "/users/login-rest").permitAll()
+                        .requestMatchers(
+                                "/users/login",
+                                "/users/login-error",
+                                "/users/login-rest",
+                                "/users/activate/**",
+                                "/users/register",
+                                "/users/register/success").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/", "/products").permitAll()
                         .requestMatchers("/", "/contact").permitAll()

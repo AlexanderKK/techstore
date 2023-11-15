@@ -4,6 +4,18 @@
 <head th:replace="~{fragments/commons::head(title = 'Login | Tech x7')}"></head>
 
 <body>
+    <div th:if="${verificationMessage}"
+         th:text="${verificationMessage}"
+         class="alert alert-success"></div>
+
+    <div th:if="${userActivated}"
+         th:text="${userActivated}"
+         class="alert alert-success"></div>
+
+    <div th:if="${userAlreadyActivated}"
+         th:text="${userAlreadyActivated}"
+         class="alert alert-warning"></div>
+
     <header th:replace="~{fragments/commons::header(activeLink = 'login', loginPage = 'true')}"></header>
 
     <div class="popup auth-login">

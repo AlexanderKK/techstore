@@ -49,6 +49,9 @@ public class User extends BaseEntity {
     @Column(name = "is_active")
     private boolean isActive = false;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<UserActivationCode> activationCodes;
+
     public User() {
         this.roles = new HashSet<>();
     }
@@ -123,6 +126,14 @@ public class User extends BaseEntity {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public Set<UserActivationCode> getActivationCodes() {
+        return activationCodes;
+    }
+
+    public void setActivationCodes(Set<UserActivationCode> activationCodes) {
+        this.activationCodes = activationCodes;
     }
 
 }

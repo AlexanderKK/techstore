@@ -36,7 +36,7 @@ function registerUser(evt) {
 				const popupRegister = document.querySelector(".popup.popup--register");
 				popupRegister.classList.remove("is-active");
 
-				location.replace("/users/login");
+				location.replace("/users/register/success");
 
 				return;
 			}

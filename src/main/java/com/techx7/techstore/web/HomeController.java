@@ -21,6 +21,8 @@ public class HomeController {
 
     @GetMapping("/")
     public String index(Model model) {
+//        model.addAttribute("activationCodeErrorMessage", )
+
         List<ProductDTO> productsWithDiscount = productService.getAllProductsWithDiscount();
         model.addAttribute("products", productsWithDiscount);
 
