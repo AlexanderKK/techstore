@@ -75,7 +75,7 @@ public class ApplicationConfiguration {
         Converter<LocalDateTime, String> localDateTimeToString
                 = context -> context.getSource() == null
                 ? null
-                : context.getSource().format(DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm:ss"));
+                : context.getSource().format(DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm:ss"));
 
         // AddCategoryDTO -> Category
         Converter<MultipartFile, String> toImageUrl

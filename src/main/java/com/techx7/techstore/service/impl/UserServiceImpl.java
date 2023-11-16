@@ -70,15 +70,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDTO> getAllUsers() {
-        List<UserDTO> users = userRepository.findAll().stream()
-                .map(user -> {
-                    System.out.println(user.getCreated());
-                    System.out.println(user.getCreated().toString());
-
-                    return mapper.map(user, UserDTO.class);
-                })
+        return userRepository.findAll().stream()
+                .map(user -> mapper.map(user, UserDTO.class))
                 .toList();
-        return users;
     }
 
     @Override
@@ -99,6 +93,18 @@ public class UserServiceImpl implements UserService {
         user.setActive(true);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void editUserByUuid() {
+
+    }
+
+    @Override
+    public UserDTO getUserByUuid(UUID uuid) {
+        return userRepository.findByUuid(uuid)
+                .map(user -> mapper.map(user, UserDTO.class))
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
     }
 
     private Role getRoleEntity(String roleName) {

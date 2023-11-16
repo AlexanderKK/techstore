@@ -35,30 +35,6 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
-    private void setDiscountPrice(ProductDTO productDTO) {
-        if (productDTO.getDiscountPrice() != null &&
-                productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) > 0) {
-            BigDecimal discountPrice = productDTO.getPrice().multiply(
-                    BigDecimal.ONE.subtract(
-                            productDTO.getDiscountPrice().divide(
-                                    BigDecimal.valueOf(100), RoundingMode.HALF_UP)));
-
-            String formattedDiscountPrice = new DecimalFormat("######.##").format(discountPrice);
-
-            productDTO.setDiscountPrice(new BigDecimal(formattedDiscountPrice));
-        }
-    }
-
-    private Function<Product, ProductDTO> toProductDTO() {
-        return product -> {
-            ProductDTO productDTO = mapper.map(product, ProductDTO.class);
-
-            setDiscountPrice(productDTO);
-
-            return productDTO;
-        };
-    }
-
     @Override
     @Transactional
     public void createProduct(AddProductDTO addProductDTO) {
@@ -96,6 +72,30 @@ public class ProductServiceImpl implements ProductService {
                 new PageImpl<>(resultList, PageRequest.of(currentPage, pageSize), productDTOs.size());
 
         return productPage;
+    }
+
+    private void setDiscountPrice(ProductDTO productDTO) {
+        if (productDTO.getDiscountPrice() != null &&
+                productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) > 0) {
+            BigDecimal discountPrice = productDTO.getPrice().multiply(
+                    BigDecimal.ONE.subtract(
+                            productDTO.getDiscountPrice().divide(
+                                    BigDecimal.valueOf(100), RoundingMode.HALF_UP)));
+
+            String formattedDiscountPrice = new DecimalFormat("######.##").format(discountPrice);
+
+            productDTO.setDiscountPrice(new BigDecimal(formattedDiscountPrice));
+        }
+    }
+
+    private Function<Product, ProductDTO> toProductDTO() {
+        return product -> {
+            ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+
+            setDiscountPrice(productDTO);
+
+            return productDTO;
+        };
     }
 
 }

@@ -40,10 +40,9 @@
                                     <td th:text="*{created}" class="align-middle"></td>
                                     <td th:text="*{modified}" class="align-middle"></td>
                                     <td class="align-middle">
-                                        <form th:action="@{/users/edit/{id}(id = *{uuid})}"
-                                              th:method="PATCH">
+                                        <a th:href="@{/users/edit/{id}(id = *{uuid})}">
                                             <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
-                                        </form>
+                                        </a>
                                     </td>
                                     <td class="align-middle">
                                         <form th:action="@{/users/delete/{id}(id = *{uuid})}"
