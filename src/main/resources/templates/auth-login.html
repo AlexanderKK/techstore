@@ -28,6 +28,8 @@
                         <div class="form__head">
                             <p>Not Registered? <a href="#" class="link-register">Sign up from here</a></p>
 
+                            <a th:href="@{/users/reactivate}" class="btn-link">Resend verification code</a>
+
                             <p th:if="${bad_credentials}" class="errors text-danger">Invalid username or password.</p>
                         </div>
 

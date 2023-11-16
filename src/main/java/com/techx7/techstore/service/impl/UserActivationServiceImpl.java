@@ -28,6 +28,7 @@ public class UserActivationServiceImpl implements UserActivationService {
     private static final String ACTIVATION_CODE_TOKENS =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int ACTIVATION_CODE_LENGTH = 20;
+    private static final int MINUTES_UNTIL_EXPIRATION = 5;
     private final EmailService emailService;
     private final UserRepository userRepository;
     private final UserActivationCodeRepository userActivationCodeRepository;
@@ -53,35 +54,16 @@ public class UserActivationServiceImpl implements UserActivationService {
     public void cleanUpObsoleteActivationLinks() {
         List<UserActivationCode> userActivationCodes = userActivationCodeRepository.findAll().stream()
                 .filter(userActivationCode -> {
-//                    long currentTimeInMillis = System.currentTimeMillis();
-//                    long creationTimeInMillis = userActivationCode.getCreated().getTimeInMillis();
-//
-//                    long lifetimeInMillis = currentTimeInMillis - creationTimeInMillis;
-//
-//                    long lifetimeMinutes = Math.round(lifetimeInMillis / 60000.0);
-//
-//                    System.out.println(lifetimeMinutes);
+                    LocalDateTime createdTime = userActivationCode.getCreated();
+                    LocalDateTime currentTime = LocalDateTime.now();
 
-//
-//                    ZoneId zoneId = ZoneId.from(userActivationCode.getCreated().atZone(ZoneOffset.UTC));
+                    long existingTimeInMinutes = ChronoUnit.MINUTES.between(createdTime, currentTime);
 
-                    Instant instant = userActivationCode.getCreated().toInstant(ZoneOffset.UTC);
-
-                    OffsetDateTime createdOffset = instant.atOffset(ZoneOffset.UTC);
-                    OffsetDateTime currentOffsetDateTime = Instant.now().atOffset(ZoneOffset.UTC);
-//
-                    LocalDateTime timeOfCreation = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-                    LocalDateTime currentTime = LocalDateTime.ofInstant(Instant.now(), ZonedDateTime.now().getZone());
-
-                    System.out.println(userActivationCode.getCreated().toString());
-                    System.out.println(currentOffsetDateTime);
-
-                    System.out.println(ChronoUnit.MINUTES.between(timeOfCreation, ZonedDateTime.now()));
-
-                    return true;
+                    return existingTimeInMinutes > MINUTES_UNTIL_EXPIRATION;
                 }).toList();
 
-//        userActivationCodeRepository.saveAll(userActivationCodes);
+        System.out.println("Deleting expired activation codes...");
+        userActivationCodeRepository.deleteAll(userActivationCodes);
     }
 
     @Override

@@ -100,16 +100,20 @@
                                 <a th:href="@{/contact}"
                                    th:classappend="${#strings.equals(activeLink, 'contact') ? 'active' : ''}"
                                    class="nav-item nav-link">Contact</a>
-                                <a th:href="@{/manufacturers/manage}"
+                                <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/manufacturers/manage}"
                                    th:classappend="${#strings.equals(activeLink, 'manufacturers') ? 'active' : ''}"
                                    class="nav-item nav-link">Manufacturers</a>
-                                <a th:href="@{/models/manage}"
+                                <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/models/manage}"
                                    th:classappend="${#strings.equals(activeLink, 'models') ? 'active' : ''}"
                                    class="nav-item nav-link">Models</a>
-                                <a th:href="@{/categories/manage}"
+                                <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/categories/manage}"
                                    th:classappend="${#strings.equals(activeLink, 'categories') ? 'active' : ''}"
                                    class="nav-item nav-link">Categories</a>
-                                <a th:href="@{/products/manage/add}"
+                                <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/products/manage/add}"
                                    th:classappend="${#strings.equals(activeLink, 'product-add') ? 'active' : ''}"
                                    class="nav-item nav-link">Add Product</a>
                             </div>
