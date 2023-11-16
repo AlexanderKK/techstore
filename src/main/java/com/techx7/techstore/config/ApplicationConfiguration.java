@@ -13,11 +13,13 @@ import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
+import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
 import com.techx7.techstore.repository.RoleRepository;
+import com.techx7.techstore.util.StringUtils;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.Provider;
@@ -28,6 +30,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.Set;
@@ -65,6 +70,12 @@ public class ApplicationConfiguration {
     @Bean
     public ModelMapper createMapper() {
         ModelMapper modelMapper = new ModelMapper();
+
+        // LocalDateTime -> String
+        Converter<LocalDateTime, String> localDateTimeToString
+                = context -> context.getSource() == null
+                ? null
+                : context.getSource().format(DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm:ss"));
 
         // AddCategoryDTO -> Category
         Converter<MultipartFile, String> toImageUrl
@@ -199,6 +210,23 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .with(encodedPasswordProvider)
                         .map(RegisterDTO::getPassword, User::setPassword));
+
+        // User -> UserDTO
+        Converter<Set<Role>, Set<String>> toRoleNamesSet
+                = context -> context.getSource() == null
+                ? null
+                : context.getSource().stream()
+                    .map(role -> StringUtils.capitalize(role.getName()))
+                    .collect(Collectors.toSet());
+
+        modelMapper
+                .createTypeMap(User.class, UserDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(User::getCreated, UserDTO::setCreated))
+                .addMappings(mapper -> mapper
+                        .using(toRoleNamesSet)
+                        .map(User::getRoles, UserDTO::setRoles));
 
         return modelMapper;
     }
