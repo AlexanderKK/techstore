@@ -28,7 +28,7 @@ public class UserActivationServiceImpl implements UserActivationService {
     private static final String ACTIVATION_CODE_TOKENS =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int ACTIVATION_CODE_LENGTH = 20;
-    private static final int MINUTES_UNTIL_EXPIRATION = 5;
+    private static final int MINUTES_UNTIL_EXPIRATION = 15;
     private final EmailService emailService;
     private final UserRepository userRepository;
     private final UserActivationCodeRepository userActivationCodeRepository;

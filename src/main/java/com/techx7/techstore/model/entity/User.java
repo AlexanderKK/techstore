@@ -14,22 +14,23 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends BaseEntity {
 
-    @NotBlank(message = "Should not be empty")
+    @NotBlank(message = "Email should not be empty")
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotBlank(message = "Should not be empty")
+    @NotBlank(message = "Username should not be empty")
     @Column(nullable = false, unique = true)
     private String username;
 
-    @NotBlank(message = "Should not be empty")
+    @NotBlank(message = "Password should not be empty")
     @Column(nullable = false)
     private String password;
 
     @NotNull(message = "Should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
-    private Calendar created = Calendar.getInstance();
+    private LocalDateTime created = LocalDateTime.now();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Column(columnDefinition = "TIMESTAMP")
@@ -42,7 +43,7 @@ public class User extends BaseEntity {
     @Column(name = "failed_login_attempts")
     private Integer failedLoginAttempts;
 
-    @NotNull(message = "Should not be empty")
+    @NotNull(message = "There should be at least one role")
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -80,11 +81,11 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
-    public Calendar getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Calendar created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 

@@ -1,14 +1,26 @@
 package com.techx7.techstore.service.impl;
 
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
+import com.techx7.techstore.model.dto.user.UserDTO;
+import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.model.events.UserRegisteredEvent;
+import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.UserService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -16,14 +28,20 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper mapper;
     private final UserRepository userRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(ModelMapper mapper,
                            UserRepository userRepository,
-                           ApplicationEventPublisher applicationEventPublisher) {
+                           ApplicationEventPublisher applicationEventPublisher,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder) {
         this.mapper = mapper;
         this.userRepository = userRepository;
         this.applicationEventPublisher = applicationEventPublisher;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -37,6 +55,55 @@ public class UserServiceImpl implements UserService {
                 registerDTO.getEmail(),
                 registerDTO.getUsername())
         );
+    }
+
+    @Override
+    public void deleteAllUsers() {
+        userRepository.deleteAll();
+    }
+
+    @Override
+    @Transactional
+    public void deleteUserByUuid(UUID uuid) {
+        userRepository.deleteByUuid(uuid);
+    }
+
+    @Override
+    public List<UserDTO> getAllUsers() {
+        List<UserDTO> users = userRepository.findAll().stream()
+                .map(user -> {
+                    System.out.println(user.getCreated());
+                    System.out.println(user.getCreated().toString());
+
+                    return mapper.map(user, UserDTO.class);
+                })
+                .toList();
+        return users;
+    }
+
+    @Override
+    public void createAdmin() {
+        User user = new User();
+
+        user.setEmail("admin@techx7.com");
+        user.setUsername("admin");
+        user.setPassword(
+                passwordEncoder.encode("admin12345")
+        );
+
+        user.setRoles(Set.of(
+                getRoleEntity("ADMIN"),
+                getRoleEntity("USER")
+        ));
+
+        user.setActive(true);
+
+        userRepository.save(user);
+    }
+
+    private Role getRoleEntity(String roleName) {
+        return roleRepository.findByName(roleName)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
     }
 
 }

@@ -4,4 +4,6 @@ public interface SeedService {
 
     String seedRoles();
 
+    String seedAdmin();
+
 }

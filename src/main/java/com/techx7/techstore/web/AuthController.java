@@ -47,11 +47,6 @@ public class AuthController {
         return "redirect:/users/login";
     }
 
-    @GetMapping("/profile")
-    public String profile() {
-        return "profile";
-    }
-
     @GetMapping("/activate")
     public String activateUserAccount(
             @RequestParam("activation_code") String activationCode,
@@ -61,6 +56,11 @@ public class AuthController {
         redirectAttributes.addFlashAttribute("userActivated", USER_VERIFIED);
 
         return "redirect:/users/login";
+    }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "profile";
     }
 
     @ExceptionHandler(UserNotActivatedException.class)

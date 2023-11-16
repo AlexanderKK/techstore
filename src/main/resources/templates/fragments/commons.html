@@ -47,6 +47,16 @@
                     </div>
 
                     <div class="col-lg-8 col-6 text-right flex-row">
+                        <div sec:authorize="hasRole('ADMIN')"
+                             class="btn-group">
+                            <button type="button" class="btn btn-light dropdown-toggle pr-2 pr-lg-0" data-toggle="dropdown" style="font-size: 18px">Admin</button>
+
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a th:href="@{/admin}"
+                                   class="btn-link"><button class="dropdown-item" type="button">Manage users</button></a>
+                            </div>
+                        </div>
+
                         <div class="btn-group">
                             <button type="button" class="btn btn-light dropdown-toggle pr-2 pr-lg-0" data-toggle="dropdown" style="font-size: 18px">Account</button>
 
@@ -101,6 +111,10 @@
                                    th:classappend="${#strings.equals(activeLink, 'contact') ? 'active' : ''}"
                                    class="nav-item nav-link">Contact</a>
                                 <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/products/manage/add}"
+                                   th:classappend="${#strings.equals(activeLink, 'product-add') ? 'active' : ''}"
+                                   class="nav-item nav-link">Add Product</a>
+                                <a sec:authorize="hasRole('MANAGER')"
                                    th:href="@{/manufacturers/manage}"
                                    th:classappend="${#strings.equals(activeLink, 'manufacturers') ? 'active' : ''}"
                                    class="nav-item nav-link">Manufacturers</a>
@@ -112,10 +126,6 @@
                                    th:href="@{/categories/manage}"
                                    th:classappend="${#strings.equals(activeLink, 'categories') ? 'active' : ''}"
                                    class="nav-item nav-link">Categories</a>
-                                <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/products/manage/add}"
-                                   th:classappend="${#strings.equals(activeLink, 'product-add') ? 'active' : ''}"
-                                   class="nav-item nav-link">Add Product</a>
                             </div>
 
                             <div class="col-6 col-lg-auto d-lg-none navbar-nav py-0 text-end">
@@ -319,20 +329,33 @@
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Home</a>
                                 <a th:href="@{/products}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Our Shop</a>
-                                <a th:href="@{/products/add}"
-                                   class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Add Product</a>
                                 <a th:href="@{/contact}"
                                    class="text-secondary"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
+                                <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/products/manage/add}"
+                                   class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Add Product</a>
+                                <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/manufacturers/manage}"
+                                   class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Manufacturers</a>
+                                <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/models/manage}"
+                                   class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Models</a>
+                                <a sec:authorize="hasRole('MANAGER')"
+                                   th:href="@{/categories/manage}"
+                                   class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Categories</a>
                             </div>
                         </div>
                         <div class="col-md-4 mb-5">
                             <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
                             <div class="d-flex flex-column justify-content-start">
-                                <a th:href="@{/profile}"
+                                <a sec:authorize="authenticated"
+                                   th:href="@{/profile}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Profile</a>
-                                <a th:href="@{/users/login}"
+                                <a sec:authorize="!authenticated"
+                                   th:href="@{/users/login}"
                                    class="text-secondary mb-2 link-login"><i class="fa fa-angle-right mr-2"></i>Sign In</a>
-                                <a class="text-secondary link-register"><i class="fa fa-angle-right mr-2"></i>Sign Up</a>
+                                <a sec:authorize="!authenticated"
+                                   class="text-secondary link-register"><i class="fa fa-angle-right mr-2"></i>Sign Up</a>
                             </div>
                         </div>
                         <div class="col-md-4 mb-5">

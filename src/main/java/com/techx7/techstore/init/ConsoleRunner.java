@@ -19,8 +19,9 @@ public class ConsoleRunner implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Welcome to Tech x7!");
 
-        System.out.println("Importing user roles...");
         System.out.println(seedService.seedRoles());
+
+        System.out.println(seedService.seedAdmin());
     }
 
 }
