@@ -12,6 +12,9 @@ public class ImportRolesJsonDTO {
     private String name;
 
     @NotBlank
+    private String imageUrl;
+
+    @NotBlank
     private String description;
 
     public ImportRolesJsonDTO() {}
@@ -22,6 +25,14 @@ public class ImportRolesJsonDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {

@@ -16,6 +16,9 @@ public class RoleDTO {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String imageUrl;
+
     public RoleDTO() {}
 
     public Long getId() {
@@ -40,6 +43,14 @@ public class RoleDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
 }

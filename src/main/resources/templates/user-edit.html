@@ -81,7 +81,8 @@
 
                                     <option th:each="role : ${roleDTOs}"
                                             th:text="${role.name}"
-                                            th:value="${role.id}"></option>
+                                            th:value="${role.id}"
+                                            th:attr="data-imageUrl=${role.imageUrl}"></option>
                                 </select>
 
                                 <small th:if="${#fields.hasErrors('roles')}"

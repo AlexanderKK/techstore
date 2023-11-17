@@ -1,22 +1,27 @@
 [
   {
     "name": "ADMIN",
+    "imageUrl": "role-admin.png",
     "description": "Admins can access, modify products, reviews, user profiles, make changes to the database in needed"
   },
   {
     "name": "MANAGER",
+    "imageUrl": "role-manager.png",
     "description": "Managers can access, modify products, edit reviews, but cannot access and modify user profiles"
   },
   {
     "name": "SUPPORT",
+    "imageUrl": "role-support.png",
     "description": "Supports can access, modify user reviews, respond to questions and chat with users"
   },
   {
     "name": "USER",
+    "imageUrl": "role-user.png",
     "description": "Users can access and buy products, write reviews, edit their profile, but cannot add or modify a product"
   },
   {
     "name": "CARRIER",
+    "imageUrl": "role-carrier.png",
     "description": "Carriers can only access orders, user address info"
   }
 ]

@@ -10,12 +10,16 @@ import jakarta.validation.constraints.Size;
 @Table(name = "roles")
 public class Role extends BaseEntity {
 
-    @NotBlank
+    @NotBlank(message = "Name should not be empty")
     @Size(max = 25)
     @Column(nullable = false, unique = true)
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Image url should not be empty")
+    @Column(nullable = false)
+    private String imageUrl;
+
+    @NotBlank(message = "Description should not be empty")
     @Column(nullable = false)
     private String description;
 
@@ -27,6 +31,14 @@ public class Role extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getDescription() {

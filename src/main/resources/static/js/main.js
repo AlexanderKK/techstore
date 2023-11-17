@@ -217,6 +217,7 @@
 
 			if(ids.includes(option.value)) {
 				categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='/images/${$(option).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${option.value}">${option.text}</span></div></a></div>`)
+
 				categoryIds.push(option.value);
 			}
 		}
@@ -256,6 +257,7 @@
 			}
 
 			categoriesSelect.removeClass("is-invalid");
+
 			$('#product-category + small').hide();
 		}
 
@@ -291,7 +293,6 @@
 		// Get the current page scroll position
 		const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 		const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-
 
 		// if any scroll is attempted, set this to the previous value
 		window.onscroll = function() {
