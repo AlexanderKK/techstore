@@ -16,9 +16,8 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
 
@@ -104,7 +103,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editUser(UserDTO userDTO) {
+        User user = userRepository.findByUuid(userDTO.getUuid())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
+        user.setRoles(
+                Arrays.stream(userDTO.getRoles().split(","))
+                        .map(Long::parseLong)
+                        .map(roleId -> roleRepository.findById(roleId)
+                                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role"))))
+                        .map(roleDTO -> mapper.map(roleDTO, Role.class))
+                        .collect(Collectors.toSet())
+        );
+
+        user = user.editUser(userDTO);
+
+        userRepository.save(user);
     }
 
     private Role getRoleEntity(String roleName) {

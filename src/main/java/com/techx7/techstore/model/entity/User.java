@@ -1,5 +1,6 @@
 package com.techx7.techstore.model.entity;
 
+import com.techx7.techstore.model.dto.user.UserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,12 +34,14 @@ public class User extends BaseEntity {
     private LocalDateTime created = LocalDateTime.now();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "TIMESTAMP")
-    private Calendar modified;
+    private LocalDateTime modified;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @Column(name = "last_login", columnDefinition = "TIMESTAMP")
-    private Calendar lastLogin;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime lastLogin;
 
     @Column(name = "failed_login_attempts")
     private Integer failedLoginAttempts;
@@ -89,19 +92,19 @@ public class User extends BaseEntity {
         this.created = created;
     }
 
-    public Calendar getModified() {
+    public LocalDateTime getModified() {
         return modified;
     }
 
-    public void setModified(Calendar modified) {
+    public void setModified(LocalDateTime modified) {
         this.modified = modified;
     }
 
-    public Calendar getLastLogin() {
+    public LocalDateTime getLastLogin() {
         return lastLogin;
     }
 
-    public void setLastLogin(Calendar lastLogin) {
+    public void setLastLogin(LocalDateTime lastLogin) {
         this.lastLogin = lastLogin;
     }
 
@@ -135,6 +138,14 @@ public class User extends BaseEntity {
 
     public void setActivationCodes(Set<UserActivationCode> activationCodes) {
         this.activationCodes = activationCodes;
+    }
+
+    public User editUser(UserDTO userDTO) {
+        this.setEmail(userDTO.getEmail());
+        this.setUsername(userDTO.getUsername());
+        this.setModified(LocalDateTime.now());
+
+        return this;
     }
 
 }

@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public class UserDTO {
 
-    @NotBlank(message = "UUID should not be empty")
+    @NotNull(message = "UUID should not be empty")
     private UUID uuid;
 
     @NotBlank(message = "Please enter an email")

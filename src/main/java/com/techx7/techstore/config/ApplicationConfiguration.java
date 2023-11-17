@@ -227,6 +227,9 @@ public class ApplicationConfiguration {
                         .using(localDateTimeToString)
                         .map(User::getCreated, UserDTO::setCreated))
                 .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(User::getModified, UserDTO::setModified))
+                .addMappings(mapper -> mapper
                         .using(toRoleIds)
                         .map(User::getRoles, UserDTO::setRoles));
 
