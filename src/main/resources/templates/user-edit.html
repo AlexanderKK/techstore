@@ -11,7 +11,7 @@
 <div class="container-fluid">
     <div class="mb-3">
         <form th:action="@{/users/edit}"
-              th:method="POST"
+              th:method="PATCH"
               th:object="${userToEdit}"
               name="userEdit" id="user-edit" enctype="multipart/form-data">
             <input type="hidden" name="uuid" th:value="*{uuid}">
@@ -98,41 +98,41 @@
                     </div>
                 </div>
 
-                <div class="col-lg-6 mb-5">
-                    <div class="specification-form bg-light p-30">
-                        <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Add Characteristics</span></h5>
+<!--                <div class="col-lg-6 mb-5">-->
+<!--                    <div class="specification-form bg-light p-30">-->
+<!--                        <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Add Characteristics</span></h5>-->
 
-                        <div class="row align-items-start py-3">
-                            <div class="col-md-12 form-group">
-                                <!--                                            <label for="product-description">Description</label>-->
+<!--                        <div class="row align-items-start py-3">-->
+<!--                            <div class="col-md-12 form-group">-->
+<!--                                &lt;!&ndash;                                            <label for="product-description">Description</label>&ndash;&gt;-->
 
-                                <!--                                            <textarea th:name="description"-->
-                                <!--                                                      th:field="*{description}"-->
-                                <!--                                                      th:errorclass="is-invalid"-->
-                                <!--                                                      id="product-description" class="form-control"-->
-                                <!--                                                      placeholder="V Laptop Series | Simple, Powerful, & Secure Business Laptops Combining security and productivity features with a simple design."></textarea>-->
-                                <!--                                            <small th:if="${#fields.hasErrors('description')}"-->
-                                <!--                                                   th:errors="*{description}"-->
-                                <!--                                                   class="text-danger"></small>-->
-                            </div>
+<!--                                &lt;!&ndash;                                            <textarea th:name="description"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      th:field="*{description}"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      th:errorclass="is-invalid"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      id="product-description" class="form-control"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      placeholder="V Laptop Series | Simple, Powerful, & Secure Business Laptops Combining security and productivity features with a simple design."></textarea>&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                            <small th:if="${#fields.hasErrors('description')}"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                   th:errors="*{description}"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                   class="text-danger"></small>&ndash;&gt;-->
+<!--                            </div>-->
 
-                            <div class="col-md-12 form-group">
-                                <!--                                            <label for="product-specification">Specifications</label>-->
+<!--                            <div class="col-md-12 form-group">-->
+<!--                                &lt;!&ndash;                                            <label for="product-specification">Specifications</label>&ndash;&gt;-->
 
-                                <!--                                            <textarea th:name="specification"-->
-                                <!--                                                      th:field="*{specification}"-->
-                                <!--                                                      th:errorclass="is-invalid"-->
-                                <!--                                                      id="product-specification"-->
-                                <!--                                                      class="form-control"-->
-                                <!--                                                      placeholder=-->
-                                <!--                                                              "Manufacturer: MSI&#10;OS: Windows 10 Professional&#10;CPU: Intel Core i5-12400F&#10;Chipset: Intel B760"></textarea>-->
-                                <!--                                            <small th:if="${#fields.hasErrors('specification')}"-->
-                                <!--                                                   th:errors="*{specification}"-->
-                                <!--                                                   class="text-danger"></small>-->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<!--                                &lt;!&ndash;                                            <textarea th:name="specification"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      th:field="*{specification}"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      th:errorclass="is-invalid"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      id="product-specification"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      class="form-control"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                      placeholder=&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                              "Manufacturer: MSI&#10;OS: Windows 10 Professional&#10;CPU: Intel Core i5-12400F&#10;Chipset: Intel B760"></textarea>&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                            <small th:if="${#fields.hasErrors('specification')}"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                   th:errors="*{specification}"&ndash;&gt;-->
+<!--                                &lt;!&ndash;                                                   class="text-danger"></small>&ndash;&gt;-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
             </div>
         </form>
     </div>

@@ -37,23 +37,22 @@ public class UserController {
         List<RoleDTO> roleDTOs = roleService.getAllRoles();
 
         model.addAttribute("roleDTOs", roleDTOs);
-        model.addAttribute("userToEdit", userDTO);
 
-        if(!model.containsAttribute("userDTO")) {
-            model.addAttribute("userDTO", null);
+        if(!model.containsAttribute("userToEdit")) {
+            model.addAttribute("userToEdit", userDTO);
         }
 
         return "user-edit";
     }
 
-    @RequestMapping(value = "/edit", method = { RequestMethod.PATCH, RequestMethod.POST })
+    @RequestMapping(value = "/edit", method = { RequestMethod.PATCH })
     public String editUser(@Valid UserDTO userDTO,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
 
         if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult", bindingResult);
-            redirectAttributes.addFlashAttribute("userDTO", userDTO);
+            redirectAttributes.addFlashAttribute("userToEdit", userDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userToEdit", bindingResult);
 
             return "redirect:/users/edit/" + userDTO.getUuid();
         }
