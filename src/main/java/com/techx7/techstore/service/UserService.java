@@ -18,8 +18,8 @@ public interface UserService {
 
     void createAdmin();
 
-    void editUserByUuid();
-
     UserDTO getUserByUuid(UUID uuid);
+
+    void editUser(UserDTO userDTO);
 
 }

@@ -73,14 +73,13 @@
                             </div>
 
                             <div class="col-md-12 form-group">
-                                <label for="role">Role</label>
+                                <label for="product-category">Role</label>
 
-                                <select th:name="role"
-                                        class="custom-select"
-                                        id="role">
+                                <select th:name="role" class="custom-select"
+                                        id="product-category">
                                     <option value="">Select a role</option>
 
-                                    <option th:each="role : ${roles}"
+                                    <option th:each="role : ${roleDTOs}"
                                             th:text="${role.name}"
                                             th:value="${role.id}"></option>
                                 </select>
@@ -89,7 +88,7 @@
                                        th:errors="*{roles}"
                                        class="text-danger"></small>
 
-                                <div class="row categories-container" th:field="*{roles}"></div>
+                                <div class="row categories-container roles-container" th:field="*{roles}"></div>
                             </div>
 
                             <div class="col-md-12 mt-4 form-actions">

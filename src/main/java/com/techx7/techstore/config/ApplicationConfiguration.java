@@ -12,6 +12,7 @@ import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
+import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.entity.*;
@@ -212,12 +213,13 @@ public class ApplicationConfiguration {
                         .map(RegisterDTO::getPassword, User::setPassword));
 
         // User -> UserDTO
-        Converter<Set<Role>, Set<String>> toRoleNamesSet
+        Converter<Set<Role>, String> toRoleIds
                 = context -> context.getSource() == null
                 ? null
                 : context.getSource().stream()
-                    .map(role -> StringUtils.capitalize(role.getName()))
-                    .collect(Collectors.toSet());
+                    .map(BaseEntity::getId)
+                    .map(String::valueOf)
+                    .collect(Collectors.joining(","));
 
         modelMapper
                 .createTypeMap(User.class, UserDTO.class)
@@ -225,8 +227,18 @@ public class ApplicationConfiguration {
                         .using(localDateTimeToString)
                         .map(User::getCreated, UserDTO::setCreated))
                 .addMappings(mapper -> mapper
-                        .using(toRoleNamesSet)
+                        .using(toRoleIds)
                         .map(User::getRoles, UserDTO::setRoles));
+
+        // Role -> RoleDTO
+        Provider<String> roleNameProvider =
+                request -> StringUtils.capitalize(String.valueOf(request.getSource()));
+
+        modelMapper
+                .createTypeMap(Role.class, RoleDTO.class)
+                .addMappings(mapper -> mapper
+                        .with(roleNameProvider)
+                        .map(Role::getName, RoleDTO::setName));
 
         return modelMapper;
     }

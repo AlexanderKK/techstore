@@ -96,15 +96,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserByUuid() {
-
-    }
-
-    @Override
     public UserDTO getUserByUuid(UUID uuid) {
         return userRepository.findByUuid(uuid)
                 .map(user -> mapper.map(user, UserDTO.class))
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+    }
+
+    @Override
+    public void editUser(UserDTO userDTO) {
+
     }
 
     private Role getRoleEntity(String roleName) {

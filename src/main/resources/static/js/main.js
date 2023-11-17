@@ -221,7 +221,11 @@
 			}
 		}
 
-		categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
+		if(categories.hasClass('roles-container')) {
+			categories.append(`<input type="hidden" name="roles" value="${categoryIds}"/>`);
+		} else {
+			categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
+		}
 	}
 
 	categoriesSelect.on('change', function(evt) {
@@ -263,7 +267,11 @@
 
 		categoryIds.sort();
 
-		categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
+		if(categories.hasClass('roles-container')) {
+			categories.append(`<input type="hidden" name="roles" value="${categoryIds}"/>`);
+		} else {
+			categories.append(`<input type="hidden" name="categories" value="${categoryIds}"/>`);
+		}
 	});
 
 	// $('textarea, .table-responsive').each(function() {

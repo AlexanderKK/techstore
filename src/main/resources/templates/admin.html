@@ -36,7 +36,16 @@
     <!--                                <td><img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Logo|" width="70"></td>-->
                                     <td th:text="*{email}" class="align-middle"></td>
                                     <td th:text="*{username}" class="align-middle"></td>
-                                    <td th:text="*{#strings.listJoin(roles, ', ')}" class="align-middle"></td>
+                                    <td th:data-roles="*{#strings.listJoin(roles, ', ')}" class="align-middle">
+                                        <label for="roles" class="hidden"></label>
+                                        <select th:name="role"
+                                                class="custom-select"
+                                                id="roles">
+                                            <option th:each="role : *{rolesSet}"
+                                                    th:text="${role.name}"
+                                                    th:value="${role.id}"></option>
+                                        </select>
+                                    </td>
                                     <td th:text="*{created}" class="align-middle"></td>
                                     <td th:text="*{modified}" class="align-middle"></td>
                                     <td class="align-middle">

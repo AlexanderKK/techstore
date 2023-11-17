@@ -1,36 +1,43 @@
 package com.techx7.techstore.model.dto.user;
 
+import com.techx7.techstore.model.dto.role.RoleDTO;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.util.Set;
+import java.util.UUID;
 
 public class UserDTO {
 
     @NotBlank(message = "UUID should not be empty")
-    private String uuid;
+    private UUID uuid;
 
-    @NotBlank(message = "Email should not be empty")
+    @NotBlank(message = "Please enter an email")
+    @Email(message = "Please enter a valid email")
     private String email;
 
-    @NotBlank(message = "Username should not be empty")
+    @NotNull(message = "Please enter a username")
+    @Size(min = 5, message = "Username should consist of at least 5 characters")
     private String username;
 
-    @NotNull(message = "There should be at least one role")
-    private Set<String> roles;
+    @NotBlank(message = "There should be at least one role")
+    private String roles;
 
-    @NotBlank(message = "Creation date should not be empty")
+    private Set<RoleDTO> rolesSet;
+
     private String created;
 
     private String modified;
 
     public UserDTO() {}
 
-    public String getUuid() {
+    public UUID getUuid() {
         return uuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setUuid(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -50,12 +57,20 @@ public class UserDTO {
         this.username = username;
     }
 
-    public Set<String> getRoles() {
+    public String getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<String> roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
+    }
+
+    public Set<RoleDTO> getRolesSet() {
+        return rolesSet;
+    }
+
+    public void setRolesSet(Set<RoleDTO> rolesSet) {
+        this.rolesSet = rolesSet;
     }
 
     public String getCreated() {

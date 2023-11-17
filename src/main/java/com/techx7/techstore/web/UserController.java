@@ -1,7 +1,8 @@
 package com.techx7.techstore.web;
 
+import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
-import com.techx7.techstore.model.entity.User;
+import com.techx7.techstore.service.RoleService;
 import com.techx7.techstore.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -18,10 +20,13 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("/edit/{uuid}")
@@ -29,7 +34,14 @@ public class UserController {
                               @PathVariable("uuid") UUID uuid) {
         UserDTO userDTO = userService.getUserByUuid(uuid);
 
+        List<RoleDTO> roleDTOs = roleService.getAllRoles();
+
+        model.addAttribute("roleDTOs", roleDTOs);
         model.addAttribute("userToEdit", userDTO);
+
+        if(!model.containsAttribute("userDTO")) {
+            model.addAttribute("userDTO", null);
+        }
 
         return "user-edit";
     }
@@ -38,7 +50,15 @@ public class UserController {
     public String editUser(@Valid UserDTO userDTO,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
-        userService.editUserByUuid();
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult", bindingResult);
+            redirectAttributes.addFlashAttribute("userDTO", userDTO);
+
+            return "redirect:/users/edit/" + userDTO.getUuid();
+        }
+
+        userService.editUser(userDTO);
 
         return "redirect:/admin";
     }
