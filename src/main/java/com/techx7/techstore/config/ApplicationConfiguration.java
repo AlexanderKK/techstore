@@ -12,6 +12,7 @@ import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
+import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
@@ -242,6 +243,13 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .with(roleNameProvider)
                         .map(Role::getName, RoleDTO::setName));
+
+        // AddRoleDTO -> Role
+        modelMapper
+                .createTypeMap(AddRoleDTO.class, Role.class)
+                .addMappings(mapper -> mapper
+                        .using(toImageUrl)
+                        .map(AddRoleDTO::getImage, Role::setImageUrl));
 
         return modelMapper;
     }

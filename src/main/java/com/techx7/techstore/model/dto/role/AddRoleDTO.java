@@ -1,25 +1,22 @@
 package com.techx7.techstore.model.dto.role;
 
+import com.techx7.techstore.validation.multipart.MultiPartFile;
 import com.techx7.techstore.validation.role.UniqueRoleName;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
-@Valid
-public class ImportRolesJsonDTO {
+public class AddRoleDTO {
 
-    @NotBlank
-    @Size(max = 25)
+    @NotBlank(message = "Please enter a role")
     @UniqueRoleName
     private String name;
 
-    @NotBlank
-    private String imageUrl;
+    @MultiPartFile(contentTypes = "image/png")
+    private MultipartFile image;
 
-    @NotBlank
     private String description;
 
-    public ImportRolesJsonDTO() {}
+    public AddRoleDTO() {}
 
     public String getName() {
         return name;
@@ -29,12 +26,12 @@ public class ImportRolesJsonDTO {
         this.name = name;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public MultipartFile getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(MultipartFile image) {
+        this.image = image;
     }
 
     public String getDescription() {

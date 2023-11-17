@@ -17,7 +17,7 @@ public @interface MultiPartFile {
 
     String[] contentTypes();
 
-    String message() default "Invalid file!";
+    String message() default "Invalid file";
 
     Class<?>[] groups() default {};
 

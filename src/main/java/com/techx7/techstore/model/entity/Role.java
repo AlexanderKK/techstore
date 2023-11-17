@@ -1,10 +1,11 @@
 package com.techx7.techstore.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -19,9 +20,15 @@ public class Role extends BaseEntity {
     @Column(nullable = false)
     private String imageUrl;
 
-    @NotBlank(message = "Description should not be empty")
-    @Column(nullable = false)
     private String description;
+
+    @ManyToMany(
+            cascade = CascadeType.REMOVE)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @Valid
+    private Set<User> users;
 
     public Role() {}
 
@@ -47,6 +54,14 @@ public class Role extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
 }

@@ -32,8 +32,9 @@ public class CategoryController {
 
     @GetMapping("/manage")
     public String manageCategory(Model model) {
-        List<CategoryDTO> categoryDTOS = categoryService.getAllCategories();
-        model.addAttribute("categories", categoryDTOS);
+        List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
+
+        model.addAttribute("categories", categoryDTOs);
 
         if(!model.containsAttribute(flashAttributeDTO)) {
             model.addAttribute(flashAttributeDTO, new AddCategoryDTO());

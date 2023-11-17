@@ -2,6 +2,7 @@ package com.techx7.techstore.model.entity;
 
 import com.techx7.techstore.model.dto.user.UserDTO;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -46,14 +47,17 @@ public class User extends BaseEntity {
     @Column(name = "failed_login_attempts")
     private Integer failedLoginAttempts;
 
-    @NotNull(message = "There should be at least one role")
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Valid
     private Set<Role> roles;
 
     @Column(name = "is_active")
     private boolean isActive = false;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<UserActivationCode> activationCodes;
 
     public User() {

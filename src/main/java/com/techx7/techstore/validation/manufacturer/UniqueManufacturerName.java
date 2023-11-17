@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = UniqueManufacturerNameValidator.class)
 public @interface UniqueManufacturerName {
 
-    String message() default "Manufacturer already exists!";
+    String message() default "Manufacturer already exists";
 
     Class<?>[] groups() default {};
 

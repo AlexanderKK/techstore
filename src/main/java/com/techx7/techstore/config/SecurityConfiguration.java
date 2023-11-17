@@ -50,7 +50,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/models/manage/**").hasRole("MANAGER")
                         .requestMatchers("/categories/manage/**").hasRole("MANAGER")
                         // Admin
-                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 ).formLogin(formLogin -> formLogin
                         .loginPage("/users/login")

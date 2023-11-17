@@ -1,4 +1,4 @@
-package com.techx7.techstore.validation.category;
+package com.techx7.techstore.validation.role;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -10,10 +10,10 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-@Constraint(validatedBy = UniqueCategoryNameValidator.class)
-public @interface UniqueCategoryName {
+@Constraint(validatedBy = UniqueRoleNameValidator.class)
+public @interface UniqueRoleName {
 
-    String message() default "Category already exists";
+    String message() default "Role already exists";
 
     Class<?>[] groups() default {};
 
