@@ -62,6 +62,35 @@ public class RoleController {
         return "redirect:/admin/roles";
     }
 
+    @GetMapping("/edit/{uuid}")
+    public String getRole(Model model,
+                              @PathVariable("uuid") UUID uuid) {
+        RoleDTO roleDTO = roleService .getRoleByUuid(uuid);
+
+        if(!model.containsAttribute("roleToEdit")) {
+            model.addAttribute("roleToEdit", roleDTO);
+        }
+
+        return "role-edit";
+    }
+
+    @PatchMapping("/edit")
+    public String editUser(@Valid RoleDTO roleDTO,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) throws IOException {
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("roleToEdit", roleDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.roleToEdit", bindingResult);
+
+            return "redirect:/admin/roles/edit/" + roleDTO.getUuid();
+        }
+
+        roleService.editRole(roleDTO);
+
+        return "redirect:/admin/roles";
+    }
+
     @DeleteMapping("/delete/{uuid}")
     public String deleteRole(@PathVariable("uuid") UUID uuid) {
         roleService.deleteRoleByUuid(uuid);

@@ -1,6 +1,5 @@
 package com.techx7.techstore.validation.role;
 
-import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.repository.RoleRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

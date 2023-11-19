@@ -1,10 +1,12 @@
 package com.techx7.techstore.model.entity;
 
+import com.techx7.techstore.model.dto.role.RoleDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.Locale;
 import java.util.Set;
 
 @Entity
@@ -12,7 +14,7 @@ import java.util.Set;
 public class Role extends BaseEntity {
 
     @NotBlank(message = "Name should not be empty")
-    @Size(max = 25)
+    @Size(max = 15)
     @Column(nullable = false, unique = true)
     private String name;
 
@@ -20,6 +22,7 @@ public class Role extends BaseEntity {
     @Column(nullable = false)
     private String imageUrl;
 
+    @Size(max = 255, message = "Description should have a maximum length of 255 characters")
     private String description;
 
     @ManyToMany
@@ -61,6 +64,14 @@ public class Role extends BaseEntity {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Role editRole(RoleDTO roleDTO) {
+        this.name = roleDTO.getName().toUpperCase(Locale.getDefault());
+        this.description = roleDTO.getDescription();
+        this.imageUrl = roleDTO.getImageUrl();
+
+        return this;
     }
 
 }

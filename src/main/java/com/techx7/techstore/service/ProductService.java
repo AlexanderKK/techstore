@@ -5,11 +5,12 @@ import com.techx7.techstore.model.dto.product.ProductDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ProductService {
 
-    void createProduct(AddProductDTO addProductDTO);
+    void createProduct(AddProductDTO addProductDTO) throws IOException;
 
     Page<ProductDTO> getAllProducts(Pageable pageable);
 

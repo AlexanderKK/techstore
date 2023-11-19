@@ -5,6 +5,7 @@ import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.service.ProductService;
+import com.techx7.techstore.util.FileUtils;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -36,8 +38,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
-    public void createProduct(AddProductDTO addProductDTO) {
+    public void createProduct(AddProductDTO addProductDTO) throws IOException {
+        FileUtils.saveImageLocally(addProductDTO.getImage());
+
         Product product = mapper.map(addProductDTO, Product.class);
 
         productRepository.save(product);

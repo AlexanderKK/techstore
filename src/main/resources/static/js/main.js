@@ -97,24 +97,33 @@
 	fileInput.each(function() {
 		$(this).on('change', function(e) {
 			console.dir(e.target)
-			loadFileImage(e);
+			loadFileImage(this);
 		});
 	});
 
-	function loadFileImage(evt) {
-		const selectedFile = evt.target.files[0];
+	const inputImageUrl = $('#input-imageUrl');
 
-		const categoryImg = $(evt.target).parent().parent().parent().parent().children().first().children().first();
+	function loadFileImage(input) {
+		let selectedFile;
 
-		const categoryImgError = $(evt.target).parent().parent().children().get(3);
+		if(typeof input.files !== 'undefined') {
+			selectedFile = input.files[0];
+			console.log(selectedFile);
+		}
+
+		const categoryImg = $(input).parent().parent().parent().parent().children().first().children().first();
+
+		const categoryImgError = $(input).parent().parent().children().get(3);
 		$(categoryImgError).empty();
 
 		if (!selectedFile ||
 			(selectedFile.type !== 'image/png' && selectedFile.type !== 'image/jpeg') ||
-			evt.target.size > 2097152) {
+			input.size > 2097152) {
 			categoryImg.attr('src', 'https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175');
 			categoryImg.title = '';
-			evt.target.value = '';
+			input.value = '';
+
+			inputImageUrl.val('');
 
 			$(categoryImgError).append('<small class="text-danger">Invalid format or size!</small>');
 
@@ -123,13 +132,33 @@
 
 		const reader = new FileReader();
 
-		reader.onload = function (evt) {
-			categoryImg.attr('src', evt.target.result);
+		reader.onload = function (e) {
+			categoryImg.attr('src', e.target.result);
 			categoryImg.title = selectedFile.name;
+
+			inputImageUrl.val(selectedFile.name);
 		}
 
 		reader.readAsDataURL(selectedFile);
 	}
+
+	/**
+	 * Image load on edit page load
+	 */
+	const imageEditUrl = $('.input-image.edit');
+
+	$(window).on('load', function() {
+		const imageUrl = imageEditUrl.attr('field');
+		const imgTag = imageEditUrl.children().first();
+
+		if(imageUrl === undefined) {
+			imgTag.attr('src', 'https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175');
+		} else {
+			imgTag.attr('src', `/images/${imageUrl}`);
+
+			inputImageUrl.val(imageUrl);
+		}
+	});
 
 	// Categories
 	const categories = $('.categories-container');

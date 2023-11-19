@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @GetMapping("/edit/{uuid}")
-    public String getEditUser(Model model,
+    public String getUser(Model model,
                               @PathVariable("uuid") UUID uuid) {
         UserDTO userDTO = userService.getUserByUuid(uuid);
 
@@ -45,7 +45,7 @@ public class UserController {
         return "user-edit";
     }
 
-    @RequestMapping(value = "/edit", method = { RequestMethod.PATCH })
+    @PatchMapping("/edit")
     public String editUser(@Valid UserDTO userDTO,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {

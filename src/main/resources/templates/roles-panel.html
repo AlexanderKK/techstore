@@ -100,7 +100,9 @@
                                 <td th:text="*{name}" class="align-middle"></td>
 
                                 <td class="align-middle">
-                                    <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
+                                    <a th:href="@{/admin/roles/edit/{id}(id = *{uuid})}">
+                                        <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
+                                    </a>
                                 </td>
 
                                 <td class="align-middle">

@@ -1,18 +1,27 @@
 package com.techx7.techstore.service.impl;
 
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
-import com.techx7.techstore.model.entity.Category;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.service.RoleService;
+import com.techx7.techstore.util.FileUtils;
 import jakarta.transaction.Transactional;
+import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.mock.web.MockMultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+
+import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
+import static com.techx7.techstore.constant.Paths.RESOURCES_IMAGES_DIRECTORY;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -51,6 +60,25 @@ public class RoleServiceImpl implements RoleService {
     @Transactional
     public void deleteRoleByUuid(UUID uuid) {
         roleRepository.deleteByUuid(uuid);
+    }
+
+    @Override
+    public RoleDTO getRoleByUuid(UUID uuid) {
+        return roleRepository.findByUuid(uuid)
+                .map(role -> mapper.map(role, RoleDTO.class))
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
+    }
+
+    @Override
+    public void editRole(RoleDTO roleDTO) throws IOException {
+        FileUtils.saveImageLocally(roleDTO.getImage());
+
+        Role role = roleRepository.findByUuid(roleDTO.getUuid())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
+
+        role = role.editRole(roleDTO);
+
+        roleRepository.save(role);
     }
 
 }

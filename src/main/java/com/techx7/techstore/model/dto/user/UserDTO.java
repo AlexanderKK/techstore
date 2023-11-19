@@ -1,6 +1,8 @@
 package com.techx7.techstore.model.dto.user;
 
 import com.techx7.techstore.model.dto.role.RoleDTO;
+import com.techx7.techstore.validation.user.UniqueEmail;
+import com.techx7.techstore.validation.user.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
