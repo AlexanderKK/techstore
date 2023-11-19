@@ -22,8 +22,7 @@ public class Role extends BaseEntity {
 
     private String description;
 
-    @ManyToMany(
-            cascade = CascadeType.REMOVE)
+    @ManyToMany
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
