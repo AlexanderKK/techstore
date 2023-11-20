@@ -4,125 +4,125 @@
 <head th:replace="~{fragments/commons::head(title = 'Roles | Tech x7')}"></head>
 
 <body>
-<header th:replace="~{fragments/commons::header(activeLink = 'roles')}"></header>
+    <header th:replace="~{fragments/commons::header(activeLink = 'roles')}"></header>
 
-<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Roles')}"></div>
+    <div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Roles')}"></div>
 
-<div class="container-fluid">
-    <div class="row px-xl-5 pb-3">
-        <h2 class="section-title position-relative text-uppercase mb-4"><span class="bg-secondary px-1">Role</span></h2>
+    <div class="container-fluid">
+        <div class="row px-xl-5 pb-3">
+            <h2 class="section-title position-relative text-uppercase mb-4"><span class="bg-secondary px-1">Role</span></h2>
 
-        <div class="col-lg-5 mb-5">
-            <div class="manufacturer-form bg-light p-30">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Add Role</span></h5>
+            <div class="col-lg-5 mb-5">
+                <div class="manufacturer-form bg-light p-30">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Add Role</span></h5>
 
-                <form th:action="@{/roles/add}"
-                      th:method="POST"
-                      th:object="${addRoleDTO}"
-                      name="roleAdd" id="role-add" enctype="multipart/form-data">
-                    <div class="row align-items-start py-3">
-                        <div class="col-md-12 form-group">
-                            <div class="row align-items-center">
-                                <div class="col-auto mb-3 mb-md-0 input-image">
-                                    <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175" class="img" alt="Category photo">
-                                </div>
+                    <form th:action="@{/roles/add}"
+                          th:method="POST"
+                          th:object="${addRoleDTO}"
+                          name="roleAdd" id="role-add" enctype="multipart/form-data">
+                        <div class="row align-items-start py-3">
+                            <div class="col-md-12 form-group">
+                                <div class="row align-items-center">
+                                    <div class="col-auto mb-3 mb-md-0 input-image">
+                                        <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175" class="img" alt="Category photo">
+                                    </div>
 
-                                <div class="col-auto">
-                                    <div id="img-section">
-                                        <b>Role Picture</b>
-                                        <p>Accepted file type .png. Less than 5MB</p>
-                                        <div class="custom-file">
-                                            <input th:name="image"
-                                                   th:field="*{image}"
-                                                   type="file" class="custom-file-input" id="customFileInput" aria-describedby="customFileInput">
+                                    <div class="col-auto">
+                                        <div id="img-section">
+                                            <b>Role Picture</b>
+                                            <p>Accepted file type .png. Less than 5MB</p>
+                                            <div class="custom-file">
+                                                <input th:name="image"
+                                                       th:field="*{image}"
+                                                       type="file" class="custom-file-input" id="customFileInput" aria-describedby="customFileInput">
 
-                                            <label class="custom-file-label" for="customFileInput">Upload</label>
+                                                <label class="custom-file-label" for="customFileInput">Upload</label>
+                                            </div>
+
+                                            <div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
                                         </div>
-
-                                        <div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-12 form-group">
+                                <label for="role-name">Name</label>
+
+                                <input th:name="name"
+                                       th:field="*{name}"
+                                       id="role-name" class="form-control" type="text" placeholder="Engineer">
+                                <small th:if="${#fields.hasErrors('name')}"
+                                       th:errors="*{name}"
+                                       class="text-danger"></small>
+                            </div>
+
+                            <div class="col-md-12 form-group">
+                                <label for="role-description">Description</label>
+
+                                <textarea th:name="description"
+                                          th:field="*{description}"
+                                          id="role-description" class="form-control"></textarea>
+                                <small th:if="${#fields.hasErrors('description')}"
+                                       th:errors="*{description}"
+                                       class="text-danger"></small>
+                            </div>
+
+                            <div class="col-md-12 mt-4 form-actions">
+                                <button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Add role</button>
+                            </div>
                         </div>
-
-                        <div class="col-md-12 form-group">
-                            <label for="role-name">Name</label>
-
-                            <input th:name="name"
-                                   th:field="*{name}"
-                                   id="role-name" class="form-control" type="text" placeholder="Engineer">
-                            <small th:if="${#fields.hasErrors('name')}"
-                                   th:errors="*{name}"
-                                   class="text-danger"></small>
-                        </div>
-
-                        <div class="col-md-12 form-group">
-                            <label for="role-description">Description</label>
-
-                            <textarea th:name="description"
-                                      th:field="*{description}"
-                                      id="role-description" class="form-control"></textarea>
-                            <small th:if="${#fields.hasErrors('description')}"
-                                   th:errors="*{description}"
-                                   class="text-danger"></small>
-                        </div>
-
-                        <div class="col-md-12 mt-4 form-actions">
-                            <button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Add role</button>
-                        </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
 
-        <div class="col-lg-7 mb-5">
-            <div class="bg-light p-30">
-                <h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">All Roles</span></h5>
+            <div class="col-lg-7 mb-5">
+                <div class="bg-light p-30">
+                    <h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">All Roles</span></h5>
 
-                <div class="table-responsive mb-5" style="max-height: 450px">
-                    <table class="table table-light table-borderless table-hover text-center mb-0">
-                        <thead class="thead" style="background: #F5F5F5;">
-                            <tr style="border-bottom: 1px solid #dee2e6;">
-                                <th>Picture</th>
-                                <th>Name</th>
-                                <th>Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
+                    <div class="table-responsive mb-5" style="max-height: 450px">
+                        <table class="table table-light table-borderless table-hover text-center mb-0">
+                            <thead class="thead" style="background: #F5F5F5;">
+                                <tr style="border-bottom: 1px solid #dee2e6;">
+                                    <th>Picture</th>
+                                    <th>Name</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
 
-                        <tbody class="align-middle" style="font-size: 18px">
-                            <tr th:each="role : ${roles}"
-                                th:object="${role}">
-                                <td>
-                                    <img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Picture|" width="70">
-                                </td>
+                            <tbody class="align-middle" style="font-size: 18px">
+                                <tr th:each="role : ${roles}"
+                                    th:object="${role}">
+                                    <td>
+                                        <img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Picture|" width="70">
+                                    </td>
 
-                                <td th:text="*{name}" class="align-middle"></td>
+                                    <td th:text="*{name}" class="align-middle"></td>
 
-                                <td class="align-middle">
-                                    <a th:href="@{/roles/edit/{id}(id = *{uuid})}">
-                                        <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
-                                    </a>
-                                </td>
+                                    <td class="align-middle">
+                                        <a th:href="@{/roles/edit/{id}(id = *{uuid})}">
+                                            <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
+                                        </a>
+                                    </td>
 
-                                <td class="align-middle">
-                                    <form th:action="@{/roles/delete/{id}(id = *{uuid})}"
-                                          th:method="DELETE">
-                                        <button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button>
-                                    </form>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                    <td class="align-middle">
+                                        <form th:action="@{/roles/delete/{id}(id = *{uuid})}"
+                                              th:method="DELETE">
+                                            <button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<footer th:replace="~{fragments/commons::footer}"></footer>
+    <footer th:replace="~{fragments/commons::footer}"></footer>
 
-<div th:replace="~{fragments/commons::popups}"></div>
+    <div th:replace="~{fragments/commons::popups}"></div>
 </body>
 
 </html>

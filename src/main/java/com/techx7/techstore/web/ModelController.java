@@ -1,8 +1,10 @@
 package com.techx7.techstore.web;
 
 import com.techx7.techstore.exception.EntityNotFoundException;
+import com.techx7.techstore.exception.ManufacturerNotFoundException;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
+import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ModelService;
@@ -38,8 +40,8 @@ public class ModelController {
 
     @GetMapping
     public String getModels(Model model) {
-        List<ManufacturerDTO> manufacturerDTOS = manufacturerService.getAllManufacturers();
-        model.addAttribute("manufacturers", manufacturerDTOS);
+        List<ManufacturerDTO> manufacturerDTOs = manufacturerService.getAllManufacturers();
+        model.addAttribute("manufacturers", manufacturerDTOs);
 
         List<ModelWithManufacturerDTO> modelWithManufacturerDTOs = modelService.getModelsWithManufacturers();
         model.addAttribute("models", modelWithManufacturerDTOs);
@@ -53,8 +55,8 @@ public class ModelController {
 
     @PostMapping("/add")
     public String addModel(@Valid AddModelDTO addModelDTO,
-                                  BindingResult bindingResult,
-                                  RedirectAttributes redirectAttributes) {
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addModelDTO", addModelDTO);
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
@@ -63,6 +65,37 @@ public class ModelController {
         }
 
         modelService.createModel(addModelDTO);
+
+        return "redirect:/models";
+    }
+
+    @GetMapping("/edit/{uuid}")
+    public String getModel(Model model,
+                           @PathVariable("uuid") UUID uuid) {
+        List<ManufacturerDTO> manufacturerDTOs = manufacturerService.getAllManufacturers();
+        model.addAttribute("manufacturers", manufacturerDTOs);
+
+        ModelWithManufacturerDTO modelWithManufacturerDTO = modelService.getModelWithManufacturerByUuid(uuid);
+
+        if(!model.containsAttribute("modelToEdit")) {
+            model.addAttribute("modelToEdit", modelWithManufacturerDTO);
+        }
+
+        return "model-edit";
+    }
+
+    @PatchMapping("/edit")
+    public String editModel(@Valid ModelWithManufacturerDTO modelWithManufacturerDTO,
+                            BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("modelToEdit", modelWithManufacturerDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.modelToEdit", bindingResult);
+
+            return "redirect:/models/edit/" + modelWithManufacturerDTO.getUuid();
+        }
+
+        modelService.editModel(modelWithManufacturerDTO);
 
         return "redirect:/models";
     }
@@ -86,6 +119,14 @@ public class ModelController {
         System.out.println(e.getMessage());
 
         return "redirect:/models";
+    }
+
+    @ExceptionHandler(ManufacturerNotFoundException.class)
+    public String handleManufacturerError(ManufacturerNotFoundException e,
+                                          RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("manufacturerError", e.getMessage());
+
+        return "redirect:/models/edit/" + e.getUuid();
     }
 
 }

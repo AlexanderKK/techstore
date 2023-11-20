@@ -5,8 +5,10 @@ import jakarta.validation.constraints.NotNull;
 
 public class ModelWithManufacturerDTO extends ModelDTO {
 
-    @NotNull
     private ManufacturerDTO manufacturerDTO;
+
+    @NotNull(message = "Please choose a manufacturer")
+    private Long manufacturerId;
 
     public ModelWithManufacturerDTO() {}
 
@@ -16,6 +18,14 @@ public class ModelWithManufacturerDTO extends ModelDTO {
 
     public void setManufacturerDTO(ManufacturerDTO manufacturerDTO) {
         this.manufacturerDTO = manufacturerDTO;
+    }
+
+    public Long getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public void setManufacturerId(Long manufacturerId) {
+        this.manufacturerId = manufacturerId;
     }
 
 }

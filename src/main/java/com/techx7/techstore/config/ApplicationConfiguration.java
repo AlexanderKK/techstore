@@ -30,14 +30,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -150,11 +147,25 @@ public class ApplicationConfiguration {
                 ? null
                 : modelMapper.map(context.getSource(), ManufacturerDTO.class);
 
+        Converter<Manufacturer, Long> toManufacturerId
+                = context -> context.getSource() == null
+                ? null
+                : modelMapper.map(context.getSource(), Long.class);
+
         modelMapper
                 .createTypeMap(Model.class, ModelWithManufacturerDTO.class)
                 .addMappings(mapper -> mapper
                         .using(toModelManufacturerDTO)
-                        .map(Model::getManufacturer, ModelWithManufacturerDTO::setManufacturerDTO));
+                        .map(Model::getManufacturer, ModelWithManufacturerDTO::setManufacturerDTO))
+                .addMappings(mapper -> mapper
+                        .using(toManufacturerId)
+                        .map(model -> model.getManufacturer().getId(), ModelWithManufacturerDTO::setManufacturerId))
+                .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(Model::getCreated, ModelWithManufacturerDTO::setCreated))
+                .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(Model::getModified, ModelWithManufacturerDTO::setModified));
 
         // AddProductDTO -> Product
         Converter<String, Set<Category>> toCategoriesSet

@@ -70,6 +70,13 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     }
 
     @Override
+    public ManufacturerDTO getManufacturerByUuid(UUID uuid) {
+        return manufacturerRepository.findByUuid(uuid)
+                .map(manufacturer -> mapper.map(manufacturer, ManufacturerDTO.class))
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Manufacturer")));
+    }
+
+    @Override
     public void editManufacturer(ManufacturerDTO manufacturerDTO) throws IOException {
         saveFileLocally(manufacturerDTO.getImage());
 
@@ -79,13 +86,6 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         manufacturer.editManufacturer(manufacturerDTO);
 
         manufacturerRepository.save(manufacturer);
-    }
-
-    @Override
-    public ManufacturerDTO getManufacturerByUuid(UUID uuid) {
-        return manufacturerRepository.findByUuid(uuid)
-                .map(manufacturer -> mapper.map(manufacturer, ManufacturerDTO.class))
-                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Manufacturer")));
     }
 
 }

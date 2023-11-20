@@ -7,14 +7,17 @@ import java.util.UUID;
 
 public class ModelDTO {
 
-    @NotNull
     private Long id;
 
     @NotNull
     private UUID uuid;
 
-    @NotBlank
+    @NotBlank(message = "Please enter a model")
     private String name;
+
+    private String created;
+
+    private String modified;
 
     public ModelDTO() {}
 
@@ -40,6 +43,22 @@ public class ModelDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    public String getModified() {
+        return modified;
+    }
+
+    public void setModified(String modified) {
+        this.modified = modified;
     }
 
 }

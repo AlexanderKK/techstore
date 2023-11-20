@@ -20,8 +20,8 @@ public interface ManufacturerService {
 
     List<ManufacturerWithModelsDTO> getManufacturersWithModelsDTO();
 
-    void editManufacturer(ManufacturerDTO manufacturerDTO) throws IOException;
-
     ManufacturerDTO getManufacturerByUuid(UUID uuid);
+
+    void editManufacturer(ManufacturerDTO manufacturerDTO) throws IOException;
 
 }

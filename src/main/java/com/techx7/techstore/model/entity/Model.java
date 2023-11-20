@@ -1,10 +1,12 @@
 package com.techx7.techstore.model.entity;
 
+import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Set;
 
@@ -25,12 +27,14 @@ public class Model extends BaseEntity {
 
     @NotNull(message = "Should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
-    private Calendar created = Calendar.getInstance();
+    private LocalDateTime created = LocalDateTime.now();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "TIMESTAMP")
-    private Calendar modified;
+    private LocalDateTime modified;
 
     public Model() {}
 
@@ -58,20 +62,25 @@ public class Model extends BaseEntity {
         this.products = products;
     }
 
-    public Calendar getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Calendar created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public Calendar getModified() {
+    public LocalDateTime getModified() {
         return modified;
     }
 
-    public void setModified(Calendar modified) {
+    public void setModified(LocalDateTime modified) {
         this.modified = modified;
+    }
+
+    public void editModel(ModelWithManufacturerDTO modelWithManufacturerDTO) {
+        this.setName(modelWithManufacturerDTO.getName());
+        this.setModified(LocalDateTime.now());
     }
 
 }
