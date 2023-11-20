@@ -23,6 +23,18 @@
 
                             <div class="row align-items-start py-3">
                                 <div class="col-md-12 form-group">
+                                    <label for="name">Model</label>
+
+                                    <input th:name="name"
+                                           th:field="*{name}"
+                                           th:errorclass="is-invalid"
+                                           id="name" class="form-control" type="text">
+                                    <small th:if="${#fields.hasErrors('name')}"
+                                           th:errors="*{name}"
+                                           class="text-danger"></small>
+                                </div>
+
+                                <div class="col-md-12 form-group">
                                     <label>Manufacturer</label>
 
                                     <select th:name="manufacturerId"
@@ -38,18 +50,6 @@
                                            class="text-danger"></small>
                                     <small th:if="${manufacturerError}"
                                            th:text="${manufacturerError}"
-                                           class="text-danger"></small>
-                                </div>
-
-                                <div class="col-md-12 form-group">
-                                    <label for="name">Name</label>
-
-                                    <input th:name="name"
-                                           th:field="*{name}"
-                                           th:errorclass="is-invalid"
-                                           id="name" class="form-control" type="text">
-                                    <small th:if="${#fields.hasErrors('name')}"
-                                           th:errors="*{name}"
                                            class="text-danger"></small>
                                 </div>
 

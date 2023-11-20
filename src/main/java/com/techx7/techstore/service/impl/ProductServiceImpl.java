@@ -5,7 +5,6 @@ import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.service.ProductService;
-import com.techx7.techstore.util.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,6 +22,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 
+import static com.techx7.techstore.util.FileUtils.saveFileLocally;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -38,7 +39,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void createProduct(AddProductDTO addProductDTO) throws IOException {
-        FileUtils.saveFileLocally(addProductDTO.getImage());
+        saveFileLocally(addProductDTO.getImage());
 
         Product product = mapper.map(addProductDTO, Product.class);
 
@@ -48,6 +49,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable("products")
     public Page<ProductDTO> getAllProducts(Pageable pageable) {
+        System.out.println("Displaying products");
+
         return productRepository.findAll(pageable)
                 .map(toProductDTO());
     }
@@ -56,6 +59,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> getAllProductsWithDiscount() {
         return productRepository.findAll().stream()
                 .map(toProductDTO())
+                .filter(productDTO -> productDTO.getDiscountPrice() != null)
                 .filter(productDTO -> productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) >= 0)
                 .sorted(Comparator.comparing(ProductDTO::getDiscountPrice))
                 .toList();

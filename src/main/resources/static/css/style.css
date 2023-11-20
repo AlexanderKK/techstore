@@ -9293,6 +9293,20 @@ a.text-secondary:hover, a.text-secondary:focus {
   color: #cfcfcf !important;
 }
 
+#footer-logout {
+  margin-left: -4px;
+}
+
+a.text-secondary:hover #footer-logout,
+a.text-secondary:focus #footer-logout {
+  color: #cfcfcf !important;
+  text-decoration: underline;
+}
+
+#footer-logout:hover {
+  text-decoration: underline;
+}
+
 .text-success {
   color: #28a745 !important;
 }

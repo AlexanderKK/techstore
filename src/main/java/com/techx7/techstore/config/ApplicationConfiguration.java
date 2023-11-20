@@ -172,10 +172,10 @@ public class ApplicationConfiguration {
                 = context -> context.getSource() == null
                 ? null
                 : Arrays.stream(context.getSource().split(","))
-                .mapToLong(Long::parseLong)
-                .mapToObj(categoryId -> categoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Category"))))
-                .collect(Collectors.toSet());
+                    .mapToLong(Long::parseLong)
+                    .mapToObj(categoryId -> categoryRepository.findById(categoryId)
+                            .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Category"))))
+                    .collect(Collectors.toSet());
 
         Converter<Long, Model> toModel
                 = context -> context.getSource() == null

@@ -46,18 +46,11 @@ public class ProductController {
         this.categoryService = categoryService;
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public String handleModelError(EntityNotFoundException e) {
-        System.out.println(e.getMessage());
-
-        return "redirect:/products/manage/add";
-    }
-
     @GetMapping
-    public String index(Model model,
-                        @PageableDefault(size = 4, sort= "discountPercentage") Pageable pageable,
-                        @RequestParam("page") Optional<Integer> page,
-                        @RequestParam("size") Optional<Integer> size) {
+    public String getProducts(Model model,
+                              @PageableDefault(size = 4, sort = "discountPercentage") Pageable pageable,
+                              @RequestParam("page") Optional<Integer> page,
+                              @RequestParam("size") Optional<Integer> size) {
         Page<ProductDTO> products = productService.getAllProducts(pageable);
 
         model.addAttribute("products", products);
@@ -82,7 +75,7 @@ public class ProductController {
         return "products";
     }
 
-    @GetMapping("/manage/add")
+    @GetMapping("/add")
     public String manageProduct(Model model) {
         List<ManufacturerWithModelsDTO> manufacturerWithModelsDTOs = manufacturerService.getManufacturersWithModelsDTO();
 
@@ -98,7 +91,7 @@ public class ProductController {
         return "product-add";
     }
 
-    @PostMapping("/manage/add")
+    @PostMapping("/add")
     public String addProduct(@Valid AddProductDTO addProductDTO,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) throws IOException {
@@ -106,12 +99,19 @@ public class ProductController {
             redirectAttributes.addFlashAttribute(flashAttributeDTO, addProductDTO);
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
 
-            return "redirect:/products/manage/add";
+            return "redirect:/products/add";
         }
 
         productService.createProduct(addProductDTO);
 
-        return "redirect:/products/manage/add";
+        return "redirect:/products";
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handleModelError(EntityNotFoundException e) {
+        System.out.println(e.getMessage());
+
+        return "redirect:/products/add";
     }
 
 }

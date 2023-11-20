@@ -9,7 +9,7 @@
     <div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Add Product')}"></div>
 
     <div class="container-fluid">
-        <form th:action="@{/products/manage/add}"
+        <form th:action="@{/products/add}"
               th:method="POST"
               th:object="${addProductDTO}"
               name="productAdd" id="product-add" enctype="multipart/form-data">

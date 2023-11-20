@@ -45,12 +45,13 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/products").permitAll()
                         .requestMatchers("/", "/contact").permitAll()
                         // Manager
-                        .requestMatchers("/products/manage/**").hasRole("MANAGER")
+                        .requestMatchers("/products/**").hasRole("MANAGER")
                         .requestMatchers("/manufacturers/**").hasRole("MANAGER")
-                        .requestMatchers("/models/manage/**").hasRole("MANAGER")
-                        .requestMatchers("/categories/manage/**").hasRole("MANAGER")
+                        .requestMatchers("/models/**").hasRole("MANAGER")
+                        .requestMatchers("/categories/**").hasRole("MANAGER")
                         // Admin
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/users/**").hasRole("ADMIN")
+                        .requestMatchers("/roles/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 ).formLogin(formLogin -> formLogin
                         .loginPage("/users/login")
@@ -62,13 +63,13 @@ public class SecurityConfiguration {
                         .logoutUrl("/users/logout")
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
+                ).csrf(csrf -> csrf
+                        .requireCsrfProtectionMatcher(matcher -> new CsrfRequestMatcher().buildMatcher(matcher))
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 ).rememberMe(rememberMe -> rememberMe
                         .key(rememberMeKey)
                         .rememberMeParameter("rememberme")
                         .rememberMeCookieName("rememberme")
-                ).csrf(csrf -> csrf
-                        .requireCsrfProtectionMatcher(matcher -> new CsrfRequestMatcher().buildMatcher(matcher))
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 ).build();
     }
 

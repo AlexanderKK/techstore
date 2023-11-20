@@ -20,7 +20,7 @@ public class Product extends BaseEntity {
 
     @NotNull(message = "Should not be empty")
     @ManyToMany(
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.DETACH},
+            cascade = CascadeType.MERGE,
             fetch = FetchType.EAGER)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),

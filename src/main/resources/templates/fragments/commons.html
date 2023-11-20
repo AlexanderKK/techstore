@@ -359,6 +359,14 @@
                                    class="text-secondary mb-2 link-login"><i class="fa fa-angle-right mr-2"></i>Sign In</a>
                                 <a sec:authorize="!authenticated"
                                    class="text-secondary link-register"><i class="fa fa-angle-right mr-2"></i>Sign Up</a>
+                                <a sec:authorize="authenticated"
+                                   class="text-secondary mb-2 link-login"><i class="fa fa-angle-right mr-2"></i>
+                                    <form th:action="@{/users/logout}"
+                                          th:method="POST"
+                                          class="d-inline-block">
+                                        <button id="footer-logout" class="text-secondary bg-transparent p-0 border-0 outline-0">Logout</button>
+                                    </form>
+                                </a>
                             </div>
                         </div>
                         <div class="col-md-4 mb-5">
