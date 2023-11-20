@@ -16,7 +16,7 @@
             <div class="manufacturer-form bg-light p-30">
                 <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Add Role</span></h5>
 
-                <form th:action="@{/admin/roles/add}"
+                <form th:action="@{/roles/add}"
                       th:method="POST"
                       th:object="${addRoleDTO}"
                       name="roleAdd" id="role-add" enctype="multipart/form-data">
@@ -100,13 +100,13 @@
                                 <td th:text="*{name}" class="align-middle"></td>
 
                                 <td class="align-middle">
-                                    <a th:href="@{/admin/roles/edit/{id}(id = *{uuid})}">
+                                    <a th:href="@{/roles/edit/{id}(id = *{uuid})}">
                                         <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
                                     </a>
                                 </td>
 
                                 <td class="align-middle">
-                                    <form th:action="@{/admin/roles/delete/{id}(id = *{uuid})}"
+                                    <form th:action="@{/roles/delete/{id}(id = *{uuid})}"
                                           th:method="DELETE">
                                         <button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button>
                                     </form>

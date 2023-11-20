@@ -52,10 +52,10 @@
                             <button type="button" class="btn btn-light dropdown-toggle pr-2 pr-lg-0" data-toggle="dropdown" style="font-size: 18px">Admin</button>
 
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a th:href="@{/admin/users}"
+                                <a th:href="@{/users}"
                                    class="btn-link"><button class="dropdown-item" type="button">Manage Users</button></a>
 
-                                <a th:href="@{/admin/roles}"
+                                <a th:href="@{/roles}"
                                    class="btn-link"><button class="dropdown-item" type="button">Manage Roles</button></a>
                             </div>
                         </div>
@@ -126,7 +126,7 @@
                                    th:classappend="${#strings.equals(activeLink, 'models') ? 'active' : ''}"
                                    class="nav-item nav-link">Models</a>
                                 <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/categories/manage}"
+                                   th:href="@{/categories}"
                                    th:classappend="${#strings.equals(activeLink, 'categories') ? 'active' : ''}"
                                    class="nav-item nav-link">Categories</a>
                             </div>
@@ -344,7 +344,7 @@
                                    th:href="@{/models/manage}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Models</a>
                                 <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/categories/manage}"
+                                   th:href="@{/categories}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Categories</a>
                             </div>
                         </div>

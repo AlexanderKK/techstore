@@ -2,6 +2,8 @@ package com.techx7.techstore.web;
 
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
+import com.techx7.techstore.model.dto.role.RoleDTO;
+import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.service.CategoryService;
 import com.techx7.techstore.util.FileUtils;
 import jakarta.validation.Valid;
@@ -30,7 +32,7 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/manage")
+    @GetMapping
     public String manageCategory(Model model) {
         List<CategoryDTO> categoryDTOs = categoryService.getAllCategories();
 
@@ -43,7 +45,7 @@ public class CategoryController {
         return "categories";
     }
 
-    @PostMapping("/manage/add")
+    @PostMapping("/add")
     public String addCategory(@Valid AddCategoryDTO addCategoryDTO,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes) throws IOException {
@@ -51,28 +53,57 @@ public class CategoryController {
             redirectAttributes.addFlashAttribute(flashAttributeDTO, addCategoryDTO);
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
 
-            return "redirect:/categories/manage";
+            return "redirect:/categories";
         }
 
         FileUtils.saveImageLocally(addCategoryDTO.getImage());
 
         categoryService.createCategory(addCategoryDTO);
 
-        return "redirect:/categories/manage";
+        return "redirect:/categories";
     }
 
-    @DeleteMapping("/manage/delete-all")
-    public String deleteAllCategories() {
-        categoryService.deleteAllCategories();
+    @GetMapping("/edit/{uuid}")
+    public String getCategory(Model model,
+                          @PathVariable("uuid") UUID uuid) {
+        CategoryDTO categoryDTO = categoryService.getCategoryByUuid(uuid);
 
-        return "redirect:/categories/manage";
+        if(!model.containsAttribute("categoryToEdit")) {
+            model.addAttribute("categoryToEdit", categoryDTO);
+        }
+
+        return "category-edit";
     }
 
-    @DeleteMapping("/manage/delete/{uuid}")
+    @PatchMapping("/edit")
+    public String editCategory(@Valid CategoryDTO categoryDTO,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) throws IOException {
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("categoryToEdit", categoryDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.categoryToEdit", bindingResult);
+
+            return "redirect:/categories/edit/" + categoryDTO.getUuid();
+        }
+
+        categoryService.editCategory(categoryDTO);
+
+        return "redirect:/categories";
+    }
+
+    @DeleteMapping("/delete/{uuid}")
     public String deleteCategory(@PathVariable("uuid") UUID uuid) {
         categoryService.deleteCategoryByUuid(uuid);
 
-        return "redirect:/categories/manage";
+        return "redirect:/categories";
+    }
+
+    @DeleteMapping("/delete-all")
+    public String deleteAllCategories() {
+        categoryService.deleteAllCategories();
+
+        return "redirect:/categories";
     }
 
 }

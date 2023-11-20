@@ -6,22 +6,17 @@ import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.service.RoleService;
-import com.techx7.techstore.util.FileUtils;
 import jakarta.transaction.Transactional;
-import org.apache.commons.io.IOUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.mock.web.MockMultipartFile;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.constant.Paths.RESOURCES_IMAGES_DIRECTORY;
+import static com.techx7.techstore.util.FileUtils.saveImageLocally;
 
 @Service
 public class RoleServiceImpl implements RoleService {
@@ -45,7 +40,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public void createRole(AddRoleDTO addRoleDTO) {
+    public void createRole(AddRoleDTO addRoleDTO) throws IOException {
+        saveImageLocally(addRoleDTO.getImage());
+
         Role role = mapper.map(addRoleDTO, Role.class);
 
         roleRepository.save(role);
@@ -71,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void editRole(RoleDTO roleDTO) throws IOException {
-        FileUtils.saveImageLocally(roleDTO.getImage());
+        saveImageLocally(roleDTO.getImage());
 
         Role role = roleRepository.findByUuid(roleDTO.getUuid())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/admin/users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -27,6 +27,15 @@ public class UserController {
                           RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
+    }
+
+    @GetMapping
+    public String getUsers(Model model) {
+        List<UserDTO> users = userService.getAllUsers();
+
+        model.addAttribute("users", users);
+
+        return "users";
     }
 
     @GetMapping("/edit/{uuid}")
@@ -54,26 +63,26 @@ public class UserController {
             redirectAttributes.addFlashAttribute("userToEdit", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userToEdit", bindingResult);
 
-            return "redirect:/admin/users/edit/" + userDTO.getUuid();
+            return "redirect:/users/edit/" + userDTO.getUuid();
         }
 
         userService.editUser(userDTO);
 
-        return "redirect:/admin/users";
+        return "redirect:/users";
     }
 
     @DeleteMapping("/delete/{uuid}")
     public String deleteUser(@PathVariable("uuid") UUID uuid) {
         userService.deleteUserByUuid(uuid);
 
-        return "redirect:/admin/users";
+        return "redirect:/users";
     }
 
     @DeleteMapping("/delete-all")
     public String deleteAllUsers() {
         userService.deleteAllUsers();
 
-        return "redirect:/admin/users";
+        return "redirect:/users";
     }
 
 }

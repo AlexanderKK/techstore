@@ -34,8 +34,11 @@
                                 <tr th:each="user : ${users}"
                                     th:object="${user}">
     <!--                                <td><img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Logo|" width="70"></td>-->
+
                                     <td th:text="*{email}" class="align-middle"></td>
+
                                     <td th:text="*{username}" class="align-middle"></td>
+
                                     <td th:data-roles="*{#strings.listJoin(roles, ', ')}" class="align-middle">
                                         <label for="roles" class="hidden"></label>
                                         <select th:name="role"
@@ -46,15 +49,19 @@
                                                     th:value="${role.id}"></option>
                                         </select>
                                     </td>
+
                                     <td th:text="*{created}" class="align-middle"></td>
-                                    <td th:text="*{modified}" class="align-middle"></td>
+
+                                    <td th:text="*{modified} ?: 'None'" class="align-middle"></td>
+
                                     <td class="align-middle">
-                                        <a th:href="@{/admin/users/edit/{id}(id = *{uuid})}">
+                                        <a th:href="@{/users/edit/{id}(id = *{uuid})}">
                                             <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
                                         </a>
                                     </td>
+
                                     <td class="align-middle">
-                                        <form th:action="@{/admin/users/delete/{id}(id = *{uuid})}"
+                                        <form th:action="@{/users/delete/{id}(id = *{uuid})}"
                                               th:method="DELETE">
                                             <button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button>
                                         </form>
@@ -65,7 +72,7 @@
                     </div>
 
                     <div class="col-md-12 mt-5 form-actions">
-                        <form th:action="@{/admin/users/delete-all}"
+                        <form th:action="@{/users/delete-all}"
                               th:method="DELETE">
                             <button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Remove All</button>
                         </form>

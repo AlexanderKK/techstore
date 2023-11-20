@@ -1,8 +1,11 @@
 package com.techx7.techstore.util;
 
+import org.apache.commons.io.IOUtils;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -23,6 +26,19 @@ public class FileUtils {
             bufferedWriter.write(imgBytes);
             bufferedWriter.close();
         }
+    }
+
+    public static MultipartFile manageImage(MultipartFile image, String imageUrl) throws IOException {
+        if(image.isEmpty() && !imageUrl.isEmpty()) {
+            FileInputStream input = new FileInputStream(RESOURCES_IMAGES_DIRECTORY + imageUrl);
+
+            MultipartFile newImage = new MockMultipartFile(
+                    "Existing image", imageUrl, "image/png", IOUtils.toByteArray(input));
+
+            return newImage;
+        }
+
+        return image;
     }
 
 }

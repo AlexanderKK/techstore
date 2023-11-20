@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.techx7.techstore.exception.*;
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
+import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
@@ -90,6 +91,16 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .using(toImageUrl)
                         .map(AddCategoryDTO::getImage, Category::setImageUrl));
+
+        // Category -> CategoryDTO
+        modelMapper
+                .createTypeMap(Category.class, CategoryDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(Category::getCreated, CategoryDTO::setCreated))
+                .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(Category::getModified, CategoryDTO::setModified));
 
         // AddManufacturerDTO -> Manufacturer
         modelMapper

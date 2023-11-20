@@ -12,7 +12,7 @@ public interface RoleService {
 
     List<RoleDTO> getAllRoles();
 
-    void createRole(AddRoleDTO addRoleDTO);
+    void createRole(AddRoleDTO addRoleDTO) throws IOException;
 
     void deleteAllRoles();
 

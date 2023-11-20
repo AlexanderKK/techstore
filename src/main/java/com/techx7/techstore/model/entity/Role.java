@@ -4,8 +4,11 @@ import com.techx7.techstore.model.dto.role.RoleDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Set;
 
@@ -24,6 +27,17 @@ public class Role extends BaseEntity {
 
     @Size(max = 255, message = "Description should have a maximum length of 255 characters")
     private String description;
+
+    @NotNull(message = "Should not be empty")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, columnDefinition = "TIMESTAMP")
+    private LocalDateTime created = LocalDateTime.now();
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime modified;
 
     @ManyToMany
     @JoinTable(name = "users_roles",
@@ -58,6 +72,22 @@ public class Role extends BaseEntity {
         this.description = description;
     }
 
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    public LocalDateTime getModified() {
+        return modified;
+    }
+
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
+    }
+
     public Set<User> getUsers() {
         return users;
     }
@@ -70,6 +100,7 @@ public class Role extends BaseEntity {
         this.name = roleDTO.getName().toUpperCase(Locale.getDefault());
         this.description = roleDTO.getDescription();
         this.imageUrl = roleDTO.getImageUrl();
+        this.setModified(LocalDateTime.now());
 
         return this;
     }

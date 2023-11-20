@@ -4,16 +4,12 @@ import com.techx7.techstore.validation.multipart.MultiPartFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import org.apache.commons.io.IOUtils;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.techx7.techstore.constant.Paths.RESOURCES_IMAGES_DIRECTORY;
+import static com.techx7.techstore.util.FileUtils.manageImage;
 
 public class RoleDTO {
 
@@ -65,20 +61,7 @@ public class RoleDTO {
     }
 
     public void setImage(MultipartFile image) throws IOException {
-        if(image.isEmpty() && !getImageUrl().isEmpty()) {
-            String fileName = getImageUrl();
-
-            FileInputStream input = new FileInputStream(RESOURCES_IMAGES_DIRECTORY + fileName);
-
-            MultipartFile newImage = new MockMultipartFile(
-                    "Existing image", fileName, "image/png", IOUtils.toByteArray(input));
-
-            this.image = newImage;
-
-            return;
-        }
-
-        this.image = image;
+        this.image = manageImage(image, imageUrl);
     }
 
     public String getImageUrl() {

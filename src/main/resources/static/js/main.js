@@ -89,9 +89,8 @@
 	});
 
 
-	// Image upload
-
 	/**
+	 * Image upload
 	 * Image load on file input change
 	 */
 	fileInput.each(function() {
@@ -160,16 +159,17 @@
 		}
 	});
 
-	// Categories
+
+	/**
+	 * Categories
+	 */
 	const categories = $('.categories-container');
 
 	const categoriesSelect = $('#product-category');
 
 	const categoryIds= [];
 
-	/**
-	 * Remove category from container before adding to product
-	 */
+	// Remove category from container before adding to product
 	categories.delegate('.category', 'click', function(evt) {
 		if(evt.target) {
 			fadeOutAndRemove(this);
@@ -196,9 +196,7 @@
 		})
 	}
 
-	/**
-	 * Reset inputs -> remove is-invalid class
-	 */
+	// Reset inputs -> remove is-invalid class
 	$('.form-group').children().each(function() {
 		$(this).on('blur', function() {
 			if($(this).next().hasClass("categories-container")) {
@@ -223,17 +221,17 @@
 	// 	}
 	// });
 
-	/**
-	 * Add is-invalid class to inputs
-	 */
+
+	// Add is-invalid class to inputs
+
 	// if($('#product-category + div + small').text().length !== 0) {
 	// 	categoriesSelect.addClass("is-invalid");
 	// }
 
-	/**
-	 * Select categories
-	 * Add categories to product
-	 */
+
+	// Select categories
+	// Add categories to product
+
 	// console.log(categories.attr('field').textContent);
 	const attrField = categories.attr('field');
 
@@ -314,6 +312,7 @@
 	// 		$('body').removeClass("stop-scrolling");
 	// 	});
 	// });
+
 
 	/**
 	 * Scrolling

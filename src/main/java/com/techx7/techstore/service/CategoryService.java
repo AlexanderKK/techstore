@@ -3,6 +3,7 @@ package com.techx7.techstore.service;
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,5 +16,9 @@ public interface CategoryService {
     void deleteAllCategories();
 
     void deleteCategoryByUuid(UUID uuid);
+
+    CategoryDTO getCategoryByUuid(UUID uuid);
+
+    void editCategory(CategoryDTO categoryDTO) throws IOException;
 
 }

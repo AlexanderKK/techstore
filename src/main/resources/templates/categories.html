@@ -16,7 +16,7 @@
                 <div class="manufacturer-form bg-light p-30">
                     <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Add Category</span></h5>
 
-                    <form th:action="@{/categories/manage/add}"
+                    <form th:action="@{/categories/add}"
                           th:method="POST"
                           th:object="${addCategoryDTO}"
                           name="categoryAdd" id="category-add" enctype="multipart/form-data">
@@ -29,7 +29,7 @@
 
                                     <div class="col-auto">
                                         <div id="img-section">
-                                            <b>Category Photo</b>
+                                            <b>Category Image</b>
                                             <p>Accepted file type .png. Less than 5MB</p>
                                             <div class="custom-file">
                                                 <input th:name="image"
@@ -85,6 +85,8 @@
                                 <tr style="border-bottom: 1px solid #dee2e6;">
                                     <th>Photo</th>
                                     <th>Name</th>
+                                    <th>Created at</th>
+                                    <th>Modified at</th>
                                     <th>Edit</th>
                                     <th>Delete</th>
                                 </tr>
@@ -94,17 +96,23 @@
                                 <tr th:each="category : ${categories}"
                                     th:object="${category}">
                                     <td>
-                                        <img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Photo|" width="70">
+                                        <img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Image|" width="70">
                                     </td>
 
                                     <td th:text="*{name}" class="align-middle"></td>
 
+                                    <td th:text="*{created}" class="align-middle"></td>
+
+                                    <td th:text="*{modified} ?: 'None'" class="align-middle"></td>
+
                                     <td class="align-middle">
-                                        <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
+                                        <a th:href="@{/categories/edit/{id}(id = *{uuid})}">
+                                            <button class="btn btn-info rounded" style="padding: 3px 8px"><i class="fa fa-solid fa-pen"></i></button>
+                                        </a>
                                     </td>
 
                                     <td class="align-middle">
-                                        <form th:action="@{/categories/manage/delete/{id}(id = *{uuid})}"
+                                        <form th:action="@{/categories/delete/{id}(id = *{uuid})}"
                                               th:method="DELETE">
                                             <button class="btn btn-danger rounded" style="padding: 3px 10px"><i class="fa fa-times"></i></button>
                                         </form>
@@ -115,7 +123,7 @@
                     </div>
 
                     <div class="col-md-12 mt-5 form-actions">
-                        <form th:action="@{/categories/manage/delete-all}"
+                        <form th:action="@{/categories/delete-all}"
                               th:method="DELETE">
                             <button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Remove All</button>
                         </form>

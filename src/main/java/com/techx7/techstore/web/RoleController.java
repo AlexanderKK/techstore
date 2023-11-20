@@ -3,7 +3,6 @@ package com.techx7.techstore.web;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.service.RoleService;
-import com.techx7.techstore.util.FileUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,7 @@ import static com.techx7.techstore.constant.Paths.BINDING_RESULT_PATH;
 import static com.techx7.techstore.constant.Paths.DOT;
 
 @Controller
-@RequestMapping("/admin/roles")
+@RequestMapping("/roles")
 public class RoleController {
 
     private final static String flashAttributeDTO = "addRoleDTO";
@@ -41,7 +40,7 @@ public class RoleController {
             model.addAttribute(flashAttributeDTO, new AddRoleDTO());
         }
 
-        return "roles-panel";
+        return "roles";
     }
 
     @PostMapping("/add")
@@ -52,14 +51,12 @@ public class RoleController {
             redirectAttributes.addFlashAttribute(flashAttributeDTO, addRoleDTO);
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
 
-            return "redirect:/admin/roles";
+            return "redirect:/roles";
         }
-
-        FileUtils.saveImageLocally(addRoleDTO.getImage());
 
         roleService.createRole(addRoleDTO);
 
-        return "redirect:/admin/roles";
+        return "redirect:/roles";
     }
 
     @GetMapping("/edit/{uuid}")
@@ -83,19 +80,19 @@ public class RoleController {
             redirectAttributes.addFlashAttribute("roleToEdit", roleDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.roleToEdit", bindingResult);
 
-            return "redirect:/admin/roles/edit/" + roleDTO.getUuid();
+            return "redirect:/roles/edit/" + roleDTO.getUuid();
         }
 
         roleService.editRole(roleDTO);
 
-        return "redirect:/admin/roles";
+        return "redirect:/roles";
     }
 
     @DeleteMapping("/delete/{uuid}")
     public String deleteRole(@PathVariable("uuid") UUID uuid) {
         roleService.deleteRoleByUuid(uuid);
 
-        return "redirect:/admin/roles";
+        return "redirect:/roles";
     }
 
 }
