@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface CategoryService {
 
-    void createCategory(AddCategoryDTO addCategoryDTO);
+    void createCategory(AddCategoryDTO addCategoryDTO) throws IOException;
 
     List<CategoryDTO> getAllCategories();
 

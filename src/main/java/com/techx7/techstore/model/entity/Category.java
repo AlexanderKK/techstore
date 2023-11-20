@@ -9,7 +9,6 @@ import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -99,13 +98,11 @@ public class Category extends BaseEntity {
         this.products = products;
     }
 
-    public Category editCategory(CategoryDTO categoryDTO) {
+    public void editCategory(CategoryDTO categoryDTO) {
         this.setName(categoryDTO.getName());
         this.setImageUrl(categoryDTO.getImageUrl());
         this.setDescription(categoryDTO.getDescription());
         this.setModified(LocalDateTime.now());
-
-        return this;
     }
 
 }

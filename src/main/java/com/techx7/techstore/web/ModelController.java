@@ -36,15 +36,8 @@ public class ModelController {
         this.manufacturerService = manufacturerService;
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public String handleModelError(EntityNotFoundException e) {
-        System.out.println(e.getMessage());
-
-        return "redirect:/models/manage";
-    }
-
-    @GetMapping("/manage")
-    public String manageModel(Model model) {
+    @GetMapping
+    public String getModels(Model model) {
         List<ManufacturerDTO> manufacturerDTOS = manufacturerService.getAllManufacturers();
         model.addAttribute("manufacturers", manufacturerDTOS);
 
@@ -58,34 +51,41 @@ public class ModelController {
         return "models";
     }
 
-    @PostMapping("/manage/add")
+    @PostMapping("/add")
     public String addModel(@Valid AddModelDTO addModelDTO,
                                   BindingResult bindingResult,
-                                  RedirectAttributes redirectAttributes) throws IOException {
+                                  RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("addModelDTO", addModelDTO);
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
 
-            return "redirect:/models/manage";
+            return "redirect:/models";
         }
 
         modelService.createModel(addModelDTO);
 
-        return "redirect:/models/manage";
+        return "redirect:/models";
     }
 
-    @DeleteMapping("/manage/delete-all")
-    public String deleteAllModels() {
-        modelService.deleteAllModels();
-
-        return "redirect:/models/manage";
-    }
-
-    @DeleteMapping("/manage/delete/{uuid}")
+    @DeleteMapping("/delete/{uuid}")
     public String deleteModel(@PathVariable("uuid") UUID uuid) {
         modelService.deleteModelByUuid(uuid);
 
-        return "redirect:/models/manage";
+        return "redirect:/models";
+    }
+
+    @DeleteMapping("/delete-all")
+    public String deleteAllModels() {
+        modelService.deleteAllModels();
+
+        return "redirect:/models";
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handleModelError(EntityNotFoundException e) {
+        System.out.println(e.getMessage());
+
+        return "redirect:/models";
     }
 
 }

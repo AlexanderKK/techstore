@@ -109,6 +109,16 @@ public class ApplicationConfiguration {
                         .using(toImageUrl)
                         .map(AddManufacturerDTO::getImage, Manufacturer::setImageUrl));
 
+        // Manufacturer -> ManufacturerDTO
+        modelMapper
+                .createTypeMap(Manufacturer.class, ManufacturerDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(Manufacturer::getCreated, ManufacturerDTO::setCreated))
+                .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(Manufacturer::getModified, ManufacturerDTO::setModified));
+
         // Manufacturer -> ManufacturerWithModelsDTO
         Converter<Set<Model>, Set<ModelDTO>> toModelDTO
                 = context -> context.getSource() == null

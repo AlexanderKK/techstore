@@ -58,7 +58,6 @@ public class UserController {
     public String editUser(@Valid UserDTO userDTO,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) {
-
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userToEdit", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userToEdit", bindingResult);

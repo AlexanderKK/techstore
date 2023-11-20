@@ -13,13 +13,10 @@ import static com.techx7.techstore.constant.Paths.RESOURCES_IMAGES_DIRECTORY;
 
 public class FileUtils {
 
-    public static void saveImageLocally(MultipartFile image) throws IOException {
+    public static void saveFileLocally(MultipartFile image) throws IOException {
         byte[] imgBytes = image.getBytes();
 
         if(imgBytes.length != 0) {
-//            String imgDir = Objects.requireNonNull(
-//                    getClass().getResource("/static/images/")).toURI().getPath();
-
             BufferedOutputStream bufferedWriter = new BufferedOutputStream(
                     new FileOutputStream(RESOURCES_IMAGES_DIRECTORY + image.getOriginalFilename()));
 

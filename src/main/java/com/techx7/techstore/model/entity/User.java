@@ -8,7 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -144,12 +143,10 @@ public class User extends BaseEntity {
         this.activationCodes = activationCodes;
     }
 
-    public User editUser(UserDTO userDTO) {
+    public void editUser(UserDTO userDTO) {
         this.setEmail(userDTO.getEmail());
         this.setUsername(userDTO.getUsername());
         this.setModified(LocalDateTime.now());
-
-        return this;
     }
 
 }

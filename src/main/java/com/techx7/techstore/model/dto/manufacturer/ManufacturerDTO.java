@@ -1,23 +1,37 @@
 package com.techx7.techstore.model.dto.manufacturer;
 
+import com.techx7.techstore.validation.multipart.MultiPartFile;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
+
+import static com.techx7.techstore.util.FileUtils.manageImage;
 
 public class ManufacturerDTO {
 
-    @NotNull
     private Long id;
 
     @NotNull
     private UUID uuid;
 
-    @NotBlank
+    @MultiPartFile(contentTypes = "image/png")
+    private MultipartFile image;
+
     private String imageUrl;
 
-    @NotBlank
+    @NotBlank(message = "Please enter a manufacturer")
     private String name;
+
+    @Size(max = 255, message = "Please do not exceed the maximum length of 255 characters")
+    private String description;
+
+    private String created;
+
+    private String modified;
 
     public ManufacturerDTO() {}
 
@@ -37,6 +51,14 @@ public class ManufacturerDTO {
         this.uuid = uuid;
     }
 
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) throws IOException {
+        this.image = manageImage(image, imageUrl);
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
@@ -51,6 +73,30 @@ public class ManufacturerDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getCreated() {
+        return created;
+    }
+
+    public void setCreated(String created) {
+        this.created = created;
+    }
+
+    public String getModified() {
+        return modified;
+    }
+
+    public void setModified(String modified) {
+        this.modified = modified;
     }
 
 }

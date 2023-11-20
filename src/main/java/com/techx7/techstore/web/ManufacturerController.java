@@ -3,7 +3,6 @@ package com.techx7.techstore.web;
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.service.ManufacturerService;
-import com.techx7.techstore.util.FileUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +30,7 @@ public class ManufacturerController {
         this.manufacturerService = manufacturerService;
     }
 
-    @GetMapping("/manage")
+    @GetMapping
     public String manageManufacturer(Model model) {
         List<ManufacturerDTO> manufacturerDTOS = manufacturerService.getAllManufacturers();
         model.addAttribute("manufacturers", manufacturerDTOS);
@@ -43,7 +42,7 @@ public class ManufacturerController {
         return "manufacturers";
     }
 
-    @PostMapping("/manage/add")
+    @PostMapping("/add")
     public String addManufacturer(@Valid AddManufacturerDTO addManufacturerDTO,
                                      BindingResult bindingResult,
                                      RedirectAttributes redirectAttributes) throws IOException {
@@ -51,28 +50,54 @@ public class ManufacturerController {
             redirectAttributes.addFlashAttribute(flashAttributeDTO, addManufacturerDTO);
             redirectAttributes.addFlashAttribute(BINDING_RESULT_PATH + DOT + flashAttributeDTO, bindingResult);
 
-            return "redirect:/manufacturers/manage";
+            return "redirect:/manufacturers";
         }
-
-        FileUtils.saveImageLocally(addManufacturerDTO.getImage());
 
         manufacturerService.createManufacturer(addManufacturerDTO);
 
-        return "redirect:/manufacturers/manage";
+        return "redirect:/manufacturers";
     }
 
-    @DeleteMapping("/manage/delete-all")
-    public String deleteAllManufacturers() {
-        manufacturerService.deleteAllManufacturers();
+    @GetMapping("/edit/{uuid}")
+    public String getManufacturer(Model model,
+                              @PathVariable("uuid") UUID uuid) {
+        ManufacturerDTO manufacturerDTO = manufacturerService.getManufacturerByUuid(uuid);
 
-        return "redirect:/manufacturers/manage";
+        if(!model.containsAttribute("manufacturerToEdit")) {
+            model.addAttribute("manufacturerToEdit", manufacturerDTO);
+        }
+
+        return "manufacturer-edit";
     }
 
-    @DeleteMapping("/manage/delete/{uuid}")
+    @PatchMapping("/edit")
+    public String editManufacturer(@Valid ManufacturerDTO manufacturerDTO,
+                               BindingResult bindingResult,
+                               RedirectAttributes redirectAttributes) throws IOException {
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("manufacturerToEdit", manufacturerDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.manufacturerToEdit", bindingResult);
+
+            return "redirect:/manufacturers/edit/" + manufacturerDTO.getUuid();
+        }
+
+        manufacturerService.editManufacturer(manufacturerDTO);
+
+        return "redirect:/manufacturers";
+    }
+
+    @DeleteMapping("/delete/{uuid}")
     public String deleteManufacturer(@PathVariable("uuid") UUID uuid) {
         manufacturerService.deleteManufacturerByUuid(uuid);
 
-        return "redirect:/manufacturers/manage";
+        return "redirect:/manufacturers";
+    }
+
+    @DeleteMapping("/delete-all")
+    public String deleteAllManufacturers() {
+        manufacturerService.deleteAllManufacturers();
+
+        return "redirect:/manufacturers";
     }
 
 }

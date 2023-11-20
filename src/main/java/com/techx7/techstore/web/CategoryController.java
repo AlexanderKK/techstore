@@ -2,10 +2,7 @@ package com.techx7.techstore.web;
 
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
-import com.techx7.techstore.model.dto.role.RoleDTO;
-import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.service.CategoryService;
-import com.techx7.techstore.util.FileUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +15,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import static com.techx7.techstore.constant.Paths.*;
+import static com.techx7.techstore.constant.Paths.BINDING_RESULT_PATH;
+import static com.techx7.techstore.constant.Paths.DOT;
 
 @Controller
 @RequestMapping("/categories")
@@ -56,8 +54,6 @@ public class CategoryController {
             return "redirect:/categories";
         }
 
-        FileUtils.saveImageLocally(addCategoryDTO.getImage());
-
         categoryService.createCategory(addCategoryDTO);
 
         return "redirect:/categories";
@@ -79,7 +75,6 @@ public class CategoryController {
     public String editCategory(@Valid CategoryDTO categoryDTO,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) throws IOException {
-
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("categoryToEdit", categoryDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.categoryToEdit", bindingResult);

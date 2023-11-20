@@ -21,7 +21,6 @@ public class CategoryDTO {
     @MultiPartFile(contentTypes = "image/png")
     private MultipartFile image;
 
-    @NotBlank
     private String imageUrl;
 
     @NotBlank(message = "Please enter a category")

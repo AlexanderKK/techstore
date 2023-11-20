@@ -6,7 +6,6 @@ import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.service.ProductService;
 import com.techx7.techstore.util.FileUtils;
-import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -39,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void createProduct(AddProductDTO addProductDTO) throws IOException {
-        FileUtils.saveImageLocally(addProductDTO.getImage());
+        FileUtils.saveFileLocally(addProductDTO.getImage());
 
         Product product = mapper.map(addProductDTO, Product.class);
 

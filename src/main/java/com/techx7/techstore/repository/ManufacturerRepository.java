@@ -1,6 +1,7 @@
 package com.techx7.techstore.repository;
 
 import com.techx7.techstore.model.entity.Manufacturer;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +14,7 @@ public interface ManufacturerRepository extends JpaRepository<Manufacturer, Long
     Optional<Manufacturer> findByName(String value);
 
     void deleteByUuid(UUID uuid);
+
+    Optional<Manufacturer> findByUuid(UUID uuid);
 
 }

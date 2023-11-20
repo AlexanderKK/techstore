@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
                         .collect(Collectors.toSet())
         );
 
-        user = user.editUser(userDTO);
+        user.editUser(userDTO);
 
         userRepository.save(user);
     }

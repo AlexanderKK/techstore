@@ -96,13 +96,11 @@ public class Role extends BaseEntity {
         this.users = users;
     }
 
-    public Role editRole(RoleDTO roleDTO) {
-        this.name = roleDTO.getName().toUpperCase(Locale.getDefault());
-        this.description = roleDTO.getDescription();
-        this.imageUrl = roleDTO.getImageUrl();
+    public void editRole(RoleDTO roleDTO) {
+        this.setName(roleDTO.getName().toUpperCase(Locale.getDefault()));
+        this.setDescription(roleDTO.getDescription());
+        this.setImageUrl(roleDTO.getImageUrl());
         this.setModified(LocalDateTime.now());
-
-        return this;
     }
 
 }

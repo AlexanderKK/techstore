@@ -1,5 +1,6 @@
 package com.techx7.techstore.model.entity;
 
+import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,14 +26,16 @@ public class Manufacturer extends BaseEntity {
     @Size(min = 5, max = 512)
     private String imageUrl;
 
-    @NotNull
+    @NotNull(message = "Should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
-    private Calendar created = Calendar.getInstance();
+    private LocalDateTime created = LocalDateTime.now();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "TIMESTAMP")
-    private Calendar modified;
+    private LocalDateTime modified;
 
     @OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<Model> models;
@@ -63,19 +66,19 @@ public class Manufacturer extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    public Calendar getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(Calendar created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public Calendar getModified() {
+    public LocalDateTime getModified() {
         return modified;
     }
 
-    public void setModified(Calendar modified) {
+    public void setModified(LocalDateTime modified) {
         this.modified = modified;
     }
 
@@ -85,6 +88,13 @@ public class Manufacturer extends BaseEntity {
 
     public void setModels(Set<Model> models) {
         this.models = models;
+    }
+
+    public void editManufacturer(ManufacturerDTO manufacturerDTO) {
+        this.setName(manufacturerDTO.getName());
+        this.setImageUrl(manufacturerDTO.getImageUrl());
+        this.setDescription(manufacturerDTO.getDescription());
+        this.setModified(LocalDateTime.now());
     }
 
 }

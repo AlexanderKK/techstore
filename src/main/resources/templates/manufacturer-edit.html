@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head th:replace="~{fragments/commons::head(title = 'Edit role | Tech x7')}"></head>
+<head th:replace="~{fragments/commons::head(title = 'Edit manufacturer | Tech x7')}"></head>
 
 <body>
-<header th:replace="~{fragments/commons::header(activeLink = 'role')}"></header>
+<header th:replace="~{fragments/commons::header(activeLink = 'manufacturer')}"></header>
 
-<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Role')}"></div>
+<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Manufacturer')}"></div>
 
 <div class="container-fluid">
     <div class="mb-3">
-        <form th:action="@{/roles/edit}"
+        <form th:action="@{/manufacturers/edit}"
               th:method="PATCH"
-              th:object="${roleToEdit}"
-              name="roleEdit" id="role-edit" enctype="multipart/form-data">
+              th:object="${manufacturerToEdit}"
+              name="manufacturerEdit" id="manufacturer-edit" enctype="multipart/form-data">
             <input type="hidden" name="uuid" th:value="*{uuid}">
 
             <div class="row px-xl-5 pb-3">
                 <div class="col-lg-7 mb-5">
                     <div class="role-form bg-light p-30">
-                        <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Edit role</span></h5>
+                        <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Edit manufacturer</span></h5>
 
                         <div class="row align-items-start py-3">
                             <div class="col-md-12 form-group">
                                 <div class="row align-items-center">
                                     <div th:field="*{imageUrl}"
                                          class="col-auto mb-3 mb-md-0 input-image edit">
-                                        <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175" class="img" alt="Role image">
+                                        <img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175" class="img" alt="Manufacturer image">
 
                                         <input id="input-imageUrl" type="hidden" name="imageUrl">
                                     </div>
 
                                     <div class="col-auto">
                                         <div id="img-section">
-                                            <b>Role Image</b>
+                                            <b>Manufacturer Image</b>
 
                                             <p>Accepted file type .png Less than 5MB</p>
 
@@ -65,8 +65,8 @@
                                 <label for="description">Description</label>
 
                                 <textarea th:description="description"
-                                       th:field="*{description}"
-                                       th:errorclass="is-invalid"
+                                          th:field="*{description}"
+                                          th:errorclass="is-invalid"
                                           id="description" class="form-control" type="text"></textarea>
                                 <small th:if="${#fields.hasErrors('description')}"
                                        th:errors="*{description}"

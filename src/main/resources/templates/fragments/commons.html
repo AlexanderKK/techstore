@@ -114,15 +114,15 @@
                                    th:classappend="${#strings.equals(activeLink, 'contact') ? 'active' : ''}"
                                    class="nav-item nav-link">Contact</a>
                                 <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/products/manage/add}"
+                                   th:href="@{/products/add}"
                                    th:classappend="${#strings.equals(activeLink, 'product-add') ? 'active' : ''}"
                                    class="nav-item nav-link">Add Product</a>
                                 <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/manufacturers/manage}"
+                                   th:href="@{/manufacturers}"
                                    th:classappend="${#strings.equals(activeLink, 'manufacturers') ? 'active' : ''}"
                                    class="nav-item nav-link">Manufacturers</a>
                                 <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/models/manage}"
+                                   th:href="@{/models}"
                                    th:classappend="${#strings.equals(activeLink, 'models') ? 'active' : ''}"
                                    class="nav-item nav-link">Models</a>
                                 <a sec:authorize="hasRole('MANAGER')"
@@ -335,13 +335,13 @@
                                 <a th:href="@{/contact}"
                                    class="text-secondary"><i class="fa fa-angle-right mr-2"></i>Contact Us</a>
                                 <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/products/manage/add}"
+                                   th:href="@{/products/add}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Add Product</a>
                                 <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/manufacturers/manage}"
+                                   th:href="@{/manufacturers}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Manufacturers</a>
                                 <a sec:authorize="hasRole('MANAGER')"
-                                   th:href="@{/models/manage}"
+                                   th:href="@{/models}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Models</a>
                                 <a sec:authorize="hasRole('MANAGER')"
                                    th:href="@{/categories}"

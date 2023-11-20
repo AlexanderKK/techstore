@@ -75,7 +75,6 @@ public class RoleController {
     public String editUser(@Valid RoleDTO roleDTO,
                            BindingResult bindingResult,
                            RedirectAttributes redirectAttributes) throws IOException {
-
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("roleToEdit", roleDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.roleToEdit", bindingResult);
