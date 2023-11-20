@@ -86,6 +86,7 @@ public class UserServiceImpl implements UserService {
 
         user.setRoles(Set.of(
                 getRoleEntity("ADMIN"),
+                getRoleEntity("MANAGER"),
                 getRoleEntity("USER")
         ));
 

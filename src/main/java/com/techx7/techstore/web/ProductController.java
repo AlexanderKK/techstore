@@ -1,6 +1,7 @@
 package com.techx7.techstore.web;
 
 import com.techx7.techstore.exception.EntityNotFoundException;
+import com.techx7.techstore.model.ShoppingCart;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;

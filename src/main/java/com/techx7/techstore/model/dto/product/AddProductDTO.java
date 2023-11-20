@@ -3,10 +3,7 @@ package com.techx7.techstore.model.dto.product;
 import com.techx7.techstore.validation.multipart.MultiPartFile;
 import com.techx7.techstore.validation.product.ProductDiscount;
 import com.techx7.techstore.validation.product.ProductPrice;
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import org.springframework.web.multipart.MultipartFile;
 
 public class AddProductDTO {
@@ -27,6 +24,10 @@ public class AddProductDTO {
 
     @ProductPrice(min = 1, max = 1000000)
     private String price;
+
+    @NotNull(message = "Please enter a quantity")
+    @Positive(message = "Please enter a positive number")
+    private Integer availableQuantity;
 
     @ProductDiscount
     private String discountPercentage;
@@ -79,6 +80,14 @@ public class AddProductDTO {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public Integer getAvailableQuantity() {
+        return availableQuantity;
+    }
+
+    public void setAvailableQuantity(Integer availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
 
     public String getDiscountPercentage() {

@@ -1,5 +1,6 @@
 package com.techx7.techstore.service.impl;
 
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.entity.Product;
@@ -20,8 +21,10 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 
+import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
 import static com.techx7.techstore.util.FileUtils.saveFileLocally;
 
 @Service
@@ -78,6 +81,13 @@ public class ProductServiceImpl implements ProductService {
                 new PageImpl<>(resultList, PageRequest.of(currentPage, pageSize), productDTOs.size());
 
         return productPage;
+    }
+
+    @Override
+    public ProductDTO getProductByUuid(UUID uuid) {
+        return productRepository.findByUuid(uuid)
+                .map(product -> mapper.map(product, ProductDTO.class))
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
     }
 
     private void setDiscountPrice(ProductDTO productDTO) {
