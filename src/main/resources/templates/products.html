@@ -90,6 +90,7 @@
 					<div th:each="product : ${productPage.getContent()}"
 						 th:object="${product}"
 						 class="col-lg-3 col-sm-6 pb-1">
+
 						<div class="product-item bg-light mb-4">
 							<div class="product-img position-relative overflow-hidden">
 								<object class="img-fluid w-100" th:data="@{|/images/*{imageUrl}|}">
@@ -99,13 +100,17 @@
 								<div class="product-action">
 									<a class="d-block w-100 h-100 position-absolute" href="#"></a>
 
-									<a id="btnAddToCart" class="btn btn-outline-dark btn-square">
-										<form th:action="@{/cart/add/{pid}/{qty}(pid=*{uuid}, qty=1)}" th:method="POST">
-											<button class="bg-transparent p-0 outline-0 border-0"><i class="fa fa-shopping-cart"></i></button>
-										</form>
+									<a class="btnAddToCart btn btn-outline-dark btn-square">
+<!--										<form th:action="@{/cart/add/{pid}/{qty}(pid=*{uuid}, qty=1)}" th:method="POST">-->
+										<button class="bg-transparent p-0 outline-0 border-0"><i class="fa fa-shopping-cart"></i></button>
+<!--										</form>-->
 									</a>
 
 									<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+
+									<input type="hidden" th:value="*{uuid}">
+
+									<input type="hidden" th:value="1">
 								</div>
 							</div>
 

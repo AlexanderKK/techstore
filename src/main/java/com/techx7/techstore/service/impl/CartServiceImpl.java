@@ -9,7 +9,6 @@ import com.techx7.techstore.repository.CartRepository;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.CartService;
-import com.techx7.techstore.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,17 +24,14 @@ public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
-    private final ProductService productService;
     private final ProductRepository productRepository;
 
     @Autowired
     public CartServiceImpl(CartRepository cartRepository,
                            UserRepository userRepository,
-                           ProductService productService,
                            ProductRepository productRepository) {
         this.cartRepository = cartRepository;
         this.userRepository = userRepository;
-        this.productService = productService;
         this.productRepository = productRepository;
     }
 
@@ -53,20 +49,18 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public String addProductToCart(Principal principal, UUID uuid, Integer quantity) {
+    public CartItem addProductToCart(Principal principal, UUID uuid, Integer quantity) {
         if(principal == null) {
-            return "Login to add this product";
+            return null;
         }
 
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
-        Integer addedQuantity = addProduct(user, uuid, quantity);
-
-        return addedQuantity + " item(s) of this product added to your shopping cart";
+        return addProduct(user, uuid, quantity);
     }
 
-    private Integer addProduct(User user, UUID productUuid, Integer quantity) {
+    private CartItem addProduct(User user, UUID productUuid, Integer quantity) {
         Product product = productRepository.findByUuid(productUuid)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
 
@@ -82,9 +76,7 @@ public class CartServiceImpl implements CartService {
             cartItem.setQuantity(addedQuantity);
         }
 
-        cartRepository.save(cartItem);
-
-        return addedQuantity;
+        return cartRepository.save(cartItem);
     }
 
 }

@@ -19,15 +19,14 @@ $('.cart__item').each(function( index, element ) {
 	data.push(laptop);
 });
 
-
 // Product Quantity
 $('.quantity button').on('click', function () {
 	const button = $(this);
 
-	const qtyInput = button.parent().parent().find('input')
+	// const qtyInput = button.parent().parent().find('input')
 
-	// const productId = $(this).attr('pid');
-	// const qtyInput = $('quantity' + productId)
+	const productId = $(this).attr('pid');
+	const qtyInput = $('#quantity' + productId)
 
 	if (button.hasClass('btn-plus')) {
 		let newQty = parseInt(qtyInput.val()) + 1;
@@ -53,6 +52,12 @@ $('#cart-trigger').on('click',function(evt) {
 		$('.cart-menu').removeClass('is-active');
 	} else {
 		$('.cart-menu').addClass('is-active');
+	}
+});
+
+$(window).on('keydown',function(evt) {
+	if(evt.code === "Escape") {
+		$('.cart-menu').removeClass('is-active');
 	}
 });
 
@@ -86,10 +91,48 @@ $('.navbar-toggler').click(function() {
 
 
 // Add product to cart
-const btnAddToCart = $('#btnAddToCart');
-btnAddToCart.on('click', function(evt) {
-	alert("Add to cart");
+const btnsAddToCart = $('.btnAddToCart');
+
+btnsAddToCart.each(function() {
+	$(this).on('click', addToCart);
 });
+
+const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
+
+function addToCart(evt) {
+	evt.preventDefault();
+
+	const productId = $(this).parent().children().prev('input').last().val();
+	const quantity = $(this).parent().children().last().val();
+
+	// const quantity = $('#quantity' + productId).val();
+
+	const url = `${window.location.origin}/cart/add/${productId}/${quantity}`;
+	console.log(url)
+
+	const requestOptions = {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'X-XSRF-TOKEN': csrfToken
+		},
+		method: "POST",
+		body: JSON.stringify({
+			productId: productId,
+			quantity: quantity
+		})
+	}
+
+	fetch(url, requestOptions)
+		.then(response => {
+			if(response.ok) {
+				console.log('Item added to cart')
+			} else {
+				console.log('Log in to add product to cart')
+			}
+		})
+		.catch(error => console.log('error', error))
+}
 
 // Submit cart
 $("#formCart").submit(function(evt) {
