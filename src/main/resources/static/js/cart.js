@@ -91,9 +91,9 @@ $('.navbar-toggler').click(function() {
 
 
 // Add product to cart
-const btnsAddToCart = $('.btnAddToCart');
+const buttonsAddToCart = $('.btnAddToCart');
 
-btnsAddToCart.each(function() {
+buttonsAddToCart.each(function() {
 	$(this).on('click', addToCart);
 });
 
@@ -133,6 +133,35 @@ function addToCart(evt) {
 		})
 		.catch(error => console.log('error', error))
 }
+
+updateCartStats();
+function updateCartStats() {
+	// Price
+	$(".product-price").each(function() {
+		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`)
+	})
+
+	// Subtotal
+	let subtotalPrice = 0;
+
+	$(".product-subtotal-page").each(function() {
+		subtotalPrice += parseFloat($(this).text().replace('£',''));
+
+		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`)
+	})
+
+	$('#cart-subtotal-page').text(`£${parseFloat(subtotalPrice.toFixed(2))}`);
+
+	// Shipping
+	const shippingPrice = 15;
+
+	$('.cart-shipping').text(`£${shippingPrice}`);
+
+	// Total
+	const totalPrice = subtotalPrice + shippingPrice;
+	$('#cart-total-page').text(`£${parseFloat(totalPrice.toFixed(2))}`);
+}
+
 
 // Submit cart
 $("#formCart").submit(function(evt) {
