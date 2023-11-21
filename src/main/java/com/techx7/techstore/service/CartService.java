@@ -13,6 +13,8 @@ public interface CartService {
 
     CartItem addProductToCart(Integer quantity, UUID productUuid, Principal principal);
 
-    BigDecimal updateQuantity(Integer quantity, UUID productId, Principal principal);
+    BigDecimal updateQuantity(Integer quantity, UUID productUuid, Principal principal);
+
+    void removeProduct(UUID productUuid, Principal principal);
 
 }

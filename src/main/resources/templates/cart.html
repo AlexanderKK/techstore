@@ -24,8 +24,9 @@
 						</tr>
 					</thead>
 					<tbody class="align-middle" style="font-size: 18px">
-						<tr th:each="item : ${cartItems}"
-							th:with="product = ${item.product}">
+						<tr th:each="item, status : ${cartItems}"
+							th:with="product = ${item.product}"
+							th:id="|row${status.count}|">
 							<td class="d-flex align-items-center pl-5" style="word-wrap: break-word;">
 								<img th:src="@{|/images/${product.imageUrl}|}"
 									 alt="" class="mr-3" width="100">
@@ -52,6 +53,7 @@
 
 									<div class="input-group-btn">
 										<button th:pid="${product.uuid}"
+												th:rowNumber="${status.count}"
 												class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
 											<i class="fa fa-plus-circle"></i>
 										</button>
@@ -63,7 +65,10 @@
 								th:id="|subtotal${product.uuid}|"
 								class="align-middle product-subtotal"></td>
 
-							<td class="align-middle"><button class="btn btn-danger rounded" style="padding: 1px 7.2px"><i class="fa fa-times"></i></button></td>
+							<td class="align-middle">
+								<button th:pid="${product.uuid}"
+										class="btnRemoveFromCart btn btn-danger rounded" style="padding: 1px 7.2px"><i class="fa fa-times"></i></button>
+							</td>
 						</tr>
 					</tbody>
 

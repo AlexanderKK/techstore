@@ -64,18 +64,29 @@ public class CartServiceImpl implements CartService {
 
     @Override
     @Transactional
-    public BigDecimal updateQuantity(Integer quantity, UUID productId, Principal principal) {
-        Product product = productRepository.findByUuid(productId)
+    public BigDecimal updateQuantity(Integer quantity, UUID productUuid, Principal principal) {
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        Product product = productRepository.findByUuid(productUuid)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
+
+        cartItemRepository.updateQuantity(quantity, user.getUuid(), productUuid);
+
+        BigDecimal subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+
+        return subtotal;
+    }
+
+    @Override
+    public void removeProduct(UUID productUuid, Principal principal) {
+        Product product = productRepository.findByUuid(productUuid)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
 
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
-        cartItemRepository.updateQuantity(quantity, user.getUuid(), productId);
-
-        BigDecimal subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
-
-        return subtotal;
+        cartItemRepository.deleteByProductAndUser(product, user);
     }
 
     private CartItem addProduct(User user, UUID productUuid, Integer quantity) {

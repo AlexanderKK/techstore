@@ -121,6 +121,10 @@ function increaseQuantity(qtyButton) {
 		qtyInput.val(0);
 	}
 
+	if(qtyInput.val() > 15) {
+		qtyInput.val(15);
+	}
+
 	let newQty = parseInt(qtyInput.val()) + 1;
 
 	if(newQty <= 15) {
@@ -140,6 +144,10 @@ function decreaseQuantity(qtyButton) {
 
 	if(qtyInput.val() < 0) {
 		qtyInput.val(1);
+	}
+
+	if(qtyInput.val() > 15) {
+		qtyInput.val(15);
 	}
 
 	let newQty = parseInt(qtyInput.val()) - 1;
@@ -171,8 +179,6 @@ function updateQuantity(productId, quantity) {
 	fetch(url, requestOptions)
 		.then(promise => {
 			if(promise.ok) {
-				updateCartStats();
-
 				console.log('Cart updated')
 			} else {
 				console.log('Log in to use the cart')
@@ -181,29 +187,33 @@ function updateQuantity(productId, quantity) {
 			return promise.json();
 		})
 		.then(newSubtotal => {
-			updateCartStats(newSubtotal, productId);
+			updateSubtotal(newSubtotal, productId);
+
+			updateTotal();
 		})
 		.catch(error => console.log('error', error))
 }
 
-// Update cart price, subtotal, shipping and total
-updateCartStats();
-
-function updateCartStats(newProductSubtotal, productId) {
-	// Subtotal
+function updateSubtotal(newProductSubtotal, productId) {
 	$('#subtotal' + productId).text(newProductSubtotal);
+}
 
+// Update cart price, subtotal, shipping and total
+updateTotal();
+
+function updateTotal() {
+	// Price
+	$(".product-price").each(function() {
+		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`);
+	})
+
+	// Subtotal
 	let subtotalPrice = 0;
 
 	$(".product-subtotal").each(function() {
 		subtotalPrice += parseFloat($(this).text().replace('£',''));
 
-		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`)
-	})
-
-	// Price
-	$(".product-price").each(function() {
-		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`)
+		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`);
 	})
 
 	$('#cart-subtotal').text(`£${parseFloat(subtotalPrice.toFixed(2))}`);
@@ -216,6 +226,54 @@ function updateCartStats(newProductSubtotal, productId) {
 	// Total
 	const totalPrice = subtotalPrice + shippingPrice;
 	$('#cart-total').text(`£${parseFloat(totalPrice.toFixed(2))}`);
+}
+
+
+// Remove product from cart
+$('.btnRemoveFromCart').on('click', function() {
+	const removeBtn = $(this);
+
+	removeFromCart(removeBtn);
+});
+
+function removeFromCart(removeBtn) {
+	const productId = removeBtn.attr('pid');
+
+	const url = `${window.location.origin}/cart/remove/${productId}`;
+
+	const requestOptions = {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'X-XSRF-TOKEN': csrfToken
+		},
+		method: "DELETE"
+	}
+
+	fetch(url, requestOptions)
+		.then(promise => {
+			if(promise.ok) {
+				console.log('Product has been deleted')
+			} else {
+				console.log('Log in to use the cart')
+			}
+
+			return promise.json();
+		})
+		.then(response => {
+			const rowNumber = response.attr('rowNumber');
+
+			removeProduct(rowNumber);
+
+			updateTotal()
+		})
+		.catch(error => console.log('error', error))
+}
+
+function removeProduct(rowNumber) {
+	const rowId = "row" + rowNumber;
+
+	$('#' + rowId).remove();
 }
 
 // Submit cart

@@ -23,4 +23,6 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Modifying
     void updateQuantity(Integer quantity, UUID userUuid, UUID productUuid);
 
+    void deleteByProductAndUser(Product product, User user);
+
 }

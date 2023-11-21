@@ -4,6 +4,7 @@ import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,14 @@ public class ShoppingCartRestController {
         BigDecimal subtotal = cartService.updateQuantity(quantity, productUuid, principal);
 
         return ResponseEntity.ok().body(subtotal);
+    }
+
+    @DeleteMapping("/cart/remove/{pid}")
+    public ResponseEntity<CartItem> removeFromCart(@PathVariable("pid") UUID productUuid,
+                                                     Principal principal) {
+        cartService.removeProduct(productUuid, principal);
+
+        return ResponseEntity.ok().build();
     }
 
 }
