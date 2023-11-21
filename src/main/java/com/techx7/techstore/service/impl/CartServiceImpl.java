@@ -5,13 +5,15 @@ import com.techx7.techstore.exception.PrincipalNotFoundException;
 import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.model.entity.User;
-import com.techx7.techstore.repository.CartRepository;
+import com.techx7.techstore.repository.CartItemRepository;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.CartService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -22,15 +24,15 @@ import static com.techx7.techstore.constant.Messages.USER_NOT_LOGGED;
 @Service
 public class CartServiceImpl implements CartService {
 
-    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
     @Autowired
-    public CartServiceImpl(CartRepository cartRepository,
+    public CartServiceImpl(CartItemRepository cartItemRepository,
                            UserRepository userRepository,
                            ProductRepository productRepository) {
-        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
     }
@@ -44,12 +46,12 @@ public class CartServiceImpl implements CartService {
         User user = userRepository.findByUsername(principal.getName())
                         .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
-        return cartRepository.findAllByUser(user)
+        return cartItemRepository.findAllByUser(user)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Cart items")));
     }
 
     @Override
-    public CartItem addProductToCart(Principal principal, UUID uuid, Integer quantity) {
+    public CartItem addProductToCart(Integer quantity, UUID productUuid, Principal principal) {
         if(principal == null) {
             return null;
         }
@@ -57,14 +59,30 @@ public class CartServiceImpl implements CartService {
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
-        return addProduct(user, uuid, quantity);
+        return addProduct(user, productUuid, quantity);
+    }
+
+    @Override
+    @Transactional
+    public BigDecimal updateQuantity(Integer quantity, UUID productId, Principal principal) {
+        Product product = productRepository.findByUuid(productId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
+
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        cartItemRepository.updateQuantity(quantity, user.getUuid(), productId);
+
+        BigDecimal subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+
+        return subtotal;
     }
 
     private CartItem addProduct(User user, UUID productUuid, Integer quantity) {
         Product product = productRepository.findByUuid(productUuid)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
 
-        CartItem cartItem = cartRepository.findByUserAndProduct(user, product);
+        CartItem cartItem = cartItemRepository.findByUserAndProduct(user, product);
 
         Integer addedQuantity = quantity;
 
@@ -76,7 +94,7 @@ public class CartServiceImpl implements CartService {
             cartItem.setQuantity(addedQuantity);
         }
 
-        return cartRepository.save(cartItem);
+        return cartItemRepository.save(cartItem);
     }
 
 }

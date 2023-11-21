@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -22,18 +23,25 @@ public class ShoppingCartRestController {
     }
 
     @PostMapping("/cart/add/{pid}/{qty}")
-    public ResponseEntity<CartItem> addToCart(@PathVariable("pid") UUID uuid,
+    public ResponseEntity<CartItem> addToCart(@PathVariable("pid") UUID productUuid,
                                               @PathVariable("qty") Integer quantity,
                                               Principal principal) {
-        System.out.println("Add product " + uuid + " to cart with quantity " + quantity);
-
-        CartItem cartItem = cartService.addProductToCart(principal, uuid, quantity);
+        CartItem cartItem = cartService.addProductToCart(quantity, productUuid, principal);
 
         if(cartItem == null) {
             return ResponseEntity.badRequest().build();
         }
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/cart/update/{pid}/{qty}")
+    public ResponseEntity<BigDecimal> updateQuantity(@PathVariable("pid") UUID productUuid,
+                                                   @PathVariable("qty") Integer quantity,
+                                                   Principal principal) {
+        BigDecimal subtotal = cartService.updateQuantity(quantity, productUuid, principal);
+
+        return ResponseEntity.ok().body(subtotal);
     }
 
 }
