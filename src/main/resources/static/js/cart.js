@@ -84,6 +84,14 @@ $('.navbar-toggler').click(function() {
 	$('.navbar-collapse.show .cart-menu').removeClass('is-active');
 });
 
+
+// Add product to cart
+const btnAddToCart = $('#btnAddToCart');
+btnAddToCart.on('click', function(evt) {
+	alert("Add to cart");
+});
+
+// Submit cart
 $("#formCart").submit(function(evt) {
 	evt.preventDefault();
 

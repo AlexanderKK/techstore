@@ -99,8 +99,8 @@
 								<div class="product-action">
 									<a class="d-block w-100 h-100 position-absolute" href="#"></a>
 
-									<a class="btn btn-outline-dark btn-square">
-										<form th:action="@{/addToCart(productId=*{uuid})}" th:method="POST">
+									<a id="btnAddToCart" class="btn btn-outline-dark btn-square">
+										<form th:action="@{/cart/add/{pid}/{qty}(pid=*{uuid}, qty=1)}" th:method="POST">
 											<button class="bg-transparent p-0 outline-0 border-0"><i class="fa fa-shopping-cart"></i></button>
 										</form>
 									</a>
