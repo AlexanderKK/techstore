@@ -11,7 +11,8 @@
 	<!-- Cart Start -->
 	<div class="container-fluid">
 		<div class="row px-lg-5">
-			<div class="col-lg-8 table-responsive mb-5">
+			<div th:unless="${#lists.isEmpty(cartItems)}"
+				 class="col-lg-8 table-responsive mb-5">
 				<table class="table table-light table-borderless table-hover text-center mb-0">
 					<thead class="thead" style="background: #F5F5F5;">
 						<tr style="border-bottom: 1px solid #dee2e6;">
@@ -23,29 +24,33 @@
 						</tr>
 					</thead>
 					<tbody class="align-middle" style="font-size: 18px">
-						<tr th:each="item : ${cart.items}"
-							th:object="${item}">
+						<tr th:each="item : ${cartItems}"
+							th:with="product = ${item.product}">
 							<td class="d-flex align-items-center pl-5" style="word-wrap: break-word;">
-								<img th:src="@{|/images/*{imageUrl}|}" alt="" class="mr-3" width="100">
+								<img th:src="@{|/images/${product.imageUrl}|}" alt="" class="mr-3" width="100">
 
-								<a th:text="*{manufacturer + ' ' + model}"
+								<a th:text="${product.model.manufacturer.name + ' ' + product.model.name}"
 								   class="text-left" href="laptops/lenovoV15.html" style="width: 260px"></a>
 							</td>
 
-							<td th:text="|£*{price}|" class="align-middle"></td>
+							<td th:text="|£${product.price}|" class="align-middle"></td>
 
 							<td class="align-middle">
 								<div class="input-group quantity mx-auto" style="width: 125px;">
 									<div class="input-group-btn">
-										<button class="btn btn-sm btn-minus" style="font-size: 20px;">
+										<button th:pid="${product.uuid}"
+												class="btn btn-sm btn-minus" style="font-size: 20px;">
 											<i class="fa fa-minus-circle"></i>
 										</button>
 									</div>
 
-									<input type="text" class="form-control form-control-sm bg-secondary border-0 rounded text-center" value="1" maxlength="3" style="font-size: 18px;">
+									<input th:value="${item.quantity}"
+										   th:id="|quantity ${product.uuid}|"
+										   type="text" class="form-control form-control-sm bg-secondary border-0 rounded text-center" value="1" maxlength="3" style="font-size: 18px;">
 
 									<div class="input-group-btn">
-										<button class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
+										<button th:pid="${product.uuid}"
+												class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
 											<i class="fa fa-plus-circle"></i>
 										</button>
 									</div>
@@ -56,9 +61,13 @@
 						</tr>
 					</tbody>
 
-					<a th:href="@{/clearCart}">Clear Cart</a>
-					<a th:href="@{/products}">Continue Shopping</a>
+<!--					<a th:href="@{/clearCart}">Clear Cart</a>-->
+<!--					<a th:href="@{/products}">Continue Shopping</a>-->
 				</table>
+			</div>
+
+			<div th:if="${#lists.isEmpty(cartItems)}">
+				<h3>No products in cart</h3>
 			</div>
 
 			<div class="col-lg-4" style="margin-top: 12px;">
@@ -67,7 +76,7 @@
 					<div class="border-bottom pb-2">
 						<div class="d-flex justify-content-between mb-3">
 							<h6>Subtotal</h6>
-							<h6 th:text="|£${cart.calculateTotal()}|">£12999.95</h6>
+							<h6>£12999.95</h6>
 						</div>
 						<div class="d-flex justify-content-between">
 							<h6 class="font-weight-medium">Shipping</h6>

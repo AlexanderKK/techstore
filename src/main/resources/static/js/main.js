@@ -17,59 +17,6 @@
 		return false;
 	});
 
-	// Product Quantity
-	$('.quantity button').on('click', function () {
-		var button = $(this);
-		var oldValue = button.parent().parent().find('input').val();
-		if (button.hasClass('btn-plus')) {
-			var newVal = parseFloat(oldValue) + 1;
-		} else {
-			if (oldValue > 0) {
-				var newVal = parseFloat(oldValue) - 1;
-			} else {
-				newVal = 0;
-			}
-		}
-		button.parent().parent().find('input').val(newVal);
-	});
-	
-	//Open / Close Cart On Click
-	$('#cart-trigger').on('click',function(evt) {
-		evt.preventDefault();
-
-		if($('.cart-menu').hasClass('is-active')) {
-			$('.cart-menu').removeClass('is-active');
-		} else {
-			$('.cart-menu').addClass('is-active');
-		}
-	});
-
-	// function clickCart() {
-	// 	if($('#cart-trigger').hasClass('click')) {
-	// 		$('#cart-trigger').unbind('mouseenter');
-	// 		$('#cart-trigger').unbind('mouseleave');
-	// 		$('.cart-menu .cart__display').unbind('mouseover');
-	// 		$('.cart-menu .cart__display').unbind('mouseout');
-	//
-	// 		$('#cart-trigger').attr('href', '#');
-	//
-	// 		$('#cart-trigger').on('click',function(evt) {
-	// 			evt.preventDefault();
-	//
-	// 			if($('.cart-menu').hasClass('is-active')) {
-	// 				$('.cart-menu').removeClass('is-active');
-	// 			} else {
-	// 				$('.cart-menu').addClass('is-active');
-	// 			}
-	// 		});
-	//
-	// 	}
-	// }
-
-	// Close Cart On Nav Trigger Click
-	$('.navbar-toggler').click(function() {
-		$('.navbar-collapse.show .cart-menu').removeClass('is-active');
-	});
 
 	const fileInput = $('.custom-file-input');
 
