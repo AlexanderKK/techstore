@@ -142,7 +142,7 @@ function fillCartContent(responseJson) {
 		cartItems.append(cartItem);
 	}
 
-	getTotalPriceCart();
+	updateTotalCart();
 }
 
 function generateCartItem(uuid, imgPath, productURL, price, quantity) {
@@ -189,7 +189,7 @@ function generateCartItem(uuid, imgPath, productURL, price, quantity) {
 			</div>`;
 }
 
-function getTotalPriceCart() {
+function updateTotalCart() {
 	//Sum prices
 	let sumPrices = 0;
 
@@ -227,8 +227,10 @@ function getTotalPriceCart() {
 /**
  * Update product quantity
  */
-$('.quantity a').on('click', function () {
-	const qtyButton = $(this);
+
+// Update quantity -> Cart Page
+$('.quantity a i').on('click', function () {
+	const qtyButton = $(this).parent();
 
 	// const qtyInput = qtyButton.parent().parent().find('input')
 
@@ -238,6 +240,23 @@ $('.quantity a').on('click', function () {
 		decreaseQuantity(qtyButton);
 	}
 });
+
+// Update quantity -> Cart
+$('.cart-menu').delegate('.quantity a > i', 'click', function(evt) {
+
+	const qtyButton = $(this).parent();
+	console.log(qtyButton);
+
+	// const qtyInput = qtyButton.parent().parent().find('input')
+
+	if (qtyButton.hasClass('btn-plus')) {
+		increaseQuantity(qtyButton);
+	} else {
+		decreaseQuantity(qtyButton);
+	}
+
+});
+
 
 /**
  * Increase quantity and update cart stats
@@ -316,6 +335,8 @@ function updateQuantity(productId, quantity) {
 			updateSubtotal(newSubtotal, productId);
 
 			updateTotal();
+
+			updateTotalCart()
 		})
 		.catch(error => console.log('error', error))
 }
