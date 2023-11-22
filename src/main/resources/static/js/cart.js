@@ -179,7 +179,7 @@ function updateQuantity(productId, quantity) {
 	fetch(url, requestOptions)
 		.then(promise => {
 			if(promise.ok) {
-				console.log('Cart updated')
+				console.log('Product quantity updated')
 			} else {
 				console.log('Log in to use the cart')
 			}
@@ -216,10 +216,11 @@ function updateTotal() {
 		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`);
 	})
 
-	$('#cart-subtotal').text(`£${parseFloat(subtotalPrice.toFixed(2))}`);
+	let cartSubtotal = $('#cart-subtotal');
+	cartSubtotal.text(`£${parseFloat(subtotalPrice.toFixed(2))}`);
 
 	// Shipping
-	const shippingPrice = 15;
+	const shippingPrice= cartSubtotal.text() === '£0' ? 0 : 15;
 
 	$('.cart-shipping').text(`£${shippingPrice}`);
 
@@ -247,25 +248,24 @@ function removeFromCart(removeBtn) {
 			'Content-Type': 'application/json',
 			'X-XSRF-TOKEN': csrfToken
 		},
-		method: "DELETE"
+		method: "POST"
 	}
 
 	fetch(url, requestOptions)
 		.then(promise => {
 			if(promise.ok) {
+				const rowNumber = removeBtn.attr('rowNumber');
+
+				console.log(rowNumber);
+
+				removeProduct(rowNumber);
+
+				updateTotal()
+
 				console.log('Product has been deleted')
 			} else {
 				console.log('Log in to use the cart')
 			}
-
-			return promise.json();
-		})
-		.then(response => {
-			const rowNumber = response.attr('rowNumber');
-
-			removeProduct(rowNumber);
-
-			updateTotal()
 		})
 		.catch(error => console.log('error', error))
 }

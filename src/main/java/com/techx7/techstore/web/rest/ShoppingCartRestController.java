@@ -45,7 +45,7 @@ public class ShoppingCartRestController {
         return ResponseEntity.ok().body(subtotal);
     }
 
-    @DeleteMapping("/cart/remove/{pid}")
+    @PostMapping("/cart/remove/{pid}")
     public ResponseEntity<CartItem> removeFromCart(@PathVariable("pid") UUID productUuid,
                                                      Principal principal) {
         cartService.removeProduct(productUuid, principal);
