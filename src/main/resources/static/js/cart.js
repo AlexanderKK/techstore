@@ -3,9 +3,11 @@
  */
 
 // Close cart on Esc key
+const cartMenu = $('.cart-menu');
+
 $(window).on('keydown',function(evt) {
 	if(evt.code === "Escape") {
-		$('.cart-menu').removeClass('is-active');
+		cartMenu.removeClass('is-active');
 	}
 });
 
@@ -18,46 +20,23 @@ $('.navbar-toggler').click(function() {
 $('#cart-trigger').on('click',function(evt) {
 	evt.preventDefault();
 
-	if($('.cart-menu').hasClass('is-active')) {
-		$('.cart-menu').removeClass('is-active');
+	if(cartMenu.hasClass('is-active')) {
+		cartMenu.removeClass('is-active');
 	} else {
-		$('.cart-menu').addClass('is-active');
+		cartMenu.addClass('is-active');
 	}
 });
+
 
 /**
  * Cart functionality
  */
 
-var data = [];
-
-$('.cart__item').each(function( index, element ) {
-	var parent = $(element);
-	
-	//Laptop Model
-	var model = parent.children().children().children().first().children()[0].children[0].getAttribute('alt');
-
-	//Laptop Price
-	var price = parent.children().children().children()[2].children[0].innerText;
-	price = price.substring(1, price.length);
-
-	//Laptop Quantity
-	var quantity = parent.children().children().children()[1].children[0].children[1].value;
-
-	console.log({m: model, p: price, q: quantity})
-
-	var laptop = {model: model, price: price, quantity: quantity};
-	data.push(laptop);
-});
-
-
-/**
- * Add product to cart
- */
+// Add product to cart
 const buttonsAddToCart = $('.btnAddToCart');
 
 buttonsAddToCart.each(function() {
-	$(this).on('click', addToCart);
+	$(this).on('mouseup', addToCart);
 });
 
 const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
@@ -144,7 +123,7 @@ function fillCartContent(responseJson) {
 
 		const rowId = responseJson.indexOf(element) + 1;
 
-		let cartItem = generateCartItem(rowId, product, quantity);
+		const cartItem = generateCartItem(rowId, product, quantity);
 
 		cartItems.append(cartItem);
 	}
@@ -252,7 +231,7 @@ $('.quantity a i').on('click', function () {
 });
 
 // Update quantity -> Cart
-$('.cart-menu').delegate('.quantity a > i', 'click', function(evt) {
+cartMenu.delegate('.quantity a > i', 'click', function(evt) {
 	evt.preventDefault();
 
 	const qtyButton = $(this).parent();
@@ -436,7 +415,7 @@ function removeProduct(rowNumber, productId) {
 
 
 //Image Hover To Remove Item
-$('.cart-menu').delegate('img', 'mouseover', function(evt) {
+cartMenu.delegate('img', 'mouseover', function(evt) {
 	if(evt.target && evt.target.nodeName === 'IMG') {
 		// var cartItem = evt.target.parentElement.parentElement.parentElement.parentElement.parentElement;
 		const img = $(this);
@@ -454,7 +433,7 @@ $('.cart-menu').delegate('img', 'mouseover', function(evt) {
 });
 
 //Remove cart item
-$('.cart-menu').delegate('.cart__img > img', 'click', function(evt) {
+cartMenu.delegate('.cart__img > img', 'click', function(evt) {
 	if(evt.target && evt.target.nodeName === "IMG") {
 		removeFromCart($(this));
 	}
@@ -471,7 +450,7 @@ function fadeOutAndRemove(product, productId) {
 
 		const length = $('.cart__items').children().length;
 		if (length === 0) {
-			$('.cart-menu').removeClass("is-active");
+			cartMenu.removeClass("is-active");
 		}
 
 		updateSubtotal(0, productId)
@@ -485,12 +464,15 @@ function fadeOutAndRemove(product, productId) {
 }
 
 function checkTableCart() {
-	$('#table-cart').show();
-	$('#no-products').hide();
+	const tableCart = $('#table-cart');
+	const noProductsDiv = $('#no-products');
+
+	tableCart.show();
+	noProductsDiv.hide();
 
 	if($('#table-cart tbody').children().length === 0) {
-		$('#table-cart').hide();
+		tableCart.hide();
 
-		$('#no-products').show();
+		noProductsDiv.show();
 	}
 }
