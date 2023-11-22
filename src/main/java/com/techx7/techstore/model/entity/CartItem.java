@@ -3,8 +3,6 @@ package com.techx7.techstore.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "cart_items")
 public class CartItem extends BaseEntity {

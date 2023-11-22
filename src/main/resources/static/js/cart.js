@@ -1,22 +1,52 @@
 /**
- * Cart open/close
+ * Global declarations
+ *
+ * @type {jQuery|HTMLElement|*}
  */
-
-// Close cart on Esc key
 const cartMenu = $('.cart-menu');
 
+const cartItems = $(".cart__items");
+
+const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
+
+const restHeaders = {
+	'Accept': 'application/json',
+	'Content-Type': 'application/json',
+	'X-XSRF-TOKEN': csrfToken
+}
+
+const buttonsAddToCart = $('.btnAddToCart');
+
+
+/**
+ * On page load
+ */
+checkTableCart();
+
+loadCartItems();
+
+updateCartPageTotal();
+
+
+/**
+ * Close cart on esc key press
+ */
 $(window).on('keydown',function(evt) {
 	if(evt.code === "Escape") {
 		cartMenu.removeClass('is-active');
 	}
 });
 
-// Close Cart On Nav Trigger Click
+/**
+ * Close cart on nav trigger click
+ */
 $('.navbar-toggler').click(function() {
 	$('.navbar-collapse.show .cart-menu').removeClass('is-active');
 });
 
-//Open / Close Cart On Click
+/**
+ * Open / close cart on click
+ */
 $('#cart-trigger').on('click',function(evt) {
 	evt.preventDefault();
 
@@ -29,71 +59,13 @@ $('#cart-trigger').on('click',function(evt) {
 
 
 /**
- * Cart functionality
+ * Load cart items
  */
-
-// Add product to cart
-const buttonsAddToCart = $('.btnAddToCart');
-
-buttonsAddToCart.each(function() {
-	$(this).on('mouseup', addToCart);
-});
-
-const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
-
-function addToCart(evt) {
-	const productId = $(this).parent().children().prev('input').last().val();
-
-	const addedQuantity = $(this).parent().children().last().val();
-
-	const currentQuantity = $('.quantity' + productId).val();
-
-	const newQty = Number(addedQuantity) + Number(currentQuantity);
-
-	if(newQty > 15 || newQty <= 0) {
-		return;
-	}
-
-	const url = `${window.location.origin}/cart/add/${productId}/${addedQuantity}`;
-	console.log(url)
-
-	const requestOptions = {
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-			'X-XSRF-TOKEN': csrfToken
-		},
-		method: "POST"
-	}
-
-	fetch(url, requestOptions)
-		.then(response => {
-			if(response.ok) {
-				console.log('Item added to cart')
-
-				loadCartItems();
-
-				updateTotal();
-			} else {
-				console.log('Log in to add product to cart')
-			}
-		})
-		.catch(error => console.log('error', error))
-}
-
-// On page load
-loadCartItems();
-
 function loadCartItems() {
 	const url = `${window.location.origin}/cart/load`;
-	console.log(url)
 
 	const requestOptions = {
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-			'X-XSRF-TOKEN': csrfToken
-		}
+		headers: restHeaders
 	}
 
 	fetch(url, requestOptions)
@@ -112,8 +84,11 @@ function loadCartItems() {
 		.catch(error => console.log('error', error))
 }
 
-const cartItems = $(".cart__items");
-
+/**
+ * Fill cart content
+ *
+ * @param responseJson
+ */
 function fillCartContent(responseJson) {
 	cartItems.empty();
 
@@ -131,9 +106,17 @@ function fillCartContent(responseJson) {
 	const cartItemsCount = cartItems.children().length;
 	$("#cart-badge").text(cartItemsCount);
 
-	updateTotalCart();
+	updateCartTotal();
 }
 
+/**
+ * Generate cart item
+ *
+ * @param rowId
+ * @param product
+ * @param quantity
+ * @returns {string}
+ */
 function generateCartItem(rowId, product, quantity) {
 	return `<div class="cart__item row${rowId}">
 				<div class="cart__content d-flex flex-column flex-sm-row align-items-sm-center">
@@ -144,7 +127,7 @@ function generateCartItem(rowId, product, quantity) {
 							</div>
 
 							<div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
-								<a href="${product.link}">${product.link}</a>
+								<a href="/products/detail/${product.uuid}">${product.link}</a>
 							</div>
 						</div>
 					</div>
@@ -178,19 +161,18 @@ function generateCartItem(rowId, product, quantity) {
 			</div>`;
 }
 
-function updateTotalCart() {
-	//Sum prices
+/**
+ * Update cart total
+ */
+function updateCartTotal() {
 	let sumPrices = 0;
 
 	$('.cart__item').each(function() {
-
 		const currentPrice = $(this).children().children().children()[1].children[0].children[2].value;
 
 		const quantityInput = $(this).children().children().children()[1].children[0].children[1];
 
 		const totalVal = (Number(currentPrice) * Number(quantityInput.value)).toFixed(2);
-
-		// console.log(totalVal)
 
 		sumPrices += Number(totalVal);
 	});
@@ -202,26 +184,69 @@ function updateTotalCart() {
 	// Set value of shipping span
 	const cartShipping = $('#cart-shipping').children()[1];
 
-	const shippingPrice= Number(cartSubtotal.innerText.replace('£', '')) === 0 ? 0 : 15;
+	const shipping = 15;
+
+	const shippingPrice= Number(cartSubtotal.innerText.replace('£', '')) === 0 ? 0 : shipping;
 
 	cartShipping.innerText = `£${shippingPrice}`;
 
 	const cartShippingPrice = Number(cartShipping.innerText.substring(1, cartShipping.length));
 
-	//Set value of total
+	//Set value of total span
 	const cartTotal = $('#cart-total').children()[1];
-	cartTotal.innerText = "£" + (sumPrices + cartShippingPrice).toFixed(2);
+
+	cartTotal.innerText = "£" + parseFloat((sumPrices + cartShippingPrice).toFixed(2));
+}
+
+
+buttonsAddToCart.each(function() {
+	$(this).on('mouseup', addToCart);
+});
+
+/**
+ * Add to cart
+ */
+function addToCart() {
+	const productId = $(this).parent().children().prev('input').last().val();
+
+	const addedQuantity = $(this).parent().children().last().val();
+
+	const currentQuantity = $('.quantity' + productId).val();
+
+	const newQty = Number(addedQuantity) + Number(currentQuantity);
+
+	if(newQty > 15 || newQty <= 0) {
+		return;
+	}
+
+	const url = `${window.location.origin}/cart/add/${productId}/${addedQuantity}`;
+	console.log(url)
+
+	const requestOptions = {
+		headers: restHeaders,
+		method: "POST"
+	}
+
+	fetch(url, requestOptions)
+		.then(response => {
+			if(response.ok) {
+				console.log('Item added to cart')
+
+				loadCartItems();
+
+				updateCartPageTotal();
+			} else {
+				console.log('Log in to add product to cart')
+			}
+		})
+		.catch(error => console.log('error', error))
 }
 
 /**
- * Update product quantity
+ * Update quantity -> Cart Page
  */
-
-// Update quantity -> Cart Page
 $('.quantity a i').on('click', function () {
 	const qtyButton = $(this).parent();
-
-	// const qtyInput = qtyButton.parent().parent().find('input')
 
 	if (qtyButton.hasClass('btn-plus')) {
 		increaseQuantity(qtyButton);
@@ -230,12 +255,13 @@ $('.quantity a i').on('click', function () {
 	}
 });
 
-// Update quantity -> Cart
+/**
+ * Update quantity -> Cart
+ */
 cartMenu.delegate('.quantity a > i', 'click', function(evt) {
 	evt.preventDefault();
 
 	const qtyButton = $(this).parent();
-	console.log(qtyButton);
 
 	// const qtyInput = qtyButton.parent().parent().find('input')
 
@@ -244,12 +270,11 @@ cartMenu.delegate('.quantity a > i', 'click', function(evt) {
 	} else {
 		decreaseQuantity(qtyButton);
 	}
-
 });
-
 
 /**
  * Increase quantity and update cart stats
+ *
  * @param qtyButton
  */
 function increaseQuantity(qtyButton) {
@@ -269,6 +294,7 @@ function increaseQuantity(qtyButton) {
 
 /**
  * Decrease quantity and update cart stats
+ *
  * @param qtyButton
  */
 function decreaseQuantity(qtyButton) {
@@ -286,28 +312,37 @@ function decreaseQuantity(qtyButton) {
 	}
 }
 
+/**
+ * Reset quantity
+ *
+ * @param qtyInput
+ * @returns {*|string|jQuery}
+ */
 function resetQuantity(qtyInput) {
 	if(qtyInput.val() < 0) {
 		qtyInput.val(1);
 	}
 
-	if(qtyInput.val() > 15) {
+	if(qtyInput.val() >= 15) {
 		qtyInput.val(15);
 	}
 
 	return qtyInput.val();
 }
 
+/**
+ * Update quantity
+ *
+ * @param productId
+ * @param quantity
+ */
 function updateQuantity(productId, quantity) {
 	const url = `${window.location.origin}/cart/update/${productId}/${quantity}`;
+
 	console.log(url, productId, quantity)
 
 	const requestOptions = {
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-			'X-XSRF-TOKEN': csrfToken
-		},
+		headers: restHeaders,
 		method: "POST"
 	}
 
@@ -324,21 +359,27 @@ function updateQuantity(productId, quantity) {
 		.then(newSubtotal => {
 			updateSubtotal(newSubtotal, productId);
 
-			updateTotal();
+			updateCartPageTotal();
 
-			updateTotalCart()
+			updateCartTotal();
 		})
 		.catch(error => console.log('error', error))
 }
 
+/**
+ * Update subtotal
+ *
+ * @param newProductSubtotal
+ * @param productId
+ */
 function updateSubtotal(newProductSubtotal, productId) {
-	$('.subtotal' + productId).text(newProductSubtotal);
+	$('.subtotal' + productId).text('£' + newProductSubtotal);
 }
 
-// Update cart price, subtotal, shipping and total
-updateTotal();
-
-function updateTotal() {
+/**
+ * Update total
+ */
+function updateCartPageTotal() {
 	// Price
 	$(".product-price").each(function() {
 		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`);
@@ -376,17 +417,18 @@ $('.btnRemoveFromCart').on('click', function() {
 	removeFromCart(removeBtn);
 });
 
+/**
+ * Remove from cart
+ *
+ * @param removeBtn
+ */
 function removeFromCart(removeBtn) {
 	const productId = removeBtn.attr('pid');
 
 	const url = `${window.location.origin}/cart/remove/${productId}`;
 
 	const requestOptions = {
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json',
-			'X-XSRF-TOKEN': csrfToken
-		},
+		headers: restHeaders,
 		method: "POST"
 	}
 
@@ -394,8 +436,6 @@ function removeFromCart(removeBtn) {
 		.then(promise => {
 			if(promise.ok) {
 				const rowNumber = removeBtn.attr('rowNumber');
-
-				console.log(rowNumber);
 
 				removeProduct(rowNumber, productId);
 
@@ -407,14 +447,21 @@ function removeFromCart(removeBtn) {
 		.catch(error => console.log('error', error))
 }
 
+/**
+ * Remove product
+ *
+ * @param rowNumber
+ * @param productId
+ */
 function removeProduct(rowNumber, productId) {
 	const rowId = "row" + rowNumber;
 
 	fadeOutAndRemove($('.' + rowId), productId);
 }
 
-
-//Image Hover To Remove Item
+/**
+ * Image Hover To Remove Item
+ */
 cartMenu.delegate('img', 'mouseover', function(evt) {
 	if(evt.target && evt.target.nodeName === 'IMG') {
 		// var cartItem = evt.target.parentElement.parentElement.parentElement.parentElement.parentElement;
@@ -432,15 +479,21 @@ cartMenu.delegate('img', 'mouseover', function(evt) {
 	}
 });
 
-//Remove cart item
+/**
+ * Remove cart item
+ */
 cartMenu.delegate('.cart__img > img', 'click', function(evt) {
 	if(evt.target && evt.target.nodeName === "IMG") {
 		removeFromCart($(this));
 	}
 });
 
-checkTableCart();
-
+/**
+ * Fade out and remove
+ *
+ * @param product
+ * @param productId
+ */
 function fadeOutAndRemove(product, productId) {
 	$(product).fadeOut(350, function () {
 		$(product).remove();
@@ -455,14 +508,17 @@ function fadeOutAndRemove(product, productId) {
 
 		updateSubtotal(0, productId)
 
-		updateTotal();
+		updateCartPageTotal();
 
-		updateTotalCart();
+		updateCartTotal();
 
 		checkTableCart();
 	});
 }
 
+/**
+ * Check table cart
+ */
 function checkTableCart() {
 	const tableCart = $('#table-cart');
 	const noProductsDiv = $('#no-products');
