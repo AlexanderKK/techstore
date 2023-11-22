@@ -2,6 +2,7 @@ package com.techx7.techstore.service;
 
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
+import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,5 +21,7 @@ public interface ProductService {
     Page<ProductDTO> findPaginated(Pageable pageable);
 
     ProductDTO getProductByUuid(UUID uuid);
+
+    ProductDetailsDTO getProductDetailsByUuid(UUID uuid);
 
 }

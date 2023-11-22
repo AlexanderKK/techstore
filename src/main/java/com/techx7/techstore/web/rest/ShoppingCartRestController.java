@@ -33,10 +33,10 @@ public class ShoppingCartRestController {
         return cartItems;
     }
 
-    @PostMapping("/cart/add/{pid}/{qty}")
-    public ResponseEntity<CartItemDTO> addToCart(@PathVariable("pid") UUID productUuid,
-                                              @PathVariable("qty") Integer quantity,
-                                              Principal principal) {
+    @PostMapping("/cart/add/{uuid}/{quantity}")
+    public ResponseEntity<CartItemDTO> addToCart(@PathVariable("uuid") UUID productUuid,
+                                                 @PathVariable("quantity") Integer quantity,
+                                                 Principal principal) {
         if(principal == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -50,10 +50,10 @@ public class ShoppingCartRestController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/cart/update/{pid}/{qty}")
-    public ResponseEntity<BigDecimal> updateQuantity(@PathVariable("pid") UUID productUuid,
-                                                   @PathVariable("qty") Integer quantity,
-                                                   Principal principal) {
+    @PostMapping("/cart/update/{uuid}/{quantity}")
+    public ResponseEntity<BigDecimal> updateQuantity(@PathVariable("uuid") UUID productUuid,
+                                                     @PathVariable("quantity") Integer quantity,
+                                                     Principal principal) {
         if(principal == null) {
             return ResponseEntity.badRequest().build();
         }
@@ -63,8 +63,8 @@ public class ShoppingCartRestController {
         return ResponseEntity.ok().body(subtotal);
     }
 
-    @PostMapping("/cart/remove/{pid}")
-    public ResponseEntity<CartItemDTO> removeFromCart(@PathVariable("pid") UUID productUuid,
+    @PostMapping("/cart/remove/{uuid}")
+    public ResponseEntity<CartItemDTO> removeFromCart(@PathVariable("uuid") UUID productUuid,
                                                       Principal principal) {
         if(principal == null) {
             return ResponseEntity.badRequest().build();

@@ -1,14 +1,15 @@
 package com.techx7.techstore.web;
 
 import com.techx7.techstore.exception.EntityNotFoundException;
-import com.techx7.techstore.model.ShoppingCart;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
+import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
 import com.techx7.techstore.service.CategoryService;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ProductService;
+import com.techx7.techstore.util.KeyValuePair;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
 import static com.techx7.techstore.constant.Paths.BINDING_RESULT_PATH;
@@ -106,6 +108,16 @@ public class ProductController {
         productService.createProduct(addProductDTO);
 
         return "redirect:/products";
+    }
+
+    @GetMapping("/detail/{uuid}")
+    public String productDetails(Model model,
+                                 @PathVariable("uuid") UUID uuid) {
+        ProductDetailsDTO productDetailsDTO = productService.getProductDetailsByUuid(uuid);
+
+        model.addAttribute("product", productDetailsDTO);
+
+        return "product-details";
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

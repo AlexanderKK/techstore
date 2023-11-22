@@ -7,12 +7,13 @@ const cartMenu = $('.cart-menu');
 
 const cartItems = $(".cart__items");
 
-// const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
+const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
 
 const restHeaders = {
 	'Accept': 'application/json',
 	'Content-Type': 'application/json',
-	// 'X-XSRF-TOKEN': csrfToken,
+	'X-XSRF-TOKEN': csrfToken,
+	'SameSite': 'None'
 }
 
 const buttonsAddToCart = $('.btnAddToCart');

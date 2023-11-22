@@ -1,10 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
+    <head th:replace="~{fragments/commons::head(title = 'Product details | Tech x7')}"></head>
+
+<body>
+    <header th:replace="~{fragments/commons::header}"></header>
+
+    <div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Product details')}"></div>
+
+    <div class="container-fluid pb-5">
+        <div th:object="${product}"
+             class="row px-xl-5">
+            <div class="col-lg-5 mb-30">
+                <img th:src="@{|/images/*{imageUrl}|}"
+                     style="width: 100%; height: auto;" alt="Product image">
+            </div>
+
+            <div class="col-lg-7 h-auto mb-30">
+                <div class="h-100 bg-light p-30">
+                    <h3 th:text="*{name}"></h3>
+
+                    <div class="d-flex mb-3">
+                        <div class="text-primary mr-2">
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star"></small>
+                            <small class="fas fa-star"></small>
+                            <small class="fa fa-star-half-alt"></small>
+                        </div>
+                        <small class="pt-1">(77 Reviews)</small>
+                    </div>
+
+                    <div class="d-flex align-items-center my-2">
+                        <th-block th:if="*{discountPrice}">
+                            <h5 th:if="*{discountPrice}" th:text="|£*{discountPrice}|">£1999.99</h5><h6 class="text-muted ml-2"><del th:text="|£*{price}|">£2499.99</del></h6>
+                        </th-block>
+
+                        <th-block th:unless="*{discountPrice}">
+                            <h5 th:text="|£*{price}|">£1999.99</h5>
+                        </th-block>
+                    </div>
+
+                    <div class="fs-5 my-3 row">
+                        <div th:each="specification : *{specificationsList}"
+                             class="col-12">
+                            <span th:text="${specification.key}" class="font-weight-bold">Model: </span>
+                            <span th:text="${specification.value}">Dell XPS 15</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="input-group quantity mr-3" style="width: 120px;">
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-minus" style="font-size: 20px;">
+                                    <i class="fa fa-minus-circle"></i>
+                                </button>
+                            </div>
+                            <input type="text" class="form-control form-control-sm bg-secondary border-0 rounded text-center" value="1" maxlength="3" style="font-size: 18px;">
+                            <div class="input-group-btn">
+                                <button class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
+                                    <i class="fa fa-plus-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer th:replace="~{fragments/commons::footer}"></footer>
+
+    <div th:replace="~{fragments/commons::popups}"></div>
 </body>
 </html>

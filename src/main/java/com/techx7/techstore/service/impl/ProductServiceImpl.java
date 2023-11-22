@@ -3,6 +3,7 @@ package com.techx7.techstore.service.impl;
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
+import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.service.ProductService;
@@ -90,6 +91,33 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
     }
 
+    @Override
+    public ProductDetailsDTO getProductDetailsByUuid(UUID uuid) {
+        return productRepository.findByUuid(uuid)
+                .map(toProductDetailsDTO())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
+    }
+
+    private Function<Product, ProductDetailsDTO> toProductDetailsDTO() {
+        return product -> {
+            ProductDetailsDTO productDetailsDTO = mapper.map(product, ProductDetailsDTO.class);
+
+            setDiscountPrice(productDetailsDTO);
+
+            return productDetailsDTO;
+        };
+    }
+
+    private Function<Product, ProductDTO> toProductDTO() {
+        return product -> {
+            ProductDTO productDTO = mapper.map(product, ProductDTO.class);
+
+            setDiscountPrice(productDTO);
+
+            return productDTO;
+        };
+    }
+
     private void setDiscountPrice(ProductDTO productDTO) {
         if (productDTO.getDiscountPrice() != null &&
                 productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) > 0) {
@@ -102,16 +130,6 @@ public class ProductServiceImpl implements ProductService {
 
             productDTO.setDiscountPrice(new BigDecimal(formattedDiscountPrice));
         }
-    }
-
-    private Function<Product, ProductDTO> toProductDTO() {
-        return product -> {
-            ProductDTO productDTO = mapper.map(product, ProductDTO.class);
-
-            setDiscountPrice(productDTO);
-
-            return productDTO;
-        };
     }
 
 }

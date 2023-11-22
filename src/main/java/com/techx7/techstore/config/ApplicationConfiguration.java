@@ -15,6 +15,7 @@ import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductCartItemDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
+import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
@@ -287,7 +288,7 @@ public class ApplicationConfiguration {
                         .map(AddRoleDTO::getImage, Role::setImageUrl));
 
         // Product -> ProductCartItemDTO
-        Converter<Model, String> toProductLink = context -> {
+        Converter<Model, String> toProductName = context -> {
             Model source = context.getSource();
 
             if (source == null) {
@@ -300,7 +301,7 @@ public class ApplicationConfiguration {
         modelMapper
                 .createTypeMap(Product.class, ProductCartItemDTO.class)
                 .addMappings(mapper -> mapper
-                        .using(toProductLink)
+                        .using(toProductName)
                         .map(Product::getModel, ProductCartItemDTO::setLink));
 
         Converter<Product, ProductCartItemDTO> toProductCartItemDTO
@@ -313,6 +314,24 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .using(toProductCartItemDTO)
                         .map(CartItem::getProduct, CartItemDTO::setProductDTO));
+
+        //Product -> ProductDetailsDTO
+        modelMapper
+                .createTypeMap(Product.class, ProductDetailsDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(toCategoryNamesSet)
+                        .map(Product::getCategories, ProductDetailsDTO::setCategories))
+                .addMappings(mapper -> mapper
+                        .using(toManufacturerName)
+                        .map(product -> product.getModel().getManufacturer(), ProductDetailsDTO::setManufacturer))
+                .addMappings(mapper -> mapper
+                        .using(toModelName)
+                        .map(Product::getModel, ProductDetailsDTO::setModel))
+                .addMappings(mapper -> mapper
+                        .map(Product::getDiscountPercentage, ProductDetailsDTO::setDiscountPrice))
+                .addMappings(mapper -> mapper
+                        .using(toProductName)
+                        .map(Product::getModel, ProductDetailsDTO::setName));
 
         return modelMapper;
     }
