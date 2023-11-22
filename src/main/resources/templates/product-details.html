@@ -42,6 +42,10 @@
                     </div>
 
                     <div class="fs-5 my-3 row">
+                        <p th:text="*{description}"></p>
+                    </div>
+
+                    <div class="fs-5 my-3 row">
                         <div th:each="specification : *{specificationsList}"
                              class="col-12">
                             <span th:text="${specification.key}" class="font-weight-bold">Model: </span>
@@ -50,23 +54,27 @@
                     </div>
 
                     <div class="mb-4">
-                        <div class="input-group quantity mr-3" style="width: 120px;">
+                        <div class="input-group details-quantity mr-3" style="width: 120px;">
+                            <input id="product-details-uuid" type="hidden" th:value="*{uuid}">
+
                             <div class="input-group-btn">
-                                <button class="btn btn-sm btn-minus" style="font-size: 20px;">
+                                <a class="btn btn-sm btn-minus" style="font-size: 20px;">
                                     <i class="fa fa-minus-circle"></i>
-                                </button>
+                                </a>
                             </div>
-                            <input type="text" class="form-control form-control-sm bg-secondary border-0 rounded text-center" value="1" maxlength="3" style="font-size: 18px;">
+
+                            <input id="product-details-quantity" type="text" class="input-quantity form-control form-control-sm bg-secondary border-0 rounded text-center" value="1" maxlength="3" style="font-size: 18px;">
+
                             <div class="input-group-btn">
-                                <button class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
+                                <a class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
                                     <i class="fa fa-plus-circle"></i>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                        <button id="btnAddToCartProductDetails" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                     </div>
                 </div>
             </div>

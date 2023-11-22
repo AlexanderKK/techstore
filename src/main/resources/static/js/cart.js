@@ -18,6 +18,8 @@ const restHeaders = {
 
 const buttonsAddToCart = $('.btnAddToCart');
 
+const buttonAddToCartProductDetails = $('#btnAddToCartProductDetails');
+
 
 /**
  * On page load
@@ -204,6 +206,14 @@ buttonsAddToCart.each(function() {
 	$(this).on('mouseup', addToCart);
 });
 
+buttonAddToCartProductDetails.on('mouseup', function() {
+	const productId = $('#product-details-uuid').val();
+	const addedQuantity = $('#product-details-quantity').val();
+
+
+	addProduct(productId, addedQuantity);
+});
+
 /**
  * Add to cart
  */
@@ -212,7 +222,13 @@ function addToCart() {
 
 	const addedQuantity = $(this).parent().children().last().val();
 
+	addProduct(productId, addedQuantity)
+}
+
+function addProduct(productId, addedQuantity) {
 	const currentQuantity = $('.quantity' + productId).val();
+
+	console.log(currentQuantity);
 
 	const newQty = Number(addedQuantity) + Number(currentQuantity);
 
@@ -242,6 +258,29 @@ function addToCart() {
 		})
 		.catch(error => console.log('error', error))
 }
+
+/**
+ * Update details quantity input
+ */
+$('.details-quantity a i').on('click', function () {
+	const button = $(this).parent();
+
+	const inputQty= button.parent().parent().parent().find('.input-quantity');
+
+	resetQuantity(inputQty);
+
+	let quantity = parseFloat(inputQty.val());
+
+	if (button.hasClass('btn-plus')) {
+		if(quantity < 15) {
+			inputQty.val(quantity + 1);
+		}
+	} else {
+		if (quantity > 1) {
+			inputQty.val(quantity - 1);
+		}
+	}
+});
 
 /**
  * Update quantity -> Cart Page
@@ -465,7 +504,7 @@ function removeProduct(rowNumber, productId) {
  */
 cartMenu.delegate('img', 'mouseover', function(evt) {
 	if(evt.target && evt.target.nodeName === 'IMG') {
-		// var cartItem = evt.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+		// const cartItem = evt.target.parentElement.parentElement.parentElement.parentElement.parentElement;
 		const img = $(this);
 
 		$(img).addClass('erasable');

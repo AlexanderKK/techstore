@@ -47,17 +47,25 @@
 						</object>
 
 						<div class="product-action">
-							<a class="d-block w-100 h-100 position-absolute" href="#"></a>
+							<a th:href="@{|/products/detail/*{uuid}|}"
+							   class="d-block w-100 h-100 position-absolute"></a>
 
-							<a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-shopping-cart"></i></a>
+							<a class="btnAddToCart btn btn-outline-dark btn-square">
+								<i class="fa fa-shopping-cart"></i>
+							</a>
 
 							<a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+
+							<input type="hidden" th:value="*{uuid}">
+
+							<input type="hidden" th:value="1">
 						</div>
 					</div>
 
 					<div class="text-center pt-2 pb-4 px-2">
 						<a th:text="|*{manufacturer} *{model}|"
-						   class="h6 text-decoration-none" href="#">Acer Nitro M60</a>
+						   th:href="@{|/products/detail/*{uuid}|}"
+						   class="h6 text-decoration-none">Acer Nitro M60</a>
 
 						<div class="d-flex align-items-center justify-content-center mt-2">
 							<th-block th:if="*{discountPrice}">
