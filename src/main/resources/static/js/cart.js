@@ -63,14 +63,19 @@ buttonsAddToCart.each(function() {
 const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
 
 function addToCart(evt) {
-	evt.preventDefault();
-
 	const productId = $(this).parent().children().prev('input').last().val();
-	const quantity = $(this).parent().children().last().val();
 
-	// const quantity = $('#quantity' + productId).val();
+	const addedQuantity = $(this).parent().children().last().val();
 
-	const url = `${window.location.origin}/cart/add/${productId}/${quantity}`;
+	const currentQuantity = $('.quantity' + productId).val();
+
+	const newQty = Number(addedQuantity) + Number(currentQuantity);
+
+	if(newQty > 15 || newQty <= 0) {
+		return;
+	}
+
+	const url = `${window.location.origin}/cart/add/${productId}/${addedQuantity}`;
 	console.log(url)
 
 	const requestOptions = {
@@ -142,16 +147,19 @@ function fillCartContent(responseJson) {
 		cartItems.append(cartItem);
 	}
 
+	const cartItemsCount = cartItems.children().length;
+	$("#cart-badge").text(cartItemsCount);
+
 	updateTotalCart();
 }
 
-function generateCartItem(uuid, imgPath, productURL, price, quantity) {
+function generateCartItem(productUuid, imgPath, productURL, price, quantity) {
 	return `<div class="cart__item">
 				<div class="cart__content d-flex flex-column flex-sm-row align-items-sm-center">
 					<div class="cart__info col-12 col-sm-auto">
 						<div class="row align-items-center">
 							<div class="cart__img col-5">
-								<img src="/images/${imgPath}" alt="${productURL}">
+								<img pid="${productUuid}" src="/images/${imgPath}" alt="${productURL}">
 							</div>
 
 							<div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
@@ -164,17 +172,17 @@ function generateCartItem(uuid, imgPath, productURL, price, quantity) {
 						<div class="cart__quantity col-auto">
 							<div class="input-group quantity mx-auto" style="width: 120px;">
 								<div class="input-group-btn">
-									<a pid="${uuid}" class="btn btn-sm btn-minus" style="font-size: 19px;">
+									<a pid="${productUuid}" class="btn btn-sm btn-minus" style="font-size: 19px;">
 										<i class="fa fa-minus-circle"></i>
 									</a>
 								</div>
 								
-								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${uuid}"" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
+								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${productUuid}"" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
 								
 								<input type="text" class="cart__unit" value="${price}" hidden>
 								
 								<div class="input-group-btn">
-									<a pid="${uuid}" class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">
+									<a pid="${productUuid}" class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">
 										<i class="fa fa-plus-circle"></i>
 									</a>
 								</div>
@@ -182,7 +190,7 @@ function generateCartItem(uuid, imgPath, productURL, price, quantity) {
 						</div>
 
 						<div class="cart__price col-auto">
-							<span>£${(price * quantity).toFixed(2)}</span>
+							<span class="product-subtotal subtotal${productUuid}">£${parseFloat((Number(price) * Number(quantity)).toFixed(2))}</span>
 						</div>
 					</div>
 				</div>
@@ -266,13 +274,7 @@ function increaseQuantity(qtyButton) {
 	const productId = qtyButton.attr('pid');
 	const qtyInput = $('.quantity' + productId);
 
-	if(qtyInput.val() < 0) {
-		qtyInput.val(0);
-	}
-
-	if(qtyInput.val() > 15) {
-		qtyInput.val(15);
-	}
+	resetQuantity(qtyInput);
 
 	let newQty = parseInt(qtyInput.val()) + 1;
 
@@ -291,13 +293,7 @@ function decreaseQuantity(qtyButton) {
 	const productId = qtyButton.attr('pid');
 	const qtyInput = $('.quantity' + productId);
 
-	if(qtyInput.val() < 0) {
-		qtyInput.val(1);
-	}
-
-	if(qtyInput.val() > 15) {
-		qtyInput.val(15);
-	}
+	resetQuantity(qtyInput);
 
 	let newQty = parseInt(qtyInput.val()) - 1;
 
@@ -306,6 +302,18 @@ function decreaseQuantity(qtyButton) {
 
 		updateQuantity(productId, newQty);
 	}
+}
+
+function resetQuantity(qtyInput) {
+	if(qtyInput.val() < 0) {
+		qtyInput.val(1);
+	}
+
+	if(qtyInput.val() > 15) {
+		qtyInput.val(15);
+	}
+
+	return qtyInput.val();
 }
 
 function updateQuantity(productId, quantity) {
@@ -342,7 +350,7 @@ function updateQuantity(productId, quantity) {
 }
 
 function updateSubtotal(newProductSubtotal, productId) {
-	$('#subtotal' + productId).text(newProductSubtotal);
+	$('.subtotal' + productId).text(newProductSubtotal);
 }
 
 // Update cart price, subtotal, shipping and total
@@ -425,25 +433,53 @@ function removeProduct(rowNumber) {
 	$('#' + rowId).remove();
 }
 
-// Submit cart
-// $("#formCart").submit(function(evt) {
-// 	evt.preventDefault();
-//
-// 	// $.post("localhost/laptopia/index.php", { data: data});
-// 	// return false;
-//
-// 	$.ajax({
-// 		method: "POST",
-// 		url: "localhost/laptopia/index.php",
-// 		data: data,
-//
-// 		success: function() {
-// 			alert("Success");
-// 		},
-//
-// 		error: function() {
-// 			// alert("Oops");
-// 			console.log(data);
-// 		},
-// 	});
-// });
+
+//Image Hover To Remove Item
+$('.cart-menu').delegate('img', 'mouseover', function(evt) {
+	if(evt.target && evt.target.nodeName === 'IMG') {
+		// var cartItem = evt.target.parentElement.parentElement.parentElement.parentElement.parentElement;
+		const img = $(this);
+
+		$(img).addClass('erasable');
+
+		$(evt.target).on('mouseover', function() {
+			$(img).addClass('erasable');
+		});
+
+		$(evt.target).on('mouseout', function() {
+			$(img).removeClass('erasable');
+		});
+	}
+});
+
+//Remove cart item
+$('.cart-menu').delegate('.cart__img > img', 'click', function(evt) {
+	if(evt.target && evt.target.nodeName === "IMG") {
+		//Delete product from DB
+		removeFromCart($(this));
+
+		//Delete laptop from UI
+		const model = evt.target.parentElement.parentElement.children[1].children[0];
+
+		const cartItem = model.parentElement.parentElement.parentElement.parentElement.parentElement;
+
+		fadeOutAndRemove(cartItem);
+	}
+
+	updateTotal();
+	updateTotalCart();
+});
+
+function fadeOutAndRemove(product) {
+	$(product).fadeOut(350, function () {
+		$(product).remove();
+
+		const cartItemsCount = $(".cart__items").children().length;
+		$("#cart-badge").text(cartItemsCount);
+
+		const length = $('.cart__items').children().length;
+		if (length === 0) {
+			$('.cart-menu').removeClass("is-active");
+		}
+	});
+}

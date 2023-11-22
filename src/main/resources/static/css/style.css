@@ -9830,7 +9830,7 @@ a.text-dark:hover, a.text-dark:focus {
   max-height: 650px;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 7px;
+  padding: 10px 7px;
 }
 
 .cart-menu .cart__items {
@@ -9853,7 +9853,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 .cart-menu .cart__other,
 .cart-menu .cart__total {
-  padding: 15px 18px 15px 18px;
+  padding: 15px 12px 15px 15px;
 }
 
 .cart-menu .cart__info {
@@ -9861,15 +9861,16 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .cart-menu .cart__img img {
-  width: 80px;
-  height: auto;
+  width: 5em;
+  height: 4em;
+  /*object-fit: cover;*/
 }
 
 .cart-menu .cart__item img.erasable {
   transition: all .3s;
   /* box-shadow: 0 0 30px #DDDDDD; */
   opacity: .35;
-  cursor: url(../img/remCur32.png) 13 13, auto;
+  cursor: url(../images/remCur32.png) 13 13, auto;
 }
 
 .cart-menu .cart__link a,
