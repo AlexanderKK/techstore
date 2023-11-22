@@ -147,10 +147,10 @@
                                 </a>
 
                                 <div class="cart d-inline">
-                                        <span href="cart.html" class="btn pl-3 pr-0 py-3" style="font-size: 19px" id="cart-trigger">
-                                            <i class="fas fa-shopping-cart text-primary"></i>
-                                            <span id="cart-badge" class="badge text-secondary border border-secondary rounded-circle">0</span>
-                                        </span>
+                                    <span href="cart.html" class="btn pl-3 pr-0 py-3" style="font-size: 19px" id="cart-trigger">
+                                        <i class="fas fa-shopping-cart text-primary"></i>
+                                        <span id="cart-badge" class="badge text-secondary border border-secondary rounded-circle">0</span>
+                                    </span>
 
                                     <div class="cart-menu">
                                         <div class="cart__display">
@@ -237,6 +237,8 @@
                         <div class="col-md-4 mb-5">
                             <h5 class="text-secondary text-uppercase mb-4">My Account</h5>
                             <div class="d-flex flex-column justify-content-start">
+                                <a th:href="@{/cart}"
+                                   class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Cart</a>
                                 <a sec:authorize="authenticated"
                                    th:href="@{/profile}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Profile</a>

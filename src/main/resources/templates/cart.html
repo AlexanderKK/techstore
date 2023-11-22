@@ -8,7 +8,6 @@
 
 	<div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Cart')}"></div>
 
-	<!-- Cart Start -->
 	<div class="container-fluid">
 		<div class="row px-lg-5">
 			<div th:unless="${#lists.isEmpty(cartItems)}"
@@ -33,6 +32,7 @@
 									 alt="" class="mr-3" width="100">
 
 								<a th:text="${product.link}"
+								   th:href="@{|/products/detail/${product.uuid}|}"
 								   class="text-left" href="laptops/lenovoV15.html" style="width: 260px"></a>
 							</td>
 
@@ -72,9 +72,6 @@
 							</td>
 						</tr>
 					</tbody>
-
-<!--					<a th:href="@{/clearCart}">Clear Cart</a>-->
-<!--					<a th:href="@{/products}">Continue Shopping</a>-->
 				</table>
 			</div>
 
@@ -106,7 +103,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- Cart End -->
 
 	<footer th:replace="~{fragments/commons::footer}"></footer>
 

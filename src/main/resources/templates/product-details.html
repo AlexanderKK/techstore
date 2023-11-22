@@ -6,7 +6,7 @@
 <body>
     <header th:replace="~{fragments/commons::header}"></header>
 
-    <div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Product details')}"></div>
+    <div th:replace="~{fragments/commons::breadcrumb(activeBreadcrumb = 'Product Details')}"></div>
 
     <div class="container-fluid pb-5">
         <div th:object="${product}"
@@ -41,15 +41,16 @@
                         </th-block>
                     </div>
 
-                    <div class="fs-5 my-3 row">
+                    <div th:if="*{description != ''}"
+                         class="fs-5 my-3 row">
                         <p th:text="*{description}"></p>
                     </div>
 
                     <div class="fs-5 my-3 row">
-                        <div th:each="specification : *{specificationsList}"
+                        <div th:unless="*{#lists.isEmpty(specificationsList)}" th:each="specification : *{specificationsList}"
                              class="col-12">
-                            <span th:text="${specification.key}" class="font-weight-bold">Model: </span>
-                            <span th:text="${specification.value}">Dell XPS 15</span>
+                            <span th:text="|${specification.key}: |" class="font-weight-bold"></span>
+                            <span th:text="${specification.value}"></span>
                         </div>
                     </div>
 

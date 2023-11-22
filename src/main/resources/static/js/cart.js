@@ -228,8 +228,6 @@ function addToCart() {
 function addProduct(productId, addedQuantity) {
 	const currentQuantity = $('.quantity' + productId).val();
 
-	console.log(currentQuantity);
-
 	const newQty = Number(addedQuantity) + Number(currentQuantity);
 
 	if(newQty > 15 || newQty <= 0) {

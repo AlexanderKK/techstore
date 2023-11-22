@@ -43,7 +43,7 @@ public class ProductDetailsDTO extends ProductDTO {
     }
 
     public List<KeyValuePair> getSpecificationsList() {
-        return Arrays.stream(getSpecification().split("\n"))
+        return Arrays.stream(getSpecification().split("\n|\r\n"))
                 .map(spec -> {
                     String[] line = spec.split("\\s*:\\s*");
 
