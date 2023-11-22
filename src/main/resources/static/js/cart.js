@@ -142,7 +142,9 @@ function fillCartContent(responseJson) {
 		const product = element['productDTO'];
 		const quantity = element['quantity'];
 
-		let cartItem = generateCartItem(product.uuid, product.imageUrl, product.link, product.price, quantity);
+		const rowId = responseJson.indexOf(element) + 1;
+
+		let cartItem = generateCartItem(rowId, product, quantity);
 
 		cartItems.append(cartItem);
 	}
@@ -153,17 +155,17 @@ function fillCartContent(responseJson) {
 	updateTotalCart();
 }
 
-function generateCartItem(productUuid, imgPath, productURL, price, quantity) {
-	return `<div class="cart__item">
+function generateCartItem(rowId, product, quantity) {
+	return `<div class="cart__item row${rowId}">
 				<div class="cart__content d-flex flex-column flex-sm-row align-items-sm-center">
 					<div class="cart__info col-12 col-sm-auto">
 						<div class="row align-items-center">
 							<div class="cart__img col-5">
-								<img pid="${productUuid}" src="/images/${imgPath}" alt="${productURL}">
+								<img pid="${product.uuid}" rowNumber="${rowId}" src="/images/${product.imageUrl}" alt="${product.link}">
 							</div>
 
 							<div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
-								<a href="${productURL}">${productURL}</a>
+								<a href="${product.link}">${product.link}</a>
 							</div>
 						</div>
 					</div>
@@ -172,17 +174,17 @@ function generateCartItem(productUuid, imgPath, productURL, price, quantity) {
 						<div class="cart__quantity col-auto">
 							<div class="input-group quantity mx-auto" style="width: 120px;">
 								<div class="input-group-btn">
-									<a pid="${productUuid}" class="btn btn-sm btn-minus" style="font-size: 19px;">
+									<a pid="${product.uuid}" class="btn btn-sm btn-minus" style="font-size: 19px;">
 										<i class="fa fa-minus-circle"></i>
 									</a>
 								</div>
 								
-								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${productUuid}"" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
+								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${product.uuid}"" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
 								
-								<input type="text" class="cart__unit" value="${price}" hidden>
+								<input type="text" class="cart__unit" value="${product.price}" hidden>
 								
 								<div class="input-group-btn">
-									<a pid="${productUuid}" class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">
+									<a pid="${product.uuid}" class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">
 										<i class="fa fa-plus-circle"></i>
 									</a>
 								</div>
@@ -190,7 +192,7 @@ function generateCartItem(productUuid, imgPath, productURL, price, quantity) {
 						</div>
 
 						<div class="cart__price col-auto">
-							<span class="product-subtotal subtotal${productUuid}">£${parseFloat((Number(price) * Number(quantity)).toFixed(2))}</span>
+							<span class="product-subtotal subtotal${product.uuid}">£${parseFloat((Number(product.price) * Number(quantity)).toFixed(2))}</span>
 						</div>
 					</div>
 				</div>
@@ -251,6 +253,7 @@ $('.quantity a i').on('click', function () {
 
 // Update quantity -> Cart
 $('.cart-menu').delegate('.quantity a > i', 'click', function(evt) {
+	evt.preventDefault();
 
 	const qtyButton = $(this).parent();
 	console.log(qtyButton);
@@ -365,7 +368,7 @@ function updateTotal() {
 	// Subtotal
 	let subtotalPrice = 0;
 
-	$(".product-subtotal").each(function() {
+	$(".product-subtotal-page").each(function() {
 		subtotalPrice += parseFloat($(this).text().replace('£',''));
 
 		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`);
@@ -415,9 +418,7 @@ function removeFromCart(removeBtn) {
 
 				console.log(rowNumber);
 
-				removeProduct(rowNumber);
-
-				updateTotal()
+				removeProduct(rowNumber, productId);
 
 				console.log('Product has been deleted')
 			} else {
@@ -427,10 +428,10 @@ function removeFromCart(removeBtn) {
 		.catch(error => console.log('error', error))
 }
 
-function removeProduct(rowNumber) {
+function removeProduct(rowNumber, productId) {
 	const rowId = "row" + rowNumber;
 
-	$('#' + rowId).remove();
+	fadeOutAndRemove($('.' + rowId), productId);
 }
 
 
@@ -455,22 +456,13 @@ $('.cart-menu').delegate('img', 'mouseover', function(evt) {
 //Remove cart item
 $('.cart-menu').delegate('.cart__img > img', 'click', function(evt) {
 	if(evt.target && evt.target.nodeName === "IMG") {
-		//Delete product from DB
 		removeFromCart($(this));
-
-		//Delete laptop from UI
-		const model = evt.target.parentElement.parentElement.children[1].children[0];
-
-		const cartItem = model.parentElement.parentElement.parentElement.parentElement.parentElement;
-
-		fadeOutAndRemove(cartItem);
 	}
-
-	updateTotal();
-	updateTotalCart();
 });
 
-function fadeOutAndRemove(product) {
+checkTableCart();
+
+function fadeOutAndRemove(product, productId) {
 	$(product).fadeOut(350, function () {
 		$(product).remove();
 
@@ -481,5 +473,24 @@ function fadeOutAndRemove(product) {
 		if (length === 0) {
 			$('.cart-menu').removeClass("is-active");
 		}
+
+		updateSubtotal(0, productId)
+
+		updateTotal();
+
+		updateTotalCart();
+
+		checkTableCart();
 	});
+}
+
+function checkTableCart() {
+	$('#table-cart').show();
+	$('#no-products').hide();
+
+	if($('#table-cart tbody').children().length === 0) {
+		$('#table-cart').hide();
+
+		$('#no-products').show();
+	}
 }

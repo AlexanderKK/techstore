@@ -9748,7 +9748,7 @@ a.text-dark:hover, a.text-dark:focus {
 
 .btn-plus:active,
 .btn-minus:active {
-  border: none;
+  border: 0;
   outline: none;
   box-shadow: none;
 }
@@ -9760,7 +9760,22 @@ a.text-dark:hover, a.text-dark:focus {
 .btn-minus i:hover {
   color: #dc3545;
 }
-  
+
+.input-group-btn:focus-visible {
+  border: 0;
+  outline: none;
+}
+
+.btn:focus-visible {
+  outline: none;
+  border: 0;
+}
+
+.btn:focus:not(:focus-visible) {
+  outline: none;
+  border: 0;
+}
+
 /* ------------------------------------------------------------ *\
   Header
 \* ------------------------------------------------------------ */
@@ -9879,7 +9894,8 @@ a.text-dark:hover, a.text-dark:focus {
   transition: all .3s;
 }
 
-.cart-menu .cart__qty {
+.cart-menu .cart__qty,
+.quantity input {
   pointer-events: none;
 }
 
