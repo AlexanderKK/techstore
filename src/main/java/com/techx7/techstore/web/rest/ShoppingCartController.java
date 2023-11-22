@@ -1,5 +1,6 @@
 package com.techx7.techstore.web.rest;
 
+import com.techx7.techstore.model.dto.cart.CartItemDTO;
 import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ShoppingCartController {
     @PreAuthorize("hasRole('USER')")
     @GetMapping("/cart")
     public String showShoppingCart(Model model, Principal principal) {
-        List<CartItem> cartItems = cartService.getCartItems(principal);
+        List<CartItemDTO> cartItems = cartService.getCartItems(principal);
 
         model.addAttribute("cartItems", cartItems);
 

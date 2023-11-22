@@ -2,6 +2,7 @@ package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.PrincipalNotFoundException;
+import com.techx7.techstore.model.dto.cart.CartItemDTO;
 import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.model.entity.User;
@@ -10,11 +11,13 @@ import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.CartService;
 import jakarta.transaction.Transactional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,18 +30,21 @@ public class CartServiceImpl implements CartService {
     private final CartItemRepository cartItemRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final ModelMapper mapper;
 
     @Autowired
     public CartServiceImpl(CartItemRepository cartItemRepository,
                            UserRepository userRepository,
-                           ProductRepository productRepository) {
+                           ProductRepository productRepository,
+                           ModelMapper mapper) {
         this.cartItemRepository = cartItemRepository;
         this.userRepository = userRepository;
         this.productRepository = productRepository;
+        this.mapper = mapper;
     }
 
     @Override
-    public List<CartItem> getCartItems(Principal principal) {
+    public List<CartItemDTO> getCartItems(Principal principal) {
         if(principal == null) {
             throw new PrincipalNotFoundException(USER_NOT_LOGGED);
         }
@@ -46,8 +52,9 @@ public class CartServiceImpl implements CartService {
         User user = userRepository.findByUsername(principal.getName())
                         .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
-        return cartItemRepository.findAllByUser(user)
-                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Cart items")));
+        return cartItemRepository.findAllByUser(user).stream()
+                .map(cartItem -> mapper.map(cartItem, CartItemDTO.class))
+                .toList();
     }
 
     @Override

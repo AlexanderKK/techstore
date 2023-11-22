@@ -3,6 +3,7 @@ package com.techx7.techstore.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.techx7.techstore.exception.*;
+import com.techx7.techstore.model.dto.cart.CartItemDTO;
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
@@ -12,6 +13,7 @@ import com.techx7.techstore.model.dto.model.AddModelDTO;
 import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
+import com.techx7.techstore.model.dto.product.ProductCartItemDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
@@ -23,9 +25,8 @@ import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.util.StringUtils;
-import org.modelmapper.Converter;
-import org.modelmapper.ModelMapper;
-import org.modelmapper.Provider;
+import org.modelmapper.*;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -70,6 +71,8 @@ public class ApplicationConfiguration {
     @Bean
     public ModelMapper createMapper() {
         ModelMapper modelMapper = new ModelMapper();
+
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
 
         // LocalDateTime -> String
         Converter<LocalDateTime, String> localDateTimeToString
@@ -282,6 +285,34 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .using(toImageUrl)
                         .map(AddRoleDTO::getImage, Role::setImageUrl));
+
+        // Product -> ProductCartItemDTO
+        Converter<Model, String> toProductLink = context -> {
+            Model source = context.getSource();
+
+            if (source == null) {
+                return null;
+            } else {
+                return source.getManufacturer().getName() + " " + source.getName();
+            }
+        };
+
+        modelMapper
+                .createTypeMap(Product.class, ProductCartItemDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(toProductLink)
+                        .map(Product::getModel, ProductCartItemDTO::setLink));
+
+        Converter<Product, ProductCartItemDTO> toProductCartItemDTO
+                = context -> context.getSource() == null
+                ? null
+                : modelMapper.map(context.getSource(), ProductCartItemDTO.class);
+
+        modelMapper
+                .createTypeMap(CartItem.class, CartItemDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(toProductCartItemDTO)
+                        .map(CartItem::getProduct, CartItemDTO::setProductDTO));
 
         return modelMapper;
     }

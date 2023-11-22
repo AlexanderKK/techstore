@@ -1,5 +1,6 @@
 package com.techx7.techstore.web.rest;
 
+import com.techx7.techstore.model.dto.cart.CartItemDTO;
 import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,12 @@ public class ShoppingCartRestController {
     }
 
     @GetMapping("/cart/load")
-    public List<CartItem> loadCartItems(Principal principal) {
+    public List<CartItemDTO> loadCartItems(Principal principal) {
         if(principal == null) {
             return null;
         }
 
-        List<CartItem> cartItems = cartService.getCartItems(principal);
+        List<CartItemDTO> cartItems = cartService.getCartItems(principal);
 
         return cartItems;
     }
