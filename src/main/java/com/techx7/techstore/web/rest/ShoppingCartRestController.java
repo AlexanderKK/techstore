@@ -4,13 +4,11 @@ import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,6 +19,17 @@ public class ShoppingCartRestController {
     @Autowired
     public ShoppingCartRestController(CartService cartService) {
         this.cartService = cartService;
+    }
+
+    @GetMapping("/cart/load")
+    public List<CartItem> loadCartItems(Principal principal) {
+        if(principal == null) {
+            return null;
+        }
+
+        List<CartItem> cartItems = cartService.getCartItems(principal);
+
+        return cartItems;
     }
 
     @PostMapping("/cart/add/{pid}/{qty}")

@@ -43,7 +43,7 @@ public class SecurityConfiguration {
                                 "/users/register/success").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/", "/products", "/contact").permitAll()
-                        .requestMatchers("/cart/add/**", "/cart/update/**", "/cart/remove/**").permitAll()
+                        .requestMatchers("/cart/add/**", "/cart/update/**", "/cart/remove/**", "/cart/load").permitAll()
                         // Manager
                         .requestMatchers("/products/**").hasRole("MANAGER")
                         .requestMatchers("/manufacturers/**").hasRole("MANAGER")

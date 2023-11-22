@@ -18,6 +18,7 @@ public class CartItem extends BaseEntity {
     @Positive
     private Integer quantity;
 
+
     public CartItem() {}
 
     public CartItem(User user, Product product, Integer quantity) {

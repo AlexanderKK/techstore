@@ -51,7 +51,9 @@ $('.cart__item').each(function( index, element ) {
 });
 
 
-// Add product to cart
+/**
+ * Add product to cart
+ */
 const buttonsAddToCart = $('.btnAddToCart');
 
 buttonsAddToCart.each(function() {
@@ -77,17 +79,15 @@ function addToCart(evt) {
 			'Content-Type': 'application/json',
 			'X-XSRF-TOKEN': csrfToken
 		},
-		method: "POST",
-		body: JSON.stringify({
-			productId: productId,
-			quantity: quantity
-		})
+		method: "POST"
 	}
 
 	fetch(url, requestOptions)
 		.then(response => {
 			if(response.ok) {
 				console.log('Item added to cart')
+
+				loadCartItems();
 			} else {
 				console.log('Log in to add product to cart')
 			}
@@ -95,8 +95,36 @@ function addToCart(evt) {
 		.catch(error => console.log('error', error))
 }
 
+function loadCartItems() {
+	const url = `${window.location.origin}/cart/load`;
+	console.log(url)
 
-// Product Quantity
+	const requestOptions = {
+		headers: {
+			'Accept': 'application/json',
+			'Content-Type': 'application/json',
+			'X-XSRF-TOKEN': csrfToken
+		}
+	}
+
+	fetch(url, requestOptions)
+		.then(promise => {
+			if(promise.ok) {
+				console.log('Items loaded')
+			} else {
+				console.log('Log in to use the cart')
+			}
+
+			return promise.json();
+		})
+		.then(response => console.log(response))
+		.catch(error => console.log('error', error))
+}
+
+
+/**
+ * Update product quantity
+ */
 $('.quantity button').on('click', function () {
 	const qtyButton = $(this);
 
@@ -169,11 +197,7 @@ function updateQuantity(productId, quantity) {
 			'Content-Type': 'application/json',
 			'X-XSRF-TOKEN': csrfToken
 		},
-		method: "POST",
-		body: JSON.stringify({
-			productId: productId,
-			quantity: quantity
-		})
+		method: "POST"
 	}
 
 	fetch(url, requestOptions)
@@ -230,7 +254,9 @@ function updateTotal() {
 }
 
 
-// Remove product from cart
+/**
+ * Remove product from cart
+ */
 $('.btnRemoveFromCart').on('click', function() {
 	const removeBtn = $(this);
 
