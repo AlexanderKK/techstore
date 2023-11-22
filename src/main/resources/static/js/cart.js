@@ -137,7 +137,7 @@ function fillCartContent(responseJson) {
 		const product = element['productDTO'];
 		const quantity = element['quantity'];
 
-		let cartItem = generateCartItem(product.imageUrl, product.link, product.price, quantity);
+		let cartItem = generateCartItem(product.uuid, product.imageUrl, product.link, product.price, quantity);
 
 		cartItems.append(cartItem);
 	}
@@ -145,7 +145,7 @@ function fillCartContent(responseJson) {
 	getTotalPriceCart();
 }
 
-function generateCartItem(imgPath, productURL, price, quantity) {
+function generateCartItem(uuid, imgPath, productURL, price, quantity) {
 	return `<div class="cart__item">
 				<div class="cart__content d-flex flex-column flex-sm-row align-items-sm-center">
 					<div class="cart__info col-12 col-sm-auto">
@@ -164,14 +164,17 @@ function generateCartItem(imgPath, productURL, price, quantity) {
 						<div class="cart__quantity col-auto">
 							<div class="input-group quantity mx-auto" style="width: 120px;">
 								<div class="input-group-btn">
-									<a class="btn btn-sm btn-minus" style="font-size: 19px;">
+									<a pid="${uuid}" class="btn btn-sm btn-minus" style="font-size: 19px;">
 										<i class="fa fa-minus-circle"></i>
 									</a>
 								</div>
-								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
+								
+								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${uuid}"" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
+								
 								<input type="text" class="cart__unit" value="${price}" hidden>
+								
 								<div class="input-group-btn">
-									<a class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">
+									<a pid="${uuid}" class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">
 										<i class="fa fa-plus-circle"></i>
 									</a>
 								</div>
@@ -189,6 +192,7 @@ function generateCartItem(imgPath, productURL, price, quantity) {
 function getTotalPriceCart() {
 	//Sum prices
 	let sumPrices = 0;
+
 	$('.cart__item').each(function() {
 
 		const currentPrice = $(this).children().children().children()[1].children[0].children[2].value;
@@ -223,7 +227,7 @@ function getTotalPriceCart() {
 /**
  * Update product quantity
  */
-$('.quantity button').on('click', function () {
+$('.quantity a').on('click', function () {
 	const qtyButton = $(this);
 
 	// const qtyInput = qtyButton.parent().parent().find('input')
@@ -241,7 +245,7 @@ $('.quantity button').on('click', function () {
  */
 function increaseQuantity(qtyButton) {
 	const productId = qtyButton.attr('pid');
-	const qtyInput = $('#quantity' + productId);
+	const qtyInput = $('.quantity' + productId);
 
 	if(qtyInput.val() < 0) {
 		qtyInput.val(0);
@@ -266,7 +270,7 @@ function increaseQuantity(qtyButton) {
  */
 function decreaseQuantity(qtyButton) {
 	const productId = qtyButton.attr('pid');
-	const qtyInput = $('#quantity' + productId);
+	const qtyInput = $('.quantity' + productId);
 
 	if(qtyInput.val() < 0) {
 		qtyInput.val(1);

@@ -41,21 +41,21 @@
 							<td class="align-middle">
 								<div class="input-group quantity mx-auto" style="width: 125px;">
 									<div class="input-group-btn">
-										<button th:pid="${product.uuid}"
-												class="btn btn-sm btn-minus" style="font-size: 20px;">
+										<a th:pid="${product.uuid}"
+										   class="btn btn-sm btn-minus" style="font-size: 20px;">
 											<i class="fa fa-minus-circle"></i>
-										</button>
+										</a>
 									</div>
 
 									<input th:value="${item.quantity}"
-										   th:id="|quantity${product.uuid}|"
+										   th:classappend="|quantity${product.uuid}|"
 										   type="text" class="form-control form-control-sm bg-secondary border-0 rounded text-center" value="1" maxlength="3" style="font-size: 18px;">
 
 									<div class="input-group-btn">
-										<button th:pid="${product.uuid}"
-												class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
+										<a th:pid="${product.uuid}"
+										   class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
 											<i class="fa fa-plus-circle"></i>
-										</button>
+										</a>
 									</div>
 								</div>
 							</td>
