@@ -1,7 +1,6 @@
 package com.techx7.techstore.web.rest;
 
 import com.techx7.techstore.model.dto.cart.CartItemDTO;
-import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +34,14 @@ public class ShoppingCartRestController {
     }
 
     @PostMapping("/cart/add/{pid}/{qty}")
-    public ResponseEntity<CartItem> addToCart(@PathVariable("pid") UUID productUuid,
+    public ResponseEntity<CartItemDTO> addToCart(@PathVariable("pid") UUID productUuid,
                                               @PathVariable("qty") Integer quantity,
                                               Principal principal) {
-        CartItem cartItem = cartService.addProductToCart(quantity, productUuid, principal);
+        if(principal == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        CartItemDTO cartItem = cartService.addProductToCart(quantity, productUuid, principal);
 
         if(cartItem == null) {
             return ResponseEntity.badRequest().build();
@@ -51,14 +54,22 @@ public class ShoppingCartRestController {
     public ResponseEntity<BigDecimal> updateQuantity(@PathVariable("pid") UUID productUuid,
                                                    @PathVariable("qty") Integer quantity,
                                                    Principal principal) {
+        if(principal == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
         BigDecimal subtotal = cartService.updateQuantity(quantity, productUuid, principal);
 
         return ResponseEntity.ok().body(subtotal);
     }
 
     @PostMapping("/cart/remove/{pid}")
-    public ResponseEntity<CartItem> removeFromCart(@PathVariable("pid") UUID productUuid,
-                                                     Principal principal) {
+    public ResponseEntity<CartItemDTO> removeFromCart(@PathVariable("pid") UUID productUuid,
+                                                      Principal principal) {
+        if(principal == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
         cartService.removeProduct(productUuid, principal);
 
         return ResponseEntity.ok().build();

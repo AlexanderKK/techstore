@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,11 +57,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartItem addProductToCart(Integer quantity, UUID productUuid, Principal principal) {
-        if(principal == null) {
-            return null;
-        }
-
+    public CartItemDTO addProductToCart(Integer quantity, UUID productUuid, Principal principal) {
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
@@ -97,13 +92,13 @@ public class CartServiceImpl implements CartService {
         cartItemRepository.deleteByProductAndUser(product, user);
     }
 
-    private CartItem addProduct(User user, UUID productUuid, Integer quantity) {
+    private CartItemDTO addProduct(User user, UUID productUuid, Integer quantity) {
+        Integer addedQuantity;
+
         Product product = productRepository.findByUuid(productUuid)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
 
         CartItem cartItem = cartItemRepository.findByUserAndProduct(user, product);
-
-        Integer addedQuantity = quantity;
 
         if(cartItem == null) {
             cartItem = new CartItem(user, product, quantity);
@@ -113,7 +108,9 @@ public class CartServiceImpl implements CartService {
             cartItem.setQuantity(addedQuantity);
         }
 
-        return cartItemRepository.save(cartItem);
+        CartItem savedCartItem = cartItemRepository.save(cartItem);
+
+        return mapper.map(savedCartItem, CartItemDTO.class);
     }
 
 }

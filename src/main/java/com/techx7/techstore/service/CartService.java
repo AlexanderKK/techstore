@@ -1,7 +1,6 @@
 package com.techx7.techstore.service;
 
 import com.techx7.techstore.model.dto.cart.CartItemDTO;
-import com.techx7.techstore.model.entity.CartItem;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -12,7 +11,7 @@ public interface CartService {
 
     List<CartItemDTO> getCartItems(Principal principal);
 
-    CartItem addProductToCart(Integer quantity, UUID productUuid, Principal principal);
+    CartItemDTO addProductToCart(Integer quantity, UUID productUuid, Principal principal);
 
     BigDecimal updateQuantity(Integer quantity, UUID productUuid, Principal principal);
 

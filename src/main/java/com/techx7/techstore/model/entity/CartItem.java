@@ -1,6 +1,8 @@
 package com.techx7.techstore.model.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
 
 @Entity

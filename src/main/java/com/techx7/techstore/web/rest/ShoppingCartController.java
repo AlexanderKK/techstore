@@ -1,7 +1,6 @@
 package com.techx7.techstore.web.rest;
 
 import com.techx7.techstore.model.dto.cart.CartItemDTO;
-import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +12,6 @@ import java.security.Principal;
 import java.util.List;
 
 @Controller
-//@SessionAttributes("cart")
 public class ShoppingCartController {
 
     private final CartService cartService;
