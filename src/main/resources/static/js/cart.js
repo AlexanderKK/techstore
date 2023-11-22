@@ -88,12 +88,17 @@ function addToCart(evt) {
 				console.log('Item added to cart')
 
 				loadCartItems();
+
+				updateTotal();
 			} else {
 				console.log('Log in to add product to cart')
 			}
 		})
 		.catch(error => console.log('error', error))
 }
+
+// On page load
+loadCartItems();
 
 function loadCartItems() {
 	const url = `${window.location.origin}/cart/load`;
@@ -117,10 +122,103 @@ function loadCartItems() {
 
 			return promise.json();
 		})
-		.then(response => console.log(response))
+		.then(response => {
+			fillCartContent(response);
+		})
 		.catch(error => console.log('error', error))
 }
 
+const cartItems = $(".cart__items");
+
+function fillCartContent(responseJson) {
+	cartItems.empty();
+
+	for(const element of responseJson) {
+		const product = element['productDTO'];
+		const quantity = element['quantity'];
+
+		let cartItem = generateCartItem(product.imageUrl, product.link, product.price, quantity);
+
+		cartItems.append(cartItem);
+	}
+
+	getTotalPriceCart();
+}
+
+function generateCartItem(imgPath, productURL, price, quantity) {
+	return `<div class="cart__item">
+				<div class="cart__content d-flex flex-column flex-sm-row align-items-sm-center">
+					<div class="cart__info col-12 col-sm-auto">
+						<div class="row align-items-center">
+							<div class="cart__img col-5">
+								<img src="/images/${imgPath}" alt="${productURL}">
+							</div>
+
+							<div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
+								<a href="${productURL}">${productURL}</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="row align-items-center justify-content-start">
+						<div class="cart__quantity col-auto">
+							<div class="input-group quantity mx-auto" style="width: 120px;">
+								<div class="input-group-btn">
+									<a class="btn btn-sm btn-minus" style="font-size: 19px;">
+										<i class="fa fa-minus-circle"></i>
+									</a>
+								</div>
+								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
+								<input type="text" class="cart__unit" value="${price}" hidden>
+								<div class="input-group-btn">
+									<a class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">
+										<i class="fa fa-plus-circle"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+
+						<div class="cart__price col-auto">
+							<span>£${(price * quantity).toFixed(2)}</span>
+						</div>
+					</div>
+				</div>
+			</div>`;
+}
+
+function getTotalPriceCart() {
+	//Sum prices
+	let sumPrices = 0;
+	$('.cart__item').each(function() {
+
+		const currentPrice = $(this).children().children().children()[1].children[0].children[2].value;
+
+		const quantityInput = $(this).children().children().children()[1].children[0].children[1];
+
+		const totalVal = (Number(currentPrice) * Number(quantityInput.value)).toFixed(2);
+
+		// console.log(totalVal)
+
+		sumPrices += Number(totalVal);
+	});
+
+	//Set value of subtotal span
+	const cartSubtotal = $('#cart-subtotal').children()[1];
+	cartSubtotal.innerText = "£" + sumPrices.toFixed(2);
+
+	// Set value of shipping span
+	const cartShipping = $('#cart-shipping').children()[1];
+
+	const shippingPrice= Number(cartSubtotal.innerText.replace('£', '')) === 0 ? 0 : 15;
+
+	cartShipping.innerText = `£${shippingPrice}`;
+
+	const cartShippingPrice = Number(cartShipping.innerText.substring(1, cartShipping.length));
+
+	//Set value of total
+	const cartTotal = $('#cart-total').children()[1];
+	cartTotal.innerText = "£" + (sumPrices + cartShippingPrice).toFixed(2);
+}
 
 /**
  * Update product quantity
@@ -240,17 +338,17 @@ function updateTotal() {
 		$(this).text(`£${parseFloat($(this).text().replace('£',''))}`);
 	})
 
-	let cartSubtotal = $('#cart-subtotal');
+	let cartSubtotal = $('#cart-subtotal-page');
 	cartSubtotal.text(`£${parseFloat(subtotalPrice.toFixed(2))}`);
 
 	// Shipping
 	const shippingPrice= cartSubtotal.text() === '£0' ? 0 : 15;
 
-	$('.cart-shipping').text(`£${shippingPrice}`);
+	$('#cart-shipping-page').text(`£${shippingPrice}`);
 
 	// Total
 	const totalPrice = subtotalPrice + shippingPrice;
-	$('#cart-total').text(`£${parseFloat(totalPrice.toFixed(2))}`);
+	$('#cart-total-page').text(`£${parseFloat(totalPrice.toFixed(2))}`);
 }
 
 
@@ -303,24 +401,24 @@ function removeProduct(rowNumber) {
 }
 
 // Submit cart
-$("#formCart").submit(function(evt) {
-	evt.preventDefault();
-
-	// $.post("localhost/laptopia/index.php", { data: data});
-	// return false;
-
-	$.ajax({
-		method: "POST",
-		url: "localhost/laptopia/index.php",
-		data: data,
-	
-		success: function() {
-			alert("Success");
-		},
-	
-		error: function() {
-			// alert("Oops");
-			console.log(data);
-		},
-	});
-});
+// $("#formCart").submit(function(evt) {
+// 	evt.preventDefault();
+//
+// 	// $.post("localhost/laptopia/index.php", { data: data});
+// 	// return false;
+//
+// 	$.ajax({
+// 		method: "POST",
+// 		url: "localhost/laptopia/index.php",
+// 		data: data,
+//
+// 		success: function() {
+// 			alert("Success");
+// 		},
+//
+// 		error: function() {
+// 			// alert("Oops");
+// 			console.log(data);
+// 		},
+// 	});
+// });

@@ -18,7 +18,6 @@ public class CartItem extends BaseEntity {
     @Positive
     private Integer quantity;
 
-
     public CartItem() {}
 
     public CartItem(User user, Product product, Integer quantity) {
@@ -49,10 +48,6 @@ public class CartItem extends BaseEntity {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public BigDecimal getSubtotal() {
-        return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 
 }

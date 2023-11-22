@@ -155,130 +155,19 @@
                                     <div class="cart-menu">
                                         <div class="cart__display">
                                             <form action="" method="POST" id="formCart">
-                                                <div class="cart__item">
-                                                    <div class="cart__content d-flex flex-column flex-sm-row align-items-sm-center">
-                                                        <div class="cart__info col-12 col-sm-auto">
-                                                            <div class="row align-items-center">
-                                                                <div class="cart__img col-5">
-                                                                    <img src="/images/ideapad.jpg" alt="Lenovo V15">
-                                                                </div>
-
-                                                                <div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
-                                                                    <a href="laptops/lenovoV15.html">Lenovo V15</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row align-items-center justify-content-start">
-                                                            <div class="cart__quantity col-auto">
-                                                                <div class="input-group quantity mx-auto" style="width: 120px;">
-                                                                    <div class="input-group-btn">
-                                                                        <button class="btn btn-sm btn-minus" style="font-size: 20px;">
-                                                                            <i class="fa fa-minus-circle"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                    <input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center" value="1" maxlength="3" style="font-size: 18px;">
-                                                                    <div class="input-group-btn">
-                                                                        <button class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
-                                                                            <i class="fa fa-plus-circle"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="cart__price col-auto">
-                                                                <span>£1499.99</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="cart__item">
-                                                    <div class="cart__content d-flex flex-column flex-sm-row align-items-sm-center">
-                                                        <div class="cart__info col-12 col-sm-auto">
-                                                            <div class="row align-items-center">
-                                                                <div class="cart__img col-5">
-                                                                    <img src="/images/Asus%20Minibook.png" alt="Lenovo Ideapad 3 15 UltraSlim">
-                                                                </div>
-
-                                                                <div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
-                                                                    <a href="laptops/lenovoIdeaPad3_15_UltraSlim.html">Lenovo Ideapad 3 15 UltraSlim</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row align-items-center justify-content-start">
-                                                            <div class="cart__quantity col-auto">
-                                                                <div class="input-group quantity mx-auto" style="width: 120px;">
-                                                                    <div class="input-group-btn">
-                                                                        <button class="btn btn-sm btn-minus" style="font-size: 20px;">
-                                                                            <i class="fa fa-minus-circle"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 rounded text-center" value="1" maxlength="3" style="font-size: 18px;">
-                                                                    <div class="input-group-btn">
-                                                                        <button class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
-                                                                            <i class="fa fa-plus-circle"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="cart__price col-auto">
-                                                                <span>£2499.99</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="cart__item">
-                                                    <div class="cart__content d-flex flex-column flex-sm-row align-items-sm-center">
-                                                        <div class="cart__info col-12 col-sm-auto">
-                                                            <div class="row align-items-center">
-                                                                <div class="cart__img col-5">
-                                                                    <img src="/images/Dell%20XPS%2015.png" alt="Dell XPS 15">
-                                                                </div>
-
-                                                                <div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">
-                                                                    <a href="laptops/DellXPS15.html">Dell XPS 15</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row align-items-center justify-content-start">
-                                                            <div class="cart__quantity col-auto">
-                                                                <div class="input-group quantity mx-auto" style="width: 120px;">
-                                                                    <div class="input-group-btn">
-                                                                        <button class="btn btn-sm btn-minus" style="font-size: 20px;">
-                                                                            <i class="fa fa-minus-circle"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                    <input type="text" class="form-control form-control-sm bg-secondary border-0 rounded text-center" value="3" maxlength="3" style="font-size: 18px;">
-                                                                    <div class="input-group-btn">
-                                                                        <button class="btn btn-sm btn-plus" style="font-size: 20px; color: #000">
-                                                                            <i class="fa fa-plus-circle"></i>
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="cart__price col-auto">
-                                                                <span>£8999.97</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                <div class="cart__items"></div>
 
                                                 <div class="cart__other">
-                                                    <div class="cart__subtotal d-flex justify-content-start justify-content-sm-end" style="font-size: 19px">
+                                                    <div id="cart-subtotal" class="cart__subtotal d-flex justify-content-start justify-content-sm-end" style="font-size: 19px">
                                                         <span class="col-auto col-sm-9 pr-0 text-end font-weight-bold">Subtotal:</span> <span class="col-auto col-sm-3 pr-0 text-end font-weight-normal">£12999.95</span>
                                                     </div>
-                                                    <div class="cart__subtotal d-flex justify-content-start justify-content-sm-end" style="font-size: 19px">
+
+                                                    <div id="cart-shipping" class="cart__subtotal d-flex justify-content-start justify-content-sm-end" style="font-size: 19px">
                                                         <span class="col-auto col-sm-9 pr-0 text-end font-weight-bold">Shipping:</span> <span class="col-auto col-sm-3 pr-0 text-end font-weight-normal">£15</span>
                                                     </div>
                                                 </div>
 
-                                                <div class="cart__total d-flex justify-content-start justify-content-sm-end">
+                                                <div id="cart-total" class="cart__total d-flex justify-content-start justify-content-sm-end">
                                                     <h5 class="col-auto col-sm-9 pr-0 text-end" style="font-size: 21px">Total:</h5> <h5 class="col-auto col-sm-3 pr-0 text-end" style="font-size: 21px">£13014.95</h5>
                                                 </div>
 

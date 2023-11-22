@@ -2,6 +2,8 @@ package com.techx7.techstore.model.dto.cart;
 
 import com.techx7.techstore.model.dto.product.ProductCartItemDTO;
 
+import java.math.BigDecimal;
+
 public class CartItemDTO {
 
     private ProductCartItemDTO productDTO;
@@ -24,6 +26,10 @@ public class CartItemDTO {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getSubtotal() {
+        return productDTO.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 
 }
