@@ -44,7 +44,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartItemDTO> getCartItems(Principal principal) {
-        throwOnMissingPrincipal(principal);
+        if(principal == null) {
+            return null;
+        }
 
         User user = userRepository.findByUsername(principal.getName())
                         .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
@@ -120,24 +122,28 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findByUuid(productUuid)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
 
-        updateAvailableQuantity(product, quantity);
-
         CartItem cartItem = cartItemRepository.findByUserAndProduct(user, product);
+
+        Integer addedQuantity;
 
         if(cartItem == null) {
             cartItem = new CartItem(user, product, quantity);
-        } else {
-            Integer addedQuantity = cartItem.getQuantity() + quantity;
 
-            cartItem.setQuantity(addedQuantity);
+            addedQuantity = quantity;
+        } else {
+            addedQuantity = cartItem.getQuantity() + quantity;
         }
+
+        updateAvailableQuantity(product, quantity);
+
+        cartItem.setQuantity(addedQuantity);
 
         CartItem savedCartItem = cartItemRepository.save(cartItem);
 
         return mapper.map(savedCartItem, CartItemDTO.class);
     }
 
-    private static void updateAvailableQuantity(Product product, Integer addedQuantity) {
+    private void updateAvailableQuantity(Product product, Integer addedQuantity) {
         Integer productAvailableQuantity = product.getAvailableQuantity();
 
         if(addedQuantity > productAvailableQuantity) {
@@ -147,6 +153,8 @@ public class CartServiceImpl implements CartService {
         productAvailableQuantity -= addedQuantity;
 
         product.setAvailableQuantity(productAvailableQuantity);
+
+        productRepository.save(product);
     }
 
     private static void updateAvailableQuantityOnCartItemRemoval(Product product, CartItem cartItem) {

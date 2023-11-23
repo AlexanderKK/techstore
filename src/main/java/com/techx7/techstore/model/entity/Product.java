@@ -39,7 +39,7 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Positive
+    @PositiveOrZero
     @NotNull(message = "Should not be empty")
     @Column(name = "available_quantity", nullable = false)
     private Integer availableQuantity;

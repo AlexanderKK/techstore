@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @CrossOrigin("*")
@@ -60,13 +61,14 @@ public class ShoppingCartRestController {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ProductQuantityException.class)
-    public String handleProductQuantityError(ProductQuantityException ex) {
+    public Map<String, String> handleProductQuantityError(ProductQuantityException ex) {
         System.out.println(ex.getMessage());
 
-        return ex.getMessage();
+        return Map.of("error", ex.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(PrincipalNotFoundException.class)
     public String handlePrincipalError(PrincipalNotFoundException ex) {
         System.out.println(ex.getMessage());

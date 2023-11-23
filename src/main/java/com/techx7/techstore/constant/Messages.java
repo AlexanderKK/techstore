@@ -10,6 +10,6 @@ public enum Messages {
     public static final String USER_VERIFIED = "Your account is now verified";
     public static final String ENTITIES_ALREADY_SEEDED = "%s already seeded.";
     public static final String USER_NOT_LOGGED = "User not logged in";
-    public static final String QUANTITY_CAPACITY_SURPASSED = "Quantity capacity surpassed";
+    public static final String QUANTITY_CAPACITY_SURPASSED = "Out of stock";
 
 }

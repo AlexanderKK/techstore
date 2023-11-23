@@ -73,16 +73,12 @@ function loadCartItems() {
 
 	fetch(url, requestOptions)
 		.then(promise => {
-			if(promise.ok) {
-				console.log('Items loaded')
-			}
-
 			return promise.json();
 		})
 		.then(response => {
 			fillCartContent(response);
 		})
-		.catch(error => console.log('error', error))
+		.catch(error => error);
 }
 
 /**
@@ -224,9 +220,11 @@ function addToCart() {
 }
 
 function addProduct(productId, addedQuantity) {
-	const currentQuantity = $('.quantity' + productId).val();
+	const qtyInput = $('.quantity' + productId);
 
-	const newQty = Number(addedQuantity) + Number(currentQuantity);
+	const currentQuantity = qtyInput.val();
+
+	const newQty = Number(currentQuantity) + Number(addedQuantity);
 
 	if(newQty > 15 || newQty <= 0) {
 		return;
@@ -248,6 +246,10 @@ function addProduct(productId, addedQuantity) {
 				loadCartItems();
 
 				updateCartPageTotal();
+			}
+
+			if(response.status === 400) {
+				return response.json().then(data => alert(data.error));
 			}
 		})
 		.catch(error => console.log('error', error))
