@@ -1,8 +1,11 @@
 package com.techx7.techstore.web.rest;
 
+import com.techx7.techstore.exception.PrincipalNotFoundException;
+import com.techx7.techstore.exception.ProductQuantityException;
 import com.techx7.techstore.model.dto.cart.CartItemDTO;
 import com.techx7.techstore.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +27,6 @@ public class ShoppingCartRestController {
 
     @GetMapping("/cart/load")
     public List<CartItemDTO> loadCartItems(Principal principal) {
-        if(principal == null) {
-            return null;
-        }
-
         List<CartItemDTO> cartItems = cartService.getCartItems(principal);
 
         return cartItems;
@@ -37,15 +36,7 @@ public class ShoppingCartRestController {
     public ResponseEntity<CartItemDTO> addToCart(@PathVariable("uuid") UUID productUuid,
                                                  @PathVariable("quantity") Integer quantity,
                                                  Principal principal) {
-        if(principal == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        CartItemDTO cartItem = cartService.addProductToCart(quantity, productUuid, principal);
-
-        if(cartItem == null) {
-            return ResponseEntity.badRequest().build();
-        }
+        cartService.addProductToCart(quantity, productUuid, principal);
 
         return ResponseEntity.ok().build();
     }
@@ -54,10 +45,6 @@ public class ShoppingCartRestController {
     public ResponseEntity<BigDecimal> updateQuantity(@PathVariable("uuid") UUID productUuid,
                                                      @PathVariable("quantity") Integer quantity,
                                                      Principal principal) {
-        if(principal == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         BigDecimal subtotal = cartService.updateQuantity(quantity, productUuid, principal);
 
         return ResponseEntity.ok().body(subtotal);
@@ -66,13 +53,25 @@ public class ShoppingCartRestController {
     @PostMapping("/cart/remove/{uuid}")
     public ResponseEntity<CartItemDTO> removeFromCart(@PathVariable("uuid") UUID productUuid,
                                                       Principal principal) {
-        if(principal == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         cartService.removeProduct(productUuid, principal);
 
         return ResponseEntity.ok().build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ProductQuantityException.class)
+    public String handleProductQuantityError(ProductQuantityException ex) {
+        System.out.println(ex.getMessage());
+
+        return ex.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(PrincipalNotFoundException.class)
+    public String handlePrincipalError(PrincipalNotFoundException ex) {
+        System.out.println(ex.getMessage());
+
+        return ex.getMessage();
     }
 
 }

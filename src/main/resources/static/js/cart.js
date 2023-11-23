@@ -75,8 +75,6 @@ function loadCartItems() {
 		.then(promise => {
 			if(promise.ok) {
 				console.log('Items loaded')
-			} else {
-				console.log('Log in to use the cart')
 			}
 
 			return promise.json();
@@ -250,8 +248,6 @@ function addProduct(productId, addedQuantity) {
 				loadCartItems();
 
 				updateCartPageTotal();
-			} else {
-				console.log('Log in to add product to cart')
 			}
 		})
 		.catch(error => console.log('error', error))
@@ -388,8 +384,6 @@ function updateQuantity(productId, quantity) {
 		.then(promise => {
 			if(promise.ok) {
 				console.log('Product quantity updated')
-			} else {
-				console.log('Log in to use the cart')
 			}
 
 			return promise.json();
@@ -477,9 +471,7 @@ function removeFromCart(removeBtn) {
 
 				removeProduct(rowNumber, productId);
 
-				console.log('Product has been deleted')
-			} else {
-				console.log('Log in to use the cart')
+				console.log('Product has been removed')
 			}
 		})
 		.catch(error => console.log('error', error))

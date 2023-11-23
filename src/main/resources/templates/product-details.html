@@ -41,7 +41,7 @@
                         </th-block>
                     </div>
 
-                    <div th:if="*{description != ''}"
+                    <div th:if="*{!description?.isBlank()}"
                          class="fs-5 my-3 row">
                         <p th:text="*{description}"></p>
                     </div>

@@ -2,6 +2,7 @@ package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.PrincipalNotFoundException;
+import com.techx7.techstore.exception.ProductQuantityException;
 import com.techx7.techstore.model.dto.cart.CartItemDTO;
 import com.techx7.techstore.model.entity.CartItem;
 import com.techx7.techstore.model.entity.Product;
@@ -20,8 +21,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.constant.Messages.USER_NOT_LOGGED;
+import static com.techx7.techstore.constant.Messages.*;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -44,9 +44,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public List<CartItemDTO> getCartItems(Principal principal) {
-        if(principal == null) {
-            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
-        }
+        throwOnMissingPrincipal(principal);
 
         User user = userRepository.findByUsername(principal.getName())
                         .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
@@ -58,6 +56,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartItemDTO addProductToCart(Integer quantity, UUID productUuid, Principal principal) {
+        throwOnMissingPrincipal(principal);
+
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
@@ -67,11 +67,20 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public BigDecimal updateQuantity(Integer quantity, UUID productUuid, Principal principal) {
+        throwOnMissingPrincipal(principal);
+
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
         Product product = productRepository.findByUuid(productUuid)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
+
+        CartItem cartItem = cartItemRepository.findByUserAndProduct(user, product);
+        if(cartItem == null) {
+            throw new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Cart item"));
+        }
+
+        updateAvailableQuantity(product, quantity);
 
         cartItemRepository.updateQuantity(quantity, user.getUuid(), productUuid);
 
@@ -83,27 +92,42 @@ public class CartServiceImpl implements CartService {
     @Override
     @Transactional
     public void removeProduct(UUID productUuid, Principal principal) {
+        throwOnMissingPrincipal(principal);
+
         Product product = productRepository.findByUuid(productUuid)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
 
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
+        CartItem cartItem = cartItemRepository.findByUserAndProduct(user, product);
+        if(cartItem == null) {
+            throw new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Cart item"));
+        }
+
+        updateAvailableQuantityOnCartItemRemoval(product, cartItem);
+
         cartItemRepository.deleteByProductAndUser(product, user);
     }
 
-    private CartItemDTO addProduct(User user, UUID productUuid, Integer quantity) {
-        Integer addedQuantity;
+    private static void throwOnMissingPrincipal(Principal principal) {
+        if(principal == null) {
+            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
+        }
+    }
 
+    private CartItemDTO addProduct(User user, UUID productUuid, Integer quantity) {
         Product product = productRepository.findByUuid(productUuid)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
+
+        updateAvailableQuantity(product, quantity);
 
         CartItem cartItem = cartItemRepository.findByUserAndProduct(user, product);
 
         if(cartItem == null) {
             cartItem = new CartItem(user, product, quantity);
         } else {
-            addedQuantity = cartItem.getQuantity() + quantity;
+            Integer addedQuantity = cartItem.getQuantity() + quantity;
 
             cartItem.setQuantity(addedQuantity);
         }
@@ -111,6 +135,28 @@ public class CartServiceImpl implements CartService {
         CartItem savedCartItem = cartItemRepository.save(cartItem);
 
         return mapper.map(savedCartItem, CartItemDTO.class);
+    }
+
+    private static void updateAvailableQuantity(Product product, Integer addedQuantity) {
+        Integer productAvailableQuantity = product.getAvailableQuantity();
+
+        if(addedQuantity > productAvailableQuantity) {
+            throw new ProductQuantityException(QUANTITY_CAPACITY_SURPASSED);
+        }
+
+        productAvailableQuantity -= addedQuantity;
+
+        product.setAvailableQuantity(productAvailableQuantity);
+    }
+
+    private static void updateAvailableQuantityOnCartItemRemoval(Product product, CartItem cartItem) {
+        Integer cartItemQuantity = cartItem.getQuantity();
+
+        Integer productAvailableQuantity = product.getAvailableQuantity();
+
+        productAvailableQuantity += cartItemQuantity;
+
+        product.setAvailableQuantity(productAvailableQuantity);
     }
 
 }
