@@ -348,6 +348,8 @@ function decreaseQuantity(qtyButton) {
 	}
 }
 
+let availableQuantity = 100;
+
 /**
  * Reset quantity
  *
@@ -359,8 +361,8 @@ function resetQuantity(qtyInput) {
 		qtyInput.val(1);
 	}
 
-	if(qtyInput.val() >= 15) {
-		qtyInput.val(15);
+	if(qtyInput.val() >= availableQuantity) {
+		qtyInput.val(availableQuantity);
 	}
 
 	return qtyInput.val();
@@ -397,7 +399,11 @@ function updateQuantity(productId, quantity) {
 			}
 
 			if(response.status === 400) {
-				return response.json().then(data => alert(data.error));
+				return response.json().then(data => {
+					$('.quantity' + productId).val(data['availableQuantity']);
+
+					alert(data.error);
+				});
 			}
 		})
 

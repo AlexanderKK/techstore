@@ -64,7 +64,10 @@ public class ShoppingCartRestController {
     public Map<String, String> handleProductQuantityError(ProductQuantityException ex) {
         System.out.println(ex.getMessage());
 
-        return Map.of("error", ex.getMessage());
+        return Map.of(
+                "error", ex.getMessage(),
+                "availableQuantity", ex.getAvailableQuantity().toString()
+        );
     }
 
     @ResponseBody

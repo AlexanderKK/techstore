@@ -147,7 +147,7 @@ public class CartServiceImpl implements CartService {
         Integer productAvailableQuantity = product.getAvailableQuantity();
 
         if(addedQuantity > productAvailableQuantity) {
-            throw new ProductQuantityException(QUANTITY_CAPACITY_SURPASSED);
+            throw new ProductQuantityException(QUANTITY_CAPACITY_SURPASSED, productAvailableQuantity);
         }
 
         productAvailableQuantity -= addedQuantity;
@@ -161,7 +161,7 @@ public class CartServiceImpl implements CartService {
         Integer productAvailableQuantity = product.getInitialQuantity();
 
         if(quantity > productAvailableQuantity) {
-            throw new ProductQuantityException(QUANTITY_CAPACITY_SURPASSED);
+            throw new ProductQuantityException(QUANTITY_CAPACITY_SURPASSED, productAvailableQuantity);
         }
 
         productAvailableQuantity -= quantity;

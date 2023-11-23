@@ -2,8 +2,15 @@ package com.techx7.techstore.exception;
 
 public class ProductQuantityException extends RuntimeException {
 
-    public ProductQuantityException(String message) {
+    private final Integer availableQuantity;
+
+    public ProductQuantityException(String message, Integer availableQuantity) {
         super(message);
+        this.availableQuantity = availableQuantity;
+    }
+
+    public Integer getAvailableQuantity() {
+        return availableQuantity;
     }
 
 }
