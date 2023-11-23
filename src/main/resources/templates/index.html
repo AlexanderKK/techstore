@@ -69,11 +69,11 @@
 
 						<div class="d-flex align-items-center justify-content-center mt-2">
 							<th-block th:if="*{discountPrice}">
-								<h5 th:if="*{discountPrice}" th:text="|£*{discountPrice}|">£1999.99</h5><h6 class="text-muted ml-2"><del th:text="|£*{price}|">£2499.99</del></h6>
+								<h5 th:if="*{discountPrice}" th:text="|£*{discountPrice}|">£0</h5><h6 class="text-muted ml-2"><del th:text="|£*{price}|">£0</del></h6>
 							</th-block>
 
 							<th-block th:unless="*{discountPrice}">
-								<h5 th:text="|£*{price}|">£1999.99</h5>
+								<h5 th:text="|£*{price}|">£0</h5>
 							</th-block>
 						</div>
 
