@@ -107,7 +107,7 @@ public class CartServiceImpl implements CartService {
             throw new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Cart item"));
         }
 
-        updateAvailableQuantityOnCartItemRemoval(product, cartItem);
+        increaseAvailableQuantity(product, cartItem);
 
         cartItemRepository.deleteByProductAndUser(product, user);
     }
@@ -134,7 +134,7 @@ public class CartServiceImpl implements CartService {
             addedQuantity = cartItem.getQuantity() + quantity;
         }
 
-        updateAvailableQuantity(product, quantity);
+        decreaseAvailableQuantity(product, quantity);
 
         cartItem.setQuantity(addedQuantity);
 
@@ -143,7 +143,7 @@ public class CartServiceImpl implements CartService {
         return mapper.map(savedCartItem, CartItemDTO.class);
     }
 
-    private void updateAvailableQuantity(Product product, Integer addedQuantity) {
+    private void decreaseAvailableQuantity(Product product, Integer addedQuantity) {
         Integer productAvailableQuantity = product.getAvailableQuantity();
 
         if(addedQuantity > productAvailableQuantity) {
@@ -157,7 +157,21 @@ public class CartServiceImpl implements CartService {
         productRepository.save(product);
     }
 
-    private static void updateAvailableQuantityOnCartItemRemoval(Product product, CartItem cartItem) {
+    private void updateAvailableQuantity(Product product, Integer quantity) {
+        Integer productAvailableQuantity = product.getInitialQuantity();
+
+        if(quantity > productAvailableQuantity) {
+            throw new ProductQuantityException(QUANTITY_CAPACITY_SURPASSED);
+        }
+
+        productAvailableQuantity -= quantity;
+
+        product.setAvailableQuantity(productAvailableQuantity);
+
+        productRepository.save(product);
+    }
+
+    private void increaseAvailableQuantity(Product product, CartItem cartItem) {
         Integer cartItemQuantity = cartItem.getQuantity();
 
         Integer productAvailableQuantity = product.getAvailableQuantity();
@@ -165,6 +179,8 @@ public class CartServiceImpl implements CartService {
         productAvailableQuantity += cartItemQuantity;
 
         product.setAvailableQuantity(productAvailableQuantity);
+
+        productRepository.save(product);
     }
 
 }

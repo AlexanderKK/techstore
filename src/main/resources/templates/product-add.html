@@ -106,12 +106,12 @@
                             <div class="col-md-12 form-group">
                                 <label for="product-available-quantity">Available quantity</label>
 
-                                <input th:name="availableQuantity"
-                                       th:field="*{availableQuantity}"
+                                <input th:name="initialQuantity"
+                                       th:field="*{initialQuantity}"
                                        th:errorclass="is-invalid"
                                        id="product-available-quantity" class="form-control" type="text">
-                                <small th:if="${#fields.hasErrors('availableQuantity')}"
-                                       th:errors="*{availableQuantity}"
+                                <small th:if="${#fields.hasErrors('initialQuantity')}"
+                                       th:errors="*{initialQuantity}"
                                        class="text-danger"></small>
                             </div>
 

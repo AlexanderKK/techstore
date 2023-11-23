@@ -27,7 +27,7 @@ public class AddProductDTO {
 
     @NotNull(message = "Please enter a quantity")
     @Positive(message = "Please enter a positive number")
-    private Integer availableQuantity;
+    private Integer initialQuantity;
 
     @ProductDiscount
     private String discountPercentage;
@@ -82,12 +82,12 @@ public class AddProductDTO {
         this.price = price;
     }
 
-    public Integer getAvailableQuantity() {
-        return availableQuantity;
+    public Integer getInitialQuantity() {
+        return initialQuantity;
     }
 
-    public void setAvailableQuantity(Integer availableQuantity) {
-        this.availableQuantity = availableQuantity;
+    public void setInitialQuantity(Integer initialQuantity) {
+        this.initialQuantity = initialQuantity;
     }
 
     public String getDiscountPercentage() {

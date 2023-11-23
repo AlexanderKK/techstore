@@ -383,20 +383,24 @@ function updateQuantity(productId, quantity) {
 	}
 
 	fetch(url, requestOptions)
-		.then(promise => {
-			if(promise.ok) {
+		.then(response => {
+			if(response.ok) {
 				console.log('Product quantity updated')
+
+				return response.json().then(newSubtotal => {
+					updateSubtotal(newSubtotal, productId);
+
+					updateCartPageTotal();
+
+					updateCartTotal();
+				})
 			}
 
-			return promise.json();
+			if(response.status === 400) {
+				return response.json().then(data => alert(data.error));
+			}
 		})
-		.then(newSubtotal => {
-			updateSubtotal(newSubtotal, productId);
 
-			updateCartPageTotal();
-
-			updateCartTotal();
-		})
 		.catch(error => console.log('error', error))
 }
 
@@ -467,8 +471,8 @@ function removeFromCart(removeBtn) {
 	}
 
 	fetch(url, requestOptions)
-		.then(promise => {
-			if(promise.ok) {
+		.then(response => {
+			if(response.ok) {
 				const rowNumber = removeBtn.attr('rowNumber');
 
 				removeProduct(rowNumber, productId);

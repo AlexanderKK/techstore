@@ -41,6 +41,11 @@ public class Product extends BaseEntity {
 
     @PositiveOrZero
     @NotNull(message = "Should not be empty")
+    @Column(name = "initial_quantity", nullable = false)
+    private Integer initialQuantity;
+
+    @PositiveOrZero
+    @NotNull(message = "Should not be empty")
     @Column(name = "available_quantity", nullable = false)
     private Integer availableQuantity;
 
@@ -101,6 +106,14 @@ public class Product extends BaseEntity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getInitialQuantity() {
+        return initialQuantity;
+    }
+
+    public void setInitialQuantity(Integer initialQuantity) {
+        this.initialQuantity = initialQuantity;
     }
 
     public Integer getAvailableQuantity() {

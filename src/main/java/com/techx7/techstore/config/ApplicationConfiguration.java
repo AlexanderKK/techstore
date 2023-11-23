@@ -196,7 +196,9 @@ public class ApplicationConfiguration {
                         .map(AddProductDTO::getCategories, Product::setCategories))
                 .addMappings(mapper -> mapper
                         .using(toModel)
-                        .map(AddProductDTO::getModel, Product::setModel));
+                        .map(AddProductDTO::getModel, Product::setModel))
+                .addMappings(mapper -> mapper
+                        .map(AddProductDTO::getInitialQuantity, Product::setAvailableQuantity));
 
         // Product -> ProductDTO
         Converter<Set<Category>, Set<String>> toCategoryNamesSet
