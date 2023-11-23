@@ -9,56 +9,48 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "user_info")
 public class UserInfo extends BaseEntity {
 
-    @NotBlank
-    @Column(nullable = false, name = "first_name")
+    @Column
+    private String imageUrl;
+
+    @Column(name = "first_name")
     private String firstName;
 
     @Column(name = "middle_name")
     private String middleName;
 
-    @NotBlank
-    @Column(nullable = false, name = "last_name")
+    @Column(name = "last_name")
     private String lastName;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     private GenderEnum gender;
 
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(nullable = false)
+    @Column
     private String address;
 
     @Column(name = "secondary_address")
     private String secondaryAddress;
 
-    @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Country country;
 
-    @NotBlank
-    @Column(nullable = false)
+    @Column
     private String city;
 
-    @NotBlank
-    @Column(nullable = false)
+    @Column
     private String zipCode;
 
     public UserInfo() {}
 
-    public UserInfo(String firstName, String middleName, String lastName, GenderEnum gender, String phoneNumber, String address, String secondaryAddress, Country country, String city, String zipCode) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.secondaryAddress = secondaryAddress;
-        this.country = country;
-        this.city = city;
-        this.zipCode = zipCode;
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public String getFirstName() {

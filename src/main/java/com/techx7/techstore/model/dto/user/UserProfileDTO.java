@@ -1,6 +1,18 @@
 package com.techx7.techstore.model.dto.user;
 
+import com.techx7.techstore.validation.multipart.MultiPartFile;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
+import static com.techx7.techstore.util.FileUtils.manageImage;
+
 public class UserProfileDTO {
+
+    @MultiPartFile(contentTypes = {"image/png", "image/jpeg"})
+    private MultipartFile image;
+
+    private String imageUrl;
 
     private String firstName;
 
@@ -23,6 +35,22 @@ public class UserProfileDTO {
     private String zipCode;
 
     public UserProfileDTO() {}
+
+    public MultipartFile getImage() {
+        return image;
+    }
+
+    public void setImage(MultipartFile image) throws IOException {
+        this.image = manageImage(image, imageUrl);
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public String getFirstName() {
         return firstName;

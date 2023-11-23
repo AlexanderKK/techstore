@@ -1,5 +1,6 @@
 package com.techx7.techstore.web.rest;
 
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.PrincipalNotFoundException;
 import com.techx7.techstore.exception.ProductQuantityException;
 import com.techx7.techstore.model.dto.cart.CartItemDTO;
@@ -70,10 +71,16 @@ public class ShoppingCartRestController {
         );
     }
 
-    @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(PrincipalNotFoundException.class)
     public String handlePrincipalError(PrincipalNotFoundException ex) {
+        System.out.println(ex.getMessage());
+
+        return ex.getMessage();
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handlePrincipalError(EntityNotFoundException ex) {
         System.out.println(ex.getMessage());
 
         return ex.getMessage();

@@ -88,9 +88,11 @@ public class UserController {
     @GetMapping("/profile")
     public String profile(Model model,
                           Principal principal) {
-        userService.getUserProfile(principal);
+        UserDTO userDTO = userService.getUserProfile(principal);
 
-        return "profile";
+        model.addAttribute("user", userDTO);
+
+        return "user-profile";
     }
 
 }

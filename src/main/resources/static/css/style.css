@@ -9731,6 +9731,7 @@ a.text-dark:hover, a.text-dark:focus {
   border-bottom: 15px solid #F5F5F5;
 }
 
+.profile-form .help-block ul,
 .contact-form .help-block ul {
   margin: 0;
   padding: 0;
