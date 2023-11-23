@@ -73,7 +73,7 @@
                                    class="btn-link link-register"><button class="dropdown-item" type="button">Sign Up</button></a>
 
                                 <a sec:authorize="authenticated"
-                                   th:href="@{/profile}"
+                                   th:href="@{/users/profile}"
                                    class="btn-link"><button class="dropdown-item" type="button">Profile</button></a>
 
                                 <a sec:authorize="authenticated"
@@ -132,7 +132,8 @@
                             </div>
 
                             <div class="col-6 col-lg-auto d-lg-none navbar-nav py-0 text-end">
-                                <a th:href="@{profile}"
+                                <a sec:authorize="hasRole('USER')"
+                                   th:href="@{users/profile}"
                                    class="nav-item nav-link pr-0">Profile</a>
 
                                 <a class="nav-item nav-link link-login pr-0">Sign In</a>

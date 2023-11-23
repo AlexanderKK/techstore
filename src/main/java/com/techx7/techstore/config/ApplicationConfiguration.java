@@ -20,7 +20,9 @@ import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
+import com.techx7.techstore.model.dto.user.UserProfileDTO;
 import com.techx7.techstore.model.entity.*;
+import com.techx7.techstore.model.enums.GenderEnum;
 import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
@@ -74,6 +76,15 @@ public class ApplicationConfiguration {
         ModelMapper modelMapper = new ModelMapper();
 
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
+        modelMapper.getConfiguration().setFieldMatchingEnabled(true);
+
+        // Trim String
+        Converter<String, String> trimStringConverter
+                = context -> context.getSource() == null
+                ? null
+                : context.getSource().trim();
+
+        modelMapper.addConverter(trimStringConverter);
 
         // LocalDateTime -> String
         Converter<LocalDateTime, String> localDateTimeToString
@@ -251,6 +262,26 @@ public class ApplicationConfiguration {
                         .with(encodedPasswordProvider)
                         .map(RegisterDTO::getPassword, User::setPassword));
 
+        // UserInfo -> UserProfileDTO
+        Converter<GenderEnum, String> toGenderName
+                = context -> context.getSource() == null
+                ? null
+                : StringUtils.capitalize(context.getSource().name());
+
+        Converter<Country, String> toCountryName
+                = context -> context.getSource() == null
+                ? null
+                : context.getSource().getName();
+
+        modelMapper
+                .createTypeMap(UserInfo.class, UserProfileDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(toGenderName)
+                        .map(UserInfo::getGender, UserProfileDTO::setGender))
+                .addMappings(mapper -> mapper
+                        .using(toCountryName)
+                        .map(UserInfo::getCountry, UserProfileDTO::setCountry));
+
         // User -> UserDTO
         Converter<Set<Role>, String> toRoleIds
                 = context -> context.getSource() == null
@@ -259,6 +290,11 @@ public class ApplicationConfiguration {
                     .map(BaseEntity::getId)
                     .map(String::valueOf)
                     .collect(Collectors.joining(","));
+
+        Converter<UserInfo, UserProfileDTO> toUserProfileDTO
+                = context -> context.getSource() == null
+                ? null
+                : modelMapper.map(context.getSource(), UserProfileDTO.class);
 
         modelMapper
                 .createTypeMap(User.class, UserDTO.class)
@@ -270,7 +306,10 @@ public class ApplicationConfiguration {
                         .map(User::getModified, UserDTO::setModified))
                 .addMappings(mapper -> mapper
                         .using(toRoleIds)
-                        .map(User::getRoles, UserDTO::setRoles));
+                        .map(User::getRoles, UserDTO::setRoles))
+                .addMappings(mapper -> mapper
+                        .using(toUserProfileDTO)
+                        .map(User::getUserInfo, UserDTO::setUserProfileDTO));
 
         // Role -> RoleDTO
         Provider<String> roleNameProvider =

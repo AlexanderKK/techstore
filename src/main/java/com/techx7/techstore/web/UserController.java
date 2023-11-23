@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -82,6 +83,14 @@ public class UserController {
         userService.deleteAllUsers();
 
         return "redirect:/users";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model,
+                          Principal principal) {
+        userService.getUserProfile(principal);
+
+        return "profile";
     }
 
 }

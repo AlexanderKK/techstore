@@ -1,65 +1,28 @@
-package com.techx7.techstore.model.entity;
+package com.techx7.techstore.model.dto.user;
 
-import com.techx7.techstore.model.enums.GenderEnum;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+public class UserProfileDTO {
 
-@Entity
-@Table(name = "user_info")
-public class UserInfo extends BaseEntity {
-
-    @NotBlank
-    @Column(nullable = false, name = "first_name")
     private String firstName;
 
-    @Column(name = "middle_name")
     private String middleName;
 
-    @NotBlank
-    @Column(nullable = false, name = "last_name")
     private String lastName;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private GenderEnum gender;
+    private String gender;
 
-    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(nullable = false)
     private String address;
 
-    @Column(name = "secondary_address")
     private String secondaryAddress;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    private Country country;
+    private String country;
 
-    @NotBlank
-    @Column(nullable = false)
     private String city;
 
-    @NotBlank
-    @Column(nullable = false)
     private String zipCode;
 
-    public UserInfo() {}
-
-    public UserInfo(String firstName, String middleName, String lastName, GenderEnum gender, String phoneNumber, String address, String secondaryAddress, Country country, String city, String zipCode) {
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.secondaryAddress = secondaryAddress;
-        this.country = country;
-        this.city = city;
-        this.zipCode = zipCode;
-    }
+    public UserProfileDTO() {}
 
     public String getFirstName() {
         return firstName;
@@ -85,11 +48,11 @@ public class UserInfo extends BaseEntity {
         this.lastName = lastName;
     }
 
-    public GenderEnum getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(GenderEnum gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -117,11 +80,11 @@ public class UserInfo extends BaseEntity {
         this.secondaryAddress = secondaryAddress;
     }
 
-    public Country getCountry() {
+    public String getCountry() {
         return country;
     }
 
-    public void setCountry(Country country) {
+    public void setCountry(String country) {
         this.country = country;
     }
 

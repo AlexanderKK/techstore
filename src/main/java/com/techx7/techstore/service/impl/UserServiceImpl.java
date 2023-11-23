@@ -1,6 +1,7 @@
 package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.exception.EntityNotFoundException;
+import com.techx7.techstore.exception.PrincipalNotFoundException;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.entity.Role;
@@ -16,10 +17,11 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
+import static com.techx7.techstore.constant.Messages.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -119,6 +121,42 @@ public class UserServiceImpl implements UserService {
         user.editUser(userDTO);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public UserDTO getUserProfile(Principal principal) {
+        if(principal == null) {
+            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
+        }
+
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+//        Country country = countryRepository.findById(101L)
+//                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Country")));
+//
+//
+//        UserInfo userInfo = new UserInfo(
+//                "Mike",
+//                "Like",
+//                "Pike",
+//                GenderEnum.OTHER,
+//                "052",
+//                "Greenery",
+//                "Secondary Greenery",
+//                country,
+//                "Okinawa", "14000"
+//        );
+//
+//        userInfoRepository.save(userInfo);
+//
+//        user.setUserInfo(userInfo);
+//
+//        userRepository.save(user);
+
+        UserDTO userProfileDTO = mapper.map(user, UserDTO.class);
+
+        return userProfileDTO;
     }
 
     private Role getRoleEntity(String roleName) {

@@ -3,6 +3,7 @@ package com.techx7.techstore.service;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,5 +22,7 @@ public interface UserService {
     UserDTO getUserByUuid(UUID uuid);
 
     void editUser(UserDTO userDTO);
+
+    UserDTO getUserProfile(Principal principal);
 
 }

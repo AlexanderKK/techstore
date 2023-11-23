@@ -58,11 +58,6 @@ public class AuthController {
         return "redirect:/users/login";
     }
 
-    @GetMapping("/profile")
-    public String profile() {
-        return "profile";
-    }
-
     @ExceptionHandler(UserNotActivatedException.class)
     public String handleUserNotActivatedError(RuntimeException ex) {
         System.out.println(ex.getMessage());

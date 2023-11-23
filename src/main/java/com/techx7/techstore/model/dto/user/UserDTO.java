@@ -1,8 +1,6 @@
 package com.techx7.techstore.model.dto.user;
 
 import com.techx7.techstore.model.dto.role.RoleDTO;
-import com.techx7.techstore.validation.user.UniqueEmail;
-import com.techx7.techstore.validation.user.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,6 +30,8 @@ public class UserDTO {
     private String created;
 
     private String modified;
+
+    private UserProfileDTO userProfileDTO;
 
     public UserDTO() {}
 
@@ -89,6 +89,14 @@ public class UserDTO {
 
     public void setModified(String modified) {
         this.modified = modified;
+    }
+
+    public UserProfileDTO getUserProfileDTO() {
+        return userProfileDTO;
+    }
+
+    public void setUserProfileDTO(UserProfileDTO userProfileDTO) {
+        this.userProfileDTO = userProfileDTO;
     }
 
 }

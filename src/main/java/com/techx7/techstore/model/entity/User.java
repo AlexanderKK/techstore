@@ -59,6 +59,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<UserActivationCode> activationCodes;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private UserInfo userInfo;
+
     public User() {
         this.roles = new HashSet<>();
     }
@@ -141,6 +144,14 @@ public class User extends BaseEntity {
 
     public void setActivationCodes(Set<UserActivationCode> activationCodes) {
         this.activationCodes = activationCodes;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 
     public void editUser(UserDTO userDTO) {
