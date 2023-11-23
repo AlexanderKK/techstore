@@ -20,6 +20,8 @@ const buttonsAddToCart = $('.btnAddToCart');
 
 const buttonAddToCartProductDetails = $('#btnAddToCartProductDetails');
 
+const maxQuantity = 100;
+
 
 /**
  * On page load
@@ -138,7 +140,7 @@ function generateCartItem(rowId, product, quantity) {
 									</a>
 								</div>
 								
-								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${product.uuid}"" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
+								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${product.uuid}" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
 								
 								<input type="text" class="cart__unit" value="${product.price}" hidden>
 								
@@ -226,7 +228,7 @@ function addProduct(productId, addedQuantity) {
 
 	const newQty = Number(currentQuantity) + Number(addedQuantity);
 
-	if(newQty > 15 || newQty <= 0) {
+	if(newQty > maxQuantity || newQty <= 0) {
 		return;
 	}
 
@@ -268,7 +270,7 @@ $('.details-quantity a i').on('click', function () {
 	let quantity = parseFloat(inputQty.val());
 
 	if (button.hasClass('btn-plus')) {
-		if(quantity < 15) {
+		if(quantity < maxQuantity) {
 			inputQty.val(quantity + 1);
 		}
 	} else {
@@ -321,7 +323,7 @@ function increaseQuantity(qtyButton) {
 
 	let newQty = parseInt(qtyInput.val()) + 1;
 
-	if(newQty <= 15) {
+	if(newQty <= maxQuantity) {
 		qtyInput.val(newQty);
 
 		updateQuantity(productId, newQty);
@@ -348,8 +350,6 @@ function decreaseQuantity(qtyButton) {
 	}
 }
 
-let availableQuantity = 100;
-
 /**
  * Reset quantity
  *
@@ -361,8 +361,8 @@ function resetQuantity(qtyInput) {
 		qtyInput.val(1);
 	}
 
-	if(qtyInput.val() >= availableQuantity) {
-		qtyInput.val(availableQuantity);
+	if(qtyInput.val() >= maxQuantity) {
+		qtyInput.val(maxQuantity);
 	}
 
 	return qtyInput.val();
