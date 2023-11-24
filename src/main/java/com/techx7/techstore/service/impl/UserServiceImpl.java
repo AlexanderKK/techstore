@@ -2,9 +2,7 @@ package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.PrincipalNotFoundException;
-import com.techx7.techstore.model.dto.user.RegisterDTO;
-import com.techx7.techstore.model.dto.user.UserDTO;
-import com.techx7.techstore.model.dto.user.UserProfileDTO;
+import com.techx7.techstore.model.dto.user.*;
 import com.techx7.techstore.model.entity.Country;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
@@ -24,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -137,46 +136,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUser(Principal principal) {
-        if(principal == null) {
-            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
-        }
-
-        User user = userRepository.findByUsername(principal.getName())
-                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
-
-        UserDTO userDTO = mapper.map(user, UserDTO.class);
-
-        return userDTO;
-    }
-
-    @Override
     public UserProfileDTO getUserProfile(Principal principal) {
         if(principal == null) {
             throw new PrincipalNotFoundException(USER_NOT_LOGGED);
         }
 
-//        Country country = countryRepository.findById(101L)
-//                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Country")));
-//
-//
-//        UserInfo userInfo = new UserInfo(
-//                "Mike",
-//                "Like",
-//                "Pike",
-//                GenderEnum.OTHER,
-//                "052",
-//                "Greenery",
-//                "Secondary Greenery",
-//                country,
-//                "Okinawa", "14000"
-//        );
-//
-//        userInfoRepository.save(userInfo);
-//
-//        user.setUserInfo(userInfo);
-//
-//        userRepository.save(user);
+//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+//        System.out.println(loggedUser.getUsername());
 
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
@@ -216,6 +182,69 @@ public class UserServiceImpl implements UserService {
         userInfoRepository.save(userInfo);
 
         user.setUserInfo(userInfo);
+        user.setModified(LocalDateTime.now());
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public UserCredentialsDTO getUserCredentials(Principal principal) {
+        if(principal == null) {
+            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
+        }
+
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        UserCredentialsDTO userCredentialsDTO = mapper.map(user, UserCredentialsDTO.class);
+
+        return userCredentialsDTO;
+    }
+
+    @Override
+    public void editUserCredentials(UserCredentialsDTO userCredentialsDTO, Principal principal) {
+        if(principal == null) {
+            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
+        }
+
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        user.editUserCredentials(userCredentialsDTO);
+
+//        loggedUser.setUsername(user.getUsername());
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public UserPasswordDTO getUserPassword(Principal principal) {
+        if(principal == null) {
+            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
+        }
+
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        UserPasswordDTO userPasswordDTO = mapper.map(user, UserPasswordDTO.class);
+
+        return userPasswordDTO;
+    }
+
+    @Override
+    public void editUserPassword(UserPasswordDTO userPasswordDTO, Principal principal) {
+        if(principal == null) {
+            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
+        }
+
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        if(!passwordEncoder.matches(userPasswordDTO.getPassword(), user.getPassword())) {
+            throw new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Password"));
+        }
+
+        user.setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
 
         userRepository.save(user);
     }

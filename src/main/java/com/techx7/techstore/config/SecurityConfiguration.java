@@ -10,11 +10,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
+import java.security.Principal;
 
 @Configuration
 public class SecurityConfiguration {
@@ -32,7 +35,8 @@ public class SecurityConfiguration {
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 ).authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        // User
+
+                        // All
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(
                                 "/users/login",
@@ -43,15 +47,25 @@ public class SecurityConfiguration {
                                 "/users/register/success").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/", "/products", "/contact").permitAll()
-                        .requestMatchers("/cart/add/**", "/cart/update/**", "/cart/remove/**", "/cart/load").permitAll()
+                        .requestMatchers(
+                                "/cart/add/**",
+                                "/cart/update/**",
+                                "/cart/remove/**",
+                                "/cart/load").permitAll()
                         .requestMatchers("/products/detail/**").permitAll()
+
                         //User
-                        .requestMatchers("/users/profile/**").hasRole("USER")
+                        .requestMatchers(
+                                "/users/profile/**",
+                                "/users/credentials/**",
+                                "/users/password/**").hasRole("USER")
+
                         // Manager
                         .requestMatchers("/products/**").hasRole("MANAGER")
                         .requestMatchers("/manufacturers/**").hasRole("MANAGER")
                         .requestMatchers("/models/**").hasRole("MANAGER")
                         .requestMatchers("/categories/**").hasRole("MANAGER")
+
                         // Admin
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers("/roles/**").hasRole("ADMIN")

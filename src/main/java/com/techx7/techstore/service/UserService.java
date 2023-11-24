@@ -1,8 +1,6 @@
 package com.techx7.techstore.service;
 
-import com.techx7.techstore.model.dto.user.RegisterDTO;
-import com.techx7.techstore.model.dto.user.UserDTO;
-import com.techx7.techstore.model.dto.user.UserProfileDTO;
+import com.techx7.techstore.model.dto.user.*;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -25,10 +23,16 @@ public interface UserService {
 
     void editUser(UserDTO userDTO);
 
-    UserDTO getUser(Principal principal);
-
     UserProfileDTO getUserProfile(Principal principal);
 
     void editUserProfile(UserProfileDTO userProfileDTO, Principal principal) throws IOException;
+
+    UserCredentialsDTO getUserCredentials(Principal principal);
+
+    void editUserCredentials(UserCredentialsDTO userCredentialsDTO, Principal principal);
+
+    UserPasswordDTO getUserPassword(Principal principal);
+
+    void editUserPassword(UserPasswordDTO userPasswordDTO, Principal principal);
 
 }

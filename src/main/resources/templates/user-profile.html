@@ -93,25 +93,6 @@
 									   class="text-danger"></small>
 							</div>
 
-<!--							<div class="col-md-12 form-group">-->
-<!--								<label>Manufacturer</label>-->
-
-<!--								<select th:name="manufacturerId"-->
-<!--										th:field="*{manufacturerId}"-->
-<!--										class="custom-select">-->
-<!--									<option value="">Select a manufacturer</option>-->
-<!--									<option th:each="m : ${manufacturers}"-->
-<!--											th:text="${m.name}"-->
-<!--											th:value="${m.id}"></option>-->
-<!--								</select>-->
-<!--								<small th:if="${#fields.hasErrors('manufacturerId')}"-->
-<!--									   th:errors="*{manufacturerId}"-->
-<!--									   class="text-danger"></small>-->
-<!--								<small th:if="${manufacturerError}"-->
-<!--									   th:text="${manufacturerError}"-->
-<!--									   class="text-danger"></small>-->
-<!--							</div>-->
-
 							<div class="col-md-6 form-group">
 								<label for="phone-number">Phone</label>
 
@@ -218,26 +199,87 @@
 			</div>
 
 			<div class="col-lg-5 mb-5">
-				<div class="bg-light p-30">
-					<h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">Edit credentials</span></h5>
+				<div class="row">
+					<div class="col-12 mb-5">
+						<div class="credentials-form bg-light p-30">
+							<h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">Edit credentials</span></h5>
 
-					<div class="col-md-12 form-group">
-						<label>Username</label>
-						<input class="form-control" type="text" placeholder="Your new username">
+							<form th:action="@{/users/credentials/edit}"
+								  th:method="PATCH"
+								  th:object="${userCredentialsToEdit}"
+								  name="userCredentials" id="user-credentials" enctype="multipart/form-data">
+								<div class="col-md-12 form-group">
+									<label for="email">Email</label>
+
+									<input th:name="email"
+										   th:field="*{email}"
+										   th:errorclass="is-invalid"
+										   id="email" class="form-control" type="text" placeholder="Your new email">
+									<small th:if="${#fields.hasErrors('email')}"
+										   th:errors="*{email}"
+										   class="text-danger"></small>
+								</div>
+
+								<div class="col-md-12 form-group">
+									<label for="username">Username</label>
+
+									<input th:name="username"
+										   th:field="*{username}"
+										   th:errorclass="is-invalid"
+										   id="username" class="form-control" type="text" placeholder="Your new username">
+									<small th:if="${#fields.hasErrors('username')}"
+										   th:errors="*{username}"
+										   class="text-danger"></small>
+								</div>
+
+								<div class="col-md-12 mt-5 form-actions">
+									<button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Edit Credentials</button>
+								</div>
+							</form>
+						</div>
 					</div>
 
-					<div class="col-md-12 form-group">
-						<label>Email</label>
-						<input class="form-control" type="text" placeholder="Your new email">
-					</div>
+					<div class="col-12">
+						<div class="credentials-form bg-light p-30">
+							<h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">Edit password</span></h5>
 
-					<div class="col-md-12 form-group">
-						<label>Password</label>
-						<input class="form-control" type="password" placeholder="Your new password">
-					</div>
+							<form th:action="@{/users/password/edit}"
+								  th:method="PATCH"
+								  th:object="${userPasswordToEdit}"
+								  name="userPassword" id="user-password" enctype="multipart/form-data">
+								<div class="col-md-12 form-group">
+									<label for="password">Password</label>
 
-					<div class="col-md-12 mt-5 form-actions">
-						<a href="#" class="text-decoration-none"><button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Edit Credentials</button></a>
+									<input th:name="password"
+										   th:errorclass="is-invalid"
+										   id="password" class="form-control" type="password" placeholder="Your password">
+
+									<small th:if="${#fields.hasErrors('password')}"
+										   th:errors="*{password}"
+										   class="text-danger"></small>
+
+									<small th:if="${passwordError != null}"
+										   th:text="${passwordError}"
+										   class="text-danger"></small>
+								</div>
+
+								<div class="col-md-12 form-group">
+									<label for="new-password">New password</label>
+
+									<input th:name="newPassword"
+										   th:errorclass="is-invalid"
+										   id="new-password" class="form-control" type="password" placeholder="Your new password">
+
+									<small th:if="${#fields.hasErrors('newPassword')}"
+										   th:errors="*{newPassword}"
+										   class="text-danger"></small>
+								</div>
+
+								<div class="col-md-12 mt-5 form-actions">
+									<button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Change Password</button>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>

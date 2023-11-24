@@ -1,6 +1,6 @@
 package com.techx7.techstore.service;
 
-import com.techx7.techstore.model.dto.GenderDTO;
+import com.techx7.techstore.model.dto.gender.GenderDTO;
 
 import java.util.List;
 

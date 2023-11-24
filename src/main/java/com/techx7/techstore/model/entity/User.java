@@ -1,5 +1,6 @@
 package com.techx7.techstore.model.entity;
 
+import com.techx7.techstore.model.dto.user.UserCredentialsDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -157,6 +158,12 @@ public class User extends BaseEntity {
     public void editUser(UserDTO userDTO) {
         this.setEmail(userDTO.getEmail());
         this.setUsername(userDTO.getUsername());
+        this.setModified(LocalDateTime.now());
+    }
+
+    public void editUserCredentials(UserCredentialsDTO userCredentialsDTO) {
+        this.setEmail(userCredentialsDTO.getEmail());
+        this.setUsername(userCredentialsDTO.getUsername());
         this.setModified(LocalDateTime.now());
     }
 

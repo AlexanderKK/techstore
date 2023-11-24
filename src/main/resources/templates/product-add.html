@@ -100,6 +100,7 @@
                                        th:field="*{price}"
                                        th:errorclass="is-invalid"
                                        id="product-price" class="form-control" type="text">
+
                                 <small th:if="${#fields.hasErrors('price')}"
                                        th:errors="*{price}"
                                        class="text-danger"></small>
@@ -112,6 +113,7 @@
                                        th:field="*{initialQuantity}"
                                        th:errorclass="is-invalid"
                                        id="product-available-quantity" class="form-control" type="text">
+
                                 <small th:if="${#fields.hasErrors('initialQuantity')}"
                                        th:errors="*{initialQuantity}"
                                        class="text-danger"></small>
@@ -124,6 +126,7 @@
                                        th:field="*{discountPercentage}"
                                        th:errorclass="is-invalid"
                                        id="product-discount" class="form-control" type="text">
+
                                 <small th:if="${#fields.hasErrors('discountPercentage')}"
                                        th:errors="*{discountPercentage}"
                                        class="text-danger"></small>

@@ -1,9 +1,13 @@
 package com.techx7.techstore.web;
 
-import com.techx7.techstore.model.dto.GenderDTO;
+import com.techx7.techstore.config.TechStoreUserDetails;
+import com.techx7.techstore.exception.EntityNotFoundException;
+import com.techx7.techstore.model.dto.gender.GenderDTO;
 import com.techx7.techstore.model.dto.country.CountryDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
+import com.techx7.techstore.model.dto.user.UserCredentialsDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
+import com.techx7.techstore.model.dto.user.UserPasswordDTO;
 import com.techx7.techstore.model.dto.user.UserProfileDTO;
 import com.techx7.techstore.service.CountryService;
 import com.techx7.techstore.service.GenderService;
@@ -11,6 +15,7 @@ import com.techx7.techstore.service.RoleService;
 import com.techx7.techstore.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -99,23 +104,30 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(Model model,
-                          Principal principal) {
+                          Principal principal,
+                          @AuthenticationPrincipal TechStoreUserDetails loggedUser) {
+        System.out.println(loggedUser);
+
         List<GenderDTO> genderDTOs = genderService.getAllGenders();
         List<CountryDTO> countryDTOs = countryService.getAllCountries();
 
         model.addAttribute("genders", genderDTOs);
         model.addAttribute("countries", countryDTOs);
 
-        UserDTO userDTO = userService.getUser(principal);
-
         UserProfileDTO userProfileDTO = userService.getUserProfile(principal);
-
-//        model.addAttribute("userDTO", userDTO);
-
-//        model.addAttribute("userProfileDTO", userProfileDTO);
+        UserCredentialsDTO userCredentialsDTO = userService.getUserCredentials(principal);
+        UserPasswordDTO userPasswordDTO = userService.getUserPassword(principal);
 
         if(!model.containsAttribute("userProfileToEdit")) {
             model.addAttribute("userProfileToEdit", userProfileDTO);
+        }
+
+        if(!model.containsAttribute("userCredentialsToEdit")) {
+            model.addAttribute("userCredentialsToEdit", userCredentialsDTO);
+        }
+
+        if(!model.containsAttribute("userPasswordToEdit")) {
+            model.addAttribute("userPasswordToEdit", userPasswordDTO);
         }
 
         return "user-profile";
@@ -134,6 +146,53 @@ public class UserController {
         }
 
         userService.editUserProfile(userProfileDTO, principal);
+
+        return "redirect:/users/profile";
+    }
+
+    @PatchMapping("/credentials/edit")
+    public String editUserCredentials(@Valid UserCredentialsDTO userCredentialsDTO,
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes,
+                                  Principal principal,
+                                  @AuthenticationPrincipal TechStoreUserDetails loggedUser) {
+        System.out.println(loggedUser);
+
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userCredentialsToEdit", userCredentialsDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userCredentialsToEdit", bindingResult);
+
+            return "redirect:/users/profile";
+        }
+
+        userService.editUserCredentials(userCredentialsDTO, principal);
+
+        return "redirect:/users/profile";
+    }
+
+    @PatchMapping("/password/edit")
+    public String editUserCredentials(@Valid UserPasswordDTO userPasswordDTO,
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes,
+                                      Principal principal) {
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userPasswordToEdit", userPasswordDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userPasswordToEdit", bindingResult);
+
+            return "redirect:/users/profile";
+        }
+
+        userService.editUserPassword(userPasswordDTO, principal);
+
+        return "redirect:/users/profile";
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handlePrincipalError(EntityNotFoundException ex,
+                                       RedirectAttributes redirectAttributes) {
+        System.out.println(ex.getMessage());
+
+        redirectAttributes.addFlashAttribute("passwordError", ex.getMessage());
 
         return "redirect:/users/profile";
     }

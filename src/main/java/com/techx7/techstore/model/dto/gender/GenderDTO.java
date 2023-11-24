@@ -1,4 +1,4 @@
-package com.techx7.techstore.model.dto;
+package com.techx7.techstore.model.dto.gender;
 
 import com.techx7.techstore.model.enums.GenderEnum;
 
