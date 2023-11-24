@@ -5,10 +5,12 @@ import com.techx7.techstore.exception.PrincipalNotFoundException;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.dto.user.UserProfileDTO;
+import com.techx7.techstore.model.entity.Country;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.model.entity.UserInfo;
 import com.techx7.techstore.model.events.UserRegisteredEvent;
+import com.techx7.techstore.repository.CountryRepository;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserInfoRepository;
 import com.techx7.techstore.repository.UserRepository;
@@ -20,11 +22,13 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.*;
+import static com.techx7.techstore.util.FileUtils.saveFileLocally;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,6 +39,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserInfoRepository userInfoRepository;
+    private final CountryRepository countryRepository;
 
     @Autowired
     public UserServiceImpl(ModelMapper mapper,
@@ -42,13 +47,15 @@ public class UserServiceImpl implements UserService {
                            ApplicationEventPublisher applicationEventPublisher,
                            RoleRepository roleRepository,
                            PasswordEncoder passwordEncoder,
-                           UserInfoRepository userInfoRepository) {
+                           UserInfoRepository userInfoRepository,
+                           CountryRepository countryRepository) {
         this.mapper = mapper;
         this.userRepository = userRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.userInfoRepository = userInfoRepository;
+        this.countryRepository = countryRepository;
     }
 
     @Override
@@ -185,13 +192,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserProfile(UserProfileDTO userProfileDTO, Principal principal) {
+    public void editUserProfile(UserProfileDTO userProfileDTO, Principal principal) throws IOException {
         if(principal == null) {
             throw new PrincipalNotFoundException(USER_NOT_LOGGED);
         }
 
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        Country country = countryRepository.findByName(userProfileDTO.getCountry())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Country")));
+
+        UserInfo userInfo
+                = user.getUserInfo() == null
+                ? new UserInfo()
+                : user.getUserInfo();
+
+        saveFileLocally(userProfileDTO.getImage());
+
+        userInfo.setCountry(country);
+        userInfo.editUserProfile(userProfileDTO);
+
+        userInfoRepository.save(userInfo);
+
+        user.setUserInfo(userInfo);
+
+        userRepository.save(user);
     }
 
     private Role getRoleEntity(String roleName) {

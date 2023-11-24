@@ -42,7 +42,7 @@
 	 */
 	fileInput.each(function() {
 		$(this).on('change', function(e) {
-			console.dir(e.target)
+			// console.dir(e.target)
 			loadFileImage(this);
 		});
 	});
@@ -54,24 +54,30 @@
 
 		if(typeof input.files !== 'undefined') {
 			selectedFile = input.files[0];
-			console.log(selectedFile);
+			// console.log(selectedFile);
 		}
 
 		const categoryImg = $(input).parent().parent().parent().parent().children().first().children().first();
 
-		const categoryImgError = $(input).parent().parent().children().get(3);
+		const categoryImgError = $(input).parent().parent().parent().parent().children().last().children().first();
+
 		$(categoryImgError).empty();
 
 		if (!selectedFile ||
 			(selectedFile.type !== 'image/png' && selectedFile.type !== 'image/jpeg') ||
-			input.size > 2097152) {
+			selectedFile.size > 2097152) {
 			categoryImg.attr('src', 'https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175');
+
 			categoryImg.title = '';
 			input.value = '';
 
 			inputImageUrl.val('');
 
-			$(categoryImgError).append('<small class="text-danger">Invalid format or size!</small>');
+			if(selectedFile.size > 2097152) {
+				$(categoryImgError).append('<small class="text-danger">Please do not exceed the image size limit</small>');
+			} else {
+				$(categoryImgError).append('<small class="text-danger">Please choose an image of valid type</small>');
+			}
 
 			return;
 		}

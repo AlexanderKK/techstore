@@ -1,7 +1,10 @@
 package com.techx7.techstore.model.entity;
 
+import com.techx7.techstore.model.dto.user.UserProfileDTO;
 import com.techx7.techstore.model.enums.GenderEnum;
 import jakarta.persistence.*;
+
+import java.util.Locale;
 
 @Entity
 @Table(name = "user_info")
@@ -129,6 +132,21 @@ public class UserInfo extends BaseEntity {
 
     public void setZipCode(String zipCode) {
         this.zipCode = zipCode;
+    }
+
+    public void editUserProfile(UserProfileDTO userProfileDTO) {
+        this.setImageUrl(userProfileDTO.getImageUrl());
+        this.setFirstName(userProfileDTO.getFirstName());
+        this.setLastName(userProfileDTO.getLastName());
+        this.setGender(
+                GenderEnum.valueOf(
+                        userProfileDTO.getGender().toUpperCase(Locale.getDefault())));
+        this.setPhoneNumber(userProfileDTO.getPhoneNumber());
+        this.setAddress(userProfileDTO.getAddress());
+        this.setSecondaryAddress(userProfileDTO.getSecondaryAddress());
+        this.setCity(userProfileDTO.getCity());
+        this.setState(userProfileDTO.getState());
+        this.setZipCode(userProfileDTO.getZipCode());
     }
 
 }

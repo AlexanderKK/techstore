@@ -68,10 +68,10 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public void editRole(RoleDTO roleDTO) throws IOException {
-        saveFileLocally(roleDTO.getImage());
-
         Role role = roleRepository.findByUuid(roleDTO.getUuid())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
+
+        saveFileLocally(roleDTO.getImage());
 
         role.editRole(roleDTO);
 

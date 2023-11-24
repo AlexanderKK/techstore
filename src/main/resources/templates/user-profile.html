@@ -18,7 +18,7 @@
 						  th:method="PATCH"
 						  th:object="${userProfileToEdit}"
 						  name="userProfile" id="user-profile" enctype="multipart/form-data">
-						<div class="row align-items-start py-3">
+						<div class="row align-items-start py-4">
 							<div class="col-md-12 form-group">
 								<div class="row align-items-center">
 									<div th:field="*{imageUrl}"
@@ -39,9 +39,11 @@
 
 												<label class="custom-file-label" for="customFileInput">Upload</label>
 											</div>
-
-											<div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
 										</div>
+									</div>
+
+									<div class="col-12">
+										<div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
 									</div>
 								</div>
 							</div>

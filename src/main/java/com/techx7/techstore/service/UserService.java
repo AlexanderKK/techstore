@@ -4,6 +4,7 @@ import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.dto.user.UserProfileDTO;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,6 @@ public interface UserService {
 
     UserProfileDTO getUserProfile(Principal principal);
 
-    void editUserProfile(UserProfileDTO userProfileDTO, Principal principal);
+    void editUserProfile(UserProfileDTO userProfileDTO, Principal principal) throws IOException;
 
 }

@@ -20,7 +20,7 @@
                           th:method="POST"
                           th:object="${addCategoryDTO}"
                           name="categoryAdd" id="category-add" enctype="multipart/form-data">
-                        <div class="row align-items-start py-3">
+                        <div class="row align-items-start py-4">
                             <div class="col-md-12 form-group">
                                 <div class="row align-items-center">
                                     <div class="col-auto mb-3 mb-md-0 input-image">
@@ -30,7 +30,9 @@
                                     <div class="col-auto">
                                         <div id="img-section">
                                             <b>Category Image</b>
+
                                             <p>Accepted file type .png. Less than 5MB</p>
+
                                             <div class="custom-file">
                                                 <input th:name="image"
                                                        th:field="*{image}"
@@ -38,9 +40,11 @@
 
                                                 <label class="custom-file-label" for="customFileInput">Upload</label>
                                             </div>
-
-                                            <div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
                                         </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
                                     </div>
                                 </div>
                             </div>

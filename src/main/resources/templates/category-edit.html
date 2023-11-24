@@ -21,7 +21,7 @@
                         <div class="role-form bg-light p-30">
                             <h5 class="section-title position-relative text-uppercase mb-3"><span class="credentials-title">Edit category</span></h5>
 
-                            <div class="row align-items-start py-3">
+                            <div class="row align-items-start py-4">
                                 <div class="col-md-12 form-group">
                                     <div class="row align-items-center">
                                         <div th:field="*{imageUrl}"
@@ -42,9 +42,11 @@
 
                                                     <label class="custom-file-label" for="customFileInput">Upload</label>
                                                 </div>
-
-                                                <div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
                                             </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
                                         </div>
                                     </div>
                                 </div>
