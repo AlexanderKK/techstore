@@ -4,10 +4,13 @@ import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.PrincipalNotFoundException;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
+import com.techx7.techstore.model.dto.user.UserProfileDTO;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
+import com.techx7.techstore.model.entity.UserInfo;
 import com.techx7.techstore.model.events.UserRegisteredEvent;
 import com.techx7.techstore.repository.RoleRepository;
+import com.techx7.techstore.repository.UserInfoRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.UserService;
 import jakarta.transaction.Transactional;
@@ -31,18 +34,21 @@ public class UserServiceImpl implements UserService {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserInfoRepository userInfoRepository;
 
     @Autowired
     public UserServiceImpl(ModelMapper mapper,
                            UserRepository userRepository,
                            ApplicationEventPublisher applicationEventPublisher,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           UserInfoRepository userInfoRepository) {
         this.mapper = mapper;
         this.userRepository = userRepository;
         this.applicationEventPublisher = applicationEventPublisher;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userInfoRepository = userInfoRepository;
     }
 
     @Override
@@ -124,13 +130,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserProfile(Principal principal) {
+    public UserDTO getUser(Principal principal) {
         if(principal == null) {
             throw new PrincipalNotFoundException(USER_NOT_LOGGED);
         }
 
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        UserDTO userDTO = mapper.map(user, UserDTO.class);
+
+        return userDTO;
+    }
+
+    @Override
+    public UserProfileDTO getUserProfile(Principal principal) {
+        if(principal == null) {
+            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
+        }
 
 //        Country country = countryRepository.findById(101L)
 //                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Country")));
@@ -154,9 +171,22 @@ public class UserServiceImpl implements UserService {
 //
 //        userRepository.save(user);
 
-        UserDTO userProfileDTO = mapper.map(user, UserDTO.class);
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        UserInfo userInfo = user.getUserInfo();
+
+        UserProfileDTO userProfileDTO
+                = userInfo == null
+                ? new UserProfileDTO()
+                : mapper.map(userInfo, UserProfileDTO.class);
 
         return userProfileDTO;
+    }
+
+    @Override
+    public void editUserProfile(UserProfileDTO userProfileDTO) {
+
     }
 
     private Role getRoleEntity(String roleName) {

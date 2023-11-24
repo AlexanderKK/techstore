@@ -2,6 +2,7 @@ package com.techx7.techstore.web;
 
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
+import com.techx7.techstore.model.dto.user.UserProfileDTO;
 import com.techx7.techstore.service.RoleService;
 import com.techx7.techstore.service.UserService;
 import jakarta.validation.Valid;
@@ -88,11 +89,35 @@ public class UserController {
     @GetMapping("/profile")
     public String profile(Model model,
                           Principal principal) {
-        UserDTO userDTO = userService.getUserProfile(principal);
+        UserDTO userDTO = userService.getUser(principal);
 
-        model.addAttribute("user", userDTO);
+        UserProfileDTO userProfileDTO = userService.getUserProfile(principal);
+
+//        model.addAttribute("userDTO", userDTO);
+
+//        model.addAttribute("userProfileDTO", userProfileDTO);
+
+        if(!model.containsAttribute("userProfileToEdit")) {
+            model.addAttribute("userProfileToEdit", userProfileDTO);
+        }
 
         return "user-profile";
+    }
+
+    @PatchMapping("/profile/edit")
+    public String editUserProfile(@Valid UserProfileDTO userProfileDTO,
+                           BindingResult bindingResult,
+                           RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("userProfileToEdit", userProfileDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userProfileToEdit", bindingResult);
+
+            return "redirect:/users/profile";
+        }
+
+        userService.editUserProfile(userProfileDTO);
+
+        return "redirect:/users/profile";
     }
 
 }

@@ -2,8 +2,6 @@ package com.techx7.techstore.model.entity;
 
 import com.techx7.techstore.model.enums.GenderEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "user_info")
@@ -14,9 +12,6 @@ public class UserInfo extends BaseEntity {
 
     @Column(name = "first_name")
     private String firstName;
-
-    @Column(name = "middle_name")
-    private String middleName;
 
     @Column(name = "last_name")
     private String lastName;
@@ -41,6 +36,9 @@ public class UserInfo extends BaseEntity {
     private String city;
 
     @Column
+    private String state;
+
+    @Column
     private String zipCode;
 
     public UserInfo() {}
@@ -59,14 +57,6 @@ public class UserInfo extends BaseEntity {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
-    }
-
-    public String getMiddleName() {
-        return middleName;
-    }
-
-    public void setMiddleName(String middleName) {
-        this.middleName = middleName;
     }
 
     public String getLastName() {
@@ -123,6 +113,14 @@ public class UserInfo extends BaseEntity {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getZipCode() {

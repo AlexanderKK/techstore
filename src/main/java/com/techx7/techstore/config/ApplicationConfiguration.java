@@ -306,10 +306,7 @@ public class ApplicationConfiguration {
                         .map(User::getModified, UserDTO::setModified))
                 .addMappings(mapper -> mapper
                         .using(toRoleIds)
-                        .map(User::getRoles, UserDTO::setRoles))
-                .addMappings(mapper -> mapper
-                        .using(toUserProfileDTO)
-                        .map(User::getUserInfo, UserDTO::setUserProfileDTO));
+                        .map(User::getRoles, UserDTO::setRoles));
 
         // Role -> RoleDTO
         Provider<String> roleNameProvider =

@@ -14,21 +14,20 @@
 		<div class="row px-xl-5">
 			<div class="col-lg-7 mb-5">
 				<div class="profile-form bg-light p-30">
-					<form th:action="@{/users/profile}"
+					<form th:action="@{/users/profile/edit}"
 						  th:method="PATCH"
-						  th:object="${user}"
-						  th:userProfileDTO="${user.userProfileDTO}"
+						  th:object="${userProfileToEdit}"
 						  name="userProfile" id="user-profile" enctype="multipart/form-data">
 						<input type="hidden" name="uuid" th:value="*{uuid}">
 
 						<div class="row align-items-start py-3">
 							<div class="col-md-12 form-group">
 								<div class="row align-items-center">
-									<div th:field="*{userProfileDTO.imageUrl}"
+									<div th:field="*{imageUrl}"
 										 class="col-auto mb-3 mb-md-0 input-image edit">
 										<img src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175" class="img" alt="Role image">
 
-										<input id="input-imageUrl" type="hidden" name="userProfileDTO.imageUrl">
+										<input id="input-imageUrl" type="hidden" name="imageUrl">
 									</div>
 
 									<div class="col-auto">
@@ -43,7 +42,7 @@
 												<label class="custom-file-label" for="customFileInput">Upload</label>
 											</div>
 
-											<div class="image-error"><small th:if="${#fields.hasErrors('userProfileDTO.image')}" th:errors="*{userProfileDTO.image}" class="text-danger"></small></div>
+											<div class="image-error"><small th:if="${#fields.hasErrors('image')}" th:errors="*{image}" class="text-danger"></small></div>
 										</div>
 									</div>
 								</div>
@@ -53,11 +52,12 @@
 								<label for="first-name">First Name</label>
 
 								<input th:name="firstName"
-									   th:field="*{userProfileDTO.firstName}"
+									   th:field="*{firstName}"
 									   th:errorclass="is-invalid"
-									   id="first-name" class="form-control" type="text">
-								<small th:if="${#fields.hasErrors('userProfileDTO.firstName')}"
-									   th:errors="*{userProfileDTO.firstName}"
+									   id="first-name" class="form-control" type="text" placeholder="John">
+
+								<small th:if="${#fields.hasErrors('firstName')}"
+									   th:errors="*{firstName}"
 									   class="text-danger"></small>
 							</div>
 
@@ -65,62 +65,146 @@
 								<label for="last-name">Last Name</label>
 
 								<input th:name="lastName"
-									   th:field="*{userProfileDTO.lastName}"
+									   th:field="*{lastName}"
 									   th:errorclass="is-invalid"
-									   id="last-name" class="form-control" type="text">
-								<small th:if="${#fields.hasErrors('userProfileDTO.lastName')}"
-									   th:errors="*{userProfileDTO.lastName}"
+									   id="last-name" class="form-control" type="text" placeholder="Doe">
+
+								<small th:if="${#fields.hasErrors('lastName')}"
+									   th:errors="*{lastName}"
 									   class="text-danger"></small>
 							</div>
 
 							<div class="col-md-6 form-group">
-								<label>E-mail</label>
+								<label for="gender">Gender</label>
 
-								<input class="form-control" type="text" value="example@email.com">
-							</div>
-
-							<div class="col-md-6 form-group">
-								<label>Phone</label>
-								<input class="form-control" type="text" value="+359 456 78 38 90">
-							</div>
-
-							<div class="col-md-6 form-group">
-								<label>Address</label>
-								<input class="form-control" type="text" value="Street №">
-							</div>
-
-							<div class="col-md-6 form-group">
-								<label>Secondary Address</label>
-								<input class="form-control" type="text" value="Street №">
-							</div>
-
-							<div class="col-md-6 form-group">
-								<label>Country</label>
-								<select class="custom-select">
-									<option selected>Bulgaria</option>
-									<option>Russia</option>
-									<option>Japan</option>
-									<option>Greenland</option>
+								<select th:name="gender"
+										th:field="*{gender}"
+										th:errorclass="is-invalid"
+										class="custom-select"
+										id="gender">
+									<option value="">Select a gender</option>
 								</select>
+
+								<small th:if="${#fields.hasErrors('gender')}"
+									   th:errors="*{gender}"
+									   class="text-danger"></small>
+							</div>
+
+<!--							<div class="col-md-12 form-group">-->
+<!--								<label>Manufacturer</label>-->
+
+<!--								<select th:name="manufacturerId"-->
+<!--										th:field="*{manufacturerId}"-->
+<!--										class="custom-select">-->
+<!--									<option value="">Select a manufacturer</option>-->
+<!--									<option th:each="m : ${manufacturers}"-->
+<!--											th:text="${m.name}"-->
+<!--											th:value="${m.id}"></option>-->
+<!--								</select>-->
+<!--								<small th:if="${#fields.hasErrors('manufacturerId')}"-->
+<!--									   th:errors="*{manufacturerId}"-->
+<!--									   class="text-danger"></small>-->
+<!--								<small th:if="${manufacturerError}"-->
+<!--									   th:text="${manufacturerError}"-->
+<!--									   class="text-danger"></small>-->
+<!--							</div>-->
+
+							<div class="col-md-6 form-group">
+								<label for="phone-number">Phone</label>
+
+								<input th:name="phoneNumber"
+									   th:field="*{phoneNumber}"
+									   th:errorclass="is-invalid"
+									   id="phone-number" class="form-control" type="text" placeholder="+359 456 78 38 90">
+
+								<small th:if="${#fields.hasErrors('phoneNumber')}"
+									   th:errors="*{phoneNumber}"
+									   class="text-danger"></small>
 							</div>
 
 							<div class="col-md-6 form-group">
-								<label>City</label>
-								<input class="form-control" type="text" value="Sofia">
+								<label for="address">Address</label>
+
+								<input th:name="address"
+									   th:field="*{address}"
+									   th:errorclass="is-invalid"
+									   id="address" class="form-control" type="text" placeholder="Street №">
+
+								<small th:if="${#fields.hasErrors('address')}"
+									   th:errors="*{address}"
+									   class="text-danger"></small>
 							</div>
 
 							<div class="col-md-6 form-group">
-								<label>State</label>
-								<input class="form-control" type="text" value="Karelia">
+								<label for="secondary-address">Secondary Address</label>
+
+								<input th:name="secondaryAddress"
+									   th:field="*{secondaryAddress}"
+									   th:errorclass="is-invalid"
+									   id="secondary-address" class="form-control" type="text" placeholder="Street №">
+
+								<small th:if="${#fields.hasErrors('secondaryAddress')}"
+									   th:errors="*{secondaryAddress}"
+									   class="text-danger"></small>
 							</div>
 
 							<div class="col-md-6 form-group">
-								<label>ZIP Code</label>
-								<input class="form-control" type="text" value="1000">
+								<label for="country">Country</label>
+
+								<select th:name="country"
+										th:field="*{country}"
+										th:errorclass="is-invalid"
+										class="custom-select"
+										id="country">
+									<option value="">Select a country</option>
+								</select>
+
+								<small th:if="${#fields.hasErrors('country')}"
+									   th:errors="*{country}"
+									   class="text-danger"></small>
+							</div>
+
+							<div class="col-md-6 form-group">
+								<label for="city">City</label>
+
+								<input th:name="city"
+									   th:field="*{city}"
+									   th:errorclass="is-invalid"
+									   id="city" class="form-control" type="text" placeholder="Varna">
+
+								<small th:if="${#fields.hasErrors('city')}"
+									   th:errors="*{city}"
+									   class="text-danger"></small>
+							</div>
+
+							<div class="col-md-6 form-group">
+								<label for="state">State</label>
+
+								<input th:name="state"
+									   th:field="*{state}"
+									   th:errorclass="is-invalid"
+									   id="state" class="form-control" type="text" placeholder="Karelia">
+
+								<small th:if="${#fields.hasErrors('state')}"
+									   th:errors="*{state}"
+									   class="text-danger"></small>
+							</div>
+
+							<div class="col-md-6 form-group">
+								<label for="zip-code">ZIP Code</label>
+
+								<input th:name="zipCode"
+									   th:field="*{zipCode}"
+									   th:errorclass="is-invalid"
+									   id="zip-code" class="form-control" type="text" placeholder="1000">
+
+								<small th:if="${#fields.hasErrors('zipCode')}"
+									   th:errors="*{zipCode}"
+									   class="text-danger"></small>
 							</div>
 
 							<div class="col-md-12 mt-4 form-actions">
-								<a href="#" class="text-decoration-none"><button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Edit Billing Info</button></a>
+								<button class="btn btn-block btn-primary font-weight-bold py-3 text-uppercase">Edit Billing Info</button>
 							</div>
 						</div>
 					</form>

@@ -31,8 +31,6 @@ public class UserDTO {
 
     private String modified;
 
-    private UserProfileDTO userProfileDTO;
-
     public UserDTO() {}
 
     public UUID getUuid() {
@@ -89,14 +87,6 @@ public class UserDTO {
 
     public void setModified(String modified) {
         this.modified = modified;
-    }
-
-    public UserProfileDTO getUserProfileDTO() {
-        return userProfileDTO;
-    }
-
-    public void setUserProfileDTO(UserProfileDTO userProfileDTO) {
-        this.userProfileDTO = userProfileDTO;
     }
 
 }
