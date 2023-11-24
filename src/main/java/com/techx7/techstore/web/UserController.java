@@ -1,8 +1,12 @@
 package com.techx7.techstore.web;
 
+import com.techx7.techstore.model.dto.GenderDTO;
+import com.techx7.techstore.model.dto.country.CountryDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.dto.user.UserProfileDTO;
+import com.techx7.techstore.service.CountryService;
+import com.techx7.techstore.service.GenderService;
 import com.techx7.techstore.service.RoleService;
 import com.techx7.techstore.service.UserService;
 import jakarta.validation.Valid;
@@ -23,12 +27,18 @@ public class UserController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final GenderService genderService;
+    private final CountryService countryService;
 
     @Autowired
     public UserController(UserService userService,
-                          RoleService roleService) {
+                          RoleService roleService,
+                          GenderService genderService,
+                          CountryService countryService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.genderService = genderService;
+        this.countryService = countryService;
     }
 
     @GetMapping
@@ -89,6 +99,12 @@ public class UserController {
     @GetMapping("/profile")
     public String profile(Model model,
                           Principal principal) {
+        List<GenderDTO> genderDTOs = genderService.getAllGenders();
+        List<CountryDTO> countryDTOs = countryService.getAllCountries();
+
+        model.addAttribute("genders", genderDTOs);
+        model.addAttribute("countries", countryDTOs);
+
         UserDTO userDTO = userService.getUser(principal);
 
         UserProfileDTO userProfileDTO = userService.getUserProfile(principal);
@@ -106,8 +122,9 @@ public class UserController {
 
     @PatchMapping("/profile/edit")
     public String editUserProfile(@Valid UserProfileDTO userProfileDTO,
-                           BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
+                                  BindingResult bindingResult,
+                                  RedirectAttributes redirectAttributes,
+                                  Principal principal) {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userProfileToEdit", userProfileDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userProfileToEdit", bindingResult);
@@ -115,7 +132,7 @@ public class UserController {
             return "redirect:/users/profile";
         }
 
-        userService.editUserProfile(userProfileDTO);
+        userService.editUserProfile(userProfileDTO, principal);
 
         return "redirect:/users/profile";
     }

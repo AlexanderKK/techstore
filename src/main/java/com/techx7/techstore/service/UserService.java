@@ -28,6 +28,6 @@ public interface UserService {
 
     UserProfileDTO getUserProfile(Principal principal);
 
-    void editUserProfile(UserProfileDTO userProfileDTO);
+    void editUserProfile(UserProfileDTO userProfileDTO, Principal principal);
 
 }

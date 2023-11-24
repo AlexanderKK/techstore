@@ -2,7 +2,7 @@ package com.techx7.techstore.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.techx7.techstore.exception.*;
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.cart.CartItemDTO;
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
@@ -27,8 +27,9 @@ import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
 import com.techx7.techstore.repository.RoleRepository;
-import com.techx7.techstore.util.StringUtils;
-import org.modelmapper.*;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.Provider;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +43,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.techx7.techstore.constant.Messages.*;
+import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
+import static com.techx7.techstore.util.StringUtils.capitalize;
 
 @Configuration
 public class ApplicationConfiguration {
@@ -266,7 +268,7 @@ public class ApplicationConfiguration {
         Converter<GenderEnum, String> toGenderName
                 = context -> context.getSource() == null
                 ? null
-                : StringUtils.capitalize(context.getSource().name());
+                : capitalize(context.getSource().name());
 
         Converter<Country, String> toCountryName
                 = context -> context.getSource() == null
@@ -310,7 +312,7 @@ public class ApplicationConfiguration {
 
         // Role -> RoleDTO
         Provider<String> roleNameProvider =
-                request -> StringUtils.capitalize(String.valueOf(request.getSource()));
+                request -> capitalize(String.valueOf(request.getSource()));
 
         modelMapper
                 .createTypeMap(Role.class, RoleDTO.class)

@@ -1,19 +1,16 @@
 package com.techx7.techstore.model.dto.user;
 
+import com.techx7.techstore.validation.country.CountryName;
+import com.techx7.techstore.validation.gender.GenderName;
 import com.techx7.techstore.validation.multipart.MultiPartFile;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import static com.techx7.techstore.util.FileUtils.manageImage;
 
 public class UserProfileDTO {
-
-    @NotNull(message = "UUID should not be empty")
-    private UUID uuid;
 
     @MultiPartFile(contentTypes = {"image/png", "image/jpeg"})
     private MultipartFile image;
@@ -26,6 +23,7 @@ public class UserProfileDTO {
     @NotBlank(message = "Please enter your last name")
     private String lastName;
 
+    @GenderName
     @NotBlank(message = "Please choose your gender")
     private String gender;
 
@@ -37,6 +35,7 @@ public class UserProfileDTO {
 
     private String secondaryAddress;
 
+    @CountryName
     @NotBlank(message = "Please choose your country")
     private String country;
 
@@ -49,14 +48,6 @@ public class UserProfileDTO {
     private String zipCode;
 
     public UserProfileDTO() {}
-
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
 
     public MultipartFile getImage() {
         return image;

@@ -185,8 +185,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserProfile(UserProfileDTO userProfileDTO) {
+    public void editUserProfile(UserProfileDTO userProfileDTO, Principal principal) {
+        if(principal == null) {
+            throw new PrincipalNotFoundException(USER_NOT_LOGGED);
+        }
 
+        User user = userRepository.findByUsername(principal.getName())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
     }
 
     private Role getRoleEntity(String roleName) {
