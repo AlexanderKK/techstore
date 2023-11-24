@@ -1,5 +1,6 @@
 package com.techx7.techstore.service.impl;
 
+import com.techx7.techstore.config.TechStoreUserDetails;
 import com.techx7.techstore.exception.UserNotActivatedException;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
@@ -29,7 +30,7 @@ public class TechstoreUserDetailsServiceImpl implements UserDetailsService {
             throw new UserNotActivatedException("Account not verified. Check your email for activation link");
         }
 
-        return mapToUserDetails(user);
+        return new TechStoreUserDetails(user);
     }
 
     private static UserDetails mapToUserDetails(User user) {

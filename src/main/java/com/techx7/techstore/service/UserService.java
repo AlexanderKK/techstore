@@ -1,5 +1,6 @@
 package com.techx7.techstore.service;
 
+import com.techx7.techstore.config.TechStoreUserDetails;
 import com.techx7.techstore.model.dto.user.*;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public interface UserService {
 
     UserCredentialsDTO getUserCredentials(Principal principal);
 
-    void editUserCredentials(UserCredentialsDTO userCredentialsDTO, Principal principal);
+    void editUserCredentials(UserCredentialsDTO userCredentialsDTO, TechStoreUserDetails loggedUser);
 
     UserPasswordDTO getUserPassword(Principal principal);
 

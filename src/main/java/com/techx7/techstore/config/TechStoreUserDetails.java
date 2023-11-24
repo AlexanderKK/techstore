@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class TechStoreUserDetails implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public TechStoreUserDetails(User user) {
         this.user = user;
@@ -26,7 +26,7 @@ public class TechStoreUserDetails implements UserDetails {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         }
 
         return authorities;
@@ -44,17 +44,17 @@ public class TechStoreUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override

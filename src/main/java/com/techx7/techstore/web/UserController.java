@@ -104,10 +104,7 @@ public class UserController {
 
     @GetMapping("/profile")
     public String profile(Model model,
-                          Principal principal,
-                          @AuthenticationPrincipal TechStoreUserDetails loggedUser) {
-        System.out.println(loggedUser);
-
+                          Principal principal) {
         List<GenderDTO> genderDTOs = genderService.getAllGenders();
         List<CountryDTO> countryDTOs = countryService.getAllCountries();
 
@@ -154,10 +151,7 @@ public class UserController {
     public String editUserCredentials(@Valid UserCredentialsDTO userCredentialsDTO,
                                   BindingResult bindingResult,
                                   RedirectAttributes redirectAttributes,
-                                  Principal principal,
                                   @AuthenticationPrincipal TechStoreUserDetails loggedUser) {
-        System.out.println(loggedUser);
-
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userCredentialsToEdit", userCredentialsDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userCredentialsToEdit", bindingResult);
@@ -165,13 +159,13 @@ public class UserController {
             return "redirect:/users/profile";
         }
 
-        userService.editUserCredentials(userCredentialsDTO, principal);
+        userService.editUserCredentials(userCredentialsDTO, loggedUser);
 
         return "redirect:/users/profile";
     }
 
     @PatchMapping("/password/edit")
-    public String editUserCredentials(@Valid UserPasswordDTO userPasswordDTO,
+    public String editUserPassword(@Valid UserPasswordDTO userPasswordDTO,
                                       BindingResult bindingResult,
                                       RedirectAttributes redirectAttributes,
                                       Principal principal) {

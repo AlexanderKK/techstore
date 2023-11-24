@@ -1,5 +1,6 @@
 package com.techx7.techstore.service.impl;
 
+import com.techx7.techstore.config.TechStoreUserDetails;
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.PrincipalNotFoundException;
 import com.techx7.techstore.model.dto.user.*;
@@ -141,9 +142,6 @@ public class UserServiceImpl implements UserService {
             throw new PrincipalNotFoundException(USER_NOT_LOGGED);
         }
 
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        System.out.println(loggedUser.getUsername());
-
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
@@ -202,17 +200,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserCredentials(UserCredentialsDTO userCredentialsDTO, Principal principal) {
-        if(principal == null) {
+    public void editUserCredentials(UserCredentialsDTO userCredentialsDTO, TechStoreUserDetails loggedUser) {
+        if(loggedUser == null) {
             throw new PrincipalNotFoundException(USER_NOT_LOGGED);
         }
 
-        User user = userRepository.findByUsername(principal.getName())
+        User user = userRepository.findByUsername(loggedUser.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
         user.editUserCredentials(userCredentialsDTO);
 
-//        loggedUser.setUsername(user.getUsername());
+        loggedUser.setUsername(user.getUsername());
 
         userRepository.save(user);
     }

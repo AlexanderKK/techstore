@@ -10,7 +10,7 @@ public class UserPasswordDTO {
     private String password;
 
     @NotNull(message = "Please enter an password")
-    @Size(min = 8, message = "Password should consist of at least 8 characters")
+    @Size(min = 8, message = "New password should consist of at least 8 characters")
     private String newPassword;
 
     public UserPasswordDTO() {}
