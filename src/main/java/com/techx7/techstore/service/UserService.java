@@ -1,6 +1,6 @@
 package com.techx7.techstore.service;
 
-import com.techx7.techstore.config.TechStoreUserDetails;
+import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.model.dto.user.*;
 
 import java.io.IOException;

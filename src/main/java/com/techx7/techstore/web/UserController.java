@@ -1,6 +1,8 @@
 package com.techx7.techstore.web;
 
-import com.techx7.techstore.config.TechStoreUserDetails;
+import com.techx7.techstore.exception.EmailFoundException;
+import com.techx7.techstore.exception.UsernameFoundException;
+import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.gender.GenderDTO;
 import com.techx7.techstore.model.dto.country.CountryDTO;
@@ -182,11 +184,31 @@ public class UserController {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public String handlePrincipalError(EntityNotFoundException ex,
+    public String handleEntityNotFoundError(EntityNotFoundException ex,
                                        RedirectAttributes redirectAttributes) {
         System.out.println(ex.getMessage());
 
         redirectAttributes.addFlashAttribute("passwordError", ex.getMessage());
+
+        return "redirect:/users/profile";
+    }
+
+    @ExceptionHandler(EmailFoundException.class)
+    public String handleUsernameFoundError(EmailFoundException ex,
+                                           RedirectAttributes redirectAttributes) {
+        System.out.println(ex.getMessage());
+
+        redirectAttributes.addFlashAttribute("emailError", ex.getMessage());
+
+        return "redirect:/users/profile";
+    }
+
+    @ExceptionHandler(UsernameFoundException.class)
+    public String handleUsernameFoundError(UsernameFoundException ex,
+                                           RedirectAttributes redirectAttributes) {
+        System.out.println(ex.getMessage());
+
+        redirectAttributes.addFlashAttribute("usernameError", ex.getMessage());
 
         return "redirect:/users/profile";
     }

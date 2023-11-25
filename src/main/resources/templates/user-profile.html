@@ -215,8 +215,13 @@
 										   th:field="*{email}"
 										   th:errorclass="is-invalid"
 										   id="email" class="form-control" type="text" placeholder="Your new email">
+
 									<small th:if="${#fields.hasErrors('email')}"
 										   th:errors="*{email}"
+										   class="text-danger"></small>
+
+									<small th:if="${emailError != null}"
+										   th:text="${emailError}"
 										   class="text-danger"></small>
 								</div>
 
@@ -227,8 +232,13 @@
 										   th:field="*{username}"
 										   th:errorclass="is-invalid"
 										   id="username" class="form-control" type="text" placeholder="Your new username">
+
 									<small th:if="${#fields.hasErrors('username')}"
 										   th:errors="*{username}"
+										   class="text-danger"></small>
+
+									<small th:if="${usernameError != null}"
+										   th:text="${usernameError}"
 										   class="text-danger"></small>
 								</div>
 

@@ -1,12 +1,9 @@
 package com.techx7.techstore.service.impl;
 
-import com.techx7.techstore.config.TechStoreUserDetails;
+import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.exception.UserNotActivatedException;
-import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.UserRepository;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,23 +28,6 @@ public class TechstoreUserDetailsServiceImpl implements UserDetailsService {
         }
 
         return new TechStoreUserDetails(user);
-    }
-
-    private static UserDetails mapToUserDetails(User user) {
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .authorities(
-                        user.getRoles().stream()
-                        .map(TechstoreUserDetailsServiceImpl::mapToAuthority)
-                        .toList())
-                .build();
-    }
-
-    private static GrantedAuthority mapToAuthority(Role role) {
-        return new SimpleGrantedAuthority(
-                "ROLE_" + role.getName()
-        );
     }
 
 }
