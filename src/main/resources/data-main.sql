@@ -1,4 +1,4 @@
-INSERT IGNORE INTO `countries` (`name`,`abv`,`abv3`,`abv3_alt`,`code`,`slug`, `uuid`)
+INSERT IGNORE INTO `countries` (`name`,`abv`,`abv3`,`abv3_alt`,`code`,`slug`,`uuid`)
 VALUES
     ('Afghanistan','AF','AFG',NULL,4,'afghanistan',UUID()),
     ('Aland Islands','AX','ALA',NULL,248,'aland-islands',UUID()),

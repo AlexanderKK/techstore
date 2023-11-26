@@ -1,0 +1,50 @@
+# Spring
+spring:
+  jpa:
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: create-drop
+#          import: org.hibernate.tool.hbm2ddl.MultipleLinesSqlCommandExtractor
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: TRUE
+        ddl-auto: create-drop
+        globally_quoted_identifiers: true
+        globally_quoted_identifiers_skip_column_definitions: true
+        connection:
+          charSet: UTF-8
+    open-in-view: false
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      platform: test
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;NON_KEYWORDS=KEY,VALUE
+
+logging:
+  level:
+    web: DEBUG
+    org:
+      hibernate:
+        type:
+          descriptor: TRACE
+        SQL: DEBUG
+      nodeValue: WARN
+    blog: WARN
+
+techstore:
+  rememberme:
+    key: test
+
+mail:
+  techstore: "test@example.com"
+  host: 127.0.0.1
+  port: 1025
+  username: test-username
+  password: test-password

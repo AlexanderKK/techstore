@@ -69,4 +69,12 @@ public class TechStoreUserDetails implements UserDetails {
         this.user.setUsername(username);
     }
 
+    public void setEmail(String email) {
+        this.user.setEmail(email);
+    }
+
+    public void setAuthorities(Set<Role> roles) {
+        this.user.setRoles(roles);
+    }
+
 }

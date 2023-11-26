@@ -28,12 +28,13 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.modelmapper:modelmapper:3.1.1'
     implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:4.0.1'
-    implementation 'commons-fileupload:commons-fileupload:1.5'
-    implementation 'org.springframework:spring-mock:2.0.8'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {

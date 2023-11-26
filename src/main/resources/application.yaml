@@ -12,6 +12,7 @@ spring:
   sql:
     init:
       mode: always
+      platform: main
   mvc:
     hiddenmethod:
       filter:
@@ -21,8 +22,8 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
   # Vault
-  active:
-    profile: dev
+#  active:
+#    profile: dev
   application:
     name: techstore
   cloud:

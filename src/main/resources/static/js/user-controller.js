@@ -8,6 +8,7 @@ function registerUser(evt) {
 	evt.preventDefault();
 
 	const csrfToken = document.cookie.replace(/(?:^|.*;\s*)XSRF-TOKEN\s*=\s*([^;]*).*$|^.*$/, '$1');
+
 	const emailInput = document.getElementById('emailRegister');
 	const usernameInput = document.getElementById('usernameRegister');
 	const passwordInput = document.getElementById('passwordRegister');
