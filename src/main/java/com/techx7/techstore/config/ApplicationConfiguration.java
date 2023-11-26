@@ -44,7 +44,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.util.StringUtils.capitalize;
+import static com.techx7.techstore.utils.StringUtils.capitalize;
 
 @Configuration
 public class ApplicationConfiguration {

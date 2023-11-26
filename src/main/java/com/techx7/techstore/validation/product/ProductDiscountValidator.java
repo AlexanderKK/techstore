@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.math.BigDecimal;
 
-import static com.techx7.techstore.util.StringUtils.isNullOrEmpty;
+import static com.techx7.techstore.utils.StringUtils.isNullOrEmpty;
 
 public class ProductDiscountValidator implements ConstraintValidator<ProductDiscount, String> {
 

@@ -9,7 +9,6 @@ import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
 import com.techx7.techstore.service.CategoryService;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ProductService;
-import com.techx7.techstore.util.KeyValuePair;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

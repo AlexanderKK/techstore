@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.techx7.techstore.util.FileUtils.manageImage;
+import static com.techx7.techstore.utils.FileUtils.manageImage;
 
 public class ManufacturerDTO {
 

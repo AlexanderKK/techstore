@@ -1,4 +1,4 @@
-package com.techx7.techstore.util;
+package com.techx7.techstore.utils;
 
 import com.techx7.techstore.model.multipart.MultipartFileImpl;
 import org.springframework.web.multipart.MultipartFile;

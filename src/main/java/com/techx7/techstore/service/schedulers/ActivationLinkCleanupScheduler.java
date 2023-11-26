@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-
 @Component
 public class ActivationLinkCleanupScheduler {
 
@@ -20,7 +18,7 @@ public class ActivationLinkCleanupScheduler {
     @Scheduled(cron = "0 0/15 * * * ?")
 //    @Scheduled(fixedRate = 10_000, initialDelay = 10_000)
     public void cleanUp() {
-        userActivationService.cleanUpObsoleteActivationLinks();
+        userActivationService.cleanUpObsoleteActivationLinks(15);
     }
 
 }

@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.techx7.techstore.util.StringUtils.isNullOrEmpty;
+import static com.techx7.techstore.utils.StringUtils.isNullOrEmpty;
 
 public class MultiPartFileValidator implements ConstraintValidator<MultiPartFile, MultipartFile> {
 

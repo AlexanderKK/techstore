@@ -1,6 +1,6 @@
 package com.techx7.techstore.model.dto.product;
 
-import com.techx7.techstore.util.KeyValuePair;
+import com.techx7.techstore.utils.KeyValuePair;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Arrays;

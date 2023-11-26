@@ -26,7 +26,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.util.FileUtils.saveFileLocally;
+import static com.techx7.techstore.utils.FileUtils.saveFileLocally;
 
 @Service
 public class ProductServiceImpl implements ProductService {

@@ -30,7 +30,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.*;
-import static com.techx7.techstore.util.FileUtils.saveFileLocally;
+import static com.techx7.techstore.utils.FileUtils.saveFileLocally;
 
 @Service
 public class UserServiceImpl implements UserService {

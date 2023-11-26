@@ -2,7 +2,7 @@ package com.techx7.techstore.model.dto.gender;
 
 import com.techx7.techstore.model.enums.GenderEnum;
 
-import static com.techx7.techstore.util.StringUtils.capitalize;
+import static com.techx7.techstore.utils.StringUtils.capitalize;
 
 public class GenderDTO {
 

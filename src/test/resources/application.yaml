@@ -34,7 +34,7 @@ logging:
       hibernate:
         type:
           descriptor: TRACE
-        SQL: DEBUG
+        SQL: OFF
       nodeValue: WARN
     blog: WARN
 
@@ -45,6 +45,6 @@ techstore:
 mail:
   techstore: "test@example.com"
   host: 127.0.0.1
-  port: 1025
+  port: 1234
   username: test-username
   password: test-password

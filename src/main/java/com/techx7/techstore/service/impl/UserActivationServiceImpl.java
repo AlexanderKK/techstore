@@ -10,14 +10,12 @@ import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.EmailService;
 import com.techx7.techstore.service.UserActivationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAccessor;
 import java.util.*;
 
 import static com.techx7.techstore.constant.Messages.*;
@@ -28,7 +26,6 @@ public class UserActivationServiceImpl implements UserActivationService {
     private static final String ACTIVATION_CODE_TOKENS =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static final int ACTIVATION_CODE_LENGTH = 20;
-    private static final int MINUTES_UNTIL_EXPIRATION = 15;
     private final EmailService emailService;
     private final UserRepository userRepository;
     private final UserActivationCodeRepository userActivationCodeRepository;
@@ -51,7 +48,7 @@ public class UserActivationServiceImpl implements UserActivationService {
     }
 
     @Override
-    public void cleanUpObsoleteActivationLinks() {
+    public void cleanUpObsoleteActivationLinks(Integer minutesLifetime) {
         List<UserActivationCode> userActivationCodes = userActivationCodeRepository.findAll().stream()
                 .filter(userActivationCode -> {
                     LocalDateTime createdTime = userActivationCode.getCreated();
@@ -59,10 +56,11 @@ public class UserActivationServiceImpl implements UserActivationService {
 
                     long existingTimeInMinutes = ChronoUnit.MINUTES.between(createdTime, currentTime);
 
-                    return existingTimeInMinutes > MINUTES_UNTIL_EXPIRATION;
+                    return existingTimeInMinutes > minutesLifetime;
                 }).toList();
 
         System.out.println("Deleting expired activation codes...");
+
         userActivationCodeRepository.deleteAll(userActivationCodes);
     }
 

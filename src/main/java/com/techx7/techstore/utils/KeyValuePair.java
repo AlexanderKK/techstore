@@ -1,4 +1,4 @@
-package com.techx7.techstore.util;
+package com.techx7.techstore.utils;
 
 public class KeyValuePair {
 

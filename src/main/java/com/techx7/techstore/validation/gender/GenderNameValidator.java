@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static com.techx7.techstore.util.StringUtils.isNullOrEmpty;
+import static com.techx7.techstore.utils.StringUtils.isNullOrEmpty;
 
 public class GenderNameValidator implements ConstraintValidator<GenderName, String> {
 
