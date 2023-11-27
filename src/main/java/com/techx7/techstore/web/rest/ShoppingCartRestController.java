@@ -80,7 +80,7 @@ public class ShoppingCartRestController {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public String handlePrincipalError(EntityNotFoundException ex) {
+    public String handleEntityError(EntityNotFoundException ex) {
         System.out.println(ex.getMessage());
 
         return ex.getMessage();

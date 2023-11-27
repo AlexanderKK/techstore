@@ -14,8 +14,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
-import java.util.Set;
 
+import static com.techx7.techstore.testUtils.TestData.createUser;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -69,7 +69,7 @@ class TechstoreUserDetailsServiceTest {
     @Test
     void testUserFound() {
         // Arrange
-        User testUser = createTestUser();
+        User testUser = createUser();
 
         when(mockUserRepository.findByEmailOrUsername("mike@gmail.com"))
                 .thenReturn(Optional.of(testUser));
@@ -99,24 +99,6 @@ class TechstoreUserDetailsServiceTest {
         return userDetails.getAuthorities()
                 .stream()
                 .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(expectedAuthority));
-    }
-
-    private static User createTestUser() {
-        User user = new User();
-        user.setEmail("mike@gmail.com");
-        user.setUsername("mike");
-        user.setPassword("mike1234");
-        user.setRoles(Set.of(createTestRole()));
-        user.setActive(true);
-
-        return user;
-    }
-
-    private static Role createTestRole() {
-        Role role = new Role();
-        role.setName("USER");
-
-        return role;
     }
 
 }
