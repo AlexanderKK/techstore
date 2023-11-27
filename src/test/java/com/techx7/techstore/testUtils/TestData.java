@@ -5,11 +5,16 @@ import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserRepository;
 import org.antlr.v4.runtime.misc.LogManager;
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class TestData {
@@ -20,8 +25,9 @@ public class TestData {
     @Autowired
     private UserRepository userRepository;
 
-    private void cleanAllTestData() {
-
+    public void cleanAllTestData() {
+        roleRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     public static User createUser() {
@@ -32,9 +38,9 @@ public class TestData {
 
     private static User getUser() {
         User user = new User();
-        user.setEmail("mike@gmail.com");
-        user.setUsername("mike");
-        user.setPassword("mike1234");
+        user.setEmail("test@example.com");
+        user.setUsername("TestUser");
+        user.setPassword("TestPass");
         user.setRoles(Set.of(createRole()));
         user.setActive(true);
 
@@ -43,7 +49,7 @@ public class TestData {
 
     public static Role createRole() {
         Role role = new Role();
-        role.setName("TEST");
+        role.setName("USER");
         role.setImageUrl("testRole.png");
 
         return role;
@@ -52,7 +58,9 @@ public class TestData {
     public User createAndSaveUser() {
         User user = getUser();
 
-        roleRepository.saveAll(user.getRoles());
+        Set<Role> roles = new HashSet<>(roleRepository.saveAll(user.getRoles()));
+
+        user.setRoles(roles);
 
         return userRepository.save(user);
     }

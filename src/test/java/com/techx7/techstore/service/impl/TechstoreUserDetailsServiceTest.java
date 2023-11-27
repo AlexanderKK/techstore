@@ -33,36 +33,21 @@ class TechstoreUserDetailsServiceTest {
     }
 
     @Test
-    void testMock() {
-        User user = new User();
-        user.setUsername("Mike");
-
-        when(mockUserRepository.findByEmail("test@example.com"))
-                .thenReturn(Optional.of(user));
-
-        Optional<User> userOpt = mockUserRepository.findByEmail("test@example.com");
-
-        User userEntity = userOpt.get();
-
-        Assertions.assertEquals(userEntity.getUsername(), "Mike");
-    }
-
-    @Test
     void testUserNotFound() {
         assertThrows(
                 UsernameNotFoundException.class,
-                () -> serviceToTest.loadUserByUsername("mike@gmail.com")
+                () -> serviceToTest.loadUserByUsername("test@example.com")
         );
     }
 
     @Test
     void testUserNotActivated() {
-        when(mockUserRepository.findByEmailOrUsername("mike@gmail.com"))
+        when(mockUserRepository.findByEmailOrUsername("test@example.com"))
                 .thenReturn(Optional.of(new User()));
 
         assertThrows(
                 UserNotActivatedException.class,
-                () -> serviceToTest.loadUserByUsername("mike@gmail.com")
+                () -> serviceToTest.loadUserByUsername("test@example.com")
         );
     }
 
@@ -71,7 +56,7 @@ class TechstoreUserDetailsServiceTest {
         // Arrange
         User testUser = createUser();
 
-        when(mockUserRepository.findByEmailOrUsername("mike@gmail.com"))
+        when(mockUserRepository.findByEmailOrUsername("test@example.com"))
                 .thenReturn(Optional.of(testUser));
 
         // Act

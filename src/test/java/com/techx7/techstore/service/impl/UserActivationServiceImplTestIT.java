@@ -5,7 +5,6 @@ import com.techx7.techstore.model.entity.UserActivationCode;
 import com.techx7.techstore.repository.UserActivationCodeRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.EmailService;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
