@@ -1,4 +1,4 @@
-package com.techx7.techstore.web;
+package com.techx7.techstore.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icegreen.greenmail.util.GreenMail;
