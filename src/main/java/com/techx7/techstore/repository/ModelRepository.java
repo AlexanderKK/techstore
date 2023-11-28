@@ -1,6 +1,5 @@
 package com.techx7.techstore.repository;
 
-import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.entity.Model;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

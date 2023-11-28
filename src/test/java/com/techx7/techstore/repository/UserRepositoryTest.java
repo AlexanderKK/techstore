@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ContextConfiguration(classes = {UserRepository.class, RoleRepository.class, UserActivationCodeRepository.class})
 @EnableAutoConfiguration
 @EntityScan(basePackages = {"com.techx7.techstore.model.entity"})
-@DataJpaTest(properties = {"spring.main.allow-bean-definition-overriding=true"})
+@DataJpaTest
 class UserRepositoryTest {
 
     @Autowired

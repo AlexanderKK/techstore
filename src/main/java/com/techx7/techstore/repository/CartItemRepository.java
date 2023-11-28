@@ -18,8 +18,8 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     CartItem findByUserAndProduct(User user, Product product);
 
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE CartItem c SET c.quantity = ?1 WHERE c.user.uuid = ?2 AND c.product.uuid = ?3")
-    @Modifying
     void updateQuantity(Integer quantity, UUID userUuid, UUID productUuid);
 
     void deleteByProductAndUser(Product product, User user);

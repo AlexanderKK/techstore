@@ -87,10 +87,6 @@ public class AuthRestControllerTestIT {
 
         result.andExpect(status().isOk());
 
-        // result.andExpect(MockMvcResultMatchers.content().json("expected JSON response"));
-
-        // String responseBody = result.andReturn().getResponse().getContentAsString();
-
         greenMail.waitForIncomingEmail(1);
 
         MimeMessage[] receivedMessages = greenMail.getReceivedMessages();

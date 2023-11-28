@@ -29,7 +29,7 @@ class ShoppingCartRestControllerTestIT {
     }
 
     @Test
-    void addToCartPrincipalNotFound() throws Exception {
+    void testAddToCartPrincipalNotFound() throws Exception {
         UUID productUuid = UUID.randomUUID();
         Integer quantity = 1;
 
@@ -42,7 +42,7 @@ class ShoppingCartRestControllerTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void addToCart() throws Exception {
+    void testAddToCart() throws Exception {
         UUID productUuid = UUID.randomUUID();
         Integer quantity = 1;
 
@@ -54,7 +54,7 @@ class ShoppingCartRestControllerTestIT {
     }
 
     @Test
-    void updateQuantityPrincipalNotFound() throws Exception {
+    void testUpdateQuantityPrincipalNotFound() throws Exception {
         UUID productUuid = UUID.randomUUID();
         Integer quantity = 3;
 
@@ -67,7 +67,7 @@ class ShoppingCartRestControllerTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void updateQuantity() throws Exception {
+    void testUpdateQuantity() throws Exception {
         UUID productUuid = UUID.randomUUID();
         Integer quantity = 3;
 
@@ -79,7 +79,7 @@ class ShoppingCartRestControllerTestIT {
     }
 
     @Test
-    void removeFromCartPrincipalNotFound() throws Exception {
+    void testRemoveFromCartPrincipalNotFound() throws Exception {
         UUID productUuid = UUID.randomUUID();
 
         mockMvc.perform(
@@ -91,7 +91,7 @@ class ShoppingCartRestControllerTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void removeFromCart() throws Exception {
+    void testRemoveFromCart() throws Exception {
         UUID productUuid = UUID.randomUUID();
 
         mockMvc.perform(
