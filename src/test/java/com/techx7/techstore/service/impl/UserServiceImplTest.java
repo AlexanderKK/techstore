@@ -1,20 +1,17 @@
 package com.techx7.techstore.service.impl;
 
-import com.techx7.techstore.model.dto.user.RegisterDTO;
-import com.techx7.techstore.model.dto.user.UserDTO;
-import com.techx7.techstore.model.dto.user.UserProfileDTO;
+import com.techx7.techstore.exception.EmailFoundException;
+import com.techx7.techstore.exception.EntityNotFoundException;
+import com.techx7.techstore.exception.PrincipalNotFoundException;
+import com.techx7.techstore.exception.UsernameFoundException;
+import com.techx7.techstore.model.dto.user.*;
 import com.techx7.techstore.model.entity.Country;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.model.entity.UserInfo;
 import com.techx7.techstore.model.enums.GenderEnum;
-import com.techx7.techstore.repository.CountryRepository;
-import com.techx7.techstore.repository.RoleRepository;
-import com.techx7.techstore.repository.UserInfoRepository;
-import com.techx7.techstore.repository.UserRepository;
-import com.techx7.techstore.testUtils.TestData;
-import org.antlr.v4.runtime.misc.LogManager;
-import org.junit.jupiter.api.BeforeEach;
+import com.techx7.techstore.model.session.TechStoreUserDetails;
+import com.techx7.techstore.repository.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,17 +21,15 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
+import static com.techx7.techstore.constant.Messages.*;
+import static com.techx7.techstore.testUtils.TestData.createMultipartFile;
 import static com.techx7.techstore.utils.StringUtils.capitalize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -47,39 +42,32 @@ class UserServiceImplTest {
     private UserRepository userRepository;
 
     @Mock
-    private ApplicationEventPublisher applicationEventPublisher;
-
-    @Mock
     private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserServiceImpl userService;
 
     @Mock
-    private RoleRepository roleRepository;
+    private UserInfoRepository userInfoRepository;
 
     @Mock
     private CountryRepository countryRepository;
 
     @Mock
-    private ModelMapper modelMapper;
-
-    private MockMultipartFile mockMultipartFile;
+    private ModelMapper mapper;
 
     @Mock
-    private UserInfoRepository userInfoRepository;
+    private RoleRepository roleRepository;
 
-    @BeforeEach
-    void setUp() {
-        mockMultipartFile = TestData.createMultipartFile();
-    }
+    @Mock
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Test
-    void register_ValidRegisterDTO_UserSaved() {
+    void testRegister() {
         // Arrange
         RegisterDTO registerDTO = new RegisterDTO();
         registerDTO.setEmail("test@example.com");
-        registerDTO.setUsername("TestUser");
+        registerDTO.setUsername("test-user");
         registerDTO.setPassword("password");
 
         User user = new User();
@@ -89,7 +77,7 @@ class UserServiceImplTest {
 
         when(userRepository.save(any(User.class))).thenReturn(user);
 
-        when(modelMapper.map(registerDTO, User.class)).thenReturn(user);
+        when(mapper.map(registerDTO, User.class)).thenReturn(user);
 
         // Act
         userService.register(registerDTO);
@@ -100,7 +88,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteAllUsers_UsersExist_UsersDeleted() {
+    void testDeleteAllUsers() {
         // Arrange
         List<User> users = new ArrayList<>();
         users.add(new User());
@@ -116,7 +104,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteUserByUuid_ValidUuid_UserDeleted() {
+    void testDeleteUserByUuid() {
         // Arrange
         UUID uuid = UUID.randomUUID();
 
@@ -128,7 +116,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getAllUsers_UsersExist_ReturnUserDTOList() {
+    void testGetAllUsers() {
         // Arrange
         List<User> users = new ArrayList<>();
         users.add(new User());
@@ -145,7 +133,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void createAdmin_AdminCreated() {
+    void testCreateAdmin() {
         // Arrange
         User user = new User();
         user.setEmail("admin@techx7.com");
@@ -176,7 +164,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserByUuid_ValidUuid_ReturnUserDTO() {
+    void testGetUserByUuid() {
         // Arrange
         UUID uuid = UUID.randomUUID();
 
@@ -187,7 +175,7 @@ class UserServiceImplTest {
         userDTO.setUuid(user.getUuid());
 
         when(userRepository.findByUuid(uuid)).thenReturn(Optional.of(user));
-        when(modelMapper.map(user, UserDTO.class)).thenReturn(userDTO);
+        when(mapper.map(user, UserDTO.class)).thenReturn(userDTO);
 
         // Act
         UserDTO result = userService.getUserByUuid(uuid);
@@ -198,32 +186,12 @@ class UserServiceImplTest {
     }
 
     @Test
-    void editUser_ValidUserDTO_UserEdited() {
+    @WithMockUser(username = "test-user", roles = "USER")
+    void testGetUserProfileValidPrincipal() {
         // Arrange
-        UserDTO userDTO = new UserDTO();
-        userDTO.setUuid(UUID.randomUUID());
-        userDTO.setRoles("1,2,3");
-
+        Principal principal = () -> "test-user";
         User user = new User();
-        user.setUuid(userDTO.getUuid());
-
-        when(userRepository.findByUuid(userDTO.getUuid())).thenReturn(Optional.of(user));
-        when(roleRepository.findById(anyLong())).thenReturn(Optional.of(new Role()));
-
-        // Act
-        userService.editUser(userDTO);
-
-        // Assert
-        verify(userRepository, times(1)).save(any(User.class));
-    }
-
-    @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
-    void getUserProfile_ValidPrincipal_ReturnUserProfileDTO() {
-        // Arrange
-        Principal principal = () -> "TestUser";
-        User user = new User();
-        user.setUsername("TestUser");
+        user.setUsername("test-user");
 
         UserInfo userInfo = new UserInfo();
         userInfo.setGender(GenderEnum.MALE);
@@ -233,13 +201,50 @@ class UserServiceImplTest {
 
         user.setUserInfo(new UserInfo());
 
-        when(modelMapper.map(userInfo, UserProfileDTO.class)).thenReturn(userProfileDTO);
+        when(mapper.map(userInfo, UserProfileDTO.class)).thenReturn(userProfileDTO);
 
         when(userRepository.findByUsername(principal.getName())).thenReturn(Optional.of(user));
 
         // Act
         UserProfileDTO result = userService.getUserProfile(principal);
+    }
 
+    @Test
+    void testEditUser() {
+        UUID validUuid = UUID.randomUUID();
+        UserDTO validUserDTO = new UserDTO();
+        validUserDTO.setUuid(validUuid);
+        validUserDTO.setEmail("test@example.com");
+        validUserDTO.setUsername("testUser");
+        validUserDTO.setRoles("1,2,3");
+
+        User validUser = new User();
+        validUser.setUuid(validUuid);
+        validUser.setEmail("test@example.com");
+        validUser.setUsername("testUser");
+
+        when(userRepository.findByUuid(validUuid)).thenReturn(Optional.of(validUser));
+
+        when(mapper.map(any(UserDTO.class), eq(User.class))).thenReturn(validUser);
+        when(mapper.map(any(User.class), eq(UserDTO.class))).thenReturn(validUserDTO);
+
+        // Arrange
+        Set<Role> roles = new HashSet<>(Arrays.asList(new Role(), new Role(), new Role()));
+
+        when(roleRepository.findById(anyLong())).thenReturn(Optional.of(new Role()));
+
+        when(mapper.map(validUserDTO, Role.class)).thenReturn(new Role());
+
+        // Act
+        userService.editUser(validUserDTO);
+
+        // Assert
+        verify(userRepository, times(1)).save(validUser);
+
+        validUser.setRoles(roles);
+
+        assertNotNull(validUser.getRoles());
+        assertEquals(roles.size(), validUser.getRoles().size());
     }
 
     @Test
@@ -247,7 +252,7 @@ class UserServiceImplTest {
         // Arrange
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         userProfileDTO.setCountry("Bulgaria");
-        userProfileDTO.setImage(mockMultipartFile);
+        userProfileDTO.setImage(createMultipartFile());
         userProfileDTO.setGender("Other");
 
         Principal principal = mock(Principal.class);
@@ -267,11 +272,79 @@ class UserServiceImplTest {
     }
 
     @Test
+    void testEditUserCredentialsThrowPrincipalNotFoundException() {
+        // Arrange
+        UserCredentialsDTO userCredentialsDTO = new UserCredentialsDTO();
+        userCredentialsDTO.setEmail("test@example.com");
+        userCredentialsDTO.setUsername("test-user");
+
+        TechStoreUserDetails loggedUser = null;
+
+        // Act and Assert
+        PrincipalNotFoundException exception = assertThrows(PrincipalNotFoundException.class, () -> userService.editUserCredentials(userCredentialsDTO, loggedUser));
+
+        assertEquals(USER_NOT_LOGGED, exception.getMessage());
+    }
+
+    @Test
+    void testEditUserCredentialsThrowEmailFoundException() {
+        // Arrange
+        UserCredentialsDTO userCredentialsDTO = new UserCredentialsDTO();
+        userCredentialsDTO.setEmail("test@example.com");
+        userCredentialsDTO.setUsername("test-user");
+
+        TechStoreUserDetails loggedUser = mock(TechStoreUserDetails.class);
+        when(loggedUser.getUsername()).thenReturn("test-user");
+
+        User user = new User();
+        user.setEmail("test@example.bg");
+        user.setUsername("test-user");
+
+        when(userRepository.findByUsername(loggedUser.getUsername())).thenReturn(Optional.of(user));
+        when(userRepository.findByEmail(userCredentialsDTO.getEmail())).thenReturn(Optional.of(user));
+
+        // Act and Assert
+        EmailFoundException exception = assertThrows(
+                EmailFoundException.class,
+                () -> userService.editUserCredentials(userCredentialsDTO, loggedUser)
+        );
+
+        assertEquals(String.format(ENTITY_FOUND, "Email"), exception.getMessage());
+    }
+
+    @Test
+    void testEditUserCredentialsThrowUsernameFoundException() {
+        // Arrange
+        UserCredentialsDTO userCredentialsDTO = new UserCredentialsDTO();
+        userCredentialsDTO.setEmail("test@example.com");
+        userCredentialsDTO.setUsername("another-user");
+
+        TechStoreUserDetails loggedUser = mock(TechStoreUserDetails.class);
+        when(loggedUser.getUsername()).thenReturn("test-user");
+
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setUsername("test-user");
+
+        when(userRepository.findByUsername(loggedUser.getUsername())).thenReturn(Optional.of(user));
+        when(userRepository.findByUsername(userCredentialsDTO.getUsername())).thenReturn(Optional.of(user));
+
+        // Act and Assert
+        UsernameFoundException exception = assertThrows(
+                UsernameFoundException.class,
+                () -> userService.editUserCredentials(userCredentialsDTO, loggedUser)
+        );
+
+        assertEquals(String.format(ENTITY_FOUND, "User"), exception.getMessage());
+    }
+
+
+    @Test
     void testEditUserCredentials() throws IOException {
         // Arrange
         UserProfileDTO userProfileDTO = new UserProfileDTO();
         userProfileDTO.setCountry("Bulgaria");
-        userProfileDTO.setImage(mockMultipartFile);
+        userProfileDTO.setImage(createMultipartFile());
         userProfileDTO.setGender("Other");
 
         Principal principal = mock(Principal.class);
@@ -287,10 +360,60 @@ class UserServiceImplTest {
         verify(userRepository, times(1)).save(any(User.class));
     }
 
-    private Role getRoleEntity(String roleName) {
-        Role role = new Role();
-        role.setName(roleName);
-        return role;
+    @Test
+    void testEditPassword() {
+        Principal principal = () -> "test-user";
+
+        User user = new User();
+        user.setUsername("test-user");
+        user.setPassword(passwordEncoder.encode("password"));
+
+        UserPasswordDTO userPasswordDTO = new UserPasswordDTO();
+        userPasswordDTO.setPassword("password");
+        userPasswordDTO.setNewPassword("new-password");
+
+        when(userRepository.findByUsername(principal.getName())).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(userPasswordDTO.getNewPassword())).thenReturn("encoded-new-password");
+
+        // Arrange
+        when(passwordEncoder.matches(userPasswordDTO.getPassword(), user.getPassword())).thenReturn(true);
+
+        // Act
+        userService.editUserPassword(userPasswordDTO, principal);
+
+        // Assert
+        verify(userRepository, times(1)).save(user);
+
+        assertEquals("encoded-new-password", user.getPassword());
+    }
+
+    @Test
+    void testEditPasswordThrowEntityNotFound() {
+        Principal principal = () -> "test-user";
+
+        User user = new User();
+        user.setUsername("test-user");
+        user.setPassword(passwordEncoder.encode("password"));
+
+        UserPasswordDTO userPasswordDTO = new UserPasswordDTO();
+        userPasswordDTO.setPassword("password");
+        userPasswordDTO.setNewPassword("new-password");
+
+        when(userRepository.findByUsername(principal.getName())).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(userPasswordDTO.getNewPassword())).thenReturn("encoded-new-password");
+
+        // Arrange
+        UserPasswordDTO emptyUserPasswordDTO = new UserPasswordDTO();
+        emptyUserPasswordDTO.setPassword("");
+        emptyUserPasswordDTO.setNewPassword("");
+
+        // Act & Assert
+        EntityNotFoundException exception = assertThrows(
+                EntityNotFoundException.class,
+                () -> userService.editUserPassword(emptyUserPasswordDTO, principal)
+        );
+
+        assertEquals(INCORRECT_PASSWORD, exception.getMessage());
     }
 
 }
