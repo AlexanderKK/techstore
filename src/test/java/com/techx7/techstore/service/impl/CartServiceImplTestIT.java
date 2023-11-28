@@ -7,20 +7,12 @@ import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.repository.*;
 import com.techx7.techstore.service.CartService;
 import com.techx7.techstore.testUtils.TestData;
-import org.h2.util.TempFileDeleter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Example;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.test.context.support.TestExecutionEvent;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -47,16 +39,10 @@ public class CartServiceImplTestIT {
     private CategoryRepository categoryRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private ProductRepository productRepository;
 
     @Autowired
     private TestData testData;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -110,7 +96,7 @@ public class CartServiceImplTestIT {
     @Test
     @WithMockUser(value = "TestUser")
     void testGetCartItems() {
-        assertEquals(0 , cartItemRepository.count());
+        assertEquals(0, cartItemRepository.count());
 
         Principal principal = () -> "TestUser";
 
@@ -120,7 +106,7 @@ public class CartServiceImplTestIT {
 
         assertFalse(cartItems.isEmpty());
 
-        assertEquals(1L , cartItemRepository.count());
+        assertEquals(1, cartItemRepository.count());
     }
 
     @Test
@@ -151,14 +137,14 @@ public class CartServiceImplTestIT {
     void testAddProductToCart() {
         Principal principal = () -> "TestUser";
 
-        assertEquals(0 , cartItemRepository.count());
+        assertEquals(0, cartItemRepository.count());
 
         CartItem cartItem = createAndSaveCartItem();
         UUID productUuid = cartItem.getProduct().getUuid();
 
         CartItemDTO cartItemDTO = cartService.addProductToCart(1, productUuid, principal);
 
-        assertEquals(1L , cartItemRepository.count());
+        assertEquals(1, cartItemRepository.count());
 
         assertEquals(cartItem.getProduct().getUuid(), cartItemDTO.getProductDTO().getUuid());
     }
@@ -176,19 +162,72 @@ public class CartServiceImplTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
+    void testUpdateQuantityUserNotFound() {
+        Product product = createAndSaveProduct();
+
+        Principal principal = () -> "TestUser";
+
+        assertThrows(
+                EntityNotFoundException.class,
+                () -> cartService.updateQuantity(1, product.getUuid(), principal)
+        );
+    }
+
+    @Test
+    @WithMockUser(username = "TestUser", roles = "USER")
     void testUpdateQuantity() {
         Principal principal = () -> "TestUser";
 
-        assertEquals(0 , cartItemRepository.count());
+        assertEquals(0, cartItemRepository.count());
 
         CartItem cartItem = createAndSaveCartItem();
         UUID productUuid = cartItem.getProduct().getUuid();
 
-        CartItemDTO cartItemDTO = cartService.addProductToCart(1, productUuid, principal);
+        BigDecimal subtotal = cartService.updateQuantity(1, productUuid, principal);
 
-        assertEquals(1L , cartItemRepository.count());
+        assertEquals(1, cartItemRepository.count());
 
-        assertEquals(cartItem.getProduct().getUuid(), cartItemDTO.getProductDTO().getUuid());
+        assertTrue(subtotal.compareTo(BigDecimal.ZERO) > 0);
+    }
+
+    @Test
+    @WithMockUser(username = "TestUser", roles = "USER")
+    void testRemoveProductPrincipalNotFound() {
+        Product product = createAndSaveProduct();
+
+        assertThrows(
+                PrincipalNotFoundException.class,
+                () -> cartService.removeProduct(product.getUuid(), null)
+        );
+    }
+
+    @Test
+    @WithMockUser(username = "TestUser", roles = "USER")
+    void testRemoveProductUserNotFound() {
+        Product product = createAndSaveProduct();
+
+        Principal principal = () -> "TestUser";
+
+        assertThrows(
+                EntityNotFoundException.class,
+                () -> cartService.removeProduct(product.getUuid(), principal)
+        );
+    }
+
+    @Test
+    @WithMockUser(username = "TestUser", roles = "USER")
+    void testRemoveProduct() {
+        Principal principal = () -> "TestUser";
+
+        CartItem cartItem = createAndSaveCartItem();
+
+        UUID productUuid = cartItem.getProduct().getUuid();
+
+        assertEquals(1, cartItemRepository.count());
+
+        cartService.removeProduct(productUuid, principal);
+
+        assertEquals(0, cartItemRepository.count());
     }
 
     private CartItem createAndSaveCartItem() {

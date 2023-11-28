@@ -4,17 +4,13 @@ import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserRepository;
-import org.antlr.v4.runtime.misc.LogManager;
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 public class TestData {
@@ -63,6 +59,18 @@ public class TestData {
         user.setRoles(roles);
 
         return userRepository.save(user);
+    }
+
+    public static MockMultipartFile createMultipartFile() {
+        MockMultipartFile file
+                = new MockMultipartFile(
+                "file",
+                "test.png",
+                MediaType.IMAGE_PNG_VALUE,
+                "TestImage".getBytes()
+        );
+
+        return file;
     }
 
 }
