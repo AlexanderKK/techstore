@@ -42,7 +42,7 @@ class UserActivationServiceImplTest {
     void testUserRegisteredThenSendRegistrationEmail() {
         // Arrange
         String userEmail = "test@example.com";
-        String userName = "TestUser";
+        String userName = "test-user";
 
         UserRegisteredEvent event = new UserRegisteredEvent(this, userEmail, userName);
 
@@ -95,7 +95,7 @@ class UserActivationServiceImplTest {
         String activationCode = "testActivationCode";
         User user = new User();
 
-        user.setUsername("TestUser");
+        user.setUsername("test-user");
         user.setActive(false);
 
         UserActivationCode userActivationCode = new UserActivationCode();

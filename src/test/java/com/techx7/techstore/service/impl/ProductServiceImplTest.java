@@ -75,7 +75,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testGetAllProductsWithDiscountShouldReturnProductsWithDiscount() {
+    void testGetAllProductsWithDiscount() {
         // Arrange
         List<Product> productList = new ArrayList<>();
 
@@ -100,7 +100,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testFindPaginatedShouldReturnPaginatedProducts() {
+    void testFindPaginated() {
         // Arrange
         Pageable pageable = Pageable.ofSize(4);
 
@@ -120,7 +120,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testGetProductByUuidShouldReturnProduct() {
+    void testGetProductByUuid() {
         // Arrange
         UUID uuid = UUID.randomUUID();
         Product product = new Product();
@@ -146,7 +146,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testGetProductDetailsByUuidShouldReturnProductDetails() {
+    void testGetProductDetailsByUuid() {
         // Arrange
         UUID uuid = UUID.randomUUID();
         Product product = new Product();
@@ -161,7 +161,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void testGetProductDetailsByUuidShouldThrowEntityNotFoundException() {
+    void testGetProductDetailsByUuidThrowEntityNotFoundException() {
         // Arrange
         UUID uuid = UUID.randomUUID();
         when(productRepository.findByUuid(uuid)).thenReturn(Optional.empty());

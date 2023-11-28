@@ -68,7 +68,7 @@ class UserServiceImplTest {
         RegisterDTO registerDTO = new RegisterDTO();
         registerDTO.setEmail("test@example.com");
         registerDTO.setUsername("test-user");
-        registerDTO.setPassword("password");
+        registerDTO.setPassword("test-pass");
 
         User user = new User();
         user.setEmail(registerDTO.getEmail());
@@ -215,13 +215,13 @@ class UserServiceImplTest {
         UserDTO validUserDTO = new UserDTO();
         validUserDTO.setUuid(validUuid);
         validUserDTO.setEmail("test@example.com");
-        validUserDTO.setUsername("testUser");
+        validUserDTO.setUsername("test-user");
         validUserDTO.setRoles("1,2,3");
 
         User validUser = new User();
         validUser.setUuid(validUuid);
         validUser.setEmail("test@example.com");
-        validUser.setUsername("testUser");
+        validUser.setUsername("test-user");
 
         when(userRepository.findByUuid(validUuid)).thenReturn(Optional.of(validUser));
 

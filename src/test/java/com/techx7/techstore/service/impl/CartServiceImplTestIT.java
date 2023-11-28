@@ -83,9 +83,9 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testGetCartItemsThrowsEntityNotFound() {
-        Principal principal = () -> "TestUser";
+        Principal principal = () -> "test-user";
 
         assertThrows(
                 EntityNotFoundException.class,
@@ -94,11 +94,11 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(value = "TestUser")
+    @WithMockUser(value = "test-user")
     void testGetCartItems() {
         assertEquals(0, cartItemRepository.count());
 
-        Principal principal = () -> "TestUser";
+        Principal principal = () -> "test-user";
 
         createAndSaveCartItem();
 
@@ -120,11 +120,11 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testAddProductToCartThrowsEntityNotFound() {
         Product product = createAndSaveProduct();
 
-        Principal principal = () -> "TestUser";
+        Principal principal = () -> "test-user";
 
         assertThrows(
                 EntityNotFoundException.class,
@@ -133,9 +133,9 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testAddProductToCart() {
-        Principal principal = () -> "TestUser";
+        Principal principal = () -> "test-user";
 
         assertEquals(0, cartItemRepository.count());
 
@@ -150,7 +150,7 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testUpdateQuantityThrowsPrincipalNotFound() {
         Product product = createAndSaveProduct();
 
@@ -161,11 +161,11 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testUpdateQuantityThrowsEntityNotFound() {
         Product product = createAndSaveProduct();
 
-        Principal principal = () -> "TestUser";
+        Principal principal = () -> "test-user";
 
         assertThrows(
                 EntityNotFoundException.class,
@@ -174,9 +174,9 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testUpdateQuantity() {
-        Principal principal = () -> "TestUser";
+        Principal principal = () -> "test-user";
 
         assertEquals(0, cartItemRepository.count());
 
@@ -191,7 +191,7 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testRemoveProductThrowsPrincipalNotFound() {
         Product product = createAndSaveProduct();
 
@@ -202,11 +202,11 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testRemoveProductThrowsEntityNotFound() {
         Product product = createAndSaveProduct();
 
-        Principal principal = () -> "TestUser";
+        Principal principal = () -> "test-user";
 
         assertThrows(
                 EntityNotFoundException.class,
@@ -215,9 +215,9 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    @WithMockUser(username = "TestUser", roles = "USER")
+    @WithMockUser(username = "test-user", roles = "USER")
     void testRemoveProduct() {
-        Principal principal = () -> "TestUser";
+        Principal principal = () -> "test-user";
 
         CartItem cartItem = createAndSaveCartItem();
 

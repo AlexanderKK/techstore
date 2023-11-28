@@ -13,5 +13,6 @@ public enum Messages {
     public static final String USER_NOT_LOGGED = "User not logged in";
     public static final String QUANTITY_CAPACITY_SURPASSED = "Out of stock";
     public static final String INCORRECT_PASSWORD = "Incorrect password";
+    public static final String INPUT_NOT_NULL = "Input should not be null";
 
 }

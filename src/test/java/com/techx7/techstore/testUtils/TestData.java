@@ -35,8 +35,8 @@ public class TestData {
     private static User getUser() {
         User user = new User();
         user.setEmail("test@example.com");
-        user.setUsername("TestUser");
-        user.setPassword("TestPass");
+        user.setUsername("test-user");
+        user.setPassword("test-pass");
         user.setRoles(Set.of(createRole()));
         user.setActive(true);
 
