@@ -165,6 +165,17 @@ public class CartServiceImplTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
+    void testUpdateQuantityPrincipalNotFound() {
+        Product product = createAndSaveProduct();
+
+        assertThrows(
+                PrincipalNotFoundException.class,
+                () -> cartService.updateQuantity(1, product.getUuid(), null)
+        );
+    }
+
+    @Test
+    @WithMockUser(username = "TestUser", roles = "USER")
     void testUpdateQuantity() {
         Principal principal = () -> "TestUser";
 
