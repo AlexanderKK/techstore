@@ -78,13 +78,13 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    void testGetCartItemsPrincipalNotFound() {
+    void testGetCartItemsThrowsPrincipalNotFound() {
         assertNull(cartService.getCartItems(null));
     }
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void testGetCartItemsUserNotFound() {
+    void testGetCartItemsThrowsEntityNotFound() {
         Principal principal = () -> "TestUser";
 
         assertThrows(
@@ -110,7 +110,7 @@ public class CartServiceImplTestIT {
     }
 
     @Test
-    void testAddProductToCartPrincipalNotFound() {
+    void testAddProductToCartThrowsPrincipalNotFound() {
         Product product = createAndSaveProduct();
 
         assertThrows(
@@ -121,7 +121,7 @@ public class CartServiceImplTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void testAddProductToCartUserNotFound() {
+    void testAddProductToCartThrowsEntityNotFound() {
         Product product = createAndSaveProduct();
 
         Principal principal = () -> "TestUser";
@@ -151,7 +151,7 @@ public class CartServiceImplTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void testUpdateQuantityPrincipalNotFound() {
+    void testUpdateQuantityThrowsPrincipalNotFound() {
         Product product = createAndSaveProduct();
 
         assertThrows(
@@ -162,7 +162,7 @@ public class CartServiceImplTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void testUpdateQuantityUserNotFound() {
+    void testUpdateQuantityThrowsEntityNotFound() {
         Product product = createAndSaveProduct();
 
         Principal principal = () -> "TestUser";
@@ -192,7 +192,7 @@ public class CartServiceImplTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void testRemoveProductPrincipalNotFound() {
+    void testRemoveProductThrowsPrincipalNotFound() {
         Product product = createAndSaveProduct();
 
         assertThrows(
@@ -203,7 +203,7 @@ public class CartServiceImplTestIT {
 
     @Test
     @WithMockUser(username = "TestUser", roles = "USER")
-    void testRemoveProductUserNotFound() {
+    void testRemoveProductThrowsEntityNotFound() {
         Product product = createAndSaveProduct();
 
         Principal principal = () -> "TestUser";
@@ -243,21 +243,6 @@ public class CartServiceImplTestIT {
         cartItem.setQuantity(quantity);
 
         return cartItemRepository.save(cartItem);
-    }
-
-    @Test
-    void handleProductQuantityError() {
-
-    }
-
-    @Test
-    void handlePrincipalError() {
-
-    }
-
-    @Test
-    void testHandlePrincipalError() {
-
     }
 
     private Product createAndSaveProduct() {
