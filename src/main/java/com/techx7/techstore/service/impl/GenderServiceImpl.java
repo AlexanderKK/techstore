@@ -14,7 +14,11 @@ public class GenderServiceImpl implements GenderService {
 
     @Override
     public List<GenderDTO> getAllGenders() {
-        return Arrays.stream(GenderEnum.values())
+        return toGenderDTOs(List.of(GenderEnum.values()));
+    }
+
+    public List<GenderDTO> toGenderDTOs(List<GenderEnum> genderValues) {
+        return genderValues.stream()
                 .map(GenderDTO::new)
                 .toList();
     }
