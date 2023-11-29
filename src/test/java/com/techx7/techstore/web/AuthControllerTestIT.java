@@ -1,44 +1,35 @@
 package com.techx7.techstore.web;
 
-import com.techx7.techstore.exception.UserAlreadyActivatedException;
-import com.techx7.techstore.exception.UserNotActivatedException;
-import com.techx7.techstore.service.UserActivationService;
+import com.techx7.techstore.testUtils.TestData;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
-import static com.techx7.techstore.constant.Messages.USER_VERIFIED;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+
+import static com.techx7.techstore.constant.Messages.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+@SpringBootTest
 @AutoConfigureMockMvc
-@WebMvcTest(AuthController.class)
 class AuthControllerTestIT {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
-    private UserActivationService userActivationService;
+    @Autowired
+    private TestData testData;
 
-    // Test the login method when the model contains bad credentials.
-    @Test
-    void testLoginWhenModelContainsBadCredentials() throws Exception {
-        mockMvc.perform(get("/users/login").sessionAttr("bad_credentials", true))
-                .andExpect(status().isOk())
-                .andExpect(view().name("auth-login"))
-                .andExpect(model().attribute("bad_credentials", true));
+    @BeforeEach
+    void setUp() {
+        testData.cleanAllTestData();
     }
 
-    // Test the login failure method.
     @Test
-    void testLoginFailureThenRedirectToLogin() throws Exception {
+    void testLoginFailure() throws Exception {
         mockMvc.perform(post("/users/login-error").param("emailOrUsername", "test@example.com"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("login"))
@@ -46,20 +37,19 @@ class AuthControllerTestIT {
                 .andExpect(flash().attribute("emailOrUsername", "test@example.com"));
     }
 
-    // Test the register success method.
     @Test
-    void testRegisterSuccessThenRedirectToLogin() throws Exception {
+    void testRegisterSuccess() throws Exception {
         mockMvc.perform(get("/users/register/success"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users/login"))
                 .andExpect(flash().attribute("verificationMessage", "Verification link has been sent to your email"));
     }
 
-    // Test the activate user account method with a valid activation code.
     @Test
-    void testActivateUserAccountWithValidActivationCodeThenRedirectToLogin() throws Exception {
-        String activationCode = "valid-code";
-        when(userActivationService.activateUser(activationCode)).thenReturn("User");
+    void testActivateUserAccountWithValidActivationCode() throws Exception {
+        String activationCode = "some-code";
+
+        testData.createUserActivationCode(activationCode, false);
 
         mockMvc.perform(get("/users/activate").param("activation_code", activationCode))
                 .andExpect(status().is3xxRedirection())
@@ -68,19 +58,25 @@ class AuthControllerTestIT {
     }
 
     @Test
-    void testHandleUserNotActivatedError() throws Exception {
-        when(userActivationService.activateUser("someCode")).thenThrow(UserNotActivatedException.class);
+    void testHandleActivationCodeNotFoundError() throws Exception {
+        String activationCode = "some-code";
 
-        mockMvc.perform(get("/users/login").requestAttr("exception", new UserNotActivatedException("User not activated")))
+        mockMvc.perform(get("/users/activate").param("activation_code", activationCode))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/users/login"));
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("activationCodeErrorMessage", VERIFICATION_CODE_NOT_VALID));
     }
 
     @Test
     void testHandleUserAlreadyActivatedError() throws Exception {
-        mockMvc.perform(get("/").requestAttr("exception", new UserAlreadyActivatedException("User already activated")))
-                .andExpect(status().isBadRequest())
-                .andExpect(flash().attribute("userAlreadyActivated", "User already activated"));
+        String activationCode = "some-code";
+
+        testData.createUserActivationCode(activationCode, true);
+
+        mockMvc.perform(get("/users/activate").param("activation_code", activationCode))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"))
+                .andExpect(flash().attribute("userAlreadyActivated", USER_ALREADY_VERIFIED));
     }
 
 }

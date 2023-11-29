@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
+import com.techx7.techstore.model.entity.Role;
+import com.techx7.techstore.testUtils.TestData;
 import jakarta.mail.internet.MimeMessage;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.techx7.techstore.testUtils.TestData.createRole;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -46,8 +49,13 @@ class AuthRestControllerTestIT {
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private TestData testData;
+
     @BeforeEach
     void setUp() {
+        testData.cleanAllTestData();
+
         greenMail = new GreenMail(
                 new ServerSetup(port, host, "smtp")
         );
@@ -77,6 +85,8 @@ class AuthRestControllerTestIT {
 
     @Test
     void testRegistrationSuccess() throws Exception {
+        testData.createRoleAndSave();
+
         RegisterDTO registerDTO = new RegisterDTO();
 
         registerDTO.setEmail("mike@gmail.com");

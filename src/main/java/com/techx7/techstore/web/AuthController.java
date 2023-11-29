@@ -66,7 +66,6 @@ public class AuthController {
         return "redirect:/users/login";
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(EntityNotFoundException.class)
     public String handleActivationCodeNotFoundError(EntityNotFoundException ex,
                                   RedirectAttributes redirectAttributes) {

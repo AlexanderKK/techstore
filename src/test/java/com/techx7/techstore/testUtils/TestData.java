@@ -2,6 +2,7 @@ package com.techx7.techstore.testUtils;
 
 import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.repository.*;
+import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
@@ -30,9 +31,13 @@ public class TestData {
     @Autowired
     private ModelRepository modelRepository;
 
+    @Autowired
+    private UserActivationCodeRepository userActivationCodeRepository;
+
     public void cleanAllTestData() {
         roleRepository.deleteAll();
         userRepository.deleteAll();
+        userActivationCodeRepository.deleteAll();
     }
 
     public static User createUser() {
@@ -58,6 +63,38 @@ public class TestData {
         role.setImageUrl("testRole.png");
 
         return role;
+    }
+
+    public Role createRoleAndSave() {
+        Role role = createRole();
+
+        return roleRepository.save(role);
+    }
+
+    public UserActivationCode createUserActivationCode(String activationCode, boolean isActive) {
+        cleanAllTestData();
+
+        UserActivationCode userActivationCode = new UserActivationCode();
+        userActivationCode.setActivationCode(activationCode);
+
+        User user = new User();
+
+        user.setEmail("test@example.com");
+        user.setUsername("test-user");
+        user.setPassword("test-pass");
+        user.setRoles(Set.of(createRoleAndSave()));
+
+        if(isActive) {
+            user.setActive(true);
+        }
+
+        user.setActivationCodes(Set.of(userActivationCode));
+
+        userActivationCode.setUser(user);
+
+        userRepository.save(user);
+
+        return userActivationCodeRepository.save(userActivationCode);
     }
 
     public User createAndSaveUser() {
