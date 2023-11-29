@@ -2,6 +2,7 @@ package com.techx7.techstore.repository;
 
 import com.techx7.techstore.model.entity.Country;
 import com.techx7.techstore.testUtils.TestData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ class CountryRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        countryRepository.deleteAll();
+
         Country existingCountry = new Country();
 
         existingCountry.setName("Test Country");
@@ -39,6 +42,11 @@ class CountryRepositoryTest {
         countryRepository.save(existingCountry);
 
         existingName = existingCountry.getName();
+    }
+
+    @AfterEach
+    void tearDown() {
+        countryRepository.deleteAll();
     }
 
     @Test

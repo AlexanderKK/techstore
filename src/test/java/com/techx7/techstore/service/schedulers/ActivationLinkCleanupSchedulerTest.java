@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ActivationLinkCleanupSchedulerTest {
+class ActivationLinkCleanupSchedulerTest {
 
     @Mock
     private UserActivationService userActivationService;
@@ -20,7 +20,7 @@ public class ActivationLinkCleanupSchedulerTest {
     private ActivationLinkCleanupScheduler activationLinkCleanupScheduler;
 
     @Test
-    public void testCleanUp() {
+    void testCleanUp() {
         // Arrange
         int expectedMinutesLifetime = 15;
 
@@ -32,7 +32,7 @@ public class ActivationLinkCleanupSchedulerTest {
     }
 
     @Test
-    public void testCleanUpThrowsException() {
+    void testCleanUpThrowsException() {
         // Arrange
         doThrow(new RuntimeException("Cleanup failed")).when(userActivationService).cleanUpObsoleteActivationLinks(anyInt());
 

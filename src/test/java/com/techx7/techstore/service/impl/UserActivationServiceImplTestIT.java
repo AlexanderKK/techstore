@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-public class UserActivationServiceImplTestIT {
+class UserActivationServiceImplTestIT {
 
     @Autowired
     private UserActivationServiceImpl userActivationServiceToTest;

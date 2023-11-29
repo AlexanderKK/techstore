@@ -2,6 +2,7 @@ package com.techx7.techstore.repository;
 
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.model.entity.UserActivationCode;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,13 @@ class UserRepositoryTest {
         userRepository.deleteAll();
     }
 
+    @AfterEach
+    void tearDown() {
+        userRepository.deleteAll();
+    }
+
     @Test
-    void findByEmailExistingEmailReturnOptionalUser() {
+    void findByEmailExistingEmail() {
         // Arrange
         User user = createUser();
 
@@ -54,7 +60,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByEmailNonExistingEmailReturnEmptyOptional() {
+    void findByEmailNonExistingEmail() {
         // Arrange
         String email = "nonexisting@example.com";
 
@@ -66,7 +72,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByEmailOrUsernameExistingEmailReturnOptionalUser() {
+    void findByEmailOrUsernameExistingEmail() {
         // Arrange
         User user = createUser();
 
@@ -81,7 +87,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByEmailOrUsernameExistingUsernameReturnOptionalUser() {
+    void findByEmailOrUsernameExistingUsername() {
         // Arrange
         User user = createUser();
 
@@ -96,7 +102,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByEmailOrUsernameNonExistingEmailOrUsernameReturnEmptyOptional() {
+    void findByEmailOrUsernameNonExistingEmailOrUsername() {
         // Arrange
         String emailOrUsername = "nonexisting";
 
@@ -108,7 +114,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByActivationCodesInExistingActivationCodeReturnOptionalUser() {
+    void findByActivationCodesInExistingActivationCode() {
         // Arrange
         User user = createUser();
 
@@ -135,7 +141,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByActivationCodesInNonExistingActivationCodeReturnEmptyOptional() {
+    void findByActivationCodesInNonExistingActivationCode() {
         // Arrange
         UserActivationCode activationCode = new UserActivationCode();
         activationCode.setActivationCode("123456");
@@ -162,7 +168,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByUsernameExistingUsernameReturnOptionalUser() {
+    void findByUsernameExistingUsername() {
         // Arrange
         User user = createUser();
 
@@ -177,7 +183,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByUsernameNonExistingUsernameReturnEmptyOptional() {
+    void findByUsernameNonExistingUsername() {
         // Arrange
         String username = "nonexisting";
 
@@ -189,7 +195,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void deleteByUuidExistingUuidUserDeleted() {
+    void deleteByUuidExistingUuid() {
         // Arrange
         User user = createUser();
 
@@ -201,7 +207,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByUuidExistingUuidReturnOptionalUser() {
+    void findByUuidExistingUuid() {
         // Arrange
         User user = createUser();
 
@@ -216,7 +222,7 @@ class UserRepositoryTest {
     }
 
     @Test
-    void findByUuidNonExistingUuidReturnEmptyOptional() {
+    void findByUuidNonExistingUuid() {
         // Arrange
         UUID uuid = UUID.randomUUID();
 

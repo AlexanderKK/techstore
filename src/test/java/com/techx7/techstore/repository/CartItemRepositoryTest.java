@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @EnableAutoConfiguration
 @EntityScan(basePackages = {"com.techx7.techstore.model.entity"})
 @DataJpaTest
-public class CartItemRepositoryTest {
+class CartItemRepositoryTest {
 
     @Autowired
     private CartItemRepository cartItemRepository;

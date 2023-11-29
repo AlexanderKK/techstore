@@ -1,6 +1,7 @@
 package com.techx7.techstore.repository;
 
 import com.techx7.techstore.model.entity.Role;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ class RoleRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        roleRepository.deleteAll();
+
         Role existingRole = new Role();
 
         existingRole.setName("ADMIN");
@@ -39,6 +42,11 @@ class RoleRepositoryTest {
         existingName = existingRole.getName();
 
         roleRepository.save(existingRole);
+    }
+
+    @AfterEach
+    void tearDown() {
+        roleRepository.deleteAll();
     }
 
     @Test

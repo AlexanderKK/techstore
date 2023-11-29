@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @MockitoSettings(strictness = Strictness.LENIENT)
 @ExtendWith(MockitoExtension.class)
-public class FileUtilsTest {
+class FileUtilsTest {
 
     @Mock
     private MultipartFile multipartFile;
@@ -34,18 +34,18 @@ public class FileUtilsTest {
     private static final Path TEST_FILE_PATH = Path.of(RESOURCES_IMAGES_DIRECTORY + TEST_FILE_NAME);
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         Files.createDirectories(TEST_FILE_PATH.getParent());
         Files.createFile(TEST_FILE_PATH);
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         Files.deleteIfExists(TEST_FILE_PATH);
     }
 
     @Test
-    public void testSaveFileLocallyWhenMultipartFileNotEmpty() throws IOException {
+    void testSaveFileLocallyWhenMultipartFileNotEmpty() throws IOException {
         // Arrange
         byte[] expectedFileContent = "test content".getBytes();
 
@@ -62,7 +62,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void testSaveFileLocallyWhenMultipartFileEmpty() throws IOException {
+    void testSaveFileLocallyWhenMultipartFileEmpty() throws IOException {
         // Arrange
         when(multipartFile.getBytes()).thenReturn(new byte[0]);
         when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
@@ -77,7 +77,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void testManageImageWhenMultipartFileEmptyAndImageUrlNotEmpty() throws IOException {
+    void testManageImageWhenMultipartFileEmptyAndImageUrlNotEmpty() throws IOException {
         // Arrange
         String imageUrl = "test.png";
 
@@ -103,7 +103,7 @@ public class FileUtilsTest {
     }
 
     @Test
-    public void testManageImageWhenMultipartFileEmpty() throws IOException {
+    void testManageImageWhenMultipartFileEmpty() throws IOException {
         // Arrange
         when(multipartFile.isEmpty()).thenReturn(true);
 

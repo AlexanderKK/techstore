@@ -2,6 +2,7 @@ package com.techx7.techstore.repository;
 
 import com.techx7.techstore.model.entity.Model;
 import com.techx7.techstore.testUtils.TestData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,18 @@ class ModelRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        modelRepository.deleteAll();
+
         Model existingModel = testData.createModel();
 
         existingUuid = existingModel.getUuid();
 
         modelRepository.save(existingModel);
+    }
+
+    @AfterEach
+    void tearDown() {
+        modelRepository.deleteAll();
     }
 
     @Test

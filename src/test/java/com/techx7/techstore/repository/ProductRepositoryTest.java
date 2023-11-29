@@ -2,7 +2,9 @@ package com.techx7.techstore.repository;
 
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.testUtils.TestData;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -16,7 +18,7 @@ import java.util.Optional;
 @EnableAutoConfiguration
 @EntityScan(basePackages = {"com.techx7.techstore.model.entity"})
 @DataJpaTest
-public class ProductRepositoryTest {
+class ProductRepositoryTest {
 
     @Autowired
     private ProductRepository productRepository;
@@ -24,8 +26,18 @@ public class ProductRepositoryTest {
     @Autowired
     private TestData testData;
 
+    @BeforeEach
+    void setUp() {
+        productRepository.deleteAll();
+    }
+
+    @AfterEach
+    void tearDown() {
+        productRepository.deleteAll();
+    }
+
     @Test
-    public void testFindByModelId() {
+    void testFindByModelId() {
         // Arrange
         Product product = testData.createProduct();
 
@@ -40,7 +52,7 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void testFindByUuid() {
+    void testFindByUuid() {
         // Arrange
         Product product = testData.createProduct();
 
