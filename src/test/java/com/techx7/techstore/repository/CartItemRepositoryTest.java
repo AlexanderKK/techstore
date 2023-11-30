@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ContextConfiguration(classes = {CartItemRepository.class, UserRepository.class, ProductRepository.class, RoleRepository.class, TestData.class})
 @EnableAutoConfiguration
 @EntityScan(basePackages = {"com.techx7.techstore.model.entity"})
-@DataJpaTest(properties = {"spring.main.allow-bean-definition-overriding=true"})
+@DataJpaTest
 class CartItemRepositoryTest {
 
     @Autowired

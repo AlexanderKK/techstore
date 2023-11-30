@@ -34,11 +34,9 @@ class ModelRepositoryTest {
     void setUp() {
         modelRepository.deleteAll();
 
-        Model existingModel = testData.createModel();
+        Model existingModel = testData.createAndSaveModel();
 
         existingUuid = existingModel.getUuid();
-
-        modelRepository.save(existingModel);
     }
 
     @AfterEach

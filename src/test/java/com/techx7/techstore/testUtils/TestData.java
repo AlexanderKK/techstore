@@ -3,10 +3,10 @@ package com.techx7.techstore.testUtils;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.repository.*;
+import org.antlr.v4.runtime.misc.LogManager;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.codec.KotlinSerializationStringEncoder;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -44,10 +44,17 @@ public class TestData {
     @Autowired(required = false)
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ProductRepository productRepository;
+
     public void cleanAllTestData() {
+        categoryRepository.deleteAll();
+        manufacturerRepository.deleteAll();
+        modelRepository.deleteAll();
+        productRepository.deleteAll();
         roleRepository.deleteAll();
-        userRepository.deleteAll();
         userActivationCodeRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     public List<UserDTO> createAndSaveUsers() {
@@ -140,6 +147,10 @@ public class TestData {
         return role;
     }
 
+    public Product createAndSaveProduct() {
+        return productRepository.save(createProduct());
+    }
+
     public Product createProduct() {
         Product product = new Product();
 
@@ -169,21 +180,35 @@ public class TestData {
         return product;
     }
 
+    public Model createAndSaveModel() {
+        return modelRepository.save(createModel());
+    }
+
     public Model createModel() {
         Model model = new Model();
 
         model.setName("Test Model");
-        Manufacturer manufacturer = new Manufacturer();
-        manufacturer.setName("manufacturer-name");
 
         model.setProducts(new HashSet<>());
-        model.setUuid(UUID.randomUUID());
 
-        manufacturerRepository.save(manufacturer);
+        Manufacturer manufacturer = createAndSaveManufacturer();
 
         model.setManufacturer(manufacturer);
 
         return model;
+    }
+
+    public Manufacturer createAndSaveManufacturer() {
+        Manufacturer manufacturer = new Manufacturer();
+
+        manufacturer.setName("test-manufacturer");
+        manufacturer.setImageUrl("test.png");
+
+        return manufacturerRepository.save(manufacturer);
+    }
+
+    public List<Category> createAndSaveCategories() {
+        return categoryRepository.saveAll(createCategories());
     }
 
     private Set<Category> createCategories() {
