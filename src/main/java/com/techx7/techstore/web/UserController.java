@@ -194,8 +194,8 @@ public class UserController {
     }
 
     @ExceptionHandler(EmailFoundException.class)
-    public String handleUsernameFoundError(EmailFoundException ex,
-                                           RedirectAttributes redirectAttributes) {
+    public String handleEmailFoundError(EmailFoundException ex,
+                                        RedirectAttributes redirectAttributes) {
         System.out.println(ex.getMessage());
 
         redirectAttributes.addFlashAttribute("emailError", ex.getMessage());
@@ -204,8 +204,8 @@ public class UserController {
     }
 
     @ExceptionHandler(UsernameFoundException.class)
-    public String handleUsernameFoundError(UsernameFoundException ex,
-                                           RedirectAttributes redirectAttributes) {
+    public String handleEmailFoundError(UsernameFoundException ex,
+                                        RedirectAttributes redirectAttributes) {
         System.out.println(ex.getMessage());
 
         redirectAttributes.addFlashAttribute("usernameError", ex.getMessage());

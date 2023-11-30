@@ -37,6 +37,10 @@ public class MultiPartFileValidator implements ConstraintValidator<MultiPartFile
     }
 
     private String generateErrorMessage(MultipartFile file) {
+        if(file == null) {
+            return "Please choose a file";
+        }
+
         if (file.isEmpty()) {
             return "Please choose a file";
         }

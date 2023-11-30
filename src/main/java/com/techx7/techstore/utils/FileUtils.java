@@ -25,7 +25,7 @@ public class FileUtils {
     }
 
     public static MultipartFile manageImage(MultipartFile image, String imageUrl) throws IOException {
-        if(image.isEmpty() && !imageUrl.isEmpty()) {
+        if(image == null || image.isEmpty() && imageUrl != null && !imageUrl.isEmpty()) {
             try(FileInputStream input = new FileInputStream(RESOURCES_IMAGES_DIRECTORY + imageUrl)) {
                 MultipartFile newImage = new MultipartFileImpl(
                         "Existing image", imageUrl, "image/png", input.readAllBytes());

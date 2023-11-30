@@ -1,15 +1,19 @@
 package com.techx7.techstore.testUtils;
 
+import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.repository.*;
-import org.antlr.v4.runtime.misc.LogManager;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.codec.KotlinSerializationStringEncoder;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -34,44 +38,52 @@ public class TestData {
     @Autowired
     private UserActivationCodeRepository userActivationCodeRepository;
 
+    @Autowired
+    private ModelMapper mapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public void cleanAllTestData() {
         roleRepository.deleteAll();
         userRepository.deleteAll();
         userActivationCodeRepository.deleteAll();
     }
 
-    public static User createUser() {
+    public List<UserDTO> createAndSaveUsers() {
+        User user1 = createUser();
+
+        User user2 = new User();
+
+        user2.setEmail("test2@example.com");
+        user2.setUsername("test-user2");
+        user2.setPassword("test-pass2");
+        user2.setRoles(user1.getRoles());
+
+        user2.setPassword(passwordEncoder.encode(user2.getPassword()));
+
+        List<User> users = List.of(user1, user2);
+
+        roleRepository.saveAll(user1.getRoles());
+
+        userRepository.saveAll(users);
+
+        return users.stream().map(user -> mapper.map(user, UserDTO.class)).toList();
+    }
+
+    public User createAndSaveUser() {
         User user = getUser();
 
-        return user;
+        Set<Role> roles = new HashSet<>(roleRepository.saveAll(user.getRoles()));
+
+        user.setRoles(roles);
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        return userRepository.save(user);
     }
 
-    private static User getUser() {
-        User user = new User();
-        user.setEmail("test@example.com");
-        user.setUsername("test-user");
-        user.setPassword("test-pass");
-        user.setRoles(Set.of(createRole()));
-        user.setActive(true);
-
-        return user;
-    }
-
-    public static Role createRole() {
-        Role role = new Role();
-        role.setName("USER");
-        role.setImageUrl("testRole.png");
-
-        return role;
-    }
-
-    public Role createRoleAndSave() {
-        Role role = createRole();
-
-        return roleRepository.save(role);
-    }
-
-    public UserActivationCode createUserActivationCode(String activationCode, boolean isActive) {
+    public void createUserActivationCode(String activationCode, boolean isActive) {
         cleanAllTestData();
 
         UserActivationCode userActivationCode = new UserActivationCode();
@@ -94,17 +106,38 @@ public class TestData {
 
         userRepository.save(user);
 
-        return userActivationCodeRepository.save(userActivationCode);
+        userActivationCodeRepository.save(userActivationCode);
     }
 
-    public User createAndSaveUser() {
+    public static User createUser() {
         User user = getUser();
 
-        Set<Role> roles = new HashSet<>(roleRepository.saveAll(user.getRoles()));
+        return user;
+    }
 
-        user.setRoles(roles);
+    private static User getUser() {
+        User user = new User();
+        user.setEmail("test@example.com");
+        user.setUsername("test-user");
+        user.setPassword("test-pass");
+        user.setRoles(Set.of(createRole()));
+        user.setActive(true);
 
-        return userRepository.save(user);
+        return user;
+    }
+
+    public Role createRoleAndSave() {
+        Role role = createRole();
+
+        return roleRepository.save(role);
+    }
+
+    public static Role createRole() {
+        Role role = new Role();
+        role.setName("USER");
+        role.setImageUrl("testRole.png");
+
+        return role;
     }
 
     public static MockMultipartFile createMultipartFile() {
