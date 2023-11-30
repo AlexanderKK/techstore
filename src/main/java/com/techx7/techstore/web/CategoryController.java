@@ -1,5 +1,6 @@
 package com.techx7.techstore.web;
 
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.service.CategoryService;
@@ -97,6 +98,13 @@ public class CategoryController {
     @DeleteMapping("/delete-all")
     public String deleteAllCategories() {
         categoryService.deleteAllCategories();
+
+        return "redirect:/categories";
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handleEntityError(EntityNotFoundException ex) {
+        System.out.println(ex.getMessage());
 
         return "redirect:/categories";
     }
