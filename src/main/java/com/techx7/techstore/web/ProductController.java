@@ -120,10 +120,10 @@ public class ProductController {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public String handleModelError(EntityNotFoundException e) {
+    public String handleProductError(EntityNotFoundException e) {
         System.out.println(e.getMessage());
 
-        return "redirect:/products/add";
+        return "redirect:/products";
     }
 
 }

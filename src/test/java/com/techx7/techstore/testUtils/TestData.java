@@ -175,7 +175,7 @@ public class TestData {
 
         product.setAvailableQuantity(15);
 
-        product.setSpecification("Test Specification");
+        product.setSpecification("OS: Windows XP");
 
         return product;
     }
