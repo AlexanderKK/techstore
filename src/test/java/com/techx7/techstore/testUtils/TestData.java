@@ -38,10 +38,10 @@ public class TestData {
     @Autowired
     private UserActivationCodeRepository userActivationCodeRepository;
 
-    @Autowired
+    @Autowired(required = false)
     private ModelMapper mapper;
 
-    @Autowired
+    @Autowired(required = false)
     private PasswordEncoder passwordEncoder;
 
     public void cleanAllTestData() {
@@ -140,16 +140,33 @@ public class TestData {
         return role;
     }
 
-    public static MockMultipartFile createMultipartFile() {
-        MockMultipartFile file
-                = new MockMultipartFile(
-                "file",
-                "test.png",
-                MediaType.IMAGE_PNG_VALUE,
-                "TestImage".getBytes()
-        );
+    public Product createProduct() {
+        Product product = new Product();
 
-        return file;
+        // Set model
+        Model model = createModel();
+        product.setModel(model);
+
+        modelRepository.save(model);
+
+        // Set categories
+        Set<Category> categories = createCategories();
+        product.setCategories(categories);
+
+        categoryRepository.saveAll(categories);
+
+        // Set other product characteristics
+        product.setImageUrl("test.png");
+
+        product.setPrice(BigDecimal.TEN);
+
+        product.setInitialQuantity(15);
+
+        product.setAvailableQuantity(15);
+
+        product.setSpecification("Test Specification");
+
+        return product;
     }
 
     public Model createModel() {
@@ -183,33 +200,16 @@ public class TestData {
         return categories;
     }
 
-    public Product createProduct() {
-        Product product = new Product();
+    public static MockMultipartFile createMultipartFile() {
+        MockMultipartFile file
+                = new MockMultipartFile(
+                "file",
+                "test.png",
+                MediaType.IMAGE_PNG_VALUE,
+                "TestImage".getBytes()
+        );
 
-        // Set model
-        Model model = createModel();
-        product.setModel(model);
-
-        modelRepository.save(model);
-
-        // Set categories
-        Set<Category> categories = createCategories();
-        product.setCategories(categories);
-
-        categoryRepository.saveAll(categories);
-
-        // Set other product characteristics
-        product.setImageUrl("test.png");
-
-        product.setPrice(BigDecimal.TEN);
-
-        product.setInitialQuantity(15);
-
-        product.setAvailableQuantity(15);
-
-        product.setSpecification("Test Specification");
-
-        return product;
+        return file;
     }
 
 }
