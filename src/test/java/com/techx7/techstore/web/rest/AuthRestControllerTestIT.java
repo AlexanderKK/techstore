@@ -83,7 +83,7 @@ class AuthRestControllerTestIT {
 
     @Test
     void testRegistrationSuccess() throws Exception {
-        testData.createRoleAndSave();
+        testData.createAndSaveRole();
 
         RegisterDTO registerDTO = new RegisterDTO();
 

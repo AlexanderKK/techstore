@@ -99,7 +99,7 @@ public class TestData {
         user.setEmail("test@example.com");
         user.setUsername("test-user");
         user.setPassword("test-pass");
-        user.setRoles(Set.of(createRoleAndSave()));
+        user.setRoles(Set.of(createAndSaveRole()));
 
         if(isActive) {
             user.setActive(true);
@@ -131,7 +131,7 @@ public class TestData {
         return user;
     }
 
-    public Role createRoleAndSave() {
+    public Role createAndSaveRole() {
         Role role = createRole();
 
         return roleRepository.save(role);

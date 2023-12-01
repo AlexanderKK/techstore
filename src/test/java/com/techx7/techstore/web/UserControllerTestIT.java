@@ -4,8 +4,10 @@ import com.techx7.techstore.model.dto.user.UserCredentialsDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.dto.user.UserPasswordDTO;
 import com.techx7.techstore.model.dto.user.UserProfileDTO;
+import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.model.session.TechStoreUserDetails;
+import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.testUtils.TestData;
 import org.junit.jupiter.api.AfterEach;
@@ -19,6 +21,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.IOException;
+import java.util.Set;
 import java.util.UUID;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_FOUND;
@@ -45,6 +48,9 @@ class UserControllerTestIT {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @BeforeEach
     void setUp() {
@@ -86,13 +92,27 @@ class UserControllerTestIT {
     @WithMockUser(username = "test-admin", roles = {"USER", "ADMIN"})
     void testEditUserRedirectsWithErrorsOrToUsersListOnSuccess() throws Exception {
         User user = testData.createAndSaveUser();
+        Set<Role> roles = user.getRoles();
+
+        Role role = new Role();
+        role.setImageUrl("test.png");
+        role.setName("ADMIN");
+
+        Role newRole = roleRepository.save(role);
+
+        roles.add(newRole);
+
+        user.setRoles(roles);
 
         UserDTO userDTO = mapper.map(user, UserDTO.class);
+
+        TechStoreUserDetails techStoreUserDetails = new TechStoreUserDetails(user);
 
         mockMvc.perform(
                 patch("/users/edit")
                         .flashAttr("userDTO", userDTO)
                         .with(csrf())
+                        .with(user(techStoreUserDetails))
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/users"));

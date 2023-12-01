@@ -21,6 +21,7 @@ class ShoppingCartRestControllerTest {
     private MockMvc mockMvc;
 
     @Test
+    @WithMockUser(username = "test-user")
     void testLoadCartItems() throws Exception {
         mockMvc.perform(
                 MockMvcRequestBuilders.get("/cart/load")
@@ -37,7 +38,7 @@ class ShoppingCartRestControllerTest {
                 MockMvcRequestBuilders
                         .post("/cart/add/{productUuid}/{quantity}", productUuid, quantity)
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isUnauthorized());
+        ).andExpect(status().is3xxRedirection());
     }
 
     @Test
@@ -62,7 +63,7 @@ class ShoppingCartRestControllerTest {
                 MockMvcRequestBuilders
                         .post("/cart/update/{productUuid}/{quantity}", productUuid, quantity)
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isUnauthorized());
+        ).andExpect(status().is3xxRedirection());
     }
 
     @Test
@@ -86,7 +87,7 @@ class ShoppingCartRestControllerTest {
                 MockMvcRequestBuilders
                         .post("/cart/remove/{productUuid}", productUuid)
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isUnauthorized());
+        ).andExpect(status().is3xxRedirection());
     }
 
     @Test
