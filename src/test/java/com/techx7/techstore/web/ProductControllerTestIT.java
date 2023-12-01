@@ -126,7 +126,7 @@ class ProductControllerTestIT {
 
         addProductDTO.setPrice("1000");
 
-        addProductDTO.setInitialQuantity(15);
+        addProductDTO.setInitialQuantity("15");
 
         addProductDTO.setSpecification("Test Specification");
 

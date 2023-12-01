@@ -50,7 +50,7 @@ public class ProductController {
 
     @GetMapping
     public String getProducts(Model model,
-                              @PageableDefault(size = 4, sort = "discountPercentage") Pageable pageable,
+                              @PageableDefault(size = 4, sort = "discountPrice") Pageable pageable,
                               @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size) {
         Page<ProductDTO> products = productService.getAllProducts(pageable);

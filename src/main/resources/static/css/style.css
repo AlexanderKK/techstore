@@ -9742,6 +9742,14 @@ a.text-dark:hover, a.text-dark:focus {
   text-decoration: none !important;
 }
 
+.btn-minus {
+  color: #768086 !important;
+}
+
+.btn-plus {
+  color: #000 !important;
+}
+
 .btn-plus i,
 .btn-minus i {
   transition: all .2s;
@@ -9877,8 +9885,8 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .cart-menu .cart__img img {
-  width: 5em;
-  height: 4em;
+  width: 4em;
+  height: 3em;
   /*object-fit: cover;*/
 }
 
@@ -9899,6 +9907,11 @@ a.text-dark:hover, a.text-dark:focus {
 .quantity input,
 .details-quantity input {
   pointer-events: none;
+  font-size: 16px;
+}
+
+.cart-menu .quantity a {
+  font-size: 18px !important;
 }
 
 @media(max-width: 576px) {

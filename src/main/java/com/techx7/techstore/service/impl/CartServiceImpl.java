@@ -86,7 +86,15 @@ public class CartServiceImpl implements CartService {
 
         cartItemRepository.updateQuantity(quantity, user.getUuid(), productUuid);
 
-        BigDecimal subtotal = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+        // Calculate subtotal with price or discountPrice
+        BigDecimal subtotal;
+        BigDecimal bigDecimalQuantity = BigDecimal.valueOf(quantity);
+
+        if(product.getDiscountPrice() != null && product.getDiscountPrice().compareTo(BigDecimal.ZERO) >= 0) {
+            subtotal = product.getDiscountPrice().multiply(bigDecimalQuantity);
+        } else {
+            subtotal = product.getPrice().multiply(bigDecimalQuantity);
+        }
 
         return subtotal;
     }

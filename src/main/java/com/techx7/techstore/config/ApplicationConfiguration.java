@@ -38,7 +38,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -46,7 +45,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.utils.PriceUtils.setProductDiscountPrice;
+import static com.techx7.techstore.utils.DiscountUtils.setProductDiscountPrice;
 import static com.techx7.techstore.utils.StringUtils.capitalize;
 
 @Configuration
@@ -203,10 +202,10 @@ public class ApplicationConfiguration {
                 : modelRepository.findById(context.getSource())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Model")));
 
-        Converter<AddProductDTO, BigDecimal> toDiscountPrice
+        Converter<String, Integer> toAvailableQuantity
                 = context -> context.getSource() == null
                 ? null
-                : setProductDiscountPrice(context.getSource());
+                : Integer.parseInt(context.getSource());
 
         modelMapper.createTypeMap(AddProductDTO.class, Product.class)
                 .addMappings(mapper -> mapper
@@ -219,6 +218,7 @@ public class ApplicationConfiguration {
                         .using(toModel)
                         .map(AddProductDTO::getModel, Product::setModel))
                 .addMappings(mapper -> mapper
+                        .using(toAvailableQuantity)
                         .map(AddProductDTO::getInitialQuantity, Product::setAvailableQuantity))
                 .addMappings(
                         new PropertyMap<AddProductDTO, Product>() {

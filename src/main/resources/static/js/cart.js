@@ -93,10 +93,9 @@ function fillCartContent(responseJson) {
 
 		const rowId = responseJson.indexOf(element) + 1;
 
-		const cartItem = generateCartItem(rowId, product, quantity);
+		setProductPrice(product);
 
-		console.log(product.price);
-		console.log(product.discountPrice);
+		const cartItem = generateCartItem(rowId, product, quantity);
 
 		cartItems.append(cartItem);
 	}
@@ -105,6 +104,17 @@ function fillCartContent(responseJson) {
 	$("#cart-badge").text(cartItemsCount);
 
 	updateCartTotal();
+}
+
+function setProductPrice(product) {
+	let price = product.price;
+	const discountPrice = product.discountPrice;
+
+	if(discountPrice !== null && discountPrice >= 0) {
+		price = discountPrice;
+	}
+
+	product.price = price;
 }
 
 /**
@@ -130,7 +140,7 @@ function generateCartItem(rowId, product, quantity) {
 						</div>
 					</div>
 
-					<div class="row align-items-center justify-content-start">
+					<div class="row align-items-center justify-content-between">
 						<div class="cart__quantity col-auto">
 							<div class="input-group quantity mx-auto" style="width: 120px;">
 								<div class="input-group-btn">
@@ -141,7 +151,7 @@ function generateCartItem(rowId, product, quantity) {
 								
 								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${product.uuid}" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
 								
-								<input type="text" class="cart__unit" value="${product.discountPrice === 0 ? product.price : product.discountPrice}" hidden>
+								<input type="text" class="cart__unit" value="${product.price}" hidden>
 								
 								<div class="input-group-btn">
 									<a pid="${product.uuid}" class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">
@@ -389,6 +399,8 @@ function updateQuantity(productId, quantity) {
 				console.log('Product quantity updated')
 
 				return response.json().then(newSubtotal => {
+					console.log(newSubtotal);
+
 					updateSubtotal(newSubtotal, productId);
 
 					updateCartPageTotal();

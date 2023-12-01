@@ -69,11 +69,11 @@
 						   class="h6 text-decoration-none">Acer Nitro M60</a>
 
 						<div class="d-flex align-items-center justify-content-center mt-2">
-							<th-block th:if="*{discountPrice}">
-								<h5 th:if="*{discountPrice}" th:text="|£*{discountPrice}|">£0</h5><h6 class="text-muted ml-2"><del th:text="|£*{price}|">£0</del></h6>
+							<th-block th:if="*{discountPrice >= 0}">
+								<h5 th:text="|£*{discountPrice}|">£0</h5><h6 class="text-muted ml-2"><del th:text="|£*{price}|">£0</del></h6>
 							</th-block>
 
-							<th-block th:unless="*{discountPrice}">
+							<th-block th:if="*{discountPrice == null}">
 								<h5 th:text="|£*{price}|">£0</h5>
 							</th-block>
 						</div>

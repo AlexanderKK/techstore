@@ -36,7 +36,12 @@
 								   class="text-left" href="laptops/lenovoV15.html" style="width: 260px"></a>
 							</td>
 
-							<td th:text="|£${product.price}|"
+							<td th:if="${product.discountPrice >= 0}"
+								th:text="|£${product.discountPrice}|"
+								class="product-price align-middle"></td>
+
+							<td th:if="${product.discountPrice == null}"
+								th:text="|£${product.price}|"
 								class="product-price align-middle"></td>
 
 							<td class="align-middle">

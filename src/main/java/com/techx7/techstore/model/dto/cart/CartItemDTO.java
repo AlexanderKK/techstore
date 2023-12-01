@@ -29,7 +29,14 @@ public class CartItemDTO {
     }
 
     public BigDecimal getSubtotal() {
-        return productDTO.getPrice().multiply(BigDecimal.valueOf(quantity));
+        BigDecimal discountPrice = productDTO.getDiscountPrice();
+        BigDecimal bigDecimalQuantity = BigDecimal.valueOf(quantity);
+
+        if(discountPrice != null && discountPrice.compareTo(BigDecimal.ZERO) >= 0) {
+            return discountPrice.multiply(bigDecimalQuantity);
+        }
+
+        return productDTO.getPrice().multiply(bigDecimalQuantity);
     }
 
 }

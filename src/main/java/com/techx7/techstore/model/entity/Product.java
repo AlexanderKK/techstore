@@ -39,6 +39,10 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @DecimalMax(value = "1000000", message = "Discount price limit is 1000000")
+    @Column(name = "discount_price")
+    private BigDecimal discountPrice;
+
     @PositiveOrZero
     @NotNull(message = "Should not be empty")
     @Column(name = "initial_quantity", nullable = false)
@@ -48,10 +52,6 @@ public class Product extends BaseEntity {
     @NotNull(message = "Should not be empty")
     @Column(name = "available_quantity", nullable = false)
     private Integer availableQuantity;
-
-    @DecimalMin(value = "1", message = "Price should be a positive number")
-    @DecimalMax(value = "1000000", message = "Price limit is 1000000")
-    private BigDecimal discountPrice;
 
     @Column(columnDefinition = "TEXT")
     private String description;
