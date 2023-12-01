@@ -9844,9 +9844,9 @@ a.text-dark:hover, a.text-dark:focus {
   pointer-events: none;
   transition: all .7s;
   background-color: #FFF;
-  border-color: #3D464D;
-  border-style: solid;
-  border-radius: 8% 0 0 8%;
+  /*border-color: #3D464D;*/
+  /*border-style: solid;*/
+  border-radius: 7% 0 0 7%;
   border-top: 0;
   border-right: 0;
   font-size: 16px;

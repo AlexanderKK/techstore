@@ -45,7 +45,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.utils.DiscountUtils.setProductDiscountPrice;
+import static com.techx7.techstore.utils.PriceUtils.setProductDiscountPrice;
 import static com.techx7.techstore.utils.StringUtils.capitalize;
 
 @Configuration
@@ -259,6 +259,50 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .map(Product::getDiscountPrice, ProductDTO::setDiscountPrice));
 
+        // Product -> ProductCartItemDTO
+        Converter<Model, String> toProductName = context -> {
+            Model source = context.getSource();
+
+            if (source == null) {
+                return null;
+            } else {
+                return source.getManufacturer().getName() + " " + source.getName();
+            }
+        };
+
+        modelMapper
+                .createTypeMap(Product.class, ProductCartItemDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(toProductName)
+                        .map(Product::getModel, ProductCartItemDTO::setLink));
+
+        Converter<Product, ProductCartItemDTO> toProductCartItemDTO
+                = context -> context.getSource() == null
+                ? null
+                : modelMapper.map(context.getSource(), ProductCartItemDTO.class);
+
+        modelMapper
+                .createTypeMap(CartItem.class, CartItemDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(toProductCartItemDTO)
+                        .map(CartItem::getProduct, CartItemDTO::setProductDTO));
+
+        //Product -> ProductDetailsDTO
+        modelMapper
+                .createTypeMap(Product.class, ProductDetailsDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(toCategoryNamesSet)
+                        .map(Product::getCategories, ProductDetailsDTO::setCategories))
+                .addMappings(mapper -> mapper
+                        .using(toManufacturerName)
+                        .map(product -> product.getModel().getManufacturer(), ProductDetailsDTO::setManufacturer))
+                .addMappings(mapper -> mapper
+                        .using(toModelName)
+                        .map(Product::getModel, ProductDetailsDTO::setModel))
+                .addMappings(mapper -> mapper
+                        .using(toProductName)
+                        .map(Product::getModel, ProductDetailsDTO::setName));
+
         // RegisterDTO -> User
         Provider<User> newUserWithRoleProvider = req -> {
             Role role = roleRepository.findByName("USER")
@@ -342,50 +386,6 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .using(toImageUrl)
                         .map(AddRoleDTO::getImage, Role::setImageUrl));
-
-        // Product -> ProductCartItemDTO
-        Converter<Model, String> toProductName = context -> {
-            Model source = context.getSource();
-
-            if (source == null) {
-                return null;
-            } else {
-                return source.getManufacturer().getName() + " " + source.getName();
-            }
-        };
-
-        modelMapper
-                .createTypeMap(Product.class, ProductCartItemDTO.class)
-                .addMappings(mapper -> mapper
-                        .using(toProductName)
-                        .map(Product::getModel, ProductCartItemDTO::setLink));
-
-        Converter<Product, ProductCartItemDTO> toProductCartItemDTO
-                = context -> context.getSource() == null
-                ? null
-                : modelMapper.map(context.getSource(), ProductCartItemDTO.class);
-
-        modelMapper
-                .createTypeMap(CartItem.class, CartItemDTO.class)
-                .addMappings(mapper -> mapper
-                        .using(toProductCartItemDTO)
-                        .map(CartItem::getProduct, CartItemDTO::setProductDTO));
-
-        //Product -> ProductDetailsDTO
-        modelMapper
-                .createTypeMap(Product.class, ProductDetailsDTO.class)
-                .addMappings(mapper -> mapper
-                        .using(toCategoryNamesSet)
-                        .map(Product::getCategories, ProductDetailsDTO::setCategories))
-                .addMappings(mapper -> mapper
-                        .using(toManufacturerName)
-                        .map(product -> product.getModel().getManufacturer(), ProductDetailsDTO::setManufacturer))
-                .addMappings(mapper -> mapper
-                        .using(toModelName)
-                        .map(Product::getModel, ProductDetailsDTO::setModel))
-                .addMappings(mapper -> mapper
-                        .using(toProductName)
-                        .map(Product::getModel, ProductDetailsDTO::setName));
 
         return modelMapper;
     }

@@ -1,6 +1,6 @@
 package com.techx7.techstore.model.dto.product;
 
-import jakarta.validation.constraints.Digits;
+import com.techx7.techstore.validation.product.ProductPrice;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+
+import static com.techx7.techstore.utils.PriceUtils.formatPrice;
 
 public class ProductDTO {
 
@@ -26,11 +28,10 @@ public class ProductDTO {
     @NotBlank
     private String model;
 
-    @NotNull
-    @Digits(integer = 6, fraction = 2)
+    @ProductPrice
     private BigDecimal price;
 
-    @Digits(integer = 6, fraction = 2)
+    @ProductPrice
     private BigDecimal discountPrice;
 
     public ProductDTO() {
@@ -78,7 +79,7 @@ public class ProductDTO {
     }
 
     public BigDecimal getPrice() {
-        return price;
+        return formatPrice(price);
     }
 
     public void setPrice(BigDecimal price) {
@@ -86,7 +87,7 @@ public class ProductDTO {
     }
 
     public BigDecimal getDiscountPrice() {
-        return discountPrice;
+        return formatPrice(discountPrice);
     }
 
     public void setDiscountPrice(BigDecimal discountPrice) {

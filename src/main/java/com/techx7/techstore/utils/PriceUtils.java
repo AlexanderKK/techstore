@@ -7,7 +7,7 @@ import java.text.DecimalFormat;
 
 import static com.techx7.techstore.utils.StringUtils.isNullOrEmpty;
 
-public class DiscountUtils {
+public class PriceUtils {
 
     public static BigDecimal setProductDiscountPrice(AddProductDTO addProductDTO) {
         if(isNullOrEmpty(addProductDTO.getDiscountPercentage())) {
@@ -26,11 +26,17 @@ public class DiscountUtils {
 
         BigDecimal discountPrice = price.subtract(price.multiply(BigDecimal.valueOf(pricePart)));
 
-        String formattedDiscountPrice = new DecimalFormat("######.##").format(discountPrice);
+        return formatPrice(discountPrice);
+    }
 
-        discountPrice = new BigDecimal(formattedDiscountPrice);
+    public static BigDecimal formatPrice(BigDecimal price) {
+        if(price == null) {
+            return null;
+        }
 
-        return discountPrice;
+        String formattedDiscountPrice = new DecimalFormat("######.##").format(price);
+
+        return new BigDecimal(formattedDiscountPrice);
     }
 
 }

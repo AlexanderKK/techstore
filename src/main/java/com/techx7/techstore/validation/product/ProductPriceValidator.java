@@ -36,8 +36,8 @@ public class ProductPriceValidator implements ConstraintValidator<ProductPrice, 
             return "Please enter a price";
         }
 
-        if(!value.matches("^\\d+\\.*(?:\\.\\d{0,2})?$")) {
-            return "Please enter a valid price (i.e. 1500.00)";
+        if(!value.matches("^\\d+$")) {
+            return "Please enter a valid price (i.e. 1500)";
         }
 
         BigDecimal decimalPrice = new BigDecimal(value);
