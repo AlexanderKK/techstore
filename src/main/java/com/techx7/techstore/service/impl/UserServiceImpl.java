@@ -1,16 +1,16 @@
 package com.techx7.techstore.service.impl;
 
 import com.techx7.techstore.exception.EmailFoundException;
-import com.techx7.techstore.exception.UsernameFoundException;
-import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.PrincipalNotFoundException;
+import com.techx7.techstore.exception.UsernameFoundException;
 import com.techx7.techstore.model.dto.user.*;
 import com.techx7.techstore.model.entity.Country;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.model.entity.UserInfo;
 import com.techx7.techstore.model.events.UserRegisteredEvent;
+import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.repository.CountryRepository;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserInfoRepository;
@@ -20,6 +20,10 @@ import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -121,18 +125,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUser(UserDTO userDTO) {
+    public void editUser(UserDTO userDTO, TechStoreUserDetails loggedUser) {
         User user = userRepository.findByUuid(userDTO.getUuid())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, ENTITY_NAME)));
 
-        user.setRoles(
-                Arrays.stream(userDTO.getRoles().split(","))
-                        .map(Long::parseLong)
-                        .map(roleId -> roleRepository.findById(roleId)
-                                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role"))))
-                        .map(roleDTO -> mapper.map(roleDTO, Role.class))
-                        .collect(Collectors.toSet())
-        );
+        Set<Role> roles = getRolesSet(userDTO);
+
+        user.setRoles(roles);
+
+        if(loggedUser.getUsername().equals(user.getUsername())) {
+            updateLoggedUserAuthorities(userDTO, loggedUser, roles);
+        }
 
         user.editUser(userDTO);
 
@@ -210,6 +213,7 @@ public class UserServiceImpl implements UserService {
 
         user.editUserCredentials(userCredentialsDTO);
 
+        loggedUser.setEmail(user.getEmail());
         loggedUser.setUsername(user.getUsername());
 
         userRepository.save(user);
@@ -235,6 +239,29 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
 
         userRepository.save(user);
+    }
+
+    private static void updateLoggedUserAuthorities(UserDTO userDTO, TechStoreUserDetails loggedUser, Set<Role> roles) {
+        loggedUser.setEmail(userDTO.getEmail());
+        loggedUser.setUsername(userDTO.getUsername());
+        loggedUser.setAuthorities(roles);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        List<GrantedAuthority> updatedAuthorities = new ArrayList<>(loggedUser.getAuthorities());
+
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+    }
+
+    private Set<Role> getRolesSet(UserDTO userDTO) {
+        return Arrays.stream(userDTO.getRoles().split(","))
+                .map(Long::parseLong)
+                .map(roleId -> roleRepository.findById(roleId)
+                        .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role"))))
+                .map(roleDTO -> mapper.map(roleDTO, Role.class))
+                .collect(Collectors.toSet());
     }
 
     private User getUserByPrincipal(Principal principal) {

@@ -3,13 +3,9 @@ package com.techx7.techstore.config;
 import com.techx7.techstore.config.csrf.CsrfRequestMatcher;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.impl.TechstoreUserDetailsServiceImpl;
-import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
-import org.apache.tomcat.util.http.SameSiteCookies;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.boot.web.embedded.tomcat.TomcatContextCustomizer;
-import org.springframework.boot.web.server.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -52,14 +48,16 @@ public class SecurityConfiguration {
                                 "/cart/add/**",
                                 "/cart/update/**",
                                 "/cart/remove/**",
-                                "/cart/load").permitAll()
+                                "/cart/load"
+                        ).hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/products/detail/**").permitAll()
 
                         //User
                         .requestMatchers(
                                 "/users/profile/**",
                                 "/users/credentials/**",
-                                "/users/password/**").hasRole("USER")
+                                "/users/password/**"
+                        ).hasAnyRole("CARRIER", "USER", "SUPPORT", "MANAGER", "ADMIN")
 
                         // Manager
                         .requestMatchers("/products/**").hasRole("MANAGER")

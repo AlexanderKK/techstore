@@ -141,7 +141,8 @@
                                 <a class="nav-item nav-link link-register pr-0">Sign Up</a>
                             </div>
 
-                            <div class="navbar-nav ml-auto col-auto py-0 d-block">
+                            <div sec:authorize="hasAnyRole('USER', 'ADMIN')"
+                                 class="navbar-nav ml-auto col-auto py-0 d-block">
                                 <a href="#" class="btn px-0" style="font-size: 19px">
                                     <i class="fas fa-heart text-primary"></i>
                                     <span class="badge text-secondary border border-secondary rounded-circle">0</span>

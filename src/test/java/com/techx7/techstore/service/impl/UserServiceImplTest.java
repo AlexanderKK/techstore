@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
@@ -236,7 +237,9 @@ class UserServiceImplTest {
         when(mapper.map(validUserDTO, Role.class)).thenReturn(new Role());
 
         // Act
-        userService.editUser(validUserDTO);
+        TechStoreUserDetails techStoreUserDetails = new TechStoreUserDetails(validUser);
+
+        userService.editUser(validUserDTO, techStoreUserDetails);
 
         // Assert
         verify(userRepository, times(1)).save(validUser);

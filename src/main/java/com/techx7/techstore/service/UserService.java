@@ -22,7 +22,7 @@ public interface UserService {
 
     UserDTO getUserByUuid(UUID uuid);
 
-    void editUser(UserDTO userDTO);
+    void editUser(UserDTO userDTO, TechStoreUserDetails loggedUser);
 
     UserProfileDTO getUserProfile(Principal principal);
 

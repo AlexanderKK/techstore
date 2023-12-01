@@ -77,7 +77,8 @@ public class UserController {
     @PatchMapping("/edit")
     public String editUser(@Valid UserDTO userDTO,
                            BindingResult bindingResult,
-                           RedirectAttributes redirectAttributes) {
+                           RedirectAttributes redirectAttributes,
+                           @AuthenticationPrincipal TechStoreUserDetails loggedUser) {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("userToEdit", userDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userToEdit", bindingResult);
@@ -85,7 +86,7 @@ public class UserController {
             return "redirect:/users/edit/" + userDTO.getUuid();
         }
 
-        userService.editUser(userDTO);
+        userService.editUser(userDTO, loggedUser);
 
         return "redirect:/users";
     }
