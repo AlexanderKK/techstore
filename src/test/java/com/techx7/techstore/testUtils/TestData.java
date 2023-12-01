@@ -3,7 +3,6 @@ package com.techx7.techstore.testUtils;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.repository.*;
-import org.antlr.v4.runtime.misc.LogManager;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,7 +14,6 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Component
 public class TestData {

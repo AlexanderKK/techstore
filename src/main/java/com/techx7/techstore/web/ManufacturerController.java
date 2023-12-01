@@ -1,5 +1,6 @@
 package com.techx7.techstore.web;
 
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.service.ManufacturerService;
@@ -72,8 +73,8 @@ public class ManufacturerController {
 
     @PatchMapping("/edit")
     public String editManufacturer(@Valid ManufacturerDTO manufacturerDTO,
-                               BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes) throws IOException {
+                                   BindingResult bindingResult,
+                                   RedirectAttributes redirectAttributes) throws IOException {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("manufacturerToEdit", manufacturerDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.manufacturerToEdit", bindingResult);
@@ -96,6 +97,13 @@ public class ManufacturerController {
     @DeleteMapping("/delete-all")
     public String deleteAllManufacturers() {
         manufacturerService.deleteAllManufacturers();
+
+        return "redirect:/manufacturers";
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public String handleModelError(EntityNotFoundException e) {
+        System.out.println(e.getMessage());
 
         return "redirect:/manufacturers";
     }
