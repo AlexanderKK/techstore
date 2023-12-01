@@ -180,14 +180,14 @@ function updateCartTotal() {
 
 		const quantityInput = $(this).children().children().children()[1].children[0].children[1];
 
-		const totalVal = (Number(currentPrice) * Number(quantityInput.value)).toFixed(2);
+		const totalVal = Number(currentPrice) * Number(quantityInput.value);
 
 		sumPrices += Number(totalVal);
 	});
 
 	//Set value of subtotal span
 	const cartSubtotal = $('#cart-subtotal').children()[1];
-	cartSubtotal.innerText = "£" + sumPrices.toFixed(2);
+	cartSubtotal.innerText = "£" + sumPrices;
 
 	// Set value of shipping span
 	const cartShipping = $('#cart-shipping').children()[1];
@@ -203,7 +203,9 @@ function updateCartTotal() {
 	//Set value of total span
 	const cartTotal = $('#cart-total').children()[1];
 
-	cartTotal.innerText = "£" + parseFloat((sumPrices + cartShippingPrice).toFixed(2));
+	cartTotal.innerText = "£" + parseFloat(
+		(Number(sumPrices) + Number(cartShippingPrice)).toString()
+	);
 }
 
 
@@ -450,7 +452,7 @@ function updateCartPageTotal() {
 	})
 
 	let cartSubtotal = $('#cart-subtotal-page');
-	cartSubtotal.text(`£${parseFloat(subtotalPrice.toFixed(2))}`);
+	cartSubtotal.text(`£${parseFloat(subtotalPrice)}`);
 
 	// Shipping
 	const shippingPrice= cartSubtotal.text() === '£0' ? 0 : 15;

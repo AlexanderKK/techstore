@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.techx7.techstore.constant.Messages.*;
+import static com.techx7.techstore.utils.PriceUtils.formatPrice;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -101,7 +102,7 @@ public class CartServiceImpl implements CartService {
             subtotal = product.getPrice().multiply(bigDecimalQuantity);
         }
 
-        return subtotal;
+        return formatPrice(subtotal);
     }
 
     @Override
