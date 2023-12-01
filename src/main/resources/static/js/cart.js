@@ -95,6 +95,9 @@ function fillCartContent(responseJson) {
 
 		const cartItem = generateCartItem(rowId, product, quantity);
 
+		console.log(product.price);
+		console.log(product.discountPrice);
+
 		cartItems.append(cartItem);
 	}
 
@@ -138,7 +141,7 @@ function generateCartItem(rowId, product, quantity) {
 								
 								<input type="text" class="cart__qty form-control form-control-sm bg-secondary border-0 rounded text-center quantity${product.uuid}" value="${quantity}" maxlength="2" style="font-size: 17px; margin: 0; width: 30px;">
 								
-								<input type="text" class="cart__unit" value="${product.price}" hidden>
+								<input type="text" class="cart__unit" value="${product.discountPrice === 0 ? product.price : product.discountPrice}" hidden>
 								
 								<div class="input-group-btn">
 									<a pid="${product.uuid}" class="btn btn-sm btn-plus" style="font-size: 19px; color: #000">

@@ -49,10 +49,9 @@ public class Product extends BaseEntity {
     @Column(name = "available_quantity", nullable = false)
     private Integer availableQuantity;
 
-    @DecimalMin(value = "1", message = "Discount should be at least 1%")
-    @DecimalMax(value = "100", message = "Discount limit is 100%")
-    @Column(name="discount_percentage")
-    private BigDecimal discountPercentage;
+    @DecimalMin(value = "1", message = "Price should be a positive number")
+    @DecimalMax(value = "1000000", message = "Price limit is 1000000")
+    private BigDecimal discountPrice;
 
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -124,12 +123,12 @@ public class Product extends BaseEntity {
         this.availableQuantity = availableQuantity;
     }
 
-    public BigDecimal getDiscountPercentage() {
-        return discountPercentage;
+    public BigDecimal getDiscountPrice() {
+        return discountPrice;
     }
 
-    public void setDiscountPercentage(BigDecimal discountPercentage) {
-        this.discountPercentage = discountPercentage;
+    public void setDiscountPrice(BigDecimal discountPrice) {
+        this.discountPrice = discountPrice;
     }
 
     public String getDescription() {

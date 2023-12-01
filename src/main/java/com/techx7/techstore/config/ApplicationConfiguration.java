@@ -29,6 +29,7 @@ import com.techx7.techstore.repository.ModelRepository;
 import com.techx7.techstore.repository.RoleRepository;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.Provider;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -44,6 +46,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
+import static com.techx7.techstore.utils.PriceUtils.setProductDiscountPrice;
 import static com.techx7.techstore.utils.StringUtils.capitalize;
 
 @Configuration
@@ -200,6 +203,11 @@ public class ApplicationConfiguration {
                 : modelRepository.findById(context.getSource())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Model")));
 
+        Converter<AddProductDTO, BigDecimal> toDiscountPrice
+                = context -> context.getSource() == null
+                ? null
+                : setProductDiscountPrice(context.getSource());
+
         modelMapper.createTypeMap(AddProductDTO.class, Product.class)
                 .addMappings(mapper -> mapper
                         .using(toImageUrl)
@@ -211,7 +219,15 @@ public class ApplicationConfiguration {
                         .using(toModel)
                         .map(AddProductDTO::getModel, Product::setModel))
                 .addMappings(mapper -> mapper
-                        .map(AddProductDTO::getInitialQuantity, Product::setAvailableQuantity));
+                        .map(AddProductDTO::getInitialQuantity, Product::setAvailableQuantity))
+                .addMappings(
+                        new PropertyMap<AddProductDTO, Product>() {
+                            @Override
+                            protected void configure() {
+                                using(ctx -> setProductDiscountPrice((AddProductDTO) ctx.getSource()))
+                                        .map(source, destination.getDiscountPrice());
+                            }
+                        });
 
         // Product -> ProductDTO
         Converter<Set<Category>, Set<String>> toCategoryNamesSet
@@ -241,7 +257,7 @@ public class ApplicationConfiguration {
                         .using(toModelName)
                         .map(Product::getModel, ProductDTO::setModel))
                 .addMappings(mapper -> mapper
-                        .map(Product::getDiscountPercentage, ProductDTO::setDiscountPrice));
+                        .map(Product::getDiscountPrice, ProductDTO::setDiscountPrice));
 
         // RegisterDTO -> User
         Provider<User> newUserWithRoleProvider = req -> {
@@ -367,8 +383,6 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .using(toModelName)
                         .map(Product::getModel, ProductDetailsDTO::setModel))
-                .addMappings(mapper -> mapper
-                        .map(Product::getDiscountPercentage, ProductDetailsDTO::setDiscountPrice))
                 .addMappings(mapper -> mapper
                         .using(toProductName)
                         .map(Product::getModel, ProductDetailsDTO::setName));

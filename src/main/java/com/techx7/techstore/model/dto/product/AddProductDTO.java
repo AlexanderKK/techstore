@@ -25,12 +25,12 @@ public class AddProductDTO {
     @ProductPrice(min = 1, max = 1000000)
     private String price;
 
+    @ProductDiscount
+    private String discountPercentage;
+
     @NotNull(message = "Please enter a quantity")
     @Positive(message = "Please enter a positive number")
     private Integer initialQuantity;
-
-    @ProductDiscount
-    private String discountPercentage;
 
     public AddProductDTO() {}
 

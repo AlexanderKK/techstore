@@ -9,8 +9,6 @@ import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -19,8 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -55,8 +51,9 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductDTO> getAllProducts(Pageable pageable) {
         System.out.println("Displaying products");
 
-        return productRepository.findAll(pageable)
+        Page<ProductDTO> products = productRepository.findAll(pageable)
                 .map(toProductDTO());
+        return products;
     }
 
     @Override
@@ -102,8 +99,6 @@ public class ProductServiceImpl implements ProductService {
         return product -> {
             ProductDetailsDTO productDetailsDTO = mapper.map(product, ProductDetailsDTO.class);
 
-            setDiscountPrice(productDetailsDTO);
-
             return productDetailsDTO;
         };
     }
@@ -112,24 +107,8 @@ public class ProductServiceImpl implements ProductService {
         return product -> {
             ProductDTO productDTO = mapper.map(product, ProductDTO.class);
 
-            setDiscountPrice(productDTO);
-
             return productDTO;
         };
-    }
-
-    private void setDiscountPrice(ProductDTO productDTO) {
-        if (productDTO.getDiscountPrice() != null &&
-                productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) > 0) {
-            BigDecimal discountPrice = productDTO.getPrice().multiply(
-                    BigDecimal.ONE.subtract(
-                            productDTO.getDiscountPrice().divide(
-                                    BigDecimal.valueOf(100), RoundingMode.HALF_UP)));
-
-            String formattedDiscountPrice = new DecimalFormat("######.##").format(discountPrice);
-
-            productDTO.setDiscountPrice(new BigDecimal(formattedDiscountPrice));
-        }
     }
 
 }
