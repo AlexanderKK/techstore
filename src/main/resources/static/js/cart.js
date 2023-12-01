@@ -252,7 +252,7 @@ function addProduct(productId, addedQuantity) {
 	fetch(url, requestOptions)
 		.then(response => {
 			if(response.ok) {
-				console.log('Item added to cart')
+				console.log('Item added to cart');
 
 				loadCartItems();
 

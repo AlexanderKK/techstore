@@ -28,19 +28,19 @@ public class ShoppingCartRestController {
     }
 
     @GetMapping("/cart/load")
-    public List<CartItemDTO> loadCartItems(Principal principal) {
+    public ResponseEntity<List<CartItemDTO>> loadCartItems(Principal principal) {
         List<CartItemDTO> cartItems = cartService.getCartItems(principal);
 
-        return cartItems;
+        return ResponseEntity.ok(cartItems);
     }
 
     @PostMapping("/cart/add/{uuid}/{quantity}")
     public ResponseEntity<CartItemDTO> addToCart(@PathVariable("uuid") UUID productUuid,
                                                  @PathVariable("quantity") Integer quantity,
                                                  Principal principal) {
-        cartService.addProductToCart(quantity, productUuid, principal);
+        CartItemDTO cartItemDTO = cartService.addProductToCart(quantity, productUuid, principal);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(cartItemDTO);
     }
 
     @PostMapping("/cart/update/{uuid}/{quantity}")
