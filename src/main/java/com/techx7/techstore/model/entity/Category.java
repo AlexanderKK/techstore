@@ -39,7 +39,7 @@ public class Category extends BaseEntity {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime modified;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "category_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id"))

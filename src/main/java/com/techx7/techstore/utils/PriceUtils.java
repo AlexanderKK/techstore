@@ -34,7 +34,7 @@ public class PriceUtils {
             return null;
         }
 
-        String formattedDiscountPrice = new DecimalFormat("######.##").format(price);
+        String formattedDiscountPrice = new DecimalFormat("######").format(price);
 
         return new BigDecimal(formattedDiscountPrice);
     }

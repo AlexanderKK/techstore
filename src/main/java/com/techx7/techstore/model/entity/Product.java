@@ -14,14 +14,11 @@ import java.util.Set;
 @Table(name = "products")
 public class Product extends BaseEntity {
 
-    @NotNull(message = "Should not be empty")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Model model;
 
     @NotNull(message = "Should not be empty")
-    @ManyToMany(
-            cascade = CascadeType.MERGE,
-            fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "products_categories",
             joinColumns = @JoinColumn(name = "product_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
@@ -70,6 +67,9 @@ public class Product extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime modified;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    private Set<CartItem> cartItems;
 
     public Product() {
         this.categories = new HashSet<>();

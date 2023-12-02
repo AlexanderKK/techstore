@@ -98,8 +98,13 @@
 								</object>
 
 								<div class="product-action">
-									<a th:href="@{|/products/detail/*{uuid}|}"
+									<a th:if="*{model}"
+									   th:href="@{|/products/detail/*{uuid}|}"
 									   class="d-block w-100 h-100 position-absolute"></a>
+
+									<a th:unless="*{model}"
+									   class="d-block w-100 h-100 position-absolute"
+									   style="pointer-events: none"></a>
 
 									<a class="btnAddToCart btn btn-outline-dark btn-square">
 										<i class="fa fa-shopping-cart"></i>
@@ -114,9 +119,13 @@
 							</div>
 
 							<div class="text-center pt-4 pb-3 px-2">
-								<a th:text="|*{manufacturer} *{model}|"
+								<a th:if="*{model}" th:text="|*{manufacturer} *{model}|"
 								   th:href="@{|/products/detail/*{uuid}|}"
-								   class="h6 text-decoration-none">Acer Nitro M60</a>
+								   class="h6 text-decoration-none"></a>
+
+								<a th:unless="*{model}"
+								   class="h6 text-decoration-none"
+								   style="pointer-events: none">No Manufacturer & Model</a>
 
 								<div class="d-flex align-items-center justify-content-center mt-2">
 									<th-block th:if="*{discountPrice >= 0}">

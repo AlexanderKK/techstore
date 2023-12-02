@@ -3,8 +3,6 @@ package com.techx7.techstore.validation.product;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import static com.techx7.techstore.utils.StringUtils.isNullOrEmpty;
-
 public class ProductQuantityValidator implements ConstraintValidator<ProductQuantity, String> {
 
     private long min;
@@ -32,8 +30,8 @@ public class ProductQuantityValidator implements ConstraintValidator<ProductQuan
     }
 
     private String generateErrorMessage(String value) {
-        if(isNullOrEmpty(value)) {
-            return null;
+        if(value.isBlank()) {
+            return "Please enter a quantity";
         }
 
         if(!value.matches( "^\\d{1,3}$")) {

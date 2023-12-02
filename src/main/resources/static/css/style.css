@@ -9894,7 +9894,7 @@ a.text-dark:hover, a.text-dark:focus {
   transition: all .3s;
   /* box-shadow: 0 0 30px #DDDDDD; */
   opacity: .35;
-  cursor: url(../images/remCur32.png) 13 13, auto;
+  cursor: url(../images/removeIcon32.png) 13 13, auto;
 }
 
 .cart-menu .cart__link a,

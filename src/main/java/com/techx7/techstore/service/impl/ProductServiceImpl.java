@@ -23,7 +23,8 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.utils.FileUtils.saveFileLocally;
+import static com.techx7.techstore.utils.FileUtils.uploadFile;
+import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -40,9 +41,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void createProduct(AddProductDTO addProductDTO) throws IOException {
-        saveFileLocally(addProductDTO.getImage());
-
         Product product = mapper.map(addProductDTO, Product.class);
+
+        uploadFile(
+                addProductDTO.getImage(),
+                getClassNameLowerCase(Product.class),
+                getProductNameToLowerCase(product)
+        );
 
         productRepository.save(product);
     }
@@ -109,6 +114,14 @@ public class ProductServiceImpl implements ProductService {
 
             return productDTO;
         };
+    }
+
+    private static String getProductNameToLowerCase(Product product) {
+        return (product.getModel().getManufacturer().getName() +
+                " " +
+                product.getModel().getName() +
+                " " +
+                product.getUuid()).toLowerCase();
     }
 
 }

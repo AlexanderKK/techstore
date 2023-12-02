@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Set;
 
 @Entity
@@ -22,7 +21,7 @@ public class Model extends BaseEntity {
     @ManyToOne(optional = false)
     private Manufacturer manufacturer;
 
-    @OneToMany(mappedBy = "model", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "model")
     private Set<Product> products;
 
     @NotNull(message = "Should not be empty")

@@ -53,7 +53,7 @@ class FileUtilsTest {
         when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
 
         // Act
-        FileUtils.saveFileLocally(multipartFile);
+        FileUtils.uploadFile(multipartFile, "category", "server computers");
 
         // Assert
         byte[] actualFileContent = Files.readAllBytes(TEST_FILE_PATH);
@@ -68,7 +68,7 @@ class FileUtilsTest {
         when(multipartFile.getOriginalFilename()).thenReturn(TEST_FILE_NAME);
 
         // Act
-        FileUtils.saveFileLocally(multipartFile);
+        FileUtils.uploadFile(multipartFile, "category", "server computers");
 
         // Assert
         long fileSize = multipartFile.getSize();

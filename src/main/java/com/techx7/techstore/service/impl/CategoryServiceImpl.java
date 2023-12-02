@@ -17,7 +17,8 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.utils.FileUtils.saveFileLocally;
+import static com.techx7.techstore.utils.FileUtils.uploadFile;
+import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -34,9 +35,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void createCategory(AddCategoryDTO addCategoryDTO) throws IOException {
-        saveFileLocally(addCategoryDTO.getImage());
-
         Category category = mapper.map(addCategoryDTO, Category.class);
+
+        uploadFile(
+                addCategoryDTO.getImage(),
+                getClassNameLowerCase(Category.class),
+                category.getName().toLowerCase()
+        );
 
         categoryRepository.save(category);
     }
@@ -69,10 +74,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void editCategory(CategoryDTO categoryDTO) throws IOException {
-        saveFileLocally(categoryDTO.getImage());
-
         Category category = categoryRepository.findByUuid(categoryDTO.getUuid())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Category")));
+
+        uploadFile(
+                categoryDTO.getImage(),
+                getClassNameLowerCase(Category.class),
+                category.getName().toLowerCase()
+        );
 
         category.editCategory(categoryDTO);
 

@@ -34,7 +34,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.*;
-import static com.techx7.techstore.utils.FileUtils.saveFileLocally;
+import static com.techx7.techstore.utils.FileUtils.uploadFile;
+import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -168,10 +169,14 @@ public class UserServiceImpl implements UserService {
                 ? new UserInfo()
                 : user.getUserInfo();
 
-        saveFileLocally(userProfileDTO.getImage());
-
         userInfo.setCountry(country);
         userInfo.editUserProfile(userProfileDTO);
+
+        uploadFile(
+                userProfileDTO.getImage(),
+                getClassNameLowerCase(User.class),
+                user.getUsername()
+        );
 
         userInfoRepository.save(userInfo);
 

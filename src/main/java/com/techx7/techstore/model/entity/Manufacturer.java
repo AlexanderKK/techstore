@@ -8,7 +8,6 @@ import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.Set;
 
 @Entity
@@ -37,7 +36,7 @@ public class Manufacturer extends BaseEntity {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime modified;
 
-    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<Model> models;
 
     public Manufacturer() {}
