@@ -12,7 +12,7 @@ import static com.techx7.techstore.utils.StringUtils.replaceAllWhiteSpacesWithUn
 
 public class FileUtils {
 
-    public static void uploadFile(MultipartFile multipartFile, String entityType, String entityName) throws IOException {
+    public static void uploadFileLocally(MultipartFile multipartFile, String entityType, String entityName) throws IOException {
         String filePath = getFilePath(multipartFile, entityType, entityName);
 
         File file = new File(RESOURCES_IMAGES_DIRECTORY + filePath);
@@ -52,12 +52,10 @@ public class FileUtils {
 
     public static MultipartFile manageImage(MultipartFile image, String imageUrl) throws IOException {
         if(image == null || image.isEmpty() && imageUrl != null && !imageUrl.isEmpty()) {
-            try(FileInputStream input = new FileInputStream(RESOURCES_IMAGES_DIRECTORY + imageUrl)) {
-                MultipartFile newImage = new MultipartFileImpl(
-                        "Existing image", imageUrl, "image/png", input.readAllBytes());
+            MultipartFile newImage = new MultipartFileImpl(
+                    "Virtual image", imageUrl, "image/png", new byte[] {0});
 
-                return newImage;
-            }
+            return newImage;
         }
 
         return image;

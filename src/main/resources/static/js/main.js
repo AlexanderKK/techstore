@@ -88,7 +88,7 @@
 			categoryImg.attr('src', e.target.result);
 			categoryImg.title = selectedFile.name;
 
-			inputImageUrl.val(selectedFile.name);
+			// inputImageUrl.val(selectedFile.name);
 		}
 
 		reader.readAsDataURL(selectedFile);
@@ -106,7 +106,7 @@
 		if(imageUrl === undefined) {
 			imgTag.attr('src', 'https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=175');
 		} else {
-			imgTag.attr('src', `/images/${imageUrl}`);
+			imgTag.attr('src', `${imageUrl}`);
 
 			inputImageUrl.val(imageUrl);
 		}

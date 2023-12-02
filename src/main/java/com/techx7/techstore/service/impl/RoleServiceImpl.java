@@ -3,7 +3,6 @@ package com.techx7.techstore.service.impl;
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
-import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.service.RoleService;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.utils.FileUtils.uploadFile;
+import static com.techx7.techstore.utils.FileUtils.uploadFileLocally;
 import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
@@ -45,7 +44,7 @@ public class RoleServiceImpl implements RoleService {
     public void createRole(AddRoleDTO addRoleDTO) throws IOException {
         Role role = mapper.map(addRoleDTO, Role.class);
 
-        uploadFile(
+        uploadFileLocally(
                 addRoleDTO.getImage(),
                 getClassNameLowerCase(Role.class),
                 role.getName()
@@ -77,7 +76,7 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleRepository.findByUuid(roleDTO.getUuid())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
 
-        uploadFile(
+        uploadFileLocally(
                 roleDTO.getImage(),
                 getClassNameLowerCase(Role.class),
                 role.getName()

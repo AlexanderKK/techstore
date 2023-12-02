@@ -91,7 +91,6 @@ public class Manufacturer extends BaseEntity {
 
     public void editManufacturer(ManufacturerDTO manufacturerDTO) {
         this.setName(manufacturerDTO.getName());
-        this.setImageUrl(manufacturerDTO.getImageUrl());
         this.setDescription(manufacturerDTO.getDescription());
         this.setModified(LocalDateTime.now());
     }

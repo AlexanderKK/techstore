@@ -100,7 +100,6 @@ public class Category extends BaseEntity {
 
     public void editCategory(CategoryDTO categoryDTO) {
         this.setName(categoryDTO.getName());
-        this.setImageUrl(categoryDTO.getImageUrl());
         this.setDescription(categoryDTO.getDescription());
         this.setModified(LocalDateTime.now());
     }

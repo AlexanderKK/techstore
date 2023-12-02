@@ -80,3 +80,9 @@ mail:
   port: 1025
   username: ${MAIL_USERNAME}
   password: ${MAIL_PASSWORD}
+
+cloudinary:
+  cloud-name: ${CLOUD_NAME}
+  api-key: ${API_KEY}
+  api-secret: ${API_SECRET}
+  secure: true

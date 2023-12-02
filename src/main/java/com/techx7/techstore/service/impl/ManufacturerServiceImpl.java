@@ -23,8 +23,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.utils.FileUtils.uploadFile;
-import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
 public class ManufacturerServiceImpl implements ManufacturerService {
@@ -62,7 +60,10 @@ public class ManufacturerServiceImpl implements ManufacturerService {
 //        );
 
         String imageUrl = cloudinaryService.uploadFile(
-                addManufacturerDTO.getImage(), manufacturer.getClass().getSimpleName(), manufacturer.getName());
+                addManufacturerDTO.getImage(),
+                manufacturer.getClass().getSimpleName(),
+                manufacturer.getName()
+        );
 
         manufacturer.setImageUrl(imageUrl);
 
@@ -121,15 +122,23 @@ public class ManufacturerServiceImpl implements ManufacturerService {
         Manufacturer manufacturer = manufacturerRepository.findByUuid(manufacturerDTO.getUuid())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Manufacturer")));
 
-        uploadFile(
-                manufacturerDTO.getImage(),
-                getClassNameLowerCase(Manufacturer.class),
-                manufacturer.getName().toLowerCase()
-        );
+        editImageUrl(manufacturerDTO, manufacturer);
 
         manufacturer.editManufacturer(manufacturerDTO);
 
         manufacturerRepository.save(manufacturer);
+    }
+
+    private void editImageUrl(ManufacturerDTO manufacturerDTO, Manufacturer manufacturer) throws IOException {
+        if(manufacturerDTO.getImage().getSize() > 1) {
+            String imageUrl = cloudinaryService.uploadFile(
+                    manufacturerDTO.getImage(),
+                    manufacturer.getClass().getSimpleName(),
+                    manufacturer.getName()
+            );
+
+            manufacturer.setImageUrl(imageUrl);
+        }
     }
 
 }

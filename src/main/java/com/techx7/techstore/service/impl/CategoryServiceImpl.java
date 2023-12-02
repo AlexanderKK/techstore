@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.utils.FileUtils.uploadFile;
-import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -43,7 +41,10 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = mapper.map(addCategoryDTO, Category.class);
 
         String imageUrl = cloudinaryService.uploadFile(
-                addCategoryDTO.getImage(), category.getClass().getSimpleName(), category.getName());
+                addCategoryDTO.getImage(),
+                category.getClass().getSimpleName(),
+                category.getName()
+        );
 
         category.setImageUrl(imageUrl);
 
@@ -81,15 +82,23 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findByUuid(categoryDTO.getUuid())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Category")));
 
-        uploadFile(
-                categoryDTO.getImage(),
-                getClassNameLowerCase(Category.class),
-                category.getName().toLowerCase()
-        );
+        editImageUrl(categoryDTO, category);
 
         category.editCategory(categoryDTO);
 
         categoryRepository.save(category);
+    }
+
+    private void editImageUrl(CategoryDTO categoryDTO, Category category) throws IOException {
+        if(categoryDTO.getImage().getSize() > 1) {
+            String imageUrl = cloudinaryService.uploadFile(
+                    categoryDTO.getImage(),
+                    category.getClass().getSimpleName(),
+                    category.getName()
+            );
+
+            category.setImageUrl(imageUrl);
+        }
     }
 
 }

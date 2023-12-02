@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.*;
-import static com.techx7.techstore.utils.FileUtils.uploadFile;
+import static com.techx7.techstore.utils.FileUtils.uploadFileLocally;
 import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
@@ -179,7 +179,7 @@ public class UserServiceImpl implements UserService {
 
 //        String imageUrl = cloudinaryService.uploadFile(userProfileDTO.getImage());
 
-        uploadFile(
+        uploadFileLocally(
                 userProfileDTO.getImage(),
                 getClassNameLowerCase(User.class),
                 user.getUsername()

@@ -108,7 +108,7 @@
                                 <tr th:each="manufacturer : ${manufacturers}"
                                     th:object="${manufacturer}">
                                     <td>
-                                        <img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Logo|" width="70">
+                                        <img th:src="@{|*{imageUrl}|}" th:alt="|*{name} Logo|" width="70">
                                     </td>
 
                                     <td th:text="*{name}" class="align-middle"></td>
