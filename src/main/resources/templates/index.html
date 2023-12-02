@@ -43,7 +43,7 @@
 				 class="col-lg-3 col-md-4 col-sm-6 pb-1">
 				<div class="product-item bg-light mb-4">
 					<div class="product-img position-relative overflow-hidden">
-						<object class="img-fluid w-100" th:data="@{|/images/*{imageUrl}|}" type="image/png; image/jpeg">
+						<object class="img-fluid w-100" th:data="@{|*{imageUrl}|}" type="image/png; image/jpeg">
 							<img src="https://placehold.co/325x325" alt="Product Photo">
 						</object>
 

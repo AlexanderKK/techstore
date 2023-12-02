@@ -96,7 +96,7 @@
                                 <tr th:each="role : ${roles}"
                                     th:object="${role}">
                                     <td>
-                                        <img th:src="@{|/images/*{imageUrl}|}" th:alt="|*{name} Picture|" width="70">
+                                        <img th:src="@{|*{imageUrl}|}" th:alt="|*{name} Picture|" width="70">
                                     </td>
 
                                     <td th:text="*{name}" class="align-middle"></td>

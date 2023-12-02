@@ -6,6 +6,7 @@ import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.repository.ProductRepository;
+import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +30,28 @@ public class ProductServiceImpl implements ProductService {
 
     private final ModelMapper mapper;
     private final ProductRepository productRepository;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
     public ProductServiceImpl(ModelMapper mapper,
-                              ProductRepository productRepository) {
+                              ProductRepository productRepository,
+                              CloudinaryService cloudinaryService) {
         this.mapper = mapper;
         this.productRepository = productRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
     public void createProduct(AddProductDTO addProductDTO) throws IOException {
         Product product = mapper.map(addProductDTO, Product.class);
+
+        String imageUrl = cloudinaryService.uploadFile(
+                addProductDTO.getImage(),
+                product.getClass().getSimpleName(),
+                product.getModel().getManufacturer().getName() + " " + product.getModel().getName()
+        );
+
+        product.setImageUrl(imageUrl);
 
         productRepository.save(product);
     }

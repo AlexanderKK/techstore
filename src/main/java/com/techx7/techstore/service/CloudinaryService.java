@@ -8,4 +8,6 @@ public interface CloudinaryService {
 
     String uploadFile(MultipartFile multipartFile, String entityType, String entityName) throws IOException;
 
+    String seedFile(String entityType, String entityName) throws IOException;
+
 }

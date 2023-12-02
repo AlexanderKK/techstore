@@ -1,10 +1,12 @@
 package com.techx7.techstore.service.impl;
 
+import com.cloudinary.Cloudinary;
 import com.google.gson.Gson;
 import com.techx7.techstore.model.dto.role.ImportRolesJsonDTO;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserRepository;
+import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.SeedService;
 import com.techx7.techstore.service.UserService;
 import org.modelmapper.ModelMapper;
@@ -17,8 +19,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static com.techx7.techstore.constant.Messages.*;
-import static com.techx7.techstore.constant.Paths.*;
+import static com.techx7.techstore.constant.Messages.ENTITIES_ALREADY_SEEDED;
+import static com.techx7.techstore.constant.Messages.ENTITIES_SEEDED_SUCCESSFULLY;
+import static com.techx7.techstore.constant.Paths.IMPORT_ROLES_JSON_PATH;
 
 @Service
 public class SeedServiceImpl implements SeedService {
@@ -28,29 +31,26 @@ public class SeedServiceImpl implements SeedService {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
     public SeedServiceImpl(Gson gson,
                            ModelMapper mapper,
                            RoleRepository roleRepository,
                            UserRepository userRepository,
-                           UserService userService) {
+                           UserService userService,
+                           Cloudinary cloudinary,
+                           CloudinaryService cloudinaryService) {
         this.gson = gson;
         this.mapper = mapper;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.userService = userService;
-    }
-
-    private static BufferedReader readFileFromResources(String fileName) {
-        return new BufferedReader(
-                new InputStreamReader(
-                        Objects.requireNonNull(
-                                ClassLoader.getSystemResourceAsStream(fileName))));
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
-    public String seedRoles() {
+    public String seedRoles() throws Exception {
         System.out.println("Importing user roles...");
 
         if(roleRepository.count() != 0) {
@@ -64,6 +64,14 @@ public class SeedServiceImpl implements SeedService {
         List<Role> roles = Arrays.stream(roleJsonDTOs)
                 .map(roleJsonDTO -> mapper.map(roleJsonDTO, Role.class))
                 .toList();
+
+        for (Role role : roles) {
+            String imageUrl = cloudinaryService.seedFile(
+                    role.getClass().getSimpleName(), role.getName()
+            );
+
+            role.setImageUrl(imageUrl);
+        }
 
         roleRepository.saveAll(roles);
 
@@ -81,6 +89,13 @@ public class SeedServiceImpl implements SeedService {
         userService.createAdmin();
 
         return String.format(ENTITIES_SEEDED_SUCCESSFULLY, "Admin");
+    }
+
+    private static BufferedReader readFileFromResources(String fileName) {
+        return new BufferedReader(
+                new InputStreamReader(
+                        Objects.requireNonNull(
+                                ClassLoader.getSystemResourceAsStream(fileName))));
     }
 
 }

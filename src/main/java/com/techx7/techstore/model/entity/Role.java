@@ -99,7 +99,6 @@ public class Role extends BaseEntity {
     public void editRole(RoleDTO roleDTO) {
         this.setName(roleDTO.getName().toUpperCase(Locale.getDefault()));
         this.setDescription(roleDTO.getDescription());
-        this.setImageUrl(roleDTO.getImageUrl());
         this.setModified(LocalDateTime.now());
     }
 

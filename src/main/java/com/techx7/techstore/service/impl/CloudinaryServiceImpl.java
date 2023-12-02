@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import static com.techx7.techstore.constant.Paths.RESOURCES_IMAGES_DIRECTORY;
 import static com.techx7.techstore.utils.StringUtils.replaceAllWhiteSpacesWithUnderscores;
 
 @Service
@@ -38,6 +39,29 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                         )
                 ).get("secure_url")
                 .toString();
+    }
+
+    @Override
+    public String seedFile(String entityType, String entityName) throws IOException {
+        String pluralEntityType = getPluralEntityType(entityType);
+
+        String folder = replaceAllWhiteSpacesWithUnderscores(pluralEntityType);
+        String fileName = replaceAllWhiteSpacesWithUnderscores(entityName.toLowerCase());
+
+        String filePath = getFilePath(folder, fileName, "png");
+
+        return cloudinary.uploader()
+                .upload(filePath,
+                        Map.of("public_id", fileName,
+                                "folder", folder
+                        )
+                ).get("secure_url")
+                .toString();
+    }
+
+    private static String getFilePath(String folder, String fileName, String extension) {
+        return String.format("%s%s/%s.%s",
+                RESOURCES_IMAGES_DIRECTORY, folder, fileName, extension);
     }
 
     private static String getPluralEntityType(String entityType) {

@@ -5,6 +5,7 @@ import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.repository.RoleRepository;
+import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.RoleService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -16,20 +17,21 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
-import static com.techx7.techstore.utils.FileUtils.uploadFileLocally;
-import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
     private final ModelMapper mapper;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository,
-                           ModelMapper mapper) {
-        this.roleRepository = roleRepository;
+    public RoleServiceImpl(ModelMapper mapper,
+                           RoleRepository roleRepository,
+                           CloudinaryService cloudinaryService) {
         this.mapper = mapper;
+        this.roleRepository = roleRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
@@ -44,11 +46,13 @@ public class RoleServiceImpl implements RoleService {
     public void createRole(AddRoleDTO addRoleDTO) throws IOException {
         Role role = mapper.map(addRoleDTO, Role.class);
 
-        uploadFileLocally(
+        String imageUrl = cloudinaryService.uploadFile(
                 addRoleDTO.getImage(),
-                getClassNameLowerCase(Role.class),
+                role.getClass().getSimpleName(),
                 role.getName()
         );
+
+        role.setImageUrl(imageUrl);
 
         roleRepository.save(role);
     }
@@ -76,15 +80,23 @@ public class RoleServiceImpl implements RoleService {
         Role role = roleRepository.findByUuid(roleDTO.getUuid())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
 
-        uploadFileLocally(
-                roleDTO.getImage(),
-                getClassNameLowerCase(Role.class),
-                role.getName()
-        );
+        editImageUrl(roleDTO, role);
 
         role.editRole(roleDTO);
 
         roleRepository.save(role);
+    }
+
+    private void editImageUrl(RoleDTO roleDTO, Role role) throws IOException {
+        if(roleDTO.getImage().getSize() > 1) {
+            String imageUrl = cloudinaryService.uploadFile(
+                    roleDTO.getImage(),
+                    role.getClass().getSimpleName(),
+                    role.getName()
+            );
+
+            role.setImageUrl(imageUrl);
+        }
     }
 
 }

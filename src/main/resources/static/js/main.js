@@ -196,7 +196,7 @@
 			// console.log(ids, option.value);
 
 			if(ids.includes(option.value)) {
-				categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='/images/${$(option).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${option.value}">${option.text}</span></div></a></div>`)
+				categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='${$(option).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${option.value}">${option.text}</span></div></a></div>`)
 
 				categoryIds.push(option.value);
 			}
@@ -230,7 +230,7 @@
 		});
 
 		if(!isCategoryPresent) {
-			categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='/images/${$(selectedOption).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${selectedOption.value}">${selectedOption.text}</span></div></a></div>`)
+			categories.append(`<div class="col-6 mt-3 category"><a class="row justify-content-between align-items-center"><div class="col-5"><img width="60" src='${$(selectedOption).data("imageurl")}' alt="Category Picture"></div><div class="col-7"><span data-id="${selectedOption.value}">${selectedOption.text}</span></div></a></div>`)
 
 			if(!categoryIds.includes(selectedOption.value)) {
 				categoryIds.push(selectedOption.value);

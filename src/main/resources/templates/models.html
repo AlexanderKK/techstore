@@ -82,7 +82,7 @@
 
                             <tbody class="align-middle" style="font-size: 18px">
                                 <tr th:each="model : ${models}">
-                                    <td><img th:src="@{|/images/${model.manufacturerDTO.imageUrl}|}" th:alt="|${model.manufacturerDTO.name} Logo|" width="70"></td>
+                                    <td><img th:src="@{|${model.manufacturerDTO.imageUrl}|}" th:alt="|${model.manufacturerDTO.name} Logo|" width="70"></td>
 
                                     <td th:text="${model.name}" class="align-middle"></td>
 
