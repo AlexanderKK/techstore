@@ -15,6 +15,7 @@ import com.techx7.techstore.repository.CountryRepository;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserInfoRepository;
 import com.techx7.techstore.repository.UserRepository;
+import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.UserService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -49,6 +50,8 @@ public class UserServiceImpl implements UserService {
     private final UserInfoRepository userInfoRepository;
     private final CountryRepository countryRepository;
 
+    private final CloudinaryService cloudinaryService;
+
     @Autowired
     public UserServiceImpl(ModelMapper mapper,
                            UserRepository userRepository,
@@ -56,7 +59,8 @@ public class UserServiceImpl implements UserService {
                            RoleRepository roleRepository,
                            PasswordEncoder passwordEncoder,
                            UserInfoRepository userInfoRepository,
-                           CountryRepository countryRepository) {
+                           CountryRepository countryRepository,
+                           CloudinaryService cloudinaryService) {
         this.mapper = mapper;
         this.userRepository = userRepository;
         this.applicationEventPublisher = applicationEventPublisher;
@@ -64,6 +68,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
         this.userInfoRepository = userInfoRepository;
         this.countryRepository = countryRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
@@ -171,6 +176,8 @@ public class UserServiceImpl implements UserService {
 
         userInfo.setCountry(country);
         userInfo.editUserProfile(userProfileDTO);
+
+//        String imageUrl = cloudinaryService.uploadFile(userProfileDTO.getImage());
 
         uploadFile(
                 userProfileDTO.getImage(),

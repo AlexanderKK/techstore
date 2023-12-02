@@ -18,11 +18,11 @@ public class AddManufacturerDTO {
 
     public AddManufacturerDTO() {}
 
-    public org.springframework.web.multipart.MultipartFile getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(org.springframework.web.multipart.MultipartFile image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 

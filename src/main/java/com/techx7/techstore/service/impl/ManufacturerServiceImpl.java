@@ -9,6 +9,7 @@ import com.techx7.techstore.model.entity.Model;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
 import com.techx7.techstore.repository.ProductRepository;
+import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ModelService;
 import jakarta.transaction.Transactional;
@@ -33,29 +34,37 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     private final ModelRepository modelRepository;
     private final ProductRepository productRepository;
     private final ModelService modelService;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
     public ManufacturerServiceImpl(ModelMapper mapper,
                                    ManufacturerRepository manufacturerRepository,
                                    ModelRepository modelRepository,
                                    ProductRepository productRepository,
-                                   ModelService modelService) {
+                                   ModelService modelService,
+                                   CloudinaryService cloudinaryService) {
         this.mapper = mapper;
         this.manufacturerRepository = manufacturerRepository;
         this.modelRepository = modelRepository;
         this.productRepository = productRepository;
         this.modelService = modelService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
     public void createManufacturer(AddManufacturerDTO addManufacturerDTO) throws IOException {
         Manufacturer manufacturer = mapper.map(addManufacturerDTO, Manufacturer.class);
 
-        uploadFile(
-                addManufacturerDTO.getImage(),
-                getClassNameLowerCase(Manufacturer.class),
-                manufacturer.getName().toLowerCase()
-        );
+//        uploadFile(
+//                addManufacturerDTO.getImage(),
+//                getClassNameLowerCase(Manufacturer.class),
+//                manufacturer.getName().toLowerCase()
+//        );
+
+        String imageUrl = cloudinaryService.uploadFile(
+                addManufacturerDTO.getImage(), manufacturer.getClass().getSimpleName(), manufacturer.getName());
+
+        manufacturer.setImageUrl(imageUrl);
 
         manufacturerRepository.save(manufacturer);
     }

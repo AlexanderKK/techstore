@@ -6,6 +6,7 @@ import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.entity.Category;
 import com.techx7.techstore.repository.CategoryRepository;
 import com.techx7.techstore.service.CategoryService;
+import com.techx7.techstore.service.CloudinaryService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,22 +27,25 @@ public class CategoryServiceImpl implements CategoryService {
     private final ModelMapper mapper;
     private final CategoryRepository categoryRepository;
 
+    private final CloudinaryService cloudinaryService;
+
     @Autowired
     public CategoryServiceImpl(ModelMapper mapper,
-                               CategoryRepository categoryRepository) {
+                               CategoryRepository categoryRepository,
+                               CloudinaryService cloudinaryService) {
         this.mapper = mapper;
         this.categoryRepository = categoryRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
     public void createCategory(AddCategoryDTO addCategoryDTO) throws IOException {
         Category category = mapper.map(addCategoryDTO, Category.class);
 
-        uploadFile(
-                addCategoryDTO.getImage(),
-                getClassNameLowerCase(Category.class),
-                category.getName().toLowerCase()
-        );
+        String imageUrl = cloudinaryService.uploadFile(
+                addCategoryDTO.getImage(), category.getClass().getSimpleName(), category.getName());
+
+        category.setImageUrl(imageUrl);
 
         categoryRepository.save(category);
     }
