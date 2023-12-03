@@ -53,12 +53,6 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     public void createManufacturer(AddManufacturerDTO addManufacturerDTO) throws IOException {
         Manufacturer manufacturer = mapper.map(addManufacturerDTO, Manufacturer.class);
 
-//        uploadFile(
-//                addManufacturerDTO.getImage(),
-//                getClassNameLowerCase(Manufacturer.class),
-//                manufacturer.getName().toLowerCase()
-//        );
-
         String imageUrl = cloudinaryService.uploadFile(
                 addManufacturerDTO.getImage(),
                 manufacturer.getClass().getSimpleName(),

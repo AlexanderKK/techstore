@@ -35,8 +35,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.*;
-import static com.techx7.techstore.utils.FileUtils.uploadFileLocally;
-import static com.techx7.techstore.utils.StringUtils.getClassNameLowerCase;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -49,7 +47,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserInfoRepository userInfoRepository;
     private final CountryRepository countryRepository;
-
     private final CloudinaryService cloudinaryService;
 
     @Autowired
@@ -177,13 +174,7 @@ public class UserServiceImpl implements UserService {
         userInfo.setCountry(country);
         userInfo.editUserProfile(userProfileDTO);
 
-//        String imageUrl = cloudinaryService.uploadFile(userProfileDTO.getImage());
-
-        uploadFileLocally(
-                userProfileDTO.getImage(),
-                getClassNameLowerCase(User.class),
-                user.getUsername()
-        );
+        editImageUrl(userProfileDTO, user, userInfo);
 
         userInfoRepository.save(userInfo);
 
@@ -251,6 +242,18 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
 
         userRepository.save(user);
+    }
+
+    private void editImageUrl(UserProfileDTO userProfileDTO, User user, UserInfo userInfo) throws IOException {
+        if(userProfileDTO.getImage().getSize() > 1) {
+            String imageUrl = cloudinaryService.uploadFile(
+                    userProfileDTO.getImage(),
+                    user.getClass().getSimpleName(),
+                    user.getUsername()
+            );
+
+            userInfo.setImageUrl(imageUrl);
+        }
     }
 
     private static void updateLoggedUserAuthorities(UserDTO userDTO, TechStoreUserDetails loggedUser, Set<Role> roles) {

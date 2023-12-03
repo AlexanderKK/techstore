@@ -4,8 +4,10 @@ import com.techx7.techstore.model.dto.user.UserCredentialsDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -17,10 +19,13 @@ import java.util.Set;
 public class User extends BaseEntity {
 
     @NotBlank(message = "Email should not be empty")
+    @Size(min = 5, max = 35, message = "Email should have from 5 to 35 characters")
+    @Email(message = "Email should be valid", regexp = "^(([^<>()\\[\\]\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\.,;:\\s@\"]+)*)|(\".+\"))@(((\\d{1,3}\\.){3}\\d{1,3})|([a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+))$")
     @Column(nullable = false, unique = true)
     private String email;
 
     @NotBlank(message = "Username should not be empty")
+    @Size(min = 5, max = 20, message = "Username should have from 5 to 20 characters")
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -28,7 +33,7 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @NotNull(message = "Should not be empty")
+    @NotNull(message = "Creation date should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false, columnDefinition = "TIMESTAMP")

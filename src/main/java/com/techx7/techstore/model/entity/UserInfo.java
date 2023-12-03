@@ -3,6 +3,10 @@ package com.techx7.techstore.model.entity;
 import com.techx7.techstore.model.dto.user.UserProfileDTO;
 import com.techx7.techstore.model.enums.GenderEnum;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.Locale;
 
@@ -10,22 +14,32 @@ import java.util.Locale;
 @Table(name = "user_info")
 public class UserInfo extends BaseEntity {
 
+    @NotNull(message = "Image url should not be empty")
     @Column
     private String imageUrl;
 
+    @NotNull(message = "First name should not be empty")
+    @Size(min = 5, max = 30, message = "First name should have from 5 to 30 characters")
     @Column(name = "first_name")
     private String firstName;
 
+    @NotNull(message = "Last name should not be empty")
+    @Size(min = 5, max = 30, message = "Last name should have from 5 to 30 characters")
     @Column(name = "last_name")
     private String lastName;
 
+    @NotNull(message = "Gender should not be empty")
     @Enumerated(EnumType.STRING)
     @Column
     private GenderEnum gender;
 
+    @NotBlank(message = "Phone number should not be empty")
+    @Pattern(regexp = "08[789]\\d{7}", message = "Phone number should be valid")
     @Column(name = "phone_number")
     private String phoneNumber;
 
+    @NotBlank(message = "Address should not be empty")
+    @Size(min = 5, max = 50, message = "Address should have from 5 to 50 characters")
     @Column
     private String address;
 
@@ -35,12 +49,16 @@ public class UserInfo extends BaseEntity {
     @ManyToOne
     private Country country;
 
+    @NotBlank(message = "City should not be empty")
+    @Size(min = 5, max = 35, message = "City should have from 5 to 35 characters")
     @Column
     private String city;
 
     @Column
     private String state;
 
+    @NotBlank(message = "ZIP code should not be empty")
+    @Size(min = 5, max = 10, message = "ZIP code should have from 5 to 10 characters")
     @Column
     private String zipCode;
 
@@ -135,7 +153,6 @@ public class UserInfo extends BaseEntity {
     }
 
     public void editUserProfile(UserProfileDTO userProfileDTO) {
-        this.setImageUrl(userProfileDTO.getImageUrl());
         this.setFirstName(userProfileDTO.getFirstName());
         this.setLastName(userProfileDTO.getLastName());
         this.setGender(

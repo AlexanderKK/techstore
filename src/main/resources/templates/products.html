@@ -149,8 +149,7 @@
 						</div>
 					</div>
 
-<!--					th:if="${!products.content.isEmpty()}"-->
-					<div class="col-12">
+					<div th:if="${!products.content.isEmpty()}" class="col-12">
 						<nav>
 							<ul class="pagination justify-content-center">
 								<li th:classappend="${productPage.number > 0 ? '' : 'disabled'}">

@@ -4,6 +4,9 @@ import com.techx7.techstore.validation.country.CountryName;
 import com.techx7.techstore.validation.gender.GenderName;
 import com.techx7.techstore.validation.multipart.MultiPartFile;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,20 +20,24 @@ public class UserProfileDTO {
 
     private String imageUrl;
 
-    @NotBlank(message = "Please enter your first name")
+    @NotNull(message = "Please enter your first name")
+    @Size(min = 5, max = 30, message = "First name should have from 5 to 30 characters")
     private String firstName;
 
-    @NotBlank(message = "Please enter your last name")
+    @NotNull(message = "Please enter your last name")
+    @Size(min = 5, max = 30, message = "Last name should have from 5 to 30 characters")
     private String lastName;
 
     @GenderName
     @NotBlank(message = "Please choose your gender")
     private String gender;
 
-    @NotBlank(message = "Please enter your phone number")
+    @NotNull(message = "Please enter your phone number")
+    @Pattern(regexp = "08[789]\\d{7}", message = "Please enter a valid phone number (i.e. 0887654321)")
     private String phoneNumber;
 
-    @NotBlank(message = "Please enter your address")
+    @NotNull(message = "Please enter your address")
+    @Size(min = 5, max = 50, message = "Address should have from 5 to 50 characters")
     private String address;
 
     private String secondaryAddress;
@@ -39,12 +46,14 @@ public class UserProfileDTO {
     @NotBlank(message = "Please choose your country")
     private String country;
 
-    @NotBlank(message = "Please enter your city")
+    @NotNull(message = "Please enter your city")
+    @Size(min = 5, max = 35, message = "City should have from 5 to 35 characters")
     private String city;
 
     private String state;
 
-    @NotBlank(message = "Please enter your zip code")
+    @NotNull(message = "Please enter your zip code")
+    @Size(min = 5, max = 10, message = "ZIP code should have from 5 to 10 characters")
     private String zipCode;
 
     public UserProfileDTO() {}

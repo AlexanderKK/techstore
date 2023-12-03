@@ -99,7 +99,7 @@
 								<input th:name="phoneNumber"
 									   th:field="*{phoneNumber}"
 									   th:errorclass="is-invalid"
-									   id="phone-number" class="form-control" type="text" placeholder="+359 456 78 38 90">
+									   id="phone-number" class="form-control" type="text" placeholder="0887654321">
 
 								<small th:if="${#fields.hasErrors('phoneNumber')}"
 									   th:errors="*{phoneNumber}"
@@ -220,7 +220,7 @@
 										   th:errors="*{email}"
 										   class="text-danger"></small>
 
-									<small th:if="${emailError != null}"
+									<small th:if="${emailError}"
 										   th:text="${emailError}"
 										   class="text-danger"></small>
 								</div>
@@ -237,7 +237,7 @@
 										   th:errors="*{username}"
 										   class="text-danger"></small>
 
-									<small th:if="${usernameError != null}"
+									<small th:if="${usernameError}"
 										   th:text="${usernameError}"
 										   class="text-danger"></small>
 								</div>

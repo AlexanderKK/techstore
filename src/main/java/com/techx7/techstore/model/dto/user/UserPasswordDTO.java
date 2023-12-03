@@ -6,11 +6,10 @@ import jakarta.validation.constraints.Size;
 public class UserPasswordDTO {
 
     @NotNull(message = "Please enter an password")
-    @Size(min = 8, message = "Password should consist of at least 8 characters")
     private String password;
 
     @NotNull(message = "Please enter an password")
-    @Size(min = 8, message = "New password should consist of at least 8 characters")
+    @Size(min = 8, max = 20, message = "Password should have from 8 to 20 characters")
     private String newPassword;
 
     public UserPasswordDTO() {}
