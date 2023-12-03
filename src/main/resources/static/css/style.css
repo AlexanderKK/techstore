@@ -9887,7 +9887,7 @@ a.text-dark:hover, a.text-dark:focus {
 .cart-menu .cart__img img {
   width: 4em;
   height: 3em;
-  /*object-fit: cover;*/
+  object-fit: cover;
 }
 
 .cart-menu .cart__item img.erasable {

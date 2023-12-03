@@ -68,7 +68,7 @@ class ProductServiceImplTest {
         when(mapper.map(any(Product.class), eq(ProductDTO.class))).thenReturn(new ProductDTO());
 
         // Act
-        Page<ProductDTO> result = productService.getAllProducts(pageable);
+        Page<ProductDTO> result = productService.getAllPageableProducts(pageable);
 
         // Assert
         assertEquals(productList.size(), result.getContent().size());

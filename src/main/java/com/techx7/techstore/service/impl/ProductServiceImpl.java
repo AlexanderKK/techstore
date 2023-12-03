@@ -20,8 +20,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
-import java.util.function.Function;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
 
@@ -57,18 +57,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Page<ProductDTO> getAllProducts(Pageable pageable) {
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream()
+                .filter(product -> Objects.nonNull(product.getModel()))
+                .map(product -> mapper.map(product, ProductDTO.class))
+                .toList();
+    }
+
+    @Override
+    public Page<ProductDTO> getAllPageableProducts(Pageable pageable) {
         System.out.println("Displaying products");
 
-        Page<ProductDTO> products = productRepository.findAll(pageable)
-                .map(toProductDTO());
-        return products;
+        List<ProductDTO> products = productRepository.findAll(pageable)
+                .stream()
+                .filter(product -> product.getModel() != null)
+                .map(product -> mapper.map(product, ProductDTO.class))
+                .toList();
+
+        return new PageImpl<>(products);
     }
 
     @Override
     public List<ProductDTO> getAllProductsWithDiscount() {
         return productRepository.findAll().stream()
-                .map(toProductDTO())
+                .map(product -> mapper.map(product, ProductDTO.class))
                 .filter(productDTO -> productDTO.getDiscountPrice() != null)
                 .filter(productDTO -> productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) >= 0)
                 .sorted(Comparator.comparing(ProductDTO::getDiscountPrice))
@@ -80,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
 
-        List<ProductDTO> productDTOs = getAllProducts(pageable).stream().toList();
+        List<ProductDTO> productDTOs = getAllPageableProducts(pageable).stream().toList();
 
         List<ProductDTO> resultList = productDTOs.subList(0, productDTOs.size());
 
@@ -100,32 +112,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDetailsDTO getProductDetailsByUuid(UUID uuid) {
         return productRepository.findByUuid(uuid)
-                .map(toProductDetailsDTO())
+                .map(product -> mapper.map(product, ProductDetailsDTO.class))
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Product")));
-    }
-
-    private Function<Product, ProductDetailsDTO> toProductDetailsDTO() {
-        return product -> {
-            ProductDetailsDTO productDetailsDTO = mapper.map(product, ProductDetailsDTO.class);
-
-            return productDetailsDTO;
-        };
-    }
-
-    private Function<Product, ProductDTO> toProductDTO() {
-        return product -> {
-            ProductDTO productDTO = mapper.map(product, ProductDTO.class);
-
-            return productDTO;
-        };
-    }
-
-    private static String getProductNameToLowerCase(Product product) {
-        return (product.getModel().getManufacturer().getName() +
-                " " +
-                product.getModel().getName() +
-                " " +
-                product.getUuid()).toLowerCase();
     }
 
 }

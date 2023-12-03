@@ -14,7 +14,9 @@ public interface ProductService {
 
     void createProduct(AddProductDTO addProductDTO) throws IOException;
 
-    Page<ProductDTO> getAllProducts(Pageable pageable);
+    List<ProductDTO> getAllProducts();
+
+    Page<ProductDTO> getAllPageableProducts(Pageable pageable);
 
     List<ProductDTO> getAllProductsWithDiscount();
 

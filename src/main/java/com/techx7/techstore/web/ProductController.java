@@ -50,29 +50,14 @@ public class ProductController {
 
     @GetMapping
     public String getProducts(Model model,
-                              @PageableDefault(size = 4, sort = "discountPrice") Pageable pageable,
+                              @PageableDefault(size = 2, sort = "discountPrice") Pageable pageable,
                               @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size) {
-        Page<ProductDTO> products = productService.getAllProducts(pageable);
+//        Page<ProductDTO> products = getPageableProducts(model, pageable, page, size);
+
+        List<ProductDTO> products = productService.getAllProducts();
 
         model.addAttribute("products", products);
-
-        int currentPage = page.orElse(1);
-        int pageSize = size.orElse(4);
-
-        Page<ProductDTO> productPage =
-                productService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-
-        model.addAttribute("productPage", productPage);
-
-        int totalPages = products.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .toList();
-
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
 
         return "products";
     }
@@ -124,6 +109,29 @@ public class ProductController {
         System.out.println(e.getMessage());
 
         return "redirect:/products";
+    }
+
+    private Page<ProductDTO> getPageableProducts(Model model, Pageable pageable, Optional<Integer> page, Optional<Integer> size) {
+        Page<ProductDTO> products = productService.getAllPageableProducts(pageable);
+
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(4);
+
+        Page<ProductDTO> productPage =
+                productService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+
+        model.addAttribute("productPage", productPage);
+
+        int totalPages = products.getTotalPages();
+        if (totalPages > 0) {
+            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
+                    .boxed()
+                    .toList();
+
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+
+        return products;
     }
 
 }
