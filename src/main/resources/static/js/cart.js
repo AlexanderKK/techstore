@@ -131,7 +131,7 @@ function generateCartItem(rowId, product, quantity) {
 					<div class="cart__info col-12 col-sm-auto">
 						<div class="row align-items-center">
 							<div class="cart__img col-5">
-								<img pid="${product.uuid}" rowNumber="${rowId}" src="/images/${product.imageUrl}" alt="${product.link}">
+								<img pid="${product.uuid}" rowNumber="${rowId}" src="${product.imageUrl}" alt="${product.link}">
 							</div>
 
 							<div class="cart__link col-7 py-3 px-2" style="word-wrap: break-word">

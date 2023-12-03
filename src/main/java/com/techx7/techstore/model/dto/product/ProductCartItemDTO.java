@@ -48,7 +48,7 @@ public class ProductCartItemDTO {
     }
 
     public void setLink(String link) {
-        this.link = link.trim();
+        this.link = link == null ? "Missing Manufacturer & Model" : link.trim();
     }
 
     public BigDecimal getPrice() {

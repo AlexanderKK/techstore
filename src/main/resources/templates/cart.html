@@ -28,7 +28,7 @@
 							th:with="product = ${item.productDTO}"
 							th:classappend="|row${status.count}|">
 							<td class="d-flex align-items-center pl-5" style="word-wrap: break-word;">
-								<img th:src="@{|/images/${product.imageUrl}|}"
+								<img th:src="@{|${product.imageUrl}|}"
 									 alt="" class="mr-3" width="100">
 
 								<a th:text="${product.link}"

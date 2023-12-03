@@ -33,7 +33,7 @@ public class SecurityConfiguration {
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 ).authorizeHttpRequests(authorizeRequests -> authorizeRequests
 
-                        // All
+                        // Anonymous
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(
                                 "/users/login",
@@ -44,20 +44,22 @@ public class SecurityConfiguration {
                                 "/users/register/success").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/", "/products", "/contact").permitAll()
-                        .requestMatchers(
-                                "/cart/add/**",
-                                "/cart/update/**",
-                                "/cart/remove/**",
-                                "/cart/load"
-                        ).hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/products/detail/**").permitAll()
 
-                        //User
+                        // Any role
                         .requestMatchers(
                                 "/users/profile/**",
                                 "/users/credentials/**",
                                 "/users/password/**"
                         ).hasAnyRole("CARRIER", "USER", "SUPPORT", "MANAGER", "ADMIN")
+
+                        //User
+                        .requestMatchers(
+                                "/cart/add/**",
+                                "/cart/update/**",
+                                "/cart/remove/**",
+                                "/cart/load"
+                        ).hasRole("USER")
 
                         // Manager
                         .requestMatchers("/products/**").hasRole("MANAGER")
@@ -69,6 +71,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers("/roles/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+
                 ).formLogin(formLogin -> formLogin
                         .loginPage("/users/login")
                         .usernameParameter("emailOrUsername")
