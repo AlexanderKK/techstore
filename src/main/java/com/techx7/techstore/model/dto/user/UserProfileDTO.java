@@ -71,7 +71,7 @@ public class UserProfileDTO {
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl == null ? imageUrl : imageUrl.trim();
     }
 
     public String getFirstName() {
@@ -79,7 +79,7 @@ public class UserProfileDTO {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstName = firstName.trim();
     }
 
     public String getLastName() {
@@ -87,7 +87,7 @@ public class UserProfileDTO {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName = lastName.trim();
     }
 
     public String getGender() {
@@ -95,7 +95,7 @@ public class UserProfileDTO {
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        this.gender = gender.trim();
     }
 
     public String getPhoneNumber() {
@@ -103,7 +103,7 @@ public class UserProfileDTO {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber.trim();
     }
 
     public String getAddress() {
@@ -111,7 +111,7 @@ public class UserProfileDTO {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = address.trim();
     }
 
     public String getSecondaryAddress() {
@@ -119,7 +119,7 @@ public class UserProfileDTO {
     }
 
     public void setSecondaryAddress(String secondaryAddress) {
-        this.secondaryAddress = secondaryAddress;
+        this.secondaryAddress = secondaryAddress == null ? secondaryAddress : secondaryAddress.trim();
     }
 
     public String getCountry() {
@@ -127,7 +127,7 @@ public class UserProfileDTO {
     }
 
     public void setCountry(String country) {
-        this.country = country;
+        this.country = country.trim();
     }
 
     public String getCity() {
@@ -135,7 +135,7 @@ public class UserProfileDTO {
     }
 
     public void setCity(String city) {
-        this.city = city;
+        this.city = city.trim();
     }
 
     public String getState() {
@@ -143,7 +143,7 @@ public class UserProfileDTO {
     }
 
     public void setState(String state) {
-        this.state = state;
+        this.state = state == null ? state : state.trim();
     }
 
     public String getZipCode() {
@@ -151,7 +151,7 @@ public class UserProfileDTO {
     }
 
     public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+        this.zipCode = zipCode.trim();
     }
 
 }

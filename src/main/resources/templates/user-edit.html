@@ -13,7 +13,7 @@
             <form th:action="@{/users/edit}"
                   th:method="PATCH"
                   th:object="${userToEdit}"
-                  name="userEdit" id="user-edit" enctype="multipart/form-data">
+                  name="userEdit" id="user-edit" class="form-credentials" enctype="multipart/form-data">
                 <input type="hidden" name="uuid" th:value="*{uuid}">
 
                 <div class="row px-xl-5 pb-3">
@@ -28,7 +28,7 @@
                                     <input th:name="email"
                                            th:field="*{email}"
                                            th:errorclass="is-invalid"
-                                           id="email" class="form-control" type="text">
+                                           id="email" class="form-control field--credentials" type="text">
                                     <small th:if="${#fields.hasErrors('email')}"
                                            th:errors="*{email}"
                                            class="text-danger"></small>
@@ -40,7 +40,7 @@
                                     <input th:name="username"
                                            th:field="*{username}"
                                            th:errorclass="is-invalid"
-                                           id="username" class="form-control" type="text">
+                                           id="username" class="form-control field--credentials" type="text">
                                     <small th:if="${#fields.hasErrors('username')}"
                                            th:errors="*{username}"
                                            class="text-danger"></small>

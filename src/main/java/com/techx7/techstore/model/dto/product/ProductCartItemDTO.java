@@ -40,7 +40,7 @@ public class ProductCartItemDTO {
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl.trim();
     }
 
     public String getLink() {
@@ -48,7 +48,7 @@ public class ProductCartItemDTO {
     }
 
     public void setLink(String link) {
-        this.link = link;
+        this.link = link.trim();
     }
 
     public BigDecimal getPrice() {

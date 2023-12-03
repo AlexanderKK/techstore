@@ -84,4 +84,3 @@ cloudinary:
   cloud-name: ${CLOUD_NAME}
   api-key: ${API_KEY}
   api-secret: ${API_SECRET}
-  secure: true

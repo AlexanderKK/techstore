@@ -291,8 +291,28 @@
 		$('.alert').each(function() {
 			$(this).delay(4000).fadeOut(500, function () {
 				$(this).remove();
-			})
+			});
 		});
-	})
+	});
+
+	// /**
+	//  * Manage credentials fields
+	//  */
+	// const formsCredentials = $('.form-credentials');
+	// const fieldCredentials = $('.form-credentials .field--credentials');
+	//
+	// formsCredentials.each(function() {
+	// 	const formCredentials = $(this);
+	//
+	// 	formCredentials.on('submit', function() {
+	// 		fieldCredentials.each(function() {
+	// 			const input = $(this);
+	//
+	// 			if(input.attr('name') !== 'password') {
+	// 				input.val(input.val().toLowerCase().replaceAll(' ', ''));
+	// 			}
+	// 		});
+	// 	});
+	// });
 
 })(jQuery);

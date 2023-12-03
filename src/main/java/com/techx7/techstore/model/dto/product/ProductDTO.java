@@ -1,6 +1,8 @@
 package com.techx7.techstore.model.dto.product;
 
+import com.techx7.techstore.service.converters.StringTrimConverter;
 import com.techx7.techstore.validation.product.ProductPrice;
+import jakarta.persistence.Convert;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,16 +18,17 @@ public class ProductDTO {
     @NotNull
     private UUID uuid;
 
-    @NotBlank
+    @Convert(converter = StringTrimConverter.class)
+    @NotBlank(message = "Please choose an image")
     private String imageUrl;
 
-    @NotNull
+    @NotBlank(message = "Please choose at least one category")
     private Set<String> categories;
 
-    @NotBlank
+    @Convert(converter = StringTrimConverter.class)
     private String manufacturer;
 
-    @NotBlank
+    @Convert(converter = StringTrimConverter.class)
     private String model;
 
     @ProductPrice
@@ -51,7 +54,7 @@ public class ProductDTO {
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl.trim();
     }
 
     public Set<String> getCategories() {
@@ -67,7 +70,7 @@ public class ProductDTO {
     }
 
     public void setManufacturer(String manufacturer) {
-        this.manufacturer = manufacturer;
+        this.manufacturer = manufacturer == null ? manufacturer : manufacturer.trim();
     }
 
     public String getModel() {
@@ -75,7 +78,7 @@ public class ProductDTO {
     }
 
     public void setModel(String model) {
-        this.model = model;
+        this.model = model == null ? model : model.trim();
     }
 
     public BigDecimal getPrice() {

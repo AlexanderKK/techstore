@@ -19,7 +19,7 @@ public class RoleDTO {
     private UUID uuid;
 
     @NotBlank(message = "Please enter a role")
-    @Size(max = 15, message = "Role name should have maximum length of 15 characters")
+    @Size(max = 15, message = "Role name should have a maximum length of 15 characters")
     private String name;
 
     @MultiPartFile(contentTypes = "image/png")
@@ -53,7 +53,7 @@ public class RoleDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public MultipartFile getImage() {
@@ -69,7 +69,7 @@ public class RoleDTO {
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl == null ? imageUrl : imageUrl.trim();
     }
 
     public String getDescription() {
@@ -77,7 +77,7 @@ public class RoleDTO {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description == null ? description : description.trim();
     }
 
 }

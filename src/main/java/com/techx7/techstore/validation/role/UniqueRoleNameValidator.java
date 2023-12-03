@@ -20,7 +20,7 @@ public class UniqueRoleNameValidator implements ConstraintValidator<UniqueRoleNa
             return true;
         }
 
-        return roleRepository.findByName(value).isEmpty();
+        return roleRepository.findByName(value.toUpperCase()).isEmpty();
     }
 
 }

@@ -23,7 +23,7 @@ public class ProductDetailsDTO extends ProductDTO {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description == null ? description : description.trim();
     }
 
     public String getSpecification() {
@@ -31,7 +31,7 @@ public class ProductDetailsDTO extends ProductDTO {
     }
 
     public void setSpecification(String specification) {
-        this.specification = specification;
+        this.specification = specification.trim();
     }
 
     public String getName() {
@@ -39,7 +39,7 @@ public class ProductDetailsDTO extends ProductDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public List<KeyValuePair> getSpecificationsList() {

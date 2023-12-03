@@ -1,6 +1,7 @@
 package com.techx7.techstore.model.dto.gender;
 
 import com.techx7.techstore.model.enums.GenderEnum;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ import static com.techx7.techstore.utils.StringUtils.capitalize;
 
 public class GenderDTO {
 
+    @NotBlank(message = "Please enter a gender")
     private String name;
 
     public GenderDTO() {}
@@ -21,7 +23,7 @@ public class GenderDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     @Override

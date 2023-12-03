@@ -17,7 +17,7 @@ import java.util.Set;
 public class Role extends BaseEntity {
 
     @NotBlank(message = "Name should not be empty")
-    @Size(max = 15)
+    @Size(max = 15, message = "Role name should have a maximum length of 15 characters")
     @Column(nullable = false, unique = true)
     private String name;
 

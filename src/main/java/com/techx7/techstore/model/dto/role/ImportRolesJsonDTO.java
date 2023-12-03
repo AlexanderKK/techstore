@@ -8,15 +8,15 @@ import jakarta.validation.constraints.Size;
 @Valid
 public class ImportRolesJsonDTO {
 
-    @NotBlank
-    @Size(max = 25)
     @UniqueRoleName
+    @NotBlank(message = "Please enter a role")
+    @Size(max = 15, message = "Role name should have a maximum length of 15 characters")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "Please enter an image url")
     private String imageUrl;
 
-    @NotBlank
+    @NotBlank(message = "Please enter a description")
     private String description;
 
     public ImportRolesJsonDTO() {}
@@ -26,7 +26,7 @@ public class ImportRolesJsonDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public String getImageUrl() {
@@ -34,7 +34,7 @@ public class ImportRolesJsonDTO {
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl.trim();
     }
 
     public String getDescription() {
@@ -42,7 +42,7 @@ public class ImportRolesJsonDTO {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description.trim();
     }
 
 }

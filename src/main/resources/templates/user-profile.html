@@ -207,14 +207,14 @@
 							<form th:action="@{/users/credentials/edit}"
 								  th:method="PATCH"
 								  th:object="${userCredentialsToEdit}"
-								  name="userCredentials" id="user-credentials" enctype="multipart/form-data">
+								  name="userCredentials" id="user-credentials" class="form-credentials" enctype="multipart/form-data">
 								<div class="col-md-12 form-group">
 									<label for="email">Email</label>
 
 									<input th:name="email"
 										   th:field="*{email}"
 										   th:errorclass="is-invalid"
-										   id="email" class="form-control" type="text" placeholder="Your new email">
+										   id="email" class="form-control field--credentials" type="text" placeholder="Your new email">
 
 									<small th:if="${#fields.hasErrors('email')}"
 										   th:errors="*{email}"
@@ -231,7 +231,7 @@
 									<input th:name="username"
 										   th:field="*{username}"
 										   th:errorclass="is-invalid"
-										   id="username" class="form-control" type="text" placeholder="Your new username">
+										   id="username" class="form-control field--credentials" type="text" placeholder="Your new username">
 
 									<small th:if="${#fields.hasErrors('username')}"
 										   th:errors="*{username}"

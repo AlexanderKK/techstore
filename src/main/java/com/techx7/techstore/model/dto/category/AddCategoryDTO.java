@@ -3,6 +3,7 @@ package com.techx7.techstore.model.dto.category;
 import com.techx7.techstore.validation.category.UniqueCategoryName;
 import com.techx7.techstore.validation.multipart.MultiPartFile;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
 public class AddCategoryDTO {
@@ -14,6 +15,7 @@ public class AddCategoryDTO {
     @MultiPartFile(contentTypes = "image/png")
     private MultipartFile image;
 
+    @Size(max = 255, message = "Please do not exceed the maximum length of 255 characters")
     private String description;
 
     public AddCategoryDTO() {}
@@ -23,14 +25,14 @@ public class AddCategoryDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
-    public org.springframework.web.multipart.MultipartFile getImage() {
+    public MultipartFile getImage() {
         return image;
     }
 
-    public void setImage(org.springframework.web.multipart.MultipartFile image) {
+    public void setImage(MultipartFile image) {
         this.image = image;
     }
 
@@ -39,7 +41,7 @@ public class AddCategoryDTO {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description == null ? description : description.trim();
     }
 
 }

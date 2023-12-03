@@ -1,8 +1,10 @@
 package com.techx7.techstore.model.dto.user;
 
-import com.techx7.techstore.validation.user.UniqueUsername;
 import com.techx7.techstore.validation.user.UniqueEmail;
-import jakarta.validation.constraints.*;
+import com.techx7.techstore.validation.user.UniqueUsername;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class RegisterDTO {
 
@@ -28,7 +30,7 @@ public class RegisterDTO {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase().replaceAll(" ", "").trim();
     }
 
     public String getUsername() {
@@ -36,7 +38,7 @@ public class RegisterDTO {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toLowerCase().replaceAll(" ", "").trim();
     }
 
     public String getPassword() {

@@ -64,7 +64,7 @@ public class CategoryDTO {
     }
 
     public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+        this.imageUrl = imageUrl == null ? imageUrl : imageUrl.trim();
     }
 
     public String getName() {
@@ -72,7 +72,7 @@ public class CategoryDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public String getDescription() {
@@ -80,7 +80,7 @@ public class CategoryDTO {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description == null ? description : description.trim();
     }
 
     public String getCreated() {
@@ -96,7 +96,7 @@ public class CategoryDTO {
     }
 
     public void setModified(String modified) {
-        this.modified = modified;
+        this.modified = modified == null ? modified : modified.trim();
     }
 
 }

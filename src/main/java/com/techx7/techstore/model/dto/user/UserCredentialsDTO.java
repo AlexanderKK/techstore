@@ -22,7 +22,7 @@ public class UserCredentialsDTO {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase().replaceAll(" ", "").trim();
     }
 
     public String getUsername() {
@@ -30,7 +30,7 @@ public class UserCredentialsDTO {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toLowerCase().replaceAll(" ", "").trim();
     }
 
 }

@@ -24,7 +24,7 @@
                 <div class="form-login">
                     <form th:action="@{/users/login}"
                           th:method="POST"
-                          name="loginForm">
+                          name="loginForm" class="form-credentials">
                         <div class="form__head">
                             <p>Not Registered? <a href="#" class="link-register">Sign up from here</a></p>
 
@@ -40,7 +40,7 @@
                                 <div class="form__controls">
 <!--                                    th:value="${emailOrUsername}"-->
                                     <input th:value="admin"
-                                           type="text" id="usernameLogin" name="emailOrUsername" class="field field--login">
+                                           type="text" id="usernameLogin" name="emailOrUsername" class="field field--login field--credentials">
                                 </div>
                             </div>
 
@@ -49,7 +49,7 @@
 
                                 <div class="form__controls">
                                     <input th:value="admin12345"
-                                           type="password" id="passwordLogin" name="password" class="field field--login">
+                                           type="password" id="passwordLogin" name="password" class="field field--login field--credentials">
                                 </div>
                             </div>
                         </div>

@@ -42,7 +42,7 @@ public class ModelDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim();
     }
 
     public String getCreated() {
@@ -58,7 +58,7 @@ public class ModelDTO {
     }
 
     public void setModified(String modified) {
-        this.modified = modified;
+        this.modified = modified == null ? modified : modified.trim();
     }
 
 }

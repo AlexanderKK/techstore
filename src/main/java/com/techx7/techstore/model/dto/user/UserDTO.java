@@ -16,14 +16,14 @@ public class UserDTO {
 
     @NotNull(message = "Please enter an email")
     @Size(min = 5, max = 35, message = "Email should have from 5 to 35 characters")
-    @Email(message = "Please enter a valid email", regexp = "^(([^<>()[\\]\\\\.,;:\\s@\"]+(\\.[^<>()[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$")
+    @Email(message = "Please enter a valid email", regexp = "^(([^<>()\\[\\]\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\.,;:\\s@\"]+)*)|(\".+\"))@(((\\d{1,3}\\.){3}\\d{1,3})|([a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+))$")
     private String email;
 
     @NotNull(message = "Please enter a username")
     @Size(min = 5, max = 20, message = "Username should have from 5 to 20 characters")
     private String username;
 
-    @NotBlank(message = "There should be at least one role")
+    @NotBlank(message = "Please choose at least one role")
     private String roles;
 
     private Set<RoleDTO> rolesSet;
@@ -47,7 +47,7 @@ public class UserDTO {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase().replaceAll(" ", "").trim();
     }
 
     public String getUsername() {
@@ -55,7 +55,7 @@ public class UserDTO {
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.username = username.toLowerCase().replaceAll(" ", "").trim();
     }
 
     public String getRoles() {
@@ -63,7 +63,7 @@ public class UserDTO {
     }
 
     public void setRoles(String roles) {
-        this.roles = roles;
+        this.roles = roles.trim();
     }
 
     public Set<RoleDTO> getRolesSet() {
@@ -87,7 +87,7 @@ public class UserDTO {
     }
 
     public void setModified(String modified) {
-        this.modified = modified;
+        this.modified = modified == null ? modified : modified.trim();
     }
 
 }

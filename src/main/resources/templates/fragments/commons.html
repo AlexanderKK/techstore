@@ -311,7 +311,7 @@
 
                 <div class="popup__body">
                     <div class="form-login">
-                        <form action="" method="POST" name="loginForm">
+                        <form action="" method="POST" name="loginForm" class="form-credentials">
                             <div class="form__head">
                                 <p>Not Registered? <a href="#" class="link-register">Sign up from here</a></p>
 
@@ -325,7 +325,7 @@
                                     <label for="usernameLogin" class="form__label">Username</label>
 
                                     <div class="form__controls">
-                                        <input type="text" id="usernameLogin" name="username" class="field field--login">
+                                        <input type="text" id="usernameLogin" name="username" class="field field--login field--credentials">
                                     </div>
                                 </div>
 
@@ -333,7 +333,7 @@
                                     <label for="passwordLogin" class="form__label">Password</label>
 
                                     <div class="form__controls">
-                                        <input type="password" id="passwordLogin" name="password" class="field field--login">
+                                        <input type="password" id="passwordLogin" name="password" class="field field--login field--credentials">
                                     </div>
                                 </div>
                             </div>
@@ -363,7 +363,7 @@
 
                 <div class="popup__body">
                     <div class="form-login">
-                        <form th:method="POST" id="registerForm" name="registerForm">
+                        <form th:method="POST" id="registerForm" name="registerForm" class="form-credentials">
 <!--                            <div th:each="error: ${#fields.errors()}" th:text="${error}" class="text-danger">Error messages</div>-->
 
                             <div class="form__body">
@@ -371,7 +371,7 @@
                                     <label for="emailRegister" class="form__label">Email</label>
 
                                     <div class="form__controls">
-                                        <input type="text" id="emailRegister" name="email" class="field field--register" placeholder="example@gmail.com">
+                                        <input type="text" id="emailRegister" name="email" class="field field--register field--credentials" placeholder="example@gmail.com">
 
                                         <small class="popup__error emailRegister-error text-danger"></small>
                                     </div>
@@ -381,7 +381,7 @@
                                     <label for="usernameRegister" class="form__label">Username</label>
 
                                     <div class="form__controls">
-                                        <input type="text" id="usernameRegister" name="username" class="field field--register">
+                                        <input type="text" id="usernameRegister" name="username" class="field field--register field--credentials">
 
                                         <small class="popup__error usernameRegister-error text-danger"></small>
                                     </div>
