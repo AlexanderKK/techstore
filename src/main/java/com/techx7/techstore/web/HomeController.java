@@ -29,4 +29,9 @@ public class HomeController {
         return "index";
     }
 
+    @GetMapping("/email/registration")
+    public String email() {
+        return "email/registration";
+    }
+
 }

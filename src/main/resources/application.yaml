@@ -49,6 +49,19 @@ spring:
       static-locations: file:src/main/resources/static/
       cache:
         period: 0
+  # Mail
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    protocol: ${MAIL_PROTOCOL}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   error:
@@ -72,13 +85,6 @@ logging:
 techstore:
   rememberme:
     key: ${REMEMBER_ME_KEY:chamber-of-secrets}
-
-mail:
-  techstore: "techstore@example.com"
-  host: 127.0.0.1
-  port: 1025
-  username: ${MAIL_USERNAME}
-  password: ${MAIL_PASSWORD}
 
 cloudinary:
   cloud-name: ${CLOUD_NAME}

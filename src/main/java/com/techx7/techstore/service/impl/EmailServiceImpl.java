@@ -21,7 +21,7 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     public EmailServiceImpl(TemplateEngine templateEngine,
                             JavaMailSender javaMailSender,
-                            @Value("${mail.techstore}") String techstoreEmail) {
+                            @Value("${spring.mail.username}") String techstoreEmail) {
         this.templateEngine = templateEngine;
         this.javaMailSender = javaMailSender;
         this.techstoreEmail = techstoreEmail;
@@ -54,7 +54,7 @@ public class EmailServiceImpl implements EmailService {
         context.setVariable("username", userName);
         context.setVariable("activationCode", activationCode);
 
-        return templateEngine.process("/email/registration-email", context);
+        return templateEngine.process("/email/registration", context);
     }
 
 }
