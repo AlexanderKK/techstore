@@ -14,52 +14,54 @@
 
     <header th:replace="~{fragments/commons::header(activeLink = 'login', loginPage = 'true')}"></header>
 
-    <div class="popup auth-login">
-        <div class="popup__inner px-5">
-            <div class="popup__head">
-                <h2>Sign In</h2>
-            </div>
+    <div class="container">
+        <div class="popup auth-login">
+            <div class="popup__inner px-5">
+                <div class="popup__head">
+                    <h2>Sign In</h2>
+                </div>
 
-            <div class="popup__body">
-                <div class="form-login">
-                    <form th:action="@{/users/login}"
-                          th:method="POST"
-                          name="loginForm" class="form-credentials">
-                        <div class="form__head">
-                            <p>Not Registered? <a href="#" class="link-register">Sign up from here</a></p>
+                <div class="popup__body">
+                    <div class="form-login">
+                        <form th:action="@{/users/login}"
+                              th:method="POST"
+                              name="loginForm" class="form-credentials">
+                            <div class="form__head">
+                                <p>Not Registered? <a href="#" class="link-register">Sign up from here</a></p>
 
-                            <a th:href="@{/users/reactivate}" class="btn-link">Resend verification code</a>
+<!--                                <a th:href="@{/users/reactivate}" class="btn-link">Resend verification code</a>-->
 
-                            <p th:if="${bad_credentials}" class="errors text-danger">Invalid username or password.</p>
-                        </div>
+                                <p th:if="${bad_credentials}" class="errors text-danger">Invalid username or password.</p>
+                            </div>
 
-                        <div class="form__body">
-                            <div class="form__row">
-                                <label for="usernameLogin" class="form__label">Email / Username</label>
+                            <div class="form__body">
+                                <div class="form__row">
+                                    <label for="usernameLogin" class="form__label">Email / Username</label>
 
-                                <div class="form__controls">
-<!--                                    th:value="${emailOrUsername}"-->
-                                    <input th:value="admin"
-                                           type="text" id="usernameLogin" name="emailOrUsername" class="field field--login field--credentials">
+                                    <div class="form__controls">
+                                        <!--                                    th:value="${emailOrUsername}"-->
+                                        <input th:value="admin"
+                                               type="text" id="usernameLogin" name="emailOrUsername" class="field field--login field--credentials">
+                                    </div>
+                                </div>
+
+                                <div class="form__row">
+                                    <label for="passwordLogin" class="form__label">Password</label>
+
+                                    <div class="form__controls">
+                                        <input th:value="admin12345"
+                                               type="password" id="passwordLogin" name="password" class="field field--login field--credentials">
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form__row">
-                                <label for="passwordLogin" class="form__label">Password</label>
-
-                                <div class="form__controls">
-                                    <input th:value="admin12345"
-                                           type="password" id="passwordLogin" name="password" class="field field--login field--credentials">
-                                </div>
+                            <div class="form__actions">
+                                <input type="submit" value="Log in" name="submitLoginForm" class="btn form__btn" id="login">
                             </div>
-                        </div>
 
-                        <div class="form__actions">
-                            <input type="submit" value="Log in" name="submitLoginForm" class="btn form__btn" id="login">
-                        </div>
-
-                        <div class="form__foot"></div>
-                    </form>
+                            <div class="form__foot"></div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

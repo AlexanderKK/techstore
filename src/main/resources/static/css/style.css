@@ -9781,8 +9781,8 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .btn:focus:not(:focus-visible) {
-  outline: none;
-  border: 0;
+  /*outline: none;*/
+  /*border: 0;*/
 }
 
 /* ------------------------------------------------------------ *\
@@ -10220,8 +10220,8 @@ a.text-dark:hover, a.text-dark:focus {
   position: static;
   opacity: 1;
   background-color: #3D464D;
-  max-width: 750px;
-  margin: 0 auto;
+  max-width: 850px;
+  margin: 50px auto;
 }
 
 .popup.auth-login .popup__inner {
