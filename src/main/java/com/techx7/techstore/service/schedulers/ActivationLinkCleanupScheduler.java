@@ -18,7 +18,7 @@ public class ActivationLinkCleanupScheduler {
     @Scheduled(cron = "0 0/15 * * * ?")
 //    @Scheduled(fixedRate = 10_000, initialDelay = 10_000)
     public void cleanUp() {
-        userActivationService.cleanUpObsoleteActivationLinks(15);
+        userActivationService.cleanUpObsoleteActivationLinks(30);
     }
 
 }

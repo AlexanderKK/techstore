@@ -4817,12 +4817,18 @@ a.badge-dark:focus, a.badge-dark.focus {
 
 .alert {
   position: fixed;
+  top: 83px;
   z-index: 101;
   width: 100%;
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.25rem;
   margin-bottom: 1rem;
   border: 1px solid transparent;
   border-radius: 0;
+  font-size: 18px;
+}
+
+.alert span {
+  margin-top: -2px;
 }
 
 .alert-heading {
@@ -4956,6 +4962,11 @@ a.badge-dark:focus, a.badge-dark.focus {
 
 .alert-dark .alert-link {
   color: #090b0c;
+}
+
+.alert-auth {
+  color: #FFD333;
+  background-color: #3D464D;
 }
 
 @keyframes progress-bar-stripes {

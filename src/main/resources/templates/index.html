@@ -6,12 +6,18 @@
 
 <body>
 	<div th:if="${userAlreadyActivated}"
-		 th:text="${userAlreadyActivated}"
-		 class="alert alert-warning"></div>
+		 class="alert alert-auth d-flex">
+		<span class="d-block">️⚠️</span>
+
+		<div th:text=" ${userAlreadyActivated}"></div>
+	</div>
 
 	<div th:if="${activationCodeErrorMessage}"
-		 th:text="${activationCodeErrorMessage}"
-		 class="alert alert-danger"></div>
+		 class="alert alert-auth d-flex">
+		<span class="d-block">️⚠️</span>
+
+		<div th:text=" ${activationCodeErrorMessage}"></div>
+	</div>
 
 	<header th:replace="~{fragments/commons::header(activeLink = 'home')}"></header>
 

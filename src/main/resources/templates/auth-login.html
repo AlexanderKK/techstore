@@ -5,12 +5,18 @@
 
 <body>
     <div th:if="${verificationMessage}"
-         th:text="${verificationMessage}"
-         class="alert alert-success"></div>
+         class="alert alert-auth d-flex">
+        <div>✔️</div>
+
+        <div th:text=" ${verificationMessage}"></div>
+    </div>
 
     <div th:if="${userActivated}"
-         th:text="${userActivated}"
-         class="alert alert-success"></div>
+         class="alert alert-auth d-flex">
+        <div>✔️</div>
+
+        <div th:text=" ${userActivated}"></div>
+    </div>
 
     <header th:replace="~{fragments/commons::header(activeLink = 'login', loginPage = 'true')}"></header>
 
