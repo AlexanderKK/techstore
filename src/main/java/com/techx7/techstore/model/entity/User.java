@@ -68,6 +68,9 @@ public class User extends BaseEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private UserInfo userInfo;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    public Set<CartItem> cartItems;
+
     public User() {
         this.roles = new HashSet<>();
     }
@@ -158,6 +161,14 @@ public class User extends BaseEntity {
 
     public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
+    }
+
+    public Set<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(Set<CartItem> cartItems) {
+        this.cartItems = cartItems;
     }
 
     public void editUser(UserDTO userDTO) {

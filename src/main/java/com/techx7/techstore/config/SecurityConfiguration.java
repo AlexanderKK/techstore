@@ -48,6 +48,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/", "/products", "/contact").permitAll()
                         .requestMatchers("/products/detail/**").permitAll()
+                        .requestMatchers("/email/registration").permitAll()
 
                         // Any role
                         .requestMatchers(

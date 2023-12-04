@@ -163,4 +163,12 @@ public class Product extends BaseEntity {
         this.modified = modified;
     }
 
+    public Set<CartItem> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(Set<CartItem> cartItems) {
+        this.cartItems = cartItems;
+    }
+
 }
