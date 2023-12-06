@@ -21,34 +21,12 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
-  # Vault
-  application:
-    name: techstore
-  cloud:
-    vault:
-      uri: http://127.0.0.1:8200
-      token: ${VAULT_TOKEN}
-      kv:
-        enabled: true
-  config:
-    import: vault://
   # DB
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/tech_store?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
-    username: ${DB_USER}
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/techstore?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-  # Resources
-  thymeleaf:
-    cache: false
-    mode: HTML
-    encoding: UTF-8
-    prefix: file:src/main/resources/templates/
-  web:
-    resources:
-      static-locations: file:src/main/resources/static/
-      cache:
-        period: 0
   # Mail
   mail:
     host: ${MAIL_HOST}
@@ -69,7 +47,6 @@ server:
       enabled: on
     include-message: always
     include-stacktrace: never
-  port: 8080
 
 logging:
   level:
@@ -90,3 +67,10 @@ cloudinary:
   cloud-name: ${CLOUD_NAME}
   api-key: ${API_KEY}
   api-secret: ${API_SECRET}
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "*"

@@ -11,12 +11,10 @@ import com.techx7.techstore.model.dto.user.UserCredentialsDTO;
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.dto.user.UserPasswordDTO;
 import com.techx7.techstore.model.dto.user.UserProfileDTO;
-import com.techx7.techstore.service.CountryService;
-import com.techx7.techstore.service.GenderService;
-import com.techx7.techstore.service.RoleService;
-import com.techx7.techstore.service.UserService;
+import com.techx7.techstore.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,20 +35,28 @@ public class UserController {
     private final RoleService roleService;
     private final GenderService genderService;
     private final CountryService countryService;
+    private final MonitoringService monitoringService;
 
     @Autowired
     public UserController(UserService userService,
                           RoleService roleService,
                           GenderService genderService,
-                          CountryService countryService) {
+                          CountryService countryService,
+                          MonitoringService monitoringService) {
         this.userService = userService;
         this.roleService = roleService;
         this.genderService = genderService;
         this.countryService = countryService;
+        this.monitoringService = monitoringService;
     }
 
+    @PreAuthorize("@hasAnyRole('ADMIN')")
     @GetMapping
     public String getUsers(Model model) {
+        int usersLogins = monitoringService.getUsersLogins();
+
+        model.addAttribute("usersLogins", usersLogins);
+
         List<UserDTO> users = userService.getAllUsers();
 
         model.addAttribute("users", users);
@@ -58,9 +64,10 @@ public class UserController {
         return "users";
     }
 
+    @PreAuthorize("@hasAnyRole('ADMIN')")
     @GetMapping("/edit/{uuid}")
     public String getUser(Model model,
-                              @PathVariable("uuid") UUID uuid) {
+                          @PathVariable("uuid") UUID uuid) {
         UserDTO userDTO = userService.getUserByUuid(uuid);
 
         List<RoleDTO> roleDTOs = roleService.getAllRoles();
@@ -74,6 +81,7 @@ public class UserController {
         return "user-edit";
     }
 
+    @PreAuthorize("@hasAnyRole('CARRIER', 'USER', 'SUPPORT', 'MANAGER', 'ADMIN')")
     @PatchMapping("/edit")
     public String editUser(@Valid UserDTO userDTO,
                            BindingResult bindingResult,
@@ -91,6 +99,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @PreAuthorize("@hasAnyRole('ADMIN')")
     @DeleteMapping("/delete/{uuid}")
     public String deleteUser(@PathVariable("uuid") UUID uuid) {
         userService.deleteUserByUuid(uuid);
@@ -98,6 +107,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @PreAuthorize("@hasAnyRole('ADMIN')")
     @DeleteMapping("/delete-all")
     public String deleteAllUsers() {
         userService.deleteAllUsers();
@@ -105,6 +115,7 @@ public class UserController {
         return "redirect:/users";
     }
 
+    @PreAuthorize("@hasAnyRole('CARRIER', 'USER', 'SUPPORT', 'MANAGER', 'ADMIN')")
     @GetMapping("/profile")
     public String profile(Model model,
                           Principal principal) {
@@ -133,6 +144,7 @@ public class UserController {
         return "user-profile";
     }
 
+    @PreAuthorize("@hasAnyRole('CARRIER', 'USER', 'SUPPORT', 'MANAGER', 'ADMIN')")
     @PatchMapping("/profile/edit")
     public String editUserProfile(@Valid UserProfileDTO userProfileDTO,
                                   BindingResult bindingResult,
@@ -150,6 +162,7 @@ public class UserController {
         return "redirect:/users/profile";
     }
 
+    @PreAuthorize("@hasAnyRole('CARRIER', 'USER', 'SUPPORT', 'MANAGER', 'ADMIN')")
     @PatchMapping("/credentials/edit")
     public String editUserCredentials(@Valid UserCredentialsDTO userCredentialsDTO,
                                   BindingResult bindingResult,
@@ -167,6 +180,7 @@ public class UserController {
         return "redirect:/users/profile";
     }
 
+    @PreAuthorize("@hasAnyRole('CARRIER', 'USER', 'SUPPORT', 'MANAGER', 'ADMIN')")
     @PatchMapping("/password/edit")
     public String editUserPassword(@Valid UserPasswordDTO userPasswordDTO,
                                       BindingResult bindingResult,

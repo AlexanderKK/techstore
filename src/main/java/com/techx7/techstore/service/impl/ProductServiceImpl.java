@@ -7,9 +7,11 @@ import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.service.CloudinaryService;
+import com.techx7.techstore.service.MonitoringService;
 import com.techx7.techstore.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -35,7 +37,8 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     public ProductServiceImpl(ModelMapper mapper,
                               ProductRepository productRepository,
-                              CloudinaryService cloudinaryService) {
+                              CloudinaryService cloudinaryService,
+                              MonitoringService monitoringService) {
         this.mapper = mapper;
         this.productRepository = productRepository;
         this.cloudinaryService = cloudinaryService;
@@ -57,6 +60,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable("products")
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream()
                 .filter(product -> Objects.nonNull(product.getModel()))
@@ -66,8 +70,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<ProductDTO> getAllPageableProducts(Pageable pageable) {
-        System.out.println("Displaying products");
-
         List<ProductDTO> products = productRepository.findAll(pageable)
                 .stream()
                 .filter(product -> product.getModel() != null)

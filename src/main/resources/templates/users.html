@@ -14,7 +14,11 @@
 
             <div class="col-lg-8 mb-5">
                 <div class="bg-light p-30">
-                    <h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span th:text="|Total: *{users.size()}|" class="credentials-title">No users available</span></h5>
+                    <div class="row justify-content-between">
+                        <h5 class="col-auto section-title position-relative text-uppercase ml-3 mb-5"><span th:text="|Total users: *{users.size()}|" class="credentials-title">No users available</span></h5>
+
+                        <h5 class="col-auto position-relative text-uppercase ml-3 mr-5 mb-5"><span th:text="|Total Logins: ${usersLogins}|" class="credentials-title credentials-title-right"></span></h5>
+                    </div>
 
                     <div class="table-responsive mb-5" style="max-height: 450px">
                         <table class="table table-light table-borderless table-hover text-center mb-0">

@@ -5,7 +5,6 @@ plugins {
 }
 
 group = 'com.techx7'
-version = '0.0.1-SNAPSHOT'
 
 java {
     sourceCompatibility = '17'
@@ -25,10 +24,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'com.cloudinary:cloudinary-http44:1.35.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'io.micrometer:micrometer-registry-prometheus'
 
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'org.modelmapper:modelmapper:3.1.1'
-    implementation 'org.springframework.cloud:spring-cloud-starter-vault-config:4.0.1'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'

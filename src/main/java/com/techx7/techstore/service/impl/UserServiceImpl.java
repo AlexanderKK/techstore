@@ -74,11 +74,12 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(user);
 
-        applicationEventPublisher.publishEvent(new UserRegisteredEvent(
-                "UserService",
-                registerDTO.getEmail(),
-                registerDTO.getUsername())
-        );
+        applicationEventPublisher.publishEvent(
+                new UserRegisteredEvent(
+                        "UserService",
+                        registerDTO.getEmail(),
+                        registerDTO.getUsername()
+                ));
     }
 
     @Override

@@ -54,7 +54,6 @@ public class ProductController {
                               @RequestParam("page") Optional<Integer> page,
                               @RequestParam("size") Optional<Integer> size) {
 //        Page<ProductDTO> products = getPageableProducts(model, pageable, page, size);
-
         List<ProductDTO> products = productService.getAllProducts();
 
         model.addAttribute("products", products);

@@ -5,6 +5,7 @@ import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.impl.TechstoreUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -48,7 +49,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/", "/products", "/contact").permitAll()
                         .requestMatchers("/products/detail/**").permitAll()
-                        .requestMatchers("/email/registration").permitAll()
 
                         // Any role
                         .requestMatchers(
@@ -74,6 +74,8 @@ public class SecurityConfiguration {
                         // Admin
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers("/roles/**").hasRole("ADMIN")
+                        .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
+
                         .anyRequest().authenticated()
 
                 ).formLogin(formLogin -> formLogin
