@@ -1,5 +1,6 @@
 # Techstore
-Spring MVC application that focuses on e-commerce operations with computers and electronics.
+Spring MVC application that focuses on e-commerce operations with computers and electronics.<br>
+Link: https://techx7.yellowflower-41c8e8d4.westeurope.azurecontainerapps.io
 
 # Description
 Techstore is an online store for computers and electronics.<br>
@@ -57,7 +58,7 @@ I am using MVC architecture consisting of several layers:
 
 # Quick Start & Implementation
 
-* Administrator - seeded during first application initialization
+* Administrator - seeded during application initialization
 ```
 Email: admin@techx7.com
 Username: admin
@@ -66,11 +67,11 @@ Password: admin12345
 
 * Roles - seeded during start of the application
 ```
-* Admin: Access and modify users, reviews, make changes to the database if needed
-* Manager: Access, modify products, but cannot access and modify user profiles
-* Support: Access user reviews, respond to questions and chat with users
-* User: Access and buy products, write reviews, edit their profile, but cannot add or modify a product
-* Carrier: Access orders, user's address info
+Admin: Access and modify users, reviews, make changes to the database if needed
+Manager: Access, modify products, but cannot access and modify user profiles
+Support: Access user reviews, respond to questions and chat with users
+User: Access and buy products, write reviews, edit their profile, but cannot add or modify a product
+Carrier: Access orders, user's address info
 ```
 
 # Database Diagram
