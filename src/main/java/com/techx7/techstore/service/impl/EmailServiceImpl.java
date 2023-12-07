@@ -9,6 +9,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templateresolver.StringTemplateResolver;
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -308,21 +310,21 @@ public class EmailServiceImpl implements EmailService {
         return templateString;
     }
 
-//    private static String getProcessedTemplate(String userName, String activationCode, String templateString) {
-//        StringTemplateResolver resolver = new StringTemplateResolver();
-//        resolver.setTemplateMode("HTML");
-//        resolver.setCacheable(false);
-//
-//        TemplateEngine templateEngine = new TemplateEngine();
-//        templateEngine.setTemplateResolver(resolver);
-//
-//        Context context = new Context();
-//        context.setVariable("username", userName);
-//        context.setVariable("activationCode", activationCode);
-//
-//        String processedTemplate = templateEngine.process(templateString, context);
-//
-//        return processedTemplate;
-//    }
+    private String getProcessedTemplate(String userName, String activationCode, String templateString) {
+        StringTemplateResolver resolver = new StringTemplateResolver();
+        resolver.setTemplateMode("HTML");
+        resolver.setCacheable(false);
+
+        TemplateEngine templateEngine = new TemplateEngine();
+        templateEngine.setTemplateResolver(resolver);
+
+        Context context = new Context();
+        context.setVariable("username", userName);
+        context.setVariable("activationCode", activationCode);
+
+        String processedTemplate = templateEngine.process(templateString, context);
+
+        return processedTemplate;
+    }
 
 }
