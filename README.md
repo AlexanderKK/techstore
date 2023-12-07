@@ -66,11 +66,11 @@ Password: admin12345
 
 * Roles - seeded during start of the application
 ```
-* Admin: Access and modify users, reviews, make changes to the database if needed
-* Manager: Access, modify products, but cannot access and modify user profiles
-* Support: Access user reviews, respond to questions and chat with users
-* User: Access and buy products, write reviews, edit their profile, but cannot add or modify a product
-* Carrier: Access orders, user's address info
+Admin: Access and modify users, reviews, make changes to the database if needed
+Manager: Access, modify products, but cannot access and modify user profiles
+Support: Access user reviews, respond to questions and chat with users
+User: Access and buy products, write reviews, edit their profile, but cannot add or modify a product
+Carrier: Access orders, user's address info
 ```
 
 # Database Diagram
