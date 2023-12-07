@@ -19,12 +19,12 @@ public class UserInfo extends BaseEntity {
     private String imageUrl;
 
     @NotNull(message = "First name should not be empty")
-    @Size(min = 5, max = 30, message = "First name should have from 5 to 30 characters")
+    @Size(min = 1, max = 30, message = "First name should have from 1 to 30 characters")
     @Column(name = "first_name")
     private String firstName;
 
     @NotNull(message = "Last name should not be empty")
-    @Size(min = 5, max = 30, message = "Last name should have from 5 to 30 characters")
+    @Size(min = 1, max = 30, message = "Last name should have from 1 to 30 characters")
     @Column(name = "last_name")
     private String lastName;
 
@@ -39,7 +39,7 @@ public class UserInfo extends BaseEntity {
     private String phoneNumber;
 
     @NotBlank(message = "Address should not be empty")
-    @Size(min = 5, max = 50, message = "Address should have from 5 to 50 characters")
+    @Size(min = 1, max = 50, message = "Address should have from 1 to 50 characters")
     @Column
     private String address;
 
@@ -50,7 +50,7 @@ public class UserInfo extends BaseEntity {
     private Country country;
 
     @NotBlank(message = "City should not be empty")
-    @Size(min = 5, max = 35, message = "City should have from 5 to 35 characters")
+    @Size(min = 1, max = 35, message = "City should have from 1 to 35 characters")
     @Column
     private String city;
 

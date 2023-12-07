@@ -5,13 +5,15 @@ import com.techx7.techstore.model.dto.category.AddCategoryDTO;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.model.entity.Category;
 import com.techx7.techstore.repository.CategoryRepository;
-import com.techx7.techstore.testUtils.TestData;
+import com.techx7.techstore.service.CloudinaryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.mock.web.MockMultipartFile;
@@ -22,9 +24,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.techx7.techstore.testUtils.TestData.createMultipartFile;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@MockitoSettings(strictness = Strictness.LENIENT)
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceImplTest {
 
@@ -34,6 +38,9 @@ class CategoryServiceImplTest {
     @Mock
     private ModelMapper modelMapper;
 
+    @Mock
+    private CloudinaryService cloudinaryService;
+
     @InjectMocks
     private CategoryServiceImpl categoryService;
 
@@ -41,7 +48,7 @@ class CategoryServiceImplTest {
 
     @BeforeEach
     void testSetUp() {
-        mockMultipartFile = TestData.createMultipartFile();
+        mockMultipartFile = createMultipartFile();
     }
 
     @Test
@@ -54,6 +61,8 @@ class CategoryServiceImplTest {
         Category category = new Category();
 
         when(modelMapper.map(addCategoryDTO, Category.class)).thenReturn(category);
+
+        when(cloudinaryService.uploadFile(mockMultipartFile, "test-entity", "test-name")).thenReturn("test.png");
 
         // Act
         categoryService.createCategory(addCategoryDTO);
@@ -130,11 +139,12 @@ class CategoryServiceImplTest {
     void testEditCategoryShouldUpdateCategory() throws IOException {
         // Arrange
         CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setImageUrl("test.png");
         categoryDTO.setImage(mockMultipartFile);
 
         Category category = new Category();
         when(categoryRepository.findByUuid(categoryDTO.getUuid())).thenReturn(Optional.of(category));
+
+        when(cloudinaryService.uploadFile(mockMultipartFile, "test-entity", "test-name")).thenReturn("test.png");
 
         // Act
         categoryService.editCategory(categoryDTO);

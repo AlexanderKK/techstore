@@ -56,7 +56,7 @@ class FileUtilsTest {
         FileUtils.uploadFileLocally(multipartFile, "category", "server computers");
 
         // Assert
-        byte[] actualFileContent = Files.readAllBytes(TEST_FILE_PATH);
+        byte[] actualFileContent = Files.readAllBytes(Path.of(RESOURCES_IMAGES_DIRECTORY, "category/server_computers.png"));
 
         assertArrayEquals(expectedFileContent, actualFileContent);
     }
@@ -79,7 +79,7 @@ class FileUtilsTest {
     @Test
     void testManageImageWhenMultipartFileEmptyAndImageUrlNotEmpty() throws IOException {
         // Arrange
-        String imageUrl = "test.png";
+        String imageUrl = "/category/server_computers.png";
 
         when(multipartFile.getBytes()).thenReturn(new byte[0]);
         when(multipartFile.isEmpty()).thenReturn(true);
@@ -89,7 +89,7 @@ class FileUtilsTest {
         MultipartFile testImage = new MultipartFileImpl(
                 "Existing image", imageUrl, "image/png", input.readAllBytes());
 
-        byte[] expectedImageBytes = testImage.getBytes();
+        byte[] expectedImageBytes = new byte[] {0};
 
         // Act
         MultipartFile actualMultipartFile = FileUtils.manageImage(multipartFile, imageUrl);

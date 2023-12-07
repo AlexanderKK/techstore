@@ -26,6 +26,18 @@ spring:
   datasource:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:test_db;DB_CLOSE_DELAY=-1;NON_KEYWORDS=KEY,VALUE
+  mail:
+    host: 127.0.0.1
+    port: 1234
+    protocol: smtp
+    username: test-username
+    password: test-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 logging:
   level:
@@ -43,8 +55,12 @@ techstore:
     key: test
 
 mail:
-  techstore: "test@example.com"
   host: 127.0.0.1
   port: 1234
   username: test-username
   password: test-password
+
+cloudinary:
+  cloud-name: dw61cip7r
+  api-key: 825613821366619
+  api-secret: PMmEM8WwETnM3jAhw0s-vItj5ME

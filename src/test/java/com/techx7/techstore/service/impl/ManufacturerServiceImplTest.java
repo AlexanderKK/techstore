@@ -6,6 +6,9 @@ import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.entity.Manufacturer;
 import com.techx7.techstore.repository.ManufacturerRepository;
+import com.techx7.techstore.repository.ModelRepository;
+import com.techx7.techstore.service.CloudinaryService;
+import com.techx7.techstore.service.ModelService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
+import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,23 +37,39 @@ class ManufacturerServiceImplTest {
     @Mock
     private ManufacturerRepository manufacturerRepository;
 
+    @Mock
+    private ModelService modelService;
+
+    @Mock
+    private ModelRepository modelRepository;
+
+    @Mock
+    private CloudinaryService cloudinaryService;
+
     @InjectMocks
     private ManufacturerServiceImpl manufacturerService;
 
     @Test
     void testCreateManufacturerValidManufacturerCreated() throws IOException {
-        // Arrange
         AddManufacturerDTO addManufacturerDTO = new AddManufacturerDTO();
-        addManufacturerDTO.setImage(createMultipartFile());
+        addManufacturerDTO.setName("Test Manufacturer");
+
+        MockMultipartFile image = createMultipartFile();
+        addManufacturerDTO.setImage(image);
 
         Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setName("Test Manufacturer");
+
         when(mapper.map(addManufacturerDTO, Manufacturer.class)).thenReturn(manufacturer);
+        when(cloudinaryService.uploadFile(image, "Manufacturer", "Test Manufacturer")).thenReturn("image-url");
 
         // Act
         manufacturerService.createManufacturer(addManufacturerDTO);
 
         // Assert
-        verify(manufacturerRepository, times(1)).save(manufacturer);
+        verify(manufacturerRepository).save(manufacturer);
+
+        assertEquals("image-url", manufacturer.getImageUrl());
     }
 
     @Test
@@ -96,11 +116,16 @@ class ManufacturerServiceImplTest {
         // Arrange
         UUID uuid = UUID.randomUUID();
 
+        Manufacturer manufacturer = new Manufacturer();
+        manufacturer.setId(1L);
+
+        when(manufacturerRepository.findByUuid(uuid)).thenReturn(Optional.of(manufacturer));
+
         // Act
         manufacturerService.deleteManufacturerByUuid(uuid);
 
         // Assert
-        verify(manufacturerRepository, times(1)).deleteByUuid(uuid);
+        verify(manufacturerRepository).deleteByUuid(uuid);
     }
 
     @Test

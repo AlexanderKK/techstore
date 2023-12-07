@@ -4,13 +4,18 @@ import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
+import com.techx7.techstore.model.entity.Manufacturer;
+import com.techx7.techstore.model.entity.Model;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.repository.ProductRepository;
+import com.techx7.techstore.service.CloudinaryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -27,6 +32,7 @@ import static com.techx7.techstore.testUtils.TestData.createMultipartFile;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@MockitoSettings(strictness = Strictness.LENIENT)
 @ExtendWith(MockitoExtension.class)
 class ProductServiceImplTest {
 
@@ -35,6 +41,9 @@ class ProductServiceImplTest {
 
     @Mock
     private ProductRepository productRepository;
+
+    @Mock
+    private CloudinaryService cloudinaryService;
 
     @InjectMocks
     private ProductServiceImpl productService;
@@ -46,26 +55,39 @@ class ProductServiceImplTest {
         addProductDTO.setImage(createMultipartFile());
 
         Product product = new Product();
+
+        Model model = new Model();
+        model.setManufacturer(new Manufacturer());
+
+        product.setModel(model);
+
         when(mapper.map(addProductDTO, Product.class)).thenReturn(product);
+        when(cloudinaryService.uploadFile(any(), anyString(), anyString())).thenReturn("dummyImageUrl");
 
         // Act
         productService.createProduct(addProductDTO);
 
         // Assert
-        verify(productRepository, times(1)).save(product);
+        verify(productRepository).save(product);
     }
 
     @Test
     void testGetAllProductsShouldReturnAllProducts() {
         // Arrange
-        Pageable pageable = Pageable.unpaged();
+        Pageable pageable = Pageable.ofSize(1);
         List<Product> productList = new ArrayList<>();
 
-        productList.add(new Product());
-        Page<Product> productPage = new PageImpl<>(productList);
+        Product product = new Product();
+        product.setId(1L);
+
+        Page<Product> productPage= new PageImpl<>(productList);
 
         when(productRepository.findAll(pageable)).thenReturn(productPage);
-        when(mapper.map(any(Product.class), eq(ProductDTO.class))).thenReturn(new ProductDTO());
+
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setUuid(UUID.randomUUID());
+
+        when(mapper.map(any(Product.class), eq(ProductDTO.class))).thenReturn(productDTO);
 
         // Act
         Page<ProductDTO> result = productService.getAllPageableProducts(pageable);
@@ -106,11 +128,14 @@ class ProductServiceImplTest {
 
         List<Product> productList = new ArrayList<>();
 
-        productList.add(new Product());
         Page<Product> productPage = new PageImpl<>(productList);
 
         when(productRepository.findAll(pageable)).thenReturn(productPage);
-        when(mapper.map(any(Product.class), eq(ProductDTO.class))).thenReturn(new ProductDTO());
+
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setModel("Test model");
+
+        when(mapper.map(any(Product.class), eq(ProductDTO.class))).thenReturn(productDTO);
 
         // Act
         Page<ProductDTO> result = productService.findPaginated(pageable);

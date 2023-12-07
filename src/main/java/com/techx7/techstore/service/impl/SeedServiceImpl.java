@@ -1,16 +1,18 @@
 package com.techx7.techstore.service.impl;
 
-import com.cloudinary.Cloudinary;
 import com.google.gson.Gson;
+import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.role.ImportRolesJsonDTO;
 import com.techx7.techstore.model.entity.Role;
+import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.SeedService;
-import com.techx7.techstore.service.UserService;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -18,9 +20,9 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
-import static com.techx7.techstore.constant.Messages.ENTITIES_ALREADY_SEEDED;
-import static com.techx7.techstore.constant.Messages.ENTITIES_SEEDED_SUCCESSFULLY;
+import static com.techx7.techstore.constant.Messages.*;
 import static com.techx7.techstore.constant.Paths.IMPORT_ROLES_JSON_PATH;
 
 @Service
@@ -30,23 +32,22 @@ public class SeedServiceImpl implements SeedService {
     private final ModelMapper mapper;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
     private final CloudinaryService cloudinaryService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public SeedServiceImpl(Gson gson,
                            ModelMapper mapper,
                            RoleRepository roleRepository,
                            UserRepository userRepository,
-                           UserService userService,
-                           Cloudinary cloudinary,
-                           CloudinaryService cloudinaryService) {
+                           CloudinaryService cloudinaryService,
+                           PasswordEncoder passwordEncoder) {
         this.gson = gson;
         this.mapper = mapper;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
-        this.userService = userService;
         this.cloudinaryService = cloudinaryService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -86,9 +87,34 @@ public class SeedServiceImpl implements SeedService {
             return String.format(ENTITIES_ALREADY_SEEDED, "Admin");
         }
 
-        userService.createAdmin();
+        createAdmin();
 
         return String.format(ENTITIES_SEEDED_SUCCESSFULLY, "Admin");
+    }
+
+    private void createAdmin() {
+        User user = new User();
+
+        user.setEmail("admin@techx7.com");
+        user.setUsername("admin");
+        user.setPassword(
+                passwordEncoder.encode("admin12345")
+        );
+
+        user.setRoles(Set.of(
+                getRoleEntity("ADMIN"),
+                getRoleEntity("MANAGER"),
+                getRoleEntity("USER")
+        ));
+
+        user.setActive(true);
+
+        userRepository.save(user);
+    }
+
+    private Role getRoleEntity(String roleName) {
+        return roleRepository.findByName(roleName)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
     }
 
     private static BufferedReader readFileFromResources(String fileName) {

@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfFilter;
 
 @Configuration
 public class SecurityConfiguration {
@@ -32,7 +30,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .addFilterBefore(sameSiteFilter().getFilter(), CsrfFilter.class)
+//                .addFilterBefore(sameSiteFilter().getFilter(), CsrfFilter.class)
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 ).authorizeHttpRequests(authorizeRequests -> authorizeRequests
@@ -97,16 +95,6 @@ public class SecurityConfiguration {
                         .rememberMeParameter("rememberme")
                         .rememberMeCookieName("rememberme")
                 ).build();
-    }
-
-    @Bean
-    public FilterRegistrationBean<CookieSameSiteFilter> sameSiteFilter() {
-        FilterRegistrationBean<CookieSameSiteFilter> registrationBean = new FilterRegistrationBean<>();
-
-        registrationBean.setFilter(new CookieSameSiteFilter());
-        registrationBean.addUrlPatterns("/*");
-
-        return registrationBean;
     }
 
     @Bean

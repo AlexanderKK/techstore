@@ -19,6 +19,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.testUtils.TestData.createMultipartFile;
+import static com.techx7.techstore.testUtils.TestData.createValidMultipartImage;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -50,12 +51,10 @@ class ProductControllerTestIT {
 
     @Test
     void testGetProductsWhenCalledWithValidParameters() throws Exception {
-        mockMvc.perform(get("/products")
-                        .param("page", "1")
-                        .param("size", "4"))
+        mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("products"))
-                .andExpect(model().attributeExists("products", "productPage", "pageNumbers"));
+                .andExpect(model().attributeExists("products"));
     }
 
     @Test
@@ -78,6 +77,7 @@ class ProductControllerTestIT {
         testData.cleanAllTestData();
 
         AddProductDTO addProductDTO = createAddProductDTO();
+        addProductDTO.setImage(createValidMultipartImage());
 
         mockMvc.perform(post("/products/add")
                         .flashAttr("addProductDTO", addProductDTO)

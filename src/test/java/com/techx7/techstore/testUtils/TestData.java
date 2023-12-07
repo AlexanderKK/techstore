@@ -2,6 +2,8 @@ package com.techx7.techstore.testUtils;
 
 import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.entity.*;
+import com.techx7.techstore.model.enums.GenderEnum;
+import com.techx7.techstore.model.multipart.MultipartFileImpl;
 import com.techx7.techstore.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +11,16 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.techx7.techstore.constant.Paths.RESOURCES_IMAGES_DIRECTORY;
 
 @Component
 public class TestData {
@@ -45,11 +52,17 @@ public class TestData {
     @Autowired
     private ProductRepository productRepository;
 
+    @Autowired
+    private CountryRepository countryRepository;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
+
     public void cleanAllTestData() {
-        categoryRepository.deleteAll();
-        manufacturerRepository.deleteAll();
-        modelRepository.deleteAll();
         productRepository.deleteAll();
+        categoryRepository.deleteAll();
+        modelRepository.deleteAll();
+        manufacturerRepository.deleteAll();
         roleRepository.deleteAll();
         userActivationCodeRepository.deleteAll();
         userRepository.deleteAll();
@@ -86,6 +99,22 @@ public class TestData {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
+    }
+
+    public UserInfo createAndSaveUserInfo() {
+        UserInfo userInfo = new UserInfo();
+
+        userInfo.setImageUrl("test.png");
+        userInfo.setFirstName("John");
+        userInfo.setLastName("Doe");
+        userInfo.setPhoneNumber("0887654321");
+        userInfo.setGender(GenderEnum.MALE);
+        userInfo.setAddress("Test Address");
+        userInfo.setCountry(countryRepository.findById(1L).orElse(null));
+        userInfo.setCity("Test City");
+        userInfo.setZipCode("1000");
+
+        return userInfoRepository.save(userInfo);
     }
 
     public void createUserActivationCode(String activationCode, boolean isActive) {
@@ -233,6 +262,13 @@ public class TestData {
         );
 
         return file;
+    }
+
+    public static MultipartFile createValidMultipartImage() throws IOException {
+        FileInputStream inputStream = new FileInputStream(RESOURCES_IMAGES_DIRECTORY + "favicon.png");
+
+        return new MultipartFileImpl(
+                "Image", "favicon.png", "image/png", inputStream);
     }
 
 }

@@ -5,6 +5,7 @@ import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.repository.RoleRepository;
+import com.techx7.techstore.service.CloudinaryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -33,6 +34,9 @@ class RoleServiceImplTest {
 
     @Mock
     private ModelMapper modelMapper;
+
+    @Mock
+    private CloudinaryService cloudinaryService;
 
     @InjectMocks
     private RoleServiceImpl roleService;

@@ -15,6 +15,7 @@ import com.techx7.techstore.repository.CountryRepository;
 import com.techx7.techstore.repository.RoleRepository;
 import com.techx7.techstore.repository.UserInfoRepository;
 import com.techx7.techstore.repository.UserRepository;
+import com.techx7.techstore.service.CloudinaryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -24,10 +25,12 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -41,7 +44,6 @@ import static com.techx7.techstore.testUtils.TestData.createMultipartFile;
 import static com.techx7.techstore.utils.StringUtils.capitalize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.authentication;
 
 @MockitoSettings(strictness = Strictness.LENIENT)
 @ExtendWith(MockitoExtension.class)
@@ -72,10 +74,13 @@ class UserServiceImplTest {
     private ApplicationEventPublisher applicationEventPublisher;
 
     @Mock
-    private TechStoreUserDetails techStoreUserDetails;
+    private Authentication authentication;
 
     @Mock
-    private Authentication authentication;
+    private CloudinaryService cloudinaryService;
+
+    @Mock
+    private TechStoreUserDetails techStoreUserDetails;
 
     @Test
     void testRegister() {
@@ -148,37 +153,6 @@ class UserServiceImplTest {
     }
 
     @Test
-    void testCreateAdmin() {
-        // Arrange
-        User user = new User();
-        user.setEmail("admin@techx7.com");
-        user.setUsername("admin");
-        user.setPassword("admin12345");
-
-        when(passwordEncoder.encode(anyString())).thenReturn(user.getPassword());
-        when(userRepository.save(any(User.class))).thenReturn(user);
-
-        Role role1 = new Role();
-        role1.setName("ADMIN");
-
-        Role role2 = new Role();
-        role1.setName("MANAGER");
-
-        Role role3 = new Role();
-        role1.setName("USER");
-
-        when(roleRepository.findByName("ADMIN")).thenReturn(Optional.of(role1));
-        when(roleRepository.findByName("MANAGER")).thenReturn(Optional.of(role2));
-        when(roleRepository.findByName("USER")).thenReturn(Optional.of(role3));
-
-        // Act
-        userService.createAdmin();
-
-        // Assert
-        verify(userRepository, times(1)).save(any(User.class));
-    }
-
-    @Test
     void testGetUserByUuid() {
         // Arrange
         UUID uuid = UUID.randomUUID();
@@ -240,20 +214,26 @@ class UserServiceImplTest {
         existingUser.setEmail("old@example.com");
         existingUser.setUsername("oldUser");
 
-        when(userRepository.findByUuid(uuid)).thenReturn(Optional.of(existingUser));
         when(roleRepository.findById(anyLong())).thenReturn(Optional.of(new Role()));
         when(mapper.map(any(UserDTO.class), eq(User.class))).thenReturn(existingUser);
 
-        TechStoreUserDetails loggedUser = mock(TechStoreUserDetails.class);
-        when(loggedUser.getUsername()).thenReturn(existingUser.getUsername());
+        when(userRepository.findByUuid(any())).thenReturn(Optional.of(existingUser));
 
-        Principal principal = () -> "oldUser";
+        when(techStoreUserDetails.getUsername()).thenReturn(existingUser.getUsername());
+        when(techStoreUserDetails.getAuthorities()).thenReturn(new ArrayList<>());
 
-        when(authentication(authentication))
-                .thenReturn(new SecurityMockMvcRequestPostProcessors.DigestRequestPostProcessor());
+        // Mock SecurityContextHolder behavior
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                techStoreUserDetails, null, techStoreUserDetails.getAuthorities()
+        );
+
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+
+        SecurityContextHolder.setContext(securityContext);
 
         // Act
-        userService.editUser(userDTO, loggedUser);
+        userService.editUser(userDTO, techStoreUserDetails);
 
         // Assert
         verify(userRepository).save(existingUser);

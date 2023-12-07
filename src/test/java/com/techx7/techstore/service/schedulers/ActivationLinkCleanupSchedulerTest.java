@@ -22,7 +22,7 @@ class ActivationLinkCleanupSchedulerTest {
     @Test
     void testCleanUp() {
         // Arrange
-        int expectedMinutesLifetime = 15;
+        int expectedMinutesLifetime = 30;
 
         // Act
         activationLinkCleanupScheduler.cleanUp();

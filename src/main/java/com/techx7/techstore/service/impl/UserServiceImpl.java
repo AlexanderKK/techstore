@@ -101,27 +101,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createAdmin() {
-        User user = new User();
-
-        user.setEmail("admin@techx7.com");
-        user.setUsername("admin");
-        user.setPassword(
-                passwordEncoder.encode("admin12345")
-        );
-
-        user.setRoles(Set.of(
-                getRoleEntity("ADMIN"),
-                getRoleEntity("MANAGER"),
-                getRoleEntity("USER")
-        ));
-
-        user.setActive(true);
-
-        userRepository.save(user);
-    }
-
-    @Override
     public UserDTO getUserByUuid(UUID uuid) {
         return userRepository.findByUuid(uuid)
                 .map(user -> mapper.map(user, UserDTO.class))
@@ -288,11 +267,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUsername(principal.getName())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, ENTITY_NAME)));
         return user;
-    }
-
-    private Role getRoleEntity(String roleName) {
-        return roleRepository.findByName(roleName)
-                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Role")));
     }
 
 }

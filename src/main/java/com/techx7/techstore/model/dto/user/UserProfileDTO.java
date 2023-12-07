@@ -21,11 +21,11 @@ public class UserProfileDTO {
     private String imageUrl;
 
     @NotNull(message = "Please enter your first name")
-    @Size(min = 5, max = 30, message = "First name should have from 5 to 30 characters")
+    @Size(min = 1, max = 30, message = "First name should have from 1 to 30 characters")
     private String firstName;
 
     @NotNull(message = "Please enter your last name")
-    @Size(min = 5, max = 30, message = "Last name should have from 5 to 30 characters")
+    @Size(min = 1, max = 30, message = "Last name should have from 1 to 30 characters")
     private String lastName;
 
     @GenderName
@@ -37,7 +37,7 @@ public class UserProfileDTO {
     private String phoneNumber;
 
     @NotNull(message = "Please enter your address")
-    @Size(min = 5, max = 50, message = "Address should have from 5 to 50 characters")
+    @Size(min = 1, max = 50, message = "Address should have from 1 to 50 characters")
     private String address;
 
     private String secondaryAddress;
@@ -47,7 +47,7 @@ public class UserProfileDTO {
     private String country;
 
     @NotNull(message = "Please enter your city")
-    @Size(min = 5, max = 35, message = "City should have from 5 to 35 characters")
+    @Size(min = 1, max = 35, message = "City should have from 1 to 35 characters")
     private String city;
 
     private String state;

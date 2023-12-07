@@ -8,6 +8,7 @@ import com.techx7.techstore.model.entity.Manufacturer;
 import com.techx7.techstore.model.entity.Model;
 import com.techx7.techstore.repository.ManufacturerRepository;
 import com.techx7.techstore.repository.ModelRepository;
+import com.techx7.techstore.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -35,6 +36,9 @@ class ModelServiceImplTest {
 
     @Mock
     private ManufacturerRepository manufacturerRepository;
+
+    @Mock
+    private ProductRepository productRepository;
 
     @InjectMocks
     private ModelServiceImpl modelService;
@@ -94,6 +98,10 @@ class ModelServiceImplTest {
     void testDeleteModelByUuidExistingUuidModelDeleted() {
         // Arrange
         UUID uuid = UUID.randomUUID();
+
+        Model model = new Model();
+
+        when(modelRepository.findByUuid(uuid)).thenReturn(Optional.of(model));
 
         // Act
         modelService.deleteModelByUuid(uuid);

@@ -13,10 +13,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
-import static com.techx7.techstore.testUtils.TestData.createMultipartFile;
+import static com.techx7.techstore.testUtils.TestData.createValidMultipartImage;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -39,12 +41,18 @@ class ManufacturerControllerTestIT {
 
     private UUID uuid;
 
+    private MultipartFile validImage;
+
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         testData.cleanAllTestData();
 
         validAddManufacturerDTO = new AddManufacturerDTO();
-        validAddManufacturerDTO.setImage(createMultipartFile());
+
+        validImage = createValidMultipartImage();
+
+        validAddManufacturerDTO.setImage(validImage);
+
         validAddManufacturerDTO.setName("test-manufacturer");
 
         uuid = UUID.randomUUID();
@@ -123,7 +131,7 @@ class ManufacturerControllerTestIT {
         Manufacturer manufacturer = testData.createAndSaveManufacturer();
 
         ManufacturerDTO manufacturerDTO = mapper.map(manufacturer, ManufacturerDTO.class);
-        manufacturerDTO.setImage(createMultipartFile());
+        manufacturerDTO.setImage(validImage);
 
         mockMvc.perform(patch("/manufacturers/edit")
                         .flashAttr("manufacturerDTO", manufacturerDTO)

@@ -18,8 +18,6 @@ public interface UserService {
 
     List<UserDTO> getAllUsers();
 
-    void createAdmin();
-
     UserDTO getUserByUuid(UUID uuid);
 
     void editUser(UserDTO userDTO, TechStoreUserDetails loggedUser);

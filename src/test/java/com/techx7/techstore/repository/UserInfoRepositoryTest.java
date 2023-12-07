@@ -1,6 +1,7 @@
 package com.techx7.techstore.repository;
 
 import com.techx7.techstore.model.entity.UserInfo;
+import com.techx7.techstore.testUtils.TestData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@ContextConfiguration(classes = {UserInfoRepository.class})
+@ContextConfiguration(classes = {UserInfoRepository.class, TestData.class})
 @EnableAutoConfiguration
 @EntityScan(basePackages = {"com.techx7.techstore.model.entity"})
 @DataJpaTest
@@ -28,16 +29,15 @@ class UserInfoRepositoryTest {
 
     private Long existingUserInfoId;
 
+    @Autowired
+    private TestData testData;
+
     @BeforeEach
     void setUp() {
         userInfoRepository.deleteAll();
 
-        UserInfo userInfo = new UserInfo();
-        userInfo.setFirstName("John");
-        userInfo.setLastName("Doe");
-        userInfo.setPhoneNumber("1234567890");
+        savedUserInfo = testData.createAndSaveUserInfo();
 
-        savedUserInfo = userInfoRepository.save(userInfo);
         existingUserInfoId = savedUserInfo.getId();
     }
 

@@ -70,7 +70,7 @@ class UserActivationServiceImplTestIT {
 
         User user = new User();
         user.setUsername("username with " + activationCode);
-        user.setEmail("user@" + activationCode);
+        user.setEmail("user@" + activationCode + ".com");
         user.setPassword("password " + activationCode);
 
         userRepository.save(user);
