@@ -53,7 +53,7 @@ public class UserProfileDTO {
     private String state;
 
     @NotNull(message = "Please enter your zip code")
-    @Size(min = 5, max = 10, message = "ZIP code should have from 5 to 10 characters")
+    @Size(min = 1, max = 10, message = "ZIP code should have from 1 to 10 characters")
     private String zipCode;
 
     public UserProfileDTO() {}

@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@CrossOrigin("*")
+@CrossOrigin(origins = {"http://localhost:8080", "https://techx7.yellowflower-41c8e8d4.westeurope.azurecontainerapps.io"})
 @RestController
 public class ShoppingCartRestController {
 

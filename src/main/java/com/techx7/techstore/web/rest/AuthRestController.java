@@ -5,11 +5,9 @@ import com.techx7.techstore.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = {"http://localhost:8080", "https://techx7.yellowflower-41c8e8d4.westeurope.azurecontainerapps.io"})
 @RestController
 @RequestMapping("/users")
 public class AuthRestController {
@@ -24,6 +22,8 @@ public class AuthRestController {
     @PostMapping("/register")
     public ResponseEntity<RegisterDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO) {
         userService.register(registerDTO);
+
+        System.out.println("main");
 
         return ResponseEntity.ok().build();
     }

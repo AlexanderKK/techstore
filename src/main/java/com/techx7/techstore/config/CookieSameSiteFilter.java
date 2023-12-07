@@ -11,21 +11,15 @@ import java.io.IOException;
 @WebFilter
 public class CookieSameSiteFilter implements Filter {
 
-    private static final boolean IS_SECURE = false;
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-        String secureValue = "";
-        if(IS_SECURE) {
-            secureValue = "Secure;";
-        }
 
         httpServletResponse.setHeader(
                 "Set-Cookie",
-                String.format("%s SameSite=None", secureValue)
+                "Secure; SameSite=None"
         );
 
         chain.doFilter(request, response);

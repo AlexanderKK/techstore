@@ -11,7 +11,6 @@ import com.techx7.techstore.service.MonitoringService;
 import com.techx7.techstore.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -60,7 +59,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Cacheable("products")
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream()
                 .filter(product -> Objects.nonNull(product.getModel()))
