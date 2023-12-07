@@ -58,7 +58,7 @@ public class UserInfo extends BaseEntity {
     private String state;
 
     @NotBlank(message = "ZIP code should not be empty")
-    @Size(min = 5, max = 10, message = "ZIP code should have from 5 to 10 characters")
+    @Size(min = 1, max = 10, message = "ZIP code should have from 1 to 10 characters")
     @Column
     private String zipCode;
 
