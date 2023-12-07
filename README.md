@@ -34,8 +34,8 @@ The web application follows the best practices for Object-Oriented design and hi
 
 # Functionality
 
-* User Login and registration
-* User Profile
+* User login and registration
+* User profile
 * Administrator management of users
 * Administrator management of roles
 * Adding product to cart
