@@ -1,5 +1,5 @@
 # Techstore
-Spring MVC application that focuses on e-commerce operations with computers and electronics.
+Spring MVC application that focuses on e-commerce operations with computers and electronics.<br>
 Link: https://techx7.yellowflower-41c8e8d4.westeurope.azurecontainerapps.io
 
 # Description
