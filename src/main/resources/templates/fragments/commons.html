@@ -102,7 +102,7 @@
                         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                             <span class="navbar-toggler-icon"></span>
                         </button>
-                        <div class="collapse navbar-collapse row justify-content-between px-3 px-lg-0 pt-lg-0" id="navbarCollapse">
+                        <div class="collapse navbar-collapse row justify-content-between px-3 px-lg-0 pt-lg-0 align-items-start" id="navbarCollapse">
                             <div class="col-6 col-lg-auto navbar-nav pl-3 py-0">
                                 <a th:href="@{/}"
                                    th:classappend="${#strings.equals(activeLink, 'home') ? 'active' : ''}"
@@ -132,13 +132,25 @@
                             </div>
 
                             <div class="col-6 col-lg-auto d-lg-none navbar-nav py-0 text-end">
+                                <a sec:authorize="!authenticated"
+                                   th:href="@{users/login}"
+                                   class="nav-item nav-link link-login pr-0">Sign In</a>
+
+                                <a sec:authorize="!authenticated"
+                                   class="nav-item nav-link link-register pr-0">Sign Up</a>
+
                                 <a sec:authorize="hasRole('USER')"
                                    th:href="@{users/profile}"
                                    class="nav-item nav-link pr-0">Profile</a>
 
-                                <a class="nav-item nav-link link-login pr-0">Sign In</a>
-
-                                <a class="nav-item nav-link link-register pr-0">Sign Up</a>
+                                <a sec:authorize="authenticated"
+                                   class="nav-item nav-link text-secondary mb-2 link-login">
+                                    <form th:action="@{/users/logout}"
+                                          th:method="POST"
+                                          class="d-inline-block">
+                                        <button class="text-secondary bg-transparent p-0 border-0 outline-0">Logout</button>
+                                    </form>
+                                </a>
                             </div>
 
                             <div sec:authorize="!authenticated or hasAnyRole('USER', 'ADMIN')"
@@ -242,7 +254,7 @@
                                 <a th:href="@{/cart}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Cart</a>
                                 <a sec:authorize="authenticated"
-                                   th:href="@{/profile}"
+                                   th:href="@{/users/profile}"
                                    class="text-secondary mb-2"><i class="fa fa-angle-right mr-2"></i>Profile</a>
                                 <a sec:authorize="!authenticated"
                                    th:href="@{/users/login}"
