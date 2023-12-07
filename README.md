@@ -57,7 +57,7 @@ I am using MVC architecture consisting of several layers:
 
 # Quick Start & Implementation
 
-* Administrator - seeded during first application initialization
+* Administrator - seeded during application initialization
 ```
 Email: admin@techx7.com
 Username: admin
