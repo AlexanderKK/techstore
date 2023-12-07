@@ -70,7 +70,7 @@ Admin # Manager # Support # User # Carrier
 ```
 
 # Database Diagram
-![img_2.png](img_2.png)
+![img_2](https://github.com/AlexanderKK/techstore/assets/80641156/b6efcc7a-1992-408e-b8ad-76544efb3780)
 
 # Test
 
@@ -81,56 +81,56 @@ Admin # Manager # Support # User # Carrier
 ---
 
 * Test coverage
-* ![img_2.png](img_2.png)
+
 
 # Application pages
 
 * Home
 
-![img_7.png](img_7.png)
+![img_7](https://github.com/AlexanderKK/techstore/assets/80641156/a3f32e72-9600-4fbd-af62-c9b53430b350)
 
 * Products
 
-![img_8.png](img_8.png)
+![img_8](https://github.com/AlexanderKK/techstore/assets/80641156/e6c8ea65-d38a-48d6-a5b2-2dc55b456250)
 
 * Product Details
 
-![img_9.png](img_9.png)
+![img_9](https://github.com/AlexanderKK/techstore/assets/80641156/d187e51d-01c9-405c-a803-ca3828bf0bf2)
 
 * Contact
 
-![img_10.png](img_10.png)
+![img_10](https://github.com/AlexanderKK/techstore/assets/80641156/e4696152-2229-451c-821e-97fe05eb7756)
 
 * Profile
 
-![img_19.png](img_19.png)
+![img_19](https://github.com/AlexanderKK/techstore/assets/80641156/0a07017d-ef06-46ab-967d-078703c3f6d8)
 
 * Cart
 
-![img_11.png](img_11.png)
+![img_11](https://github.com/AlexanderKK/techstore/assets/80641156/521f1c09-da86-4d78-9422-9b99544b603d)
 
-![img_18.png](img_18.png)
+![img_18](https://github.com/AlexanderKK/techstore/assets/80641156/dec0ca8a-b139-4ef9-b0ed-49e6de177552)
 
 * Add Product
 
-![img_12.png](img_12.png)
+![img_12](https://github.com/AlexanderKK/techstore/assets/80641156/b4960dc2-2e4d-48ac-8221-5d744b13e5ce)
 
 * Manufacturers
 
-![img_15.png](img_15.png)
+![img_15](https://github.com/AlexanderKK/techstore/assets/80641156/d7235577-12f7-40ec-ad5b-840bf33a525e)
 
 * Models
 
-![img_16.png](img_16.png)
+![img_16](https://github.com/AlexanderKK/techstore/assets/80641156/8a04e620-22d2-4313-86b7-ae0346515798)
 
 * Categories
 
-![img_17.png](img_17.png)
+![img_17](https://github.com/AlexanderKK/techstore/assets/80641156/5347278a-0d56-4ae7-9f75-4184e78384a0)
 
 * Admin Management - Users
 
-![img_20.png](img_20.png)
+![img_20](https://github.com/AlexanderKK/techstore/assets/80641156/01577faa-a8e8-4939-b16c-3b98c504833e)
 
 * Admin Management - Roles
 
-![img_21.png](img_21.png)
+![img_21](https://github.com/AlexanderKK/techstore/assets/80641156/3c1cb31b-ea79-418a-8f0a-bf9a31de52b8)
