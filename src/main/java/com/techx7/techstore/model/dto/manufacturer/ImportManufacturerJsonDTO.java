@@ -1,25 +1,22 @@
-package com.techx7.techstore.model.dto.role;
+package com.techx7.techstore.model.dto.manufacturer;
 
-import com.techx7.techstore.validation.role.UniqueRoleName;
+import com.techx7.techstore.validation.manufacturer.UniqueManufacturerName;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
 @Valid
-public class ImportRolesJsonDTO {
+public class ImportManufacturerJsonDTO {
 
-    @UniqueRoleName
-    @NotBlank(message = "Please enter a role")
-    @Size(max = 15, message = "Role name should have a maximum length of 15 characters")
+    @UniqueManufacturerName
+    @NotBlank(message = "Please enter a manufacturer")
     private String name;
 
     @NotBlank(message = "Please enter an image url")
     private String imageUrl;
 
-    @NotBlank(message = "Please enter a description")
     private String description;
 
-    public ImportRolesJsonDTO() {}
+    public ImportManufacturerJsonDTO() {}
 
     public String getName() {
         return name;

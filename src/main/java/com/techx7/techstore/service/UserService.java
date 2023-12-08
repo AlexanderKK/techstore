@@ -1,7 +1,7 @@
 package com.techx7.techstore.service;
 
-import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.model.dto.user.*;
+import com.techx7.techstore.model.session.TechStoreUserDetails;
 
 import java.io.IOException;
 import java.security.Principal;
@@ -33,5 +33,7 @@ public interface UserService {
     UserPasswordDTO getUserPassword(Principal principal);
 
     void editUserPassword(UserPasswordDTO userPasswordDTO, Principal principal);
+
+    void deleteByRoleNames(List<String> roleNames);
 
 }

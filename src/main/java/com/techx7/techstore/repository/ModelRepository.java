@@ -15,8 +15,8 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
 
     Optional<Model> findByUuid(UUID uuid);
 
-    Optional<Model> findByManufacturerId(Long manufacturerId);
-
     List<Model> findAllByManufacturerId(Long id);
+
+    Optional<Model> findByName(String name);
 
 }

@@ -10,12 +10,10 @@ import com.techx7.techstore.model.dto.manufacturer.AddManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
+import com.techx7.techstore.model.dto.model.ImportModelJsonDTO;
 import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
-import com.techx7.techstore.model.dto.product.AddProductDTO;
-import com.techx7.techstore.model.dto.product.ProductCartItemDTO;
-import com.techx7.techstore.model.dto.product.ProductDTO;
-import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
+import com.techx7.techstore.model.dto.product.*;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
@@ -147,8 +145,21 @@ public class ApplicationConfiguration {
                         .using(toModelDTO)
                         .map(Manufacturer::getModels, ManufacturerWithModelsDTO::setModelDTOs));
 
+        // ImportModelJsonDTO -> Model
+        Converter<String, Manufacturer> FromNameToManufacturer
+                = context -> context.getSource() == null
+                ? null
+                : manufacturerRepository.findByName(context.getSource())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Manufacturer")));
+
+        modelMapper
+                .createTypeMap(ImportModelJsonDTO.class, Model.class)
+                .addMappings(mapper -> mapper
+                        .using(FromNameToManufacturer)
+                        .map(ImportModelJsonDTO::getManufacturer, Model::setManufacturer));
+
         // AddModelDTO -> Model
-        Converter<Long, Manufacturer> toManufacturer
+        Converter<Long, Manufacturer> FromIdToManufacturer
                 = context -> context.getSource() == null
                 ? null
                 : manufacturerRepository.findById(context.getSource())
@@ -157,7 +168,7 @@ public class ApplicationConfiguration {
         modelMapper
                 .createTypeMap(AddModelDTO.class, Model.class)
                 .addMappings(mapper -> mapper
-                        .using(toManufacturer)
+                        .using(FromIdToManufacturer)
                         .map(AddModelDTO::getManufacturer, Model::setManufacturer));
 
         // Model -> ModelWithManufacturerDTO
@@ -186,20 +197,19 @@ public class ApplicationConfiguration {
                         .using(localDateTimeToString)
                         .map(Model::getModified, ModelWithManufacturerDTO::setModified));
 
-        // AddProductDTO -> Product
-        Converter<String, Set<Category>> toCategoriesSet
+        // ImportProductJsonDTO -> Product
+        Converter<String, Set<Category>> fromCategoryNamesToCategoriesSet
                 = context -> context.getSource() == null
                 ? null
                 : Arrays.stream(context.getSource().split(","))
-                    .mapToLong(Long::parseLong)
-                    .mapToObj(categoryId -> categoryRepository.findById(categoryId)
-                            .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Category"))))
-                    .collect(Collectors.toSet());
+                .map(categoryName -> categoryRepository.findByName(categoryName)
+                        .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Category"))))
+                .collect(Collectors.toSet());
 
-        Converter<Long, Model> toModel
+        Converter<String, Model> fromModelNameToModel
                 = context -> context.getSource() == null
                 ? null
-                : modelRepository.findById(context.getSource())
+                : modelRepository.findByName(context.getSource())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Model")));
 
         Converter<String, Integer> toAvailableQuantity
@@ -207,15 +217,42 @@ public class ApplicationConfiguration {
                 ? null
                 : Integer.parseInt(context.getSource());
 
+        modelMapper.createTypeMap(ImportProductJsonDTO.class, Product.class)
+                .addMappings(mapper -> mapper
+                        .using(fromCategoryNamesToCategoriesSet)
+                        .map(ImportProductJsonDTO::getCategories, Product::setCategories))
+                .addMappings(mapper -> mapper
+                        .using(fromModelNameToModel)
+                        .map(ImportProductJsonDTO::getModel, Product::setModel))
+                .addMappings(mapper -> mapper
+                        .using(toAvailableQuantity)
+                        .map(ImportProductJsonDTO::getInitialQuantity, Product::setAvailableQuantity));
+
+        // AddProductDTO -> Product
+        Converter<String, Set<Category>> fromCategoryIdsToCategoriesSet
+                = context -> context.getSource() == null
+                ? null
+                : Arrays.stream(context.getSource().split(","))
+                .mapToLong(Long::parseLong)
+                .mapToObj(categoryId -> categoryRepository.findById(categoryId)
+                        .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Category"))))
+                .collect(Collectors.toSet());
+
+        Converter<Long, Model> fromModelIdToModel
+                = context -> context.getSource() == null
+                ? null
+                : modelRepository.findById(context.getSource())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "Model")));
+
         modelMapper.createTypeMap(AddProductDTO.class, Product.class)
                 .addMappings(mapper -> mapper
                         .using(toImageUrl)
                         .map(AddProductDTO::getImage, Product::setImageUrl))
                 .addMappings(mapper -> mapper
-                        .using(toCategoriesSet)
+                        .using(fromCategoryIdsToCategoriesSet)
                         .map(AddProductDTO::getCategories, Product::setCategories))
                 .addMappings(mapper -> mapper
-                        .using(toModel)
+                        .using(fromModelIdToModel)
                         .map(AddProductDTO::getModel, Product::setModel))
                 .addMappings(mapper -> mapper
                         .using(toAvailableQuantity)

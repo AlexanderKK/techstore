@@ -224,6 +224,23 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void deleteByRoleNames(List<String> roleNames) {
+        List<Role> roles = roleRepository.findAll()
+                .stream()
+                .filter(role -> roleNames.contains(role.getName()))
+                .toList();
+
+        List<User> usersToDelete = userRepository.findAll()
+                .stream()
+                .filter(user -> user.getRoles()
+                        .stream()
+                        .anyMatch(role -> roleNames.contains(role.getName()))
+                ).toList();
+
+        userRepository.deleteAll(usersToDelete);
+    }
+
     private void editImageUrl(UserProfileDTO userProfileDTO, User user, UserInfo userInfo) throws IOException {
         if(userProfileDTO.getImage().getSize() > 1) {
             String imageUrl = cloudinaryService.uploadFile(

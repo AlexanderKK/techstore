@@ -4,6 +4,8 @@ public enum Messages {
 
     ;
     public static final String ENTITIES_SEEDED_SUCCESSFULLY = "%s seeded successfully";
+    public static final String ENTITIES_CLEANED_UP_SUCCESSFULLY = "%s cleaned up successfully";
+    public static final String ENTITY_RESET_SUCCESSFULLY = "%s reset successfully";
     public static final String ENTITY_FOUND = "%s already exists";
     public static final String ENTITY_NOT_FOUND = "%s not found";
     public static final String VERIFICATION_CODE_NOT_VALID = "Verification code is expired or invalid";

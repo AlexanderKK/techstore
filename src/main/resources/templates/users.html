@@ -86,7 +86,17 @@
 
             <div class="col-lg-4 mb-5">
                 <div class="bg-light p-30">
-                    <h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">Restricted Users</span></h5>
+                    <h5 class="section-title position-relative text-uppercase ml-3 mb-5"><span class="credentials-title">Reset</span></h5>
+
+                    <form th:action="@{/seeds/admin/reset}"
+                          th:method="POST">
+                        <button class="btn btn-block col-auto btn-primary font-weight-bold py-3 mb-3 text-uppercase">Admin</button>
+                    </form>
+
+                    <form th:action="@{/seeds/entities/reset}"
+                          th:method="POST">
+                        <button class="btn btn-block btn-primary font-weight-bold py-3 mb-3 text-uppercase">Entities</button>
+                    </form>
                 </div>
             </div>
         </div>

@@ -2,20 +2,23 @@ package com.techx7.techstore.service.impl;
 
 import com.google.gson.Gson;
 import com.techx7.techstore.exception.EntityNotFoundException;
-import com.techx7.techstore.model.dto.role.ImportRolesJsonDTO;
-import com.techx7.techstore.model.entity.Role;
-import com.techx7.techstore.model.entity.User;
-import com.techx7.techstore.repository.RoleRepository;
-import com.techx7.techstore.repository.UserRepository;
+import com.techx7.techstore.model.dto.category.ImportCategoryJsonDTO;
+import com.techx7.techstore.model.dto.manufacturer.ImportManufacturerJsonDTO;
+import com.techx7.techstore.model.dto.model.ImportModelJsonDTO;
+import com.techx7.techstore.model.dto.product.ImportProductJsonDTO;
+import com.techx7.techstore.model.dto.role.ImportRoleJsonDTO;
+import com.techx7.techstore.model.entity.*;
+import com.techx7.techstore.repository.*;
 import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.SeedService;
-
+import com.techx7.techstore.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
@@ -23,7 +26,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.techx7.techstore.constant.Messages.*;
-import static com.techx7.techstore.constant.Paths.IMPORT_ROLES_JSON_PATH;
+import static com.techx7.techstore.constant.Paths.*;
 
 @Service
 public class SeedServiceImpl implements SeedService {
@@ -34,6 +37,11 @@ public class SeedServiceImpl implements SeedService {
     private final UserRepository userRepository;
     private final CloudinaryService cloudinaryService;
     private final PasswordEncoder passwordEncoder;
+    private final ManufacturerRepository manufacturerRepository;
+    private final ModelRepository modelRepository;
+    private final CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final UserService userService;
 
     @Autowired
     public SeedServiceImpl(Gson gson,
@@ -41,17 +49,27 @@ public class SeedServiceImpl implements SeedService {
                            RoleRepository roleRepository,
                            UserRepository userRepository,
                            CloudinaryService cloudinaryService,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           ManufacturerRepository manufacturerRepository,
+                           ModelRepository modelRepository,
+                           CategoryRepository categoryRepository,
+                           ProductRepository productRepository,
+                           UserService userService) {
         this.gson = gson;
         this.mapper = mapper;
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.cloudinaryService = cloudinaryService;
         this.passwordEncoder = passwordEncoder;
+        this.manufacturerRepository = manufacturerRepository;
+        this.modelRepository = modelRepository;
+        this.categoryRepository = categoryRepository;
+        this.productRepository = productRepository;
+        this.userService = userService;
     }
 
     @Override
-    public String seedRoles() throws Exception {
+    public String seedRoles() throws IOException {
         System.out.println("Importing user roles...");
 
         if(roleRepository.count() != 0) {
@@ -60,7 +78,7 @@ public class SeedServiceImpl implements SeedService {
 
         BufferedReader bufferedReader = readFileFromResources(IMPORT_ROLES_JSON_PATH);
 
-        ImportRolesJsonDTO[] roleJsonDTOs = gson.fromJson(bufferedReader, ImportRolesJsonDTO[].class);
+        ImportRoleJsonDTO[] roleJsonDTOs = gson.fromJson(bufferedReader, ImportRoleJsonDTO[].class);
 
         List<Role> roles = Arrays.stream(roleJsonDTOs)
                 .map(roleJsonDTO -> mapper.map(roleJsonDTO, Role.class))
@@ -92,7 +110,129 @@ public class SeedServiceImpl implements SeedService {
         return String.format(ENTITIES_SEEDED_SUCCESSFULLY, "Admin");
     }
 
-    private void createAdmin() {
+    @Override
+    public String seedManufacturers() throws IOException {
+        System.out.println("Importing manufacturers...");
+
+        if(manufacturerRepository.count() != 0) {
+            return String.format(ENTITIES_ALREADY_SEEDED, "Manufacturers");
+        }
+
+        BufferedReader bufferedReader = readFileFromResources(IMPORT_MANUFACTURERS_JSON_PATH);
+
+        ImportManufacturerJsonDTO[] manufacturerJsonDTOs = gson.fromJson(bufferedReader, ImportManufacturerJsonDTO[].class);
+
+        List<Manufacturer> manufacturers = Arrays.stream(manufacturerJsonDTOs)
+                .map(manufacturerJsonDTO -> mapper.map(manufacturerJsonDTO, Manufacturer.class))
+                .toList();
+
+        for (Manufacturer manufacturer : manufacturers) {
+            String imageUrl = cloudinaryService.seedFile(
+                    manufacturer.getClass().getSimpleName(), manufacturer.getName()
+            );
+
+            manufacturer.setImageUrl(imageUrl);
+        }
+
+        manufacturerRepository.saveAll(manufacturers);
+
+        return String.format(ENTITIES_SEEDED_SUCCESSFULLY, "Manufacturers");
+    }
+
+    @Override
+    public String seedModels() {
+        System.out.println("Importing models...");
+
+        if(modelRepository.count() != 0) {
+            return String.format(ENTITIES_ALREADY_SEEDED, "Models");
+        }
+
+        BufferedReader bufferedReader = readFileFromResources(IMPORT_MODELS_JSON_PATH);
+
+        ImportModelJsonDTO[] modelJsonDTOs = gson.fromJson(bufferedReader, ImportModelJsonDTO[].class);
+
+        List<Model> models = Arrays.stream(modelJsonDTOs)
+                .map(modelJsonDTO -> mapper.map(modelJsonDTO, Model.class))
+                .toList();
+
+        modelRepository.saveAll(models);
+
+        return String.format(ENTITIES_SEEDED_SUCCESSFULLY, "Models");
+    }
+
+    @Override
+    public String seedCategories() throws IOException {
+        System.out.println("Importing categories...");
+
+        if(categoryRepository.count() != 0) {
+            return String.format(ENTITIES_ALREADY_SEEDED, "Categories");
+        }
+
+        BufferedReader bufferedReader = readFileFromResources(IMPORT_CATEGORIES_JSON_PATH);
+
+        ImportCategoryJsonDTO[] categoryJsonDTOs = gson.fromJson(bufferedReader, ImportCategoryJsonDTO[].class);
+
+        List<Category> categories = Arrays.stream(categoryJsonDTOs)
+                .map(categoryJsonDTO -> mapper.map(categoryJsonDTO, Category.class))
+                .toList();
+
+        for (Category category : categories) {
+            String imageUrl = cloudinaryService.seedFile(
+                    category.getClass().getSimpleName(), category.getName()
+            );
+
+            category.setImageUrl(imageUrl);
+        }
+
+        categoryRepository.saveAll(categories);
+
+        return String.format(ENTITIES_SEEDED_SUCCESSFULLY, "Categories");
+    }
+
+    @Override
+    public String seedProducts() throws IOException {
+        System.out.println("Importing products...");
+
+        if(productRepository.count() != 0) {
+            return String.format(ENTITIES_ALREADY_SEEDED, "Products");
+        }
+
+        BufferedReader bufferedReader = readFileFromResources(IMPORT_PRODUCTS_JSON_PATH);
+
+        ImportProductJsonDTO[] productJsonDTOs = gson.fromJson(bufferedReader, ImportProductJsonDTO[].class);
+
+        List<Product> products = Arrays.stream(productJsonDTOs)
+                .map(productJsonDTO -> mapper.map(productJsonDTO, Product.class))
+                .toList();
+
+        for (Product product : products) {
+            String imageUrl = cloudinaryService.seedFile(
+                    product.getClass().getSimpleName(),
+                    product.getModel().getManufacturer().getName() + " " + product.getModel().getName()
+            );
+
+            product.setImageUrl(imageUrl);
+        }
+
+        productRepository.saveAll(products);
+
+        return String.format(ENTITIES_SEEDED_SUCCESSFULLY, "Products");
+    }
+
+    @Override
+    public void cleanUpDatabase() {
+        System.out.println("Cleaning up database...");
+
+        productRepository.deleteAll();
+        categoryRepository.deleteAll();
+        modelRepository.deleteAll();
+        manufacturerRepository.deleteAll();
+
+        System.out.printf(ENTITIES_CLEANED_UP_SUCCESSFULLY + System.lineSeparator(), "Entities");
+    }
+
+    @Override
+    public void createAdmin() {
         User user = new User();
 
         user.setEmail("admin@techx7.com");
@@ -110,6 +250,17 @@ public class SeedServiceImpl implements SeedService {
         user.setActive(true);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void resetAdmin() {
+        System.out.println("Resetting admin...");
+
+        userService.deleteByRoleNames(List.of("ADMIN"));
+
+        createAdmin();
+
+        System.out.printf(ENTITY_RESET_SUCCESSFULLY + System.lineSeparator(), "Admin");
     }
 
     private Role getRoleEntity(String roleName) {

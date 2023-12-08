@@ -73,6 +73,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers("/roles/**").hasRole("ADMIN")
                         .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
+                        .requestMatchers("/seeds/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
 

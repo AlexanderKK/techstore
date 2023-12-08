@@ -1,0 +1,31 @@
+[
+  {
+    "imageUrl": "Dell_XPS_15.png",
+    "categories": "Notebook computers",
+    "model": "XPS 15",
+    "price": 2999,
+    "discountPrice": 2849,
+    "initialQuantity": 20,
+    "description": "Dell's XPS line has been getting a lot of praise over the past two years, and we're pretty much on board with the positive reviews.",
+    "specification": "Model: Dell XPS 15\nRAM: 32GB (2x16384MB) DDR4\nDrive: 2TB SSD NVMe\nCPU: AMD Ryzen™ 7 3700U\nGraphics: AMD Radeon™ RX Vega 10\nOS: Windows Education 10\nWarranty: 60 months"
+  },
+  {
+    "imageUrl": "Lenovo_MiniBook.png",
+    "categories": "Notebook computers",
+    "model": "Ideapad 3 15 UltraSlim",
+    "price": 2499,
+    "discountPrice": 1874,
+    "initialQuantity": 15,
+    "description": "A new budget offering has landed in our hands and although the Lenovo Ideapad 3 15 Ultraslim doesn't offer powerful hardware capabilities, the laptop has an amazing design and build quality.",
+    "specification": "Model: Lenovo Ideapad 3 15 UltraSlim\nRAM: 8GB DDR4\nDrive: 500GB SSD NVMe\nCPU: Intel Celeron N4120\nGraphics: Intel UHD Graphics 600\nOS: Windows 11 Professional\nWarranty: 24 months"
+  },
+  {
+    "imageUrl": "Acer_Predator_Helios_700.png",
+    "categories": "Notebook computers",
+    "model": "Predator Helios 700",
+    "price": 3499,
+    "initialQuantity": 20,
+    "description": "Helios 700 features state-of-the-art cooling with our specially designed AeroBlade™ all-metal fan technology to reach maximum performance potential.",
+    "specification": "Model: Predator Helios 700\nRAM: 32GB DDR4\nDrive: 512GB SSD NVMe\nCPU: Intel Core i9-10980HK\nGraphics: NVIDIA GeForce RTX 2080 SUPER\nOS: Windows 10 Professional\nWarranty: 36 months"
+  }
+]

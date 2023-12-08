@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Dell",
+    "imageUrl": "dell.png"
+  },
+  {
+    "name": "Acer",
+    "imageUrl": "acer.png"
+  },
+  {
+    "name": "Lenovo",
+    "imageUrl": "lenovo.png"
+  }
+]

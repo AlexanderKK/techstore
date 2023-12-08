@@ -217,19 +217,24 @@ buttonAddToCartProductDetails.on('mouseup', function() {
 	const productId = $('#product-details-uuid').val();
 	const addedQuantity = $('#product-details-quantity').val();
 
-
 	addProduct(productId, addedQuantity);
 });
 
 /**
  * Add to cart
  */
+let addCounter = 0;
+
 function addToCart() {
+	addCounter++;
+
 	const productId = $(this).parent().children().prev('input').last().val();
 
 	const addedQuantity = $(this).parent().children().last().val();
 
-	addProduct(productId, addedQuantity)
+	if(addCounter === 1) {
+		addProduct(productId, addedQuantity)
+	}
 }
 
 function addProduct(productId, addedQuantity) {
@@ -260,6 +265,8 @@ function addProduct(productId, addedQuantity) {
 
 				updateCartPageTotal();
 			}
+
+			addCounter = 0;
 
 			if(response.status === 400) {
 				return response.json().then(data => alert(data.error));
