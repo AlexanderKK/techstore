@@ -5,16 +5,10 @@ import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.PrincipalNotFoundException;
 import com.techx7.techstore.exception.UsernameFoundException;
 import com.techx7.techstore.model.dto.user.*;
-import com.techx7.techstore.model.entity.Country;
-import com.techx7.techstore.model.entity.Role;
-import com.techx7.techstore.model.entity.User;
-import com.techx7.techstore.model.entity.UserInfo;
+import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.model.events.UserRegisteredEvent;
 import com.techx7.techstore.model.session.TechStoreUserDetails;
-import com.techx7.techstore.repository.CountryRepository;
-import com.techx7.techstore.repository.RoleRepository;
-import com.techx7.techstore.repository.UserInfoRepository;
-import com.techx7.techstore.repository.UserRepository;
+import com.techx7.techstore.repository.*;
 import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.UserService;
 import jakarta.transaction.Transactional;
@@ -48,6 +42,7 @@ public class UserServiceImpl implements UserService {
     private final UserInfoRepository userInfoRepository;
     private final CountryRepository countryRepository;
     private final CloudinaryService cloudinaryService;
+    private final UserMetadataRepository userMetadataRepository;
 
     @Autowired
     public UserServiceImpl(ModelMapper mapper,
@@ -57,7 +52,8 @@ public class UserServiceImpl implements UserService {
                            PasswordEncoder passwordEncoder,
                            UserInfoRepository userInfoRepository,
                            CountryRepository countryRepository,
-                           CloudinaryService cloudinaryService) {
+                           CloudinaryService cloudinaryService,
+                           UserMetadataRepository userMetadataRepository) {
         this.mapper = mapper;
         this.userRepository = userRepository;
         this.applicationEventPublisher = applicationEventPublisher;
@@ -66,11 +62,16 @@ public class UserServiceImpl implements UserService {
         this.userInfoRepository = userInfoRepository;
         this.countryRepository = countryRepository;
         this.cloudinaryService = cloudinaryService;
+        this.userMetadataRepository = userMetadataRepository;
     }
 
     @Override
     public void register(RegisterDTO registerDTO) {
         User user = mapper.map(registerDTO, User.class);
+
+        List<UserMetadata> usersMetaData = userMetadataRepository.findAllByIp(registerDTO.getIpAddress());
+
+        user.setUsersMetaData(usersMetaData);
 
         userRepository.save(user);
 
@@ -246,6 +247,25 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findByEmailOrUsername(emailOrUsername);
 
         return user.isPresent() && !user.get().isActive();
+    }
+
+    @Override
+    public boolean isUserRestricted(String ipAddress) {
+        Optional<UserMetadata> ip = userMetadataRepository.findByIp(ipAddress);
+
+        return ip.isPresent() && ip.get().isRestricted();
+    }
+
+    @Override
+    public void createUserMetadata(UserMetadataDTO userMetadataDTO) {
+        UserMetadata userMetadata = mapper.map(userMetadataDTO, UserMetadata.class);
+
+        Optional<UserMetadata> existingUserMetadata =
+                userMetadataRepository.findByIpAndUserAgent(userMetadata.getIp(), userMetadata.getUserAgent());
+
+        if(existingUserMetadata.isEmpty()) {
+            userMetadataRepository.save(userMetadata);
+        }
     }
 
     private void editImageUrl(UserProfileDTO userProfileDTO, User user, UserInfo userInfo) throws IOException {

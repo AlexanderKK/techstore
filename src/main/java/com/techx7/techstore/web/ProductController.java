@@ -58,7 +58,7 @@ public class ProductController {
 
         model.addAttribute("products", products);
 
-        return "products";
+        return "products/products";
     }
 
     @GetMapping("/add")
@@ -74,7 +74,7 @@ public class ProductController {
             model.addAttribute(flashAttributeDTO, new AddProductDTO());
         }
 
-        return "product-add";
+        return "products/product-add";
     }
 
     @PostMapping("/add")
@@ -100,7 +100,7 @@ public class ProductController {
 
         model.addAttribute("product", productDetailsDTO);
 
-        return "product-details";
+        return "products/product-details";
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

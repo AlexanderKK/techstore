@@ -4,7 +4,6 @@ import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.ManufacturerNotFoundException;
 import com.techx7.techstore.model.dto.manufacturer.ManufacturerDTO;
 import com.techx7.techstore.model.dto.model.AddModelDTO;
-import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ModelService;
@@ -16,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +48,7 @@ public class ModelController {
             model.addAttribute(flashAttributeDTO, new AddModelDTO());
         }
 
-        return "models";
+        return "models/models";
     }
 
     @PostMapping("/add")
@@ -81,7 +79,7 @@ public class ModelController {
             model.addAttribute("modelToEdit", modelWithManufacturerDTO);
         }
 
-        return "model-edit";
+        return "models/model-edit";
     }
 
     @PatchMapping("/edit")

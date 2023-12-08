@@ -38,4 +38,8 @@ public interface UserService {
 
     boolean isUserNonActive(String emailOrUsername);
 
+    boolean isUserRestricted(String ipAddress);
+
+    void createUserMetadata(UserMetadataDTO userMetadataDTO);
+
 }

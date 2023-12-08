@@ -2,6 +2,7 @@ package com.techx7.techstore.web.rest;
 
 import com.techx7.techstore.model.dto.user.RegisterDTO;
 import com.techx7.techstore.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,10 @@ public class AuthRestController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO) {
+    public ResponseEntity<RegisterDTO> registerUser(@Valid @RequestBody RegisterDTO registerDTO, HttpServletRequest httpServletRequest) {
+        String remoteAddr = httpServletRequest.getRemoteAddr();
+        registerDTO.setIpAddress(remoteAddr);
+
         userService.register(registerDTO);
 
         System.out.println("main");

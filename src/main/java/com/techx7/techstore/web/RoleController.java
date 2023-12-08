@@ -40,7 +40,7 @@ public class RoleController {
             model.addAttribute(flashAttributeDTO, new AddRoleDTO());
         }
 
-        return "roles";
+        return "roles/roles";
     }
 
     @PostMapping("/add")
@@ -68,7 +68,7 @@ public class RoleController {
             model.addAttribute("roleToEdit", roleDTO);
         }
 
-        return "role-edit";
+        return "roles/role-edit";
     }
 
     @PatchMapping("/edit")

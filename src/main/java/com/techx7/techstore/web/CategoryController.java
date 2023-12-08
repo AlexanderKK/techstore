@@ -41,7 +41,7 @@ public class CategoryController {
             model.addAttribute(flashAttributeDTO, new AddCategoryDTO());
         }
 
-        return "categories";
+        return "categories/categories";
     }
 
     @PostMapping("/add")
@@ -69,7 +69,7 @@ public class CategoryController {
             model.addAttribute("categoryToEdit", categoryDTO);
         }
 
-        return "category-edit";
+        return "categories/category-edit";
     }
 
     @PatchMapping("/edit")

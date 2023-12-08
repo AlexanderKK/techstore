@@ -1,8 +1,7 @@
 package com.techx7.techstore.service.impl;
 
-import com.techx7.techstore.model.session.TechStoreUserDetails;
-import com.techx7.techstore.exception.UserNotActivatedException;
 import com.techx7.techstore.model.entity.User;
+import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,10 +21,6 @@ public class TechstoreUserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String emailOrUsername) throws UsernameNotFoundException {
         User user = userRepository.findByEmailOrUsername(emailOrUsername)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
-
-        if(!user.isActive()) {
-            throw new UserNotActivatedException("Account not verified. Check your email for activation link");
-        }
 
         return new TechStoreUserDetails(user);
     }

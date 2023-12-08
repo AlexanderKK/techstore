@@ -61,7 +61,7 @@ public class UserController {
 
         model.addAttribute("users", users);
 
-        return "users";
+        return "users/users";
     }
 
     @PreAuthorize("@hasAnyRole('ADMIN')")
@@ -78,7 +78,7 @@ public class UserController {
             model.addAttribute("userToEdit", userDTO);
         }
 
-        return "user-edit";
+        return "users/user-edit";
     }
 
     @PreAuthorize("@hasAnyRole('CARRIER', 'USER', 'SUPPORT', 'MANAGER', 'ADMIN')")
@@ -141,7 +141,7 @@ public class UserController {
             model.addAttribute("userPasswordToEdit", userPasswordDTO);
         }
 
-        return "user-profile";
+        return "users/user-profile";
     }
 
     @PreAuthorize("@hasAnyRole('CARRIER', 'USER', 'SUPPORT', 'MANAGER', 'ADMIN')")

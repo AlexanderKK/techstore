@@ -40,7 +40,7 @@ public class ManufacturerController {
             model.addAttribute(flashAttributeDTO, new AddManufacturerDTO());
         }
 
-        return "manufacturers";
+        return "manufacturers/manufacturers";
     }
 
     @PostMapping("/add")
@@ -68,7 +68,7 @@ public class ManufacturerController {
             model.addAttribute("manufacturerToEdit", manufacturerDTO);
         }
 
-        return "manufacturer-edit";
+        return "manufacturers/manufacturer-edit";
     }
 
     @PatchMapping("/edit")

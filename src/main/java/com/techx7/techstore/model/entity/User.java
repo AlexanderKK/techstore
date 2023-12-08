@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -73,6 +74,12 @@ public class User extends BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "lock_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime lockTime;
+
+    @ManyToMany
+    @JoinTable(name = "users_metadata",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_metadata_id"))
+    private List<UserMetadata> usersMetaData;
 
     public User() {
         this.roles = new HashSet<>();
@@ -180,6 +187,14 @@ public class User extends BaseEntity {
 
     public void setLockTime(LocalDateTime lockTime) {
         this.lockTime = lockTime;
+    }
+
+    public List<UserMetadata> getUsersMetaData() {
+        return usersMetaData;
+    }
+
+    public void setUsersMetaData(List<UserMetadata> usersMetaData) {
+        this.usersMetaData = usersMetaData;
     }
 
     public void editUser(UserDTO userDTO) {

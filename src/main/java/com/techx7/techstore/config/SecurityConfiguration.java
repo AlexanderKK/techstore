@@ -30,7 +30,6 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-//                .addFilterBefore(sameSiteFilter().getFilter(), CsrfFilter.class)
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 ).authorizeHttpRequests(authorizeRequests -> authorizeRequests
@@ -55,7 +54,7 @@ public class SecurityConfiguration {
                                 "/users/password/**"
                         ).hasAnyRole("CARRIER", "USER", "SUPPORT", "MANAGER", "ADMIN")
 
-                        //User
+                        // User
                         .requestMatchers(
                                 "/cart/add/**",
                                 "/cart/update/**",

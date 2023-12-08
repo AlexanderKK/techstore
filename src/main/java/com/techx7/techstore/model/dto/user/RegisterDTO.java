@@ -23,6 +23,8 @@ public class RegisterDTO {
     @Size(min = 8, max = 20, message = "Password should have from 8 to 20 characters")
     private String password;
 
+    private String ipAddress;
+
     public RegisterDTO() {}
 
     public String getEmail() {
@@ -47,6 +49,14 @@ public class RegisterDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
 }
