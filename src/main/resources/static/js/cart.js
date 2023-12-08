@@ -249,7 +249,7 @@ function addProduct(productId, addedQuantity) {
 	}
 
 	const url = `${window.location.origin}/cart/add/${productId}/${addedQuantity}`;
-	console.log(url)
+	// console.log(url)
 
 	const requestOptions = {
 		headers: restHeaders,
@@ -259,7 +259,7 @@ function addProduct(productId, addedQuantity) {
 	fetch(url, requestOptions)
 		.then(response => {
 			if(response.ok) {
-				console.log('Item added to cart');
+				console.log('Product added to cart');
 
 				loadCartItems();
 
@@ -272,7 +272,7 @@ function addProduct(productId, addedQuantity) {
 				return response.json().then(data => alert(data.error));
 			}
 		})
-		.catch(error => console.log('error', error))
+		.catch(error => error)
 }
 
 /**
@@ -395,7 +395,7 @@ function resetQuantity(qtyInput) {
 function updateQuantity(productId, quantity) {
 	const url = `${window.location.origin}/cart/update/${productId}/${quantity}`;
 
-	console.log(url, productId, quantity)
+	// console.log(url, productId, quantity)
 
 	const requestOptions = {
 		headers: restHeaders,
@@ -408,7 +408,7 @@ function updateQuantity(productId, quantity) {
 				console.log('Product quantity updated')
 
 				return response.json().then(newSubtotal => {
-					console.log(newSubtotal);
+					// console.log(newSubtotal);
 
 					updateSubtotal(newSubtotal, productId);
 
@@ -427,7 +427,7 @@ function updateQuantity(productId, quantity) {
 			}
 		})
 
-		.catch(error => console.log('error', error))
+		.catch(error => error)
 }
 
 /**
@@ -506,7 +506,7 @@ function removeFromCart(removeBtn) {
 				console.log('Product has been removed')
 			}
 		})
-		.catch(error => console.log('error', error))
+		.catch(error => error)
 }
 
 /**

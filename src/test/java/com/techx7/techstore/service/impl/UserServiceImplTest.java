@@ -11,10 +11,7 @@ import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.model.entity.UserInfo;
 import com.techx7.techstore.model.enums.GenderEnum;
 import com.techx7.techstore.model.session.TechStoreUserDetails;
-import com.techx7.techstore.repository.CountryRepository;
-import com.techx7.techstore.repository.RoleRepository;
-import com.techx7.techstore.repository.UserInfoRepository;
-import com.techx7.techstore.repository.UserRepository;
+import com.techx7.techstore.repository.*;
 import com.techx7.techstore.service.CloudinaryService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -81,6 +78,9 @@ class UserServiceImplTest {
 
     @Mock
     private TechStoreUserDetails techStoreUserDetails;
+
+    @Mock
+    private UserMetadataRepository userMetadataRepository;
 
     @Test
     void testRegister() {

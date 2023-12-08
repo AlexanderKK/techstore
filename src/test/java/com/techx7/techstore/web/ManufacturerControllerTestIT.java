@@ -70,7 +70,7 @@ class ManufacturerControllerTestIT {
 
         mockMvc.perform(get("/manufacturers"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("manufacturers"))
+                .andExpect(view().name("manufacturers/manufacturers"))
                 .andExpect(model().attribute("manufacturers", hasSize(1)));
     }
 
@@ -79,7 +79,7 @@ class ManufacturerControllerTestIT {
     void testManageManufacturerWhenNoManufacturers() throws Exception {
         mockMvc.perform(get("/manufacturers"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("manufacturers"))
+                .andExpect(view().name("manufacturers/manufacturers"))
                 .andExpect(model().attribute("manufacturers", hasSize(0)));
     }
 
@@ -112,7 +112,7 @@ class ManufacturerControllerTestIT {
 
         mockMvc.perform(get("/manufacturers/edit/{uuid}", existingUuid))
                 .andExpect(status().isOk())
-                .andExpect(view().name("manufacturer-edit"))
+                .andExpect(view().name("manufacturers/manufacturer-edit"))
                 .andExpect(model().attributeExists("manufacturerToEdit"));
     }
 

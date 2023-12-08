@@ -1,6 +1,5 @@
 package com.techx7.techstore.service.impl;
 
-import com.techx7.techstore.exception.UserNotActivatedException;
 import com.techx7.techstore.model.entity.Role;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.UserRepository;
@@ -35,17 +34,6 @@ class TechstoreUserDetailsServiceTest {
     void testUserNotFound() {
         assertThrows(
                 UsernameNotFoundException.class,
-                () -> serviceToTest.loadUserByUsername("test@example.com")
-        );
-    }
-
-    @Test
-    void testUserNotActivated() {
-        when(mockUserRepository.findByEmailOrUsername("test@example.com"))
-                .thenReturn(Optional.of(new User()));
-
-        assertThrows(
-                UserNotActivatedException.class,
                 () -> serviceToTest.loadUserByUsername("test@example.com")
         );
     }

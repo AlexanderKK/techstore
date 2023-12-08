@@ -53,7 +53,7 @@ class ProductControllerTestIT {
     void testGetProductsWhenCalledWithValidParameters() throws Exception {
         mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("products"))
+                .andExpect(view().name("products/products"))
                 .andExpect(model().attributeExists("products"));
     }
 
@@ -67,7 +67,7 @@ class ProductControllerTestIT {
 
         mockMvc.perform(get("/products/add"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("product-add"))
+                .andExpect(view().name("products/product-add"))
                 .andExpect(model().attributeExists("categories", "manufacturers", "addProductDTO"));
     }
 
@@ -92,7 +92,7 @@ class ProductControllerTestIT {
 
         mockMvc.perform(get("/products/detail/{uuid}", existingUuid))
                 .andExpect(status().isOk())
-                .andExpect(view().name("product-details"))
+                .andExpect(view().name("products/product-details"))
                 .andExpect(model().attributeExists("product"));
     }
 

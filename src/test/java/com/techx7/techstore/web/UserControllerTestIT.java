@@ -72,7 +72,7 @@ class UserControllerTestIT {
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("users"))
-                .andExpect(view().name("users"));
+                .andExpect(view().name("users/users"));
     }
 
     @Test
@@ -85,7 +85,7 @@ class UserControllerTestIT {
         mockMvc.perform(get("/users/edit/{uuid}", uuid))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("userToEdit", "roleDTOs"))
-                .andExpect(view().name("user-edit"));
+                .andExpect(view().name("users/user-edit"));
     }
 
     @Test
@@ -163,7 +163,7 @@ class UserControllerTestIT {
         mockMvc.perform(get("/users/profile"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("genders", "countries", "userProfileToEdit", "userCredentialsToEdit", "userPasswordToEdit"))
-                .andExpect(view().name("user-profile"));
+                .andExpect(view().name("users/user-profile"));
     }
 
     @Test

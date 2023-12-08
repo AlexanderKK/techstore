@@ -64,7 +64,7 @@ class ModelControllerTestIT {
         mockMvc.perform(get("/models"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("manufacturers", "models"))
-                .andExpect(view().name("models"));
+                .andExpect(view().name("models/models"));
     }
 
     @Test
@@ -90,7 +90,7 @@ class ModelControllerTestIT {
         mockMvc.perform(get("/models/edit/{uuid}", existingModelUuid))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("manufacturers", "modelToEdit"))
-                .andExpect(view().name("model-edit"));
+                .andExpect(view().name("models/model-edit"));
     }
 
     @Test
@@ -130,7 +130,7 @@ class ModelControllerTestIT {
     void testHandleModelErrorWhenCalled() throws Exception {
         mockMvc.perform(get("/models/edit/{uuid}", existingModelUuid))
                 .andExpect(status().isOk())
-                .andExpect(view().name("model-edit"));
+                .andExpect(view().name("models/model-edit"));
 
         UUID uuid = UUID.randomUUID();
 

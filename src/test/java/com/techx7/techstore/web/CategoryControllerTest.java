@@ -3,6 +3,7 @@ package com.techx7.techstore.web;
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.dto.category.CategoryDTO;
 import com.techx7.techstore.service.CategoryService;
+import com.techx7.techstore.service.interceptors.RegistrationInterceptor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -31,6 +32,9 @@ class CategoryControllerTest {
 
     @MockBean
     private CategoryService categoryService;
+
+    @MockBean
+    private RegistrationInterceptor registrationInterceptor;
 
     @Test
     @WithMockUser(username = "test-manager", roles = {"USER", "MANAGER"})
