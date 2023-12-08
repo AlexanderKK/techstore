@@ -22,7 +22,7 @@
 
     <div class="container">
         <div class="popup auth-login">
-            <div class="popup__inner px-5">
+            <div class="popup__inner">
                 <div class="popup__head">
                     <h2>Sign In</h2>
                 </div>
@@ -38,6 +38,8 @@
 <!--                                <a th:href="@{/users/reactivate}" class="btn-link">Resend verification code</a>-->
 
                                 <p th:if="${bad_credentials}" class="errors text-danger">Invalid username or password.</p>
+
+                                <p th:text="${accountNotVerified}" class="errors text-danger"></p>
                             </div>
 
                             <div class="form__body">

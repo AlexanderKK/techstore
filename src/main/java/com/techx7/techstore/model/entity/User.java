@@ -20,7 +20,7 @@ public class User extends BaseEntity {
 
     @NotBlank(message = "Email should not be empty")
     @Size(min = 5, max = 35, message = "Email should have from 5 to 35 characters")
-    @Email(message = "Email should be valid", regexp = "^(([^<>()\\[\\]\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\.,;:\\s@\"]+)*)|(\".+\"))@(((\\d{1,3}\\.){3}\\d{1,3})|([a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+))$")
+    @Email(message = "Email should be valid", regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -44,14 +44,6 @@ public class User extends BaseEntity {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime modified;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(columnDefinition = "TIMESTAMP")
-    private LocalDateTime lastLogin;
-
-    @Column(name = "failed_login_attempts")
-    private Integer failedLoginAttempts;
-
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -70,6 +62,17 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     public Set<CartItem> cartItems;
+
+    @Column(name = "failed_login_attempts")
+    private int failedLoginAttempts;
+
+    @Column(name = "account_non_locked")
+    private boolean accountNonLocked = true;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "lock_time", columnDefinition = "TIMESTAMP")
+    private LocalDateTime lockTime;
 
     public User() {
         this.roles = new HashSet<>();
@@ -115,22 +118,6 @@ public class User extends BaseEntity {
         this.modified = modified;
     }
 
-    public LocalDateTime getLastLogin() {
-        return lastLogin;
-    }
-
-    public void setLastLogin(LocalDateTime lastLogin) {
-        this.lastLogin = lastLogin;
-    }
-
-    public Integer getFailedLoginAttempts() {
-        return failedLoginAttempts;
-    }
-
-    public void setFailedLoginAttempts(Integer failedLoginAttempts) {
-        this.failedLoginAttempts = failedLoginAttempts;
-    }
-
     public Set<Role> getRoles() {
         return roles;
     }
@@ -169,6 +156,30 @@ public class User extends BaseEntity {
 
     public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public int getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(int failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
+    }
+
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public LocalDateTime getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(LocalDateTime lockTime) {
+        this.lockTime = lockTime;
     }
 
     public void editUser(UserDTO userDTO) {

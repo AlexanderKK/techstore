@@ -4,6 +4,7 @@ import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.UserAlreadyActivatedException;
 import com.techx7.techstore.exception.UserNotActivatedException;
 import com.techx7.techstore.service.UserActivationService;
+import com.techx7.techstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +18,13 @@ import static com.techx7.techstore.constant.Messages.USER_VERIFIED;
 public class AuthController {
 
     private final UserActivationService userActivationService;
+    private final UserService userService;
 
     @Autowired
-    public AuthController(UserActivationService userActivationService) {
+    public AuthController(UserActivationService userActivationService,
+                          UserService userService) {
         this.userActivationService = userActivationService;
+        this.userService = userService;
     }
 
     @GetMapping("/login")
@@ -34,8 +38,14 @@ public class AuthController {
 
     @PostMapping("/login-error")
     public String loginFailure(@ModelAttribute("emailOrUsername") String emailOrUsername, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("bad_credentials", "true");
         redirectAttributes.addFlashAttribute("emailOrUsername", emailOrUsername);
+
+        boolean isUserNonActive = userService.isUserNonActive(emailOrUsername);
+        if(isUserNonActive) {
+            redirectAttributes.addFlashAttribute("accountNotVerified", "Account not verified. Check your email for verification code");
+        } else {
+            redirectAttributes.addFlashAttribute("bad_credentials", "true");
+        }
 
         return "redirect:login";
     }

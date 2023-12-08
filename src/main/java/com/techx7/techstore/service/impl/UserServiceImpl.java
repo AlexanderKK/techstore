@@ -241,6 +241,13 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteAll(usersToDelete);
     }
 
+    @Override
+    public boolean isUserNonActive(String emailOrUsername) {
+        Optional<User> user = userRepository.findByEmailOrUsername(emailOrUsername);
+
+        return user.isPresent() && !user.get().isActive();
+    }
+
     private void editImageUrl(UserProfileDTO userProfileDTO, User user, UserInfo userInfo) throws IOException {
         if(userProfileDTO.getImage().getSize() > 1) {
             String imageUrl = cloudinaryService.uploadFile(

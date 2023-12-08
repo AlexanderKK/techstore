@@ -36,4 +36,6 @@ public interface UserService {
 
     void deleteByRoleNames(List<String> roleNames);
 
+    boolean isUserNonActive(String emailOrUsername);
+
 }

@@ -10300,12 +10300,13 @@ a.text-dark:hover, a.text-dark:focus {
 .popup .popup__inner {
   max-width: 620px;
   margin: 30px auto;
-  padding: 70px 90px 95px;
+  padding: 60px 60px 80px;
   background-color: #3D464D;
   color: #FFF;
   position: relative;
   transform: translateX(-60%);
   transition: transform .4s ease-in-out;
+  border-radius: 14% 0 14% 0;
 }
 
 @media(max-width: 768px) {
@@ -10380,8 +10381,9 @@ a.text-dark:hover, a.text-dark:focus {
   position: static;
   opacity: 1;
   background-color: #3D464D;
-  max-width: 850px;
+  max-width: 620px;
   margin: 50px auto;
+  border-radius: 14% 0 14% 0;
 }
 
 .popup.auth-login .popup__inner {

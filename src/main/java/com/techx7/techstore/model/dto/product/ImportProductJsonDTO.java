@@ -28,7 +28,7 @@ public class ImportProductJsonDTO {
     private String price;
 
     @ProductDiscount
-    private String discountPercentage;
+    private String discountPrice;
 
     @ProductQuantity(max = 100)
     private String initialQuantity;
@@ -83,12 +83,12 @@ public class ImportProductJsonDTO {
         this.price = price == null ? price : price.trim();
     }
 
-    public String getDiscountPercentage() {
-        return discountPercentage;
+    public String getDiscountPrice() {
+        return discountPrice;
     }
 
-    public void setDiscountPercentage(String discountPercentage) {
-        this.discountPercentage = discountPercentage == null ? discountPercentage : discountPercentage.trim();
+    public void setDiscountPrice(String discountPrice) {
+        this.discountPrice = discountPrice == null ? discountPrice : discountPrice.trim();
     }
 
     public String getInitialQuantity() {

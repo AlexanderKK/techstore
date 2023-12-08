@@ -3,6 +3,7 @@ package com.techx7.techstore.repository;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.model.entity.UserActivationCode;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +27,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUuid(UUID uuid);
 
+    @Modifying
+    @Query("UPDATE User u SET u.failedLoginAttempts = ?1 WHERE u.email = ?2")
+    void updateFailedAttempt(int failedAttempt, String email);
 }

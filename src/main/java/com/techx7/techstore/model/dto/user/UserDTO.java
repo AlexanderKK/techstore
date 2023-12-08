@@ -16,7 +16,7 @@ public class UserDTO {
 
     @NotNull(message = "Please enter an email")
     @Size(min = 5, max = 35, message = "Email should have from 5 to 35 characters")
-    @Email(message = "Please enter a valid email", regexp = "^(([^<>()\\[\\]\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\.,;:\\s@\"]+)*)|(\".+\"))@(((\\d{1,3}\\.){3}\\d{1,3})|([a-zA-Z0-9]+(\\.[a-zA-Z0-9]+)+))$")
+    @Email(message = "Please enter a valid email", regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String email;
 
     @NotNull(message = "Please enter a username")
