@@ -87,6 +87,7 @@ Carrier: Access orders, user's address info
 
 * Test coverage
 
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/e51cc312-aa62-4985-a2ca-478837a08b64)
 
 # Application pages
 
