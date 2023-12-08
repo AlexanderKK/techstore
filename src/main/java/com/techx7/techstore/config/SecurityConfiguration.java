@@ -54,6 +54,11 @@ public class SecurityConfiguration {
                                 "/users/password/**"
                         ).hasAnyRole("CARRIER", "USER", "SUPPORT", "MANAGER", "ADMIN")
 
+                        .requestMatchers(
+                                "/cart/add/**",
+                                "/cart/update/**"
+                        ).permitAll()
+
                         // User
                         .requestMatchers(
                                 "/cart/add/**",

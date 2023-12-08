@@ -4964,7 +4964,8 @@ a.badge-dark:focus, a.badge-dark.focus {
   padding-left: 0;
 }
 
-.alert {
+.alert,
+.alert-cart {
   position: fixed;
   top: 83px;
   z-index: 101;
@@ -5111,11 +5112,6 @@ a.badge-dark:focus, a.badge-dark.focus {
 
 .alert-dark .alert-link {
   color: #090b0c;
-}
-
-.alert-auth {
-  color: #FFD333;
-  background-color: #3D464D;
 }
 
 @keyframes progress-bar-stripes {
@@ -10542,6 +10538,15 @@ a.text-dark:hover, a.text-dark:focus {
       padding: 0 !important;
   }
 
+  .hero h1 + h1 {
+    font-size: 26px !important;
+    margin: 0 auto;
+  }
+
+  .hero h1 + p {
+    font-size: 22px !important;
+  }
+
   #navbarCollapse.show {
     height: auto;
   }
@@ -10667,6 +10672,12 @@ a.text-dark:hover, a.text-dark:focus {
 
 #img-section p {
   margin-bottom: 0.75rem;
+}
+
+.alert-auth,
+.alert-addToCart {
+  color: #FFD333;
+  background-color: #3D464D;
 }
 
 /*.image-error {*/

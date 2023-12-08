@@ -139,6 +139,14 @@
                                 <a sec:authorize="!authenticated"
                                    class="nav-item nav-link link-register pr-0">Sign Up</a>
 
+                                <a sec:authorize="hasRole('ADMIN')"
+                                   th:href="@{/users}"
+                                   class="nav-item nav-link pr-0">Manage Users</a>
+
+                                <a sec:authorize="hasRole('ADMIN')"
+                                   th:href="@{/roles}"
+                                   class="nav-item nav-link pr-0">Manage Roles</a>
+
                                 <a sec:authorize="hasRole('USER')"
                                    th:href="@{users/profile}"
                                    class="nav-item nav-link pr-0">Profile</a>
@@ -161,10 +169,10 @@
                                 </a>
 
                                 <div class="cart d-inline">
-                                    <span href="cart.html" class="btn pl-3 pr-0 py-3" style="font-size: 19px" id="cart-trigger">
+                                    <a class="btn pl-3 pr-0 py-3" style="font-size: 19px" id="cart-trigger">
                                         <i class="fas fa-shopping-cart text-primary"></i>
                                         <span id="cart-badge" class="badge text-secondary border border-secondary rounded-circle">0</span>
-                                    </span>
+                                    </a>
 
                                     <div class="cart-menu">
                                         <div class="cart__display">

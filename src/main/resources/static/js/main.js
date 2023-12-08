@@ -17,6 +17,38 @@
 		return false;
 	});
 
+	// Change cart behaviour
+
+	// On page load
+	const cart = $('.cart a');
+
+	if($(window).width() <= 974) {
+		cart.removeAttr('id', '');
+		cart.attr('href', '/cart');
+		$('cart a').removeClass('is-active')
+	} else {
+		cart.attr('id', 'cart-trigger');
+		cart.removeAttr('href');
+	}
+
+	// On window resize
+	$(window).on('resize',function() {
+		$(window).width();
+
+		//Hover Cart On Large Display | Click Cart On Smaller One
+		if($(window).width() <= 992) {
+			cart.removeAttr('id');
+			cart.attr('href', '/cart');
+			$('cart a').removeClass('is-active')
+		} else {
+			cart.attr('id', 'cart-trigger');
+			cart.removeAttr('href');
+		}
+
+		//Display window width on screen resize
+		// console.log($(window).width());
+	});
+
 
 	const fileInput = $('.custom-file-input');
 
@@ -266,7 +298,6 @@
 	// 	});
 	// });
 
-
 	/**
 	 * Scrolling
 	 */
@@ -294,25 +325,5 @@
 			});
 		});
 	});
-
-	// /**
-	//  * Manage credentials fields
-	//  */
-	// const formsCredentials = $('.form-credentials');
-	// const fieldCredentials = $('.form-credentials .field--credentials');
-	//
-	// formsCredentials.each(function() {
-	// 	const formCredentials = $(this);
-	//
-	// 	formCredentials.on('submit', function() {
-	// 		fieldCredentials.each(function() {
-	// 			const input = $(this);
-	//
-	// 			if(input.attr('name') !== 'password') {
-	// 				input.val(input.val().toLowerCase().replaceAll(' ', ''));
-	// 			}
-	// 		});
-	// 	});
-	// });
 
 })(jQuery);

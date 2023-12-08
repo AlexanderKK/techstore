@@ -49,8 +49,6 @@ $('.navbar-toggler').click(function() {
  * Open / close cart on click
  */
 $('#cart-trigger').on('click',function(evt) {
-	evt.preventDefault();
-
 	if(cartMenu.hasClass('is-active')) {
 		cartMenu.removeClass('is-active');
 	} else {
@@ -259,7 +257,7 @@ function addProduct(productId, addedQuantity) {
 	fetch(url, requestOptions)
 		.then(response => {
 			if(response.ok) {
-				console.log('Product added to cart');
+				// console.log('Product added to cart');
 
 				loadCartItems();
 
@@ -267,6 +265,12 @@ function addProduct(productId, addedQuantity) {
 			}
 
 			addCounter = 0;
+
+			// if(response.status === 401) {
+			// 	$('.alert-addToCart').fadeIn(100, function () {
+			// 		$('.alert-addToCart').show();
+			// 	});
+			// }
 
 			if(response.status === 400) {
 				return response.json().then(data => alert(data.error));
