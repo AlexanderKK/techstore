@@ -9,6 +9,13 @@
 	<div class="firework"></div>
 	<div class="firework"></div>
 
+	<div th:if="${orderSuccess}"
+		 class="alert alert-order d-flex">
+		<div>✔️</div>
+
+		<div th:text=" ${orderSuccess}"></div>
+	</div>
+
 	<div th:if="${userAlreadyActivated}"
 		 class="alert alert-auth d-flex">
 		<span class="d-block">️⚠️</span>

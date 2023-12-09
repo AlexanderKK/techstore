@@ -20,12 +20,12 @@
 	// Change cart behaviour
 
 	// On page load
-	const cart = $('.cart a');
+	const cart = $('.cart > a');
 
 	if($(window).width() <= 974) {
 		cart.removeAttr('id', '');
 		cart.attr('href', '/cart');
-		$('cart a').removeClass('is-active')
+		$('.cart-menu').removeClass('is-active')
 	} else {
 		cart.attr('id', 'cart-trigger');
 		cart.removeAttr('href');
@@ -39,7 +39,7 @@
 		if($(window).width() <= 992) {
 			cart.removeAttr('id');
 			cart.attr('href', '/cart');
-			$('cart a').removeClass('is-active')
+			$('.cart-menu').removeClass('is-active')
 		} else {
 			cart.attr('id', 'cart-trigger');
 			cart.removeAttr('href');
@@ -49,6 +49,16 @@
 		// console.log($(window).width());
 	});
 
+	// Radio checks
+	const radios = $('input[type="radio"]');
+
+	radios.each(function() {
+		const radio = $(this);
+
+		radio.on('change', function() {
+			radio.val(radio.next().text());
+		});
+	});
 
 	const fileInput = $('.custom-file-input');
 

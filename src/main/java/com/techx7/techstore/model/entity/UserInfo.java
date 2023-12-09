@@ -8,50 +8,49 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 @Entity
 @Table(name = "user_info")
 public class UserInfo extends BaseEntity {
 
-    @NotNull(message = "Image url should not be empty")
     @Column
     private String imageUrl;
 
     @NotNull(message = "First name should not be empty")
     @Size(min = 1, max = 30, message = "First name should have from 1 to 30 characters")
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
     @NotNull(message = "Last name should not be empty")
     @Size(min = 1, max = 30, message = "Last name should have from 1 to 30 characters")
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @NotNull(message = "Gender should not be empty")
     @Enumerated(EnumType.STRING)
     @Column
     private GenderEnum gender;
 
     @NotBlank(message = "Phone number should not be empty")
     @Pattern(regexp = "08[789]\\d{7}", message = "Phone number should be valid")
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
     @NotBlank(message = "Address should not be empty")
     @Size(min = 1, max = 50, message = "Address should have from 1 to 50 characters")
-    @Column
+    @Column(nullable = false)
     private String address;
 
     @Column(name = "secondary_address")
     private String secondaryAddress;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Country country;
 
     @NotBlank(message = "City should not be empty")
     @Size(min = 1, max = 35, message = "City should have from 1 to 35 characters")
-    @Column
+    @Column(nullable = false)
     private String city;
 
     @Column
@@ -59,7 +58,7 @@ public class UserInfo extends BaseEntity {
 
     @NotBlank(message = "ZIP code should not be empty")
     @Size(min = 1, max = 10, message = "ZIP code should have from 1 to 10 characters")
-    @Column
+    @Column(nullable = false)
     private String zipCode;
 
     public UserInfo() {}
@@ -155,9 +154,17 @@ public class UserInfo extends BaseEntity {
     public void editUserProfile(UserProfileDTO userProfileDTO) {
         this.setFirstName(userProfileDTO.getFirstName());
         this.setLastName(userProfileDTO.getLastName());
-        this.setGender(
-                GenderEnum.valueOf(
-                        userProfileDTO.getGender().toUpperCase(Locale.getDefault())));
+
+        boolean isGenderNotFound = Arrays.stream(GenderEnum.values()).noneMatch(genderEnum -> genderEnum.name().equals(userProfileDTO.getGender()));
+        if(isGenderNotFound) {
+            this.setGender(null);
+        } else {
+            this.setGender(
+                    GenderEnum.valueOf(
+                            userProfileDTO.getGender().toUpperCase(Locale.getDefault())
+                    ));
+        }
+
         this.setPhoneNumber(userProfileDTO.getPhoneNumber());
         this.setAddress(userProfileDTO.getAddress());
         this.setSecondaryAddress(userProfileDTO.getSecondaryAddress());

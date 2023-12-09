@@ -42,6 +42,7 @@ public class SeedServiceImpl implements SeedService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final UserService userService;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public SeedServiceImpl(Gson gson,
@@ -54,7 +55,8 @@ public class SeedServiceImpl implements SeedService {
                            ModelRepository modelRepository,
                            CategoryRepository categoryRepository,
                            ProductRepository productRepository,
-                           UserService userService) {
+                           UserService userService,
+                           OrderRepository orderRepository) {
         this.gson = gson;
         this.mapper = mapper;
         this.roleRepository = roleRepository;
@@ -66,6 +68,7 @@ public class SeedServiceImpl implements SeedService {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.userService = userService;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -223,6 +226,7 @@ public class SeedServiceImpl implements SeedService {
     public void cleanUpDatabase() {
         System.out.println("Cleaning up database...");
 
+        orderRepository.deleteAll();
         productRepository.deleteAll();
         categoryRepository.deleteAll();
         modelRepository.deleteAll();

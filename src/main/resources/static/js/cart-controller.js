@@ -16,7 +16,11 @@ const buttonsAddToCart = $('.btnAddToCart');
 
 const buttonAddToCartProductDetails = $('#btnAddToCartProductDetails');
 
+const linksCheckout = $('.link-checkout');
+
 const maxQuantity = 100;
+
+let addCounter = 0;
 
 
 /**
@@ -27,7 +31,6 @@ checkTableCart();
 loadCartItems();
 
 updateCartPageTotal();
-
 
 /**
  * Close cart on esc key press
@@ -221,7 +224,6 @@ buttonAddToCartProductDetails.on('mouseup', function() {
 /**
  * Add to cart
  */
-let addCounter = 0;
 
 function addToCart() {
 	addCounter++;
@@ -598,3 +600,61 @@ function checkTableCart() {
 		noProductsDiv.show();
 	}
 }
+
+/**
+ * Checkout link
+ */
+
+linksCheckout.each(function() {
+	const linkCheckout = $(this);
+
+	linkCheckout.on('click', function() {
+		linkCheckout.removeAttr('href');
+
+		if(cartItems.children().length > 0) {
+			linkCheckout.attr('href', '/orders/checkout');
+		}
+	});
+});
+
+const orderCartItems = $('.orderCartItem');
+const inputCartItemsIds = $('#inputCartItemsIds');
+
+let cartItemsIds = [];
+
+orderCartItems.each(function() {
+	const orderCartItem = $(this);
+
+	let cartItemId = orderCartItem.attr('cid');
+	cartItemsIds.push(cartItemId);
+});
+
+inputCartItemsIds.val(cartItemsIds);
+
+const orderProductSubtotal = $('.order-product-subtotal');
+const orderSubtotal = $('#order-subtotal');
+const orderShipping = $('#order-shipping');
+const orderTotal = $('#order-total');
+
+let orderSubtotalValue = 0;
+orderProductSubtotal.each(function() {
+	orderSubtotalValue += Number(
+		$(this).text().substring(1, $(this).text().length));
+
+	$(this).text('£' + Number($(this).text().substring(1, $(this).text().length)).toFixed(0));
+})
+
+orderSubtotal.text('£' + orderSubtotalValue);
+
+const orderShippingValue = orderSubtotalValue > 0 ? 15 : 0;
+orderShipping.text('£' + orderShippingValue);
+
+const orderTotalValue = orderSubtotalValue + orderShippingValue;
+orderTotal.text('£' + orderTotalValue);
+
+const orderForm = $('#order');
+orderForm.on('submit', function() {
+	if(orderTotalValue === 0 && cartItems.children().length === 0) {
+		$(this).removeAttr('action');
+	}
+});
