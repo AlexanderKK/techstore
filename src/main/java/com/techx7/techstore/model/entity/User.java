@@ -64,6 +64,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     public Set<CartItem> cartItems;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    public Set<Order> orders;
+
     @Column(name = "failed_login_attempts")
     private int failedLoginAttempts;
 
@@ -163,6 +166,14 @@ public class User extends BaseEntity {
 
     public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     public int getFailedLoginAttempts() {

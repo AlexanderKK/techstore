@@ -7,7 +7,6 @@ import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
 import com.techx7.techstore.model.entity.Product;
 import com.techx7.techstore.repository.ProductRepository;
 import com.techx7.techstore.service.CloudinaryService;
-import com.techx7.techstore.service.MonitoringService;
 import com.techx7.techstore.service.ProductService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,7 @@ public class ProductServiceImpl implements ProductService {
     @Autowired
     public ProductServiceImpl(ModelMapper mapper,
                               ProductRepository productRepository,
-                              CloudinaryService cloudinaryService,
-                              MonitoringService monitoringService) {
+                              CloudinaryService cloudinaryService) {
         this.mapper = mapper;
         this.productRepository = productRepository;
         this.cloudinaryService = cloudinaryService;
@@ -81,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDTO> getAllProductsWithDiscount() {
         return productRepository.findAll().stream()
                 .map(product -> mapper.map(product, ProductDTO.class))
+                .filter(product -> Objects.nonNull(product.getModel()))
                 .filter(productDTO -> productDTO.getDiscountPrice() != null)
                 .filter(productDTO -> productDTO.getDiscountPrice().compareTo(BigDecimal.ZERO) >= 0)
                 .sorted(Comparator.comparing(ProductDTO::getDiscountPrice))
