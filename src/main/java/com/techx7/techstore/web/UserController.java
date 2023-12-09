@@ -117,8 +117,8 @@ public class UserController {
 
     @PreAuthorize("@hasAnyRole('CARRIER', 'USER', 'SUPPORT', 'MANAGER', 'ADMIN')")
     @GetMapping("/profile")
-    public String profile(Model model,
-                          Principal principal) {
+    public String getUserProfile(Model model,
+                                 Principal principal) {
         List<GenderDTO> genderDTOs = genderService.getAllGenders();
         List<CountryDTO> countryDTOs = countryService.getAllCountries();
 

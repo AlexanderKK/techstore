@@ -268,6 +268,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public BillingInfoDTO getBillingInfo(TechStoreUserDetails loggedUser) {
+        // get user -> get user info
+        User user = userRepository.findByUsername(loggedUser.getUsername())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, ENTITY_NAME)));
+
+        UserInfo userInfo = user.getUserInfo();
+        if(userInfo == null) {
+            return new BillingInfoDTO();
+        }
+
+        BillingInfoDTO billingInfoDTO = mapper.map(userInfo, BillingInfoDTO.class);
+
+        return billingInfoDTO;
+    }
+
     private void editImageUrl(UserProfileDTO userProfileDTO, User user, UserInfo userInfo) throws IOException {
         if(userProfileDTO.getImage().getSize() > 1) {
             String imageUrl = cloudinaryService.uploadFile(

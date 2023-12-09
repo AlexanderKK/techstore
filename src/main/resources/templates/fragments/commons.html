@@ -28,7 +28,7 @@
 
     <script defer src="/js/main.js"></script>
     <script defer src="/js/popups.js"></script>
-    <script defer src="/js/cart.js"></script>
+    <script defer src="/js/cart-controller.js"></script>
     <script defer src="/js/user-controller.js"></script>
 
     <noscript><meta th:http-equiv="refresh" th:content="|0; url=@{https://techx7.yellowflower-41c8e8d4.westeurope.azurecontainerapps.io/error/no-javascript}|"/></noscript>
@@ -163,12 +163,13 @@
 
                             <div sec:authorize="!authenticated or hasAnyRole('USER', 'ADMIN')"
                                  class="navbar-nav ml-auto col-auto py-0 d-block">
-                                <a href="#" class="btn px-0" style="font-size: 19px">
+
+                                <a href="#" class="btn pl-3 pr-0 py-3" style="font-size: 19px">
                                     <i class="fas fa-heart text-primary"></i>
                                     <span class="badge text-secondary border border-secondary rounded-circle">0</span>
                                 </a>
 
-                                <div class="cart d-inline">
+                                <div th:if="${order != true}" class="cart d-inline">
                                     <a class="btn pl-3 pr-0 py-3" style="font-size: 19px" id="cart-trigger">
                                         <i class="fas fa-shopping-cart text-primary"></i>
                                         <span id="cart-badge" class="badge text-secondary border border-secondary rounded-circle">0</span>
@@ -196,7 +197,7 @@
                                                 <a th:href="@{/cart}"
                                                    class="link-cart col-12 col-sm-auto">Open Cart</a>
 
-                                                <a href="checkout.html" class="link-checkout col-12 col-sm-auto">Order</a>
+                                                <a class="link-checkout col-12 col-sm-auto">Order</a>
                                             </div>
                                         </div>
                                     </div>

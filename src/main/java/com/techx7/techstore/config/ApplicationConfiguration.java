@@ -13,6 +13,7 @@ import com.techx7.techstore.model.dto.model.AddModelDTO;
 import com.techx7.techstore.model.dto.model.ImportModelJsonDTO;
 import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
+import com.techx7.techstore.model.dto.order.OrderDTO;
 import com.techx7.techstore.model.dto.product.*;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
@@ -380,6 +381,13 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .using(toCountryName)
                         .map(UserInfo::getCountry, UserProfileDTO::setCountry));
+
+        // UserInfo -> OrderDTO
+        modelMapper
+                .createTypeMap(UserInfo.class, OrderDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(toCountryName)
+                        .map(UserInfo::getCountry, OrderDTO::setCountry));
 
         // User -> UserDTO
         Converter<Set<Role>, String> toRoleIds
