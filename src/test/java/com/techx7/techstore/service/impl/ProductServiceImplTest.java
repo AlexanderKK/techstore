@@ -109,6 +109,7 @@ class ProductServiceImplTest {
 
         ProductDTO productDTO = new ProductDTO();
 
+        productDTO.setModel("Test model");
         productDTO.setPrice(BigDecimal.valueOf(2999));
         productDTO.setDiscountPrice(BigDecimal.TEN);
 

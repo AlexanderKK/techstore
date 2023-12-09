@@ -38,7 +38,7 @@ class ShoppingCartRestControllerTest {
                 MockMvcRequestBuilders
                         .post("/cart/add/{productUuid}/{quantity}", productUuid, quantity)
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().is3xxRedirection());
+        ).andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -63,7 +63,7 @@ class ShoppingCartRestControllerTest {
                 MockMvcRequestBuilders
                         .post("/cart/update/{productUuid}/{quantity}", productUuid, quantity)
                         .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().is3xxRedirection());
+        ).andExpect(status().isUnauthorized());
     }
 
     @Test
