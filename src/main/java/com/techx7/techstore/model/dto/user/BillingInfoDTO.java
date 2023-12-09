@@ -24,8 +24,6 @@ public class BillingInfoDTO {
     @Size(min = 1, max = 50, message = "Address should have from 1 to 50 characters")
     private String address;
 
-    private String secondaryAddress;
-
     @CountryName
     @NotBlank(message = "Please choose your country")
     private String country;
@@ -72,14 +70,6 @@ public class BillingInfoDTO {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public String getSecondaryAddress() {
-        return secondaryAddress;
-    }
-
-    public void setSecondaryAddress(String secondaryAddress) {
-        this.secondaryAddress = secondaryAddress;
     }
 
     public String getCountry() {

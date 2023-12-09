@@ -6,11 +6,21 @@ import java.math.BigDecimal;
 
 public class CartItemDTO {
 
+    private Long id;
+
     private ProductCartItemDTO productDTO;
 
     private Integer quantity;
 
     public CartItemDTO() {}
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public ProductCartItemDTO getProductDTO() {
         return productDTO;

@@ -16,7 +16,7 @@ const buttonsAddToCart = $('.btnAddToCart');
 
 const buttonAddToCartProductDetails = $('#btnAddToCartProductDetails');
 
-const linkCheckout = $('.link-checkout');
+const linksCheckout = $('.link-checkout');
 
 const maxQuantity = 100;
 
@@ -31,15 +31,6 @@ checkTableCart();
 loadCartItems();
 
 updateCartPageTotal();
-
-/**
- * Checkout link
- */
-linkCheckout.on('click', function() {
-	if(cartItems.children().length > 0) {
-		linkCheckout.attr('href', '/orders/checkout');
-	}
-});
 
 /**
  * Close cart on esc key press
@@ -609,3 +600,33 @@ function checkTableCart() {
 		noProductsDiv.show();
 	}
 }
+
+/**
+ * Checkout link
+ */
+
+linksCheckout.each(function() {
+	const linkCheckout = $(this);
+
+	linkCheckout.on('click', function() {
+		linkCheckout.removeAttr('href');
+
+		if(cartItems.children().length > 0) {
+			linkCheckout.attr('href', '/orders/checkout');
+		}
+	});
+});
+
+const orderCartItems = $('.orderCartItem');
+const inputCartItemsIds = $('#inputCartItemsIds');
+
+let cartItemsIds = [];
+
+orderCartItems.each(function() {
+	const orderCartItem = $(this);
+
+	let cartItemId = orderCartItem.attr('cid');
+	cartItemsIds.push(cartItemId);
+});
+
+inputCartItemsIds.val(cartItemsIds);

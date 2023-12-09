@@ -42,6 +42,4 @@ public interface UserService {
 
     void createUserMetadata(UserMetadataDTO userMetadataDTO);
 
-    BillingInfoDTO getBillingInfo(TechStoreUserDetails loggedUser);
-
 }

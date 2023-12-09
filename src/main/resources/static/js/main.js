@@ -49,6 +49,16 @@
 		// console.log($(window).width());
 	});
 
+	// Radio checks
+	const radios = $('input[type="radio"]');
+
+	radios.each(function() {
+		const radio = $(this);
+
+		radio.on('change', function() {
+			radio.val(radio.next().text());
+		});
+	});
 
 	const fileInput = $('.custom-file-input');
 

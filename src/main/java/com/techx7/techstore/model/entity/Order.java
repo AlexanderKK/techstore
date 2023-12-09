@@ -12,13 +12,13 @@ import java.util.List;
 public class Order extends BaseEntity {
 
     @ManyToOne
-    private UserInfo userInfo;
+    private User user;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "order_items",
             joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "cart_item_id"))
-    private List<CartItem> cartItems;
+            inverseJoinColumns = @JoinColumn(name = "order_item_id"))
+    private List<OrderItem> orderItems;
 
     private String status = "Pending";
 
@@ -37,20 +37,20 @@ public class Order extends BaseEntity {
 
     public Order() {}
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public List<CartItem> getCartItems() {
-        return cartItems;
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
-    public void setCartItems(List<CartItem> cartItems) {
-        this.cartItems = cartItems;
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public String getStatus() {

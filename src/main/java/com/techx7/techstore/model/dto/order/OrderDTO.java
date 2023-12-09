@@ -1,11 +1,13 @@
 package com.techx7.techstore.model.dto.order;
 
 import com.techx7.techstore.model.dto.user.BillingInfoDTO;
+import jakarta.validation.constraints.NotBlank;
 
 public class OrderDTO extends BillingInfoDTO {
 
     private String cartItems;
 
+    @NotBlank(message = "Please choose a payment type")
     private String payment;
 
     public OrderDTO() {}
