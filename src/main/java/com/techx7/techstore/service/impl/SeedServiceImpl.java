@@ -42,7 +42,6 @@ public class SeedServiceImpl implements SeedService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
     private final UserService userService;
-    private final UserMetadataRepository userMetadataRepository;
 
     @Autowired
     public SeedServiceImpl(Gson gson,
@@ -55,8 +54,7 @@ public class SeedServiceImpl implements SeedService {
                            ModelRepository modelRepository,
                            CategoryRepository categoryRepository,
                            ProductRepository productRepository,
-                           UserService userService,
-                           UserMetadataRepository userMetadataRepository) {
+                           UserService userService) {
         this.gson = gson;
         this.mapper = mapper;
         this.roleRepository = roleRepository;
@@ -68,7 +66,6 @@ public class SeedServiceImpl implements SeedService {
         this.categoryRepository = categoryRepository;
         this.productRepository = productRepository;
         this.userService = userService;
-        this.userMetadataRepository = userMetadataRepository;
     }
 
     @Override
@@ -251,14 +248,6 @@ public class SeedServiceImpl implements SeedService {
         ));
 
         user.setActive(true);
-
-//        UserMetadata userMetadata = new UserMetadata();
-//        userMetadata.setIp("0.0.0.0");
-//        userMetadata.setUserAgent("Admin agent");
-//
-//        userMetadataRepository.save(userMetadata);
-//
-//        user.setUsersMetaData(List.of(userMetadata));
 
         userRepository.save(user);
     }
