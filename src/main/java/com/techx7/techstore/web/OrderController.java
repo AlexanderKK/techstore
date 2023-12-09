@@ -75,9 +75,11 @@ public class OrderController {
             return "redirect:/orders/checkout";
         }
 
-        orderService.placeOrder(orderDTO, loggedUser);
+        String orderSuccess = orderService.placeOrder(orderDTO, loggedUser);
 
-        return "redirect:/products";
+        redirectAttributes.addFlashAttribute("orderSuccess", orderSuccess);
+
+        return "redirect:/";
     }
 
 }

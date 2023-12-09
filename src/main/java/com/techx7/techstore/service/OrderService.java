@@ -9,6 +9,6 @@ public interface OrderService {
 
     OrderDTO getCheckout(TechStoreUserDetails loggedUser, Principal principal);
 
-    void placeOrder(OrderDTO orderDTO, TechStoreUserDetails loggedUser);
+    String placeOrder(OrderDTO orderDTO, TechStoreUserDetails loggedUser);
 
 }

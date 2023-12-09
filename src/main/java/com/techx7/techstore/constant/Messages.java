@@ -16,5 +16,6 @@ public enum Messages {
     public static final String QUANTITY_CAPACITY_SURPASSED = "Out of stock";
     public static final String INCORRECT_PASSWORD = "Incorrect password";
     public static final String INPUT_NOT_NULL = "Input should not be null";
+    public static final String ORDER_PLACED_SUCCESSFULLY = "Order placed successfully";
 
 }

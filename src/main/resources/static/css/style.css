@@ -10675,6 +10675,7 @@ a.text-dark:hover, a.text-dark:focus {
 }
 
 .alert-auth,
+.alert-order,
 .alert-addToCart {
   color: #FFD333;
   background-color: #3D464D;

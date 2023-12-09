@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
+import static com.techx7.techstore.constant.Messages.ORDER_PLACED_SUCCESSFULLY;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -68,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void placeOrder(OrderDTO orderDTO, TechStoreUserDetails loggedUser) {
+    public String placeOrder(OrderDTO orderDTO, TechStoreUserDetails loggedUser) {
         User user = userRepository.findByUsername(loggedUser.getUsername())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
 
@@ -97,6 +98,8 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         cartItemRepository.deleteAll(cartItems);
+
+        return ORDER_PLACED_SUCCESSFULLY;
     }
 
     private List<OrderItem> getOrderItems(List<CartItem> cartItems) {
