@@ -5,10 +5,6 @@
 <head th:replace="~{fragments/commons::head(title = 'Tech x7')}"></head>
 
 <body>
-	<div class="firework"></div>
-	<div class="firework"></div>
-	<div class="firework"></div>
-
 	<div th:if="${orderSuccess}"
 		 class="alert alert-order d-flex">
 		<div>✔️</div>
@@ -39,6 +35,10 @@
 	<header th:replace="~{fragments/commons::header(activeLink = 'home')}"></header>
 
 	<div class="hero">
+		<div class="firework"></div>
+		<div class="firework"></div>
+		<div class="firework"></div>
+
 		<div class="container-fluid mb-3">
 			<div class="col-12 px-lg-5 hero__inner" style="padding: 0 63px">
 				<div class="position-relative row justify-content-center" style="height: 500px;">
