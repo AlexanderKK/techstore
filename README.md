@@ -117,6 +117,10 @@ Carrier: Access orders, user's address info
 
 ![img_18](https://github.com/AlexanderKK/techstore/assets/80641156/dec0ca8a-b139-4ef9-b0ed-49e6de177552)
 
+* Checkout
+  
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/c7d3b04a-d249-422a-bf42-10a8652bfcf5)
+
 * Add Product
 
 ![img_12](https://github.com/AlexanderKK/techstore/assets/80641156/b4960dc2-2e4d-48ac-8221-5d744b13e5ce)
