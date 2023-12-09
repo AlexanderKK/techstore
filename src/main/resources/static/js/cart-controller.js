@@ -630,3 +630,31 @@ orderCartItems.each(function() {
 });
 
 inputCartItemsIds.val(cartItemsIds);
+
+const orderProductSubtotal = $('.order-product-subtotal');
+const orderSubtotal = $('#order-subtotal');
+const orderShipping = $('#order-shipping');
+const orderTotal = $('#order-total');
+
+let orderSubtotalValue = 0;
+orderProductSubtotal.each(function() {
+	orderSubtotalValue += Number(
+		$(this).text().substring(1, $(this).text().length));
+
+	$(this).text('£' + Number($(this).text().substring(1, $(this).text().length)).toFixed(0));
+})
+
+orderSubtotal.text('£' + orderSubtotalValue);
+
+const orderShippingValue = orderSubtotalValue > 0 ? 15 : 0;
+orderShipping.text('£' + orderShippingValue);
+
+const orderTotalValue = orderSubtotalValue + orderShippingValue;
+orderTotal.text('£' + orderTotalValue);
+
+const orderForm = $('#order');
+orderForm.on('submit', function() {
+	if(orderTotalValue === 0 && cartItems.children().length === 0) {
+		$(this).removeAttr('action');
+	}
+});

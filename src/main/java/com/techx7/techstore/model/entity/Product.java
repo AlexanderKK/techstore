@@ -71,6 +71,9 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private Set<CartItem> cartItems;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    private Set<OrderItem> orderItems;
+
     public Product() {
         this.categories = new HashSet<>();
     }
@@ -169,6 +172,14 @@ public class Product extends BaseEntity {
 
     public void setCartItems(Set<CartItem> cartItems) {
         this.cartItems = cartItems;
+    }
+
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(Set<OrderItem> orderItems) {
+        this.orderItems = orderItems;
     }
 
 }

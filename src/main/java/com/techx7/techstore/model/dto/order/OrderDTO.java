@@ -1,8 +1,10 @@
 package com.techx7.techstore.model.dto.order;
 
 import com.techx7.techstore.model.dto.user.BillingInfoDTO;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
+@Valid
 public class OrderDTO extends BillingInfoDTO {
 
     private String cartItems;

@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 @Entity
@@ -153,9 +154,17 @@ public class UserInfo extends BaseEntity {
     public void editUserProfile(UserProfileDTO userProfileDTO) {
         this.setFirstName(userProfileDTO.getFirstName());
         this.setLastName(userProfileDTO.getLastName());
-        this.setGender(
-                GenderEnum.valueOf(
-                        userProfileDTO.getGender().toUpperCase(Locale.getDefault())));
+
+        boolean isGenderNotFound = Arrays.stream(GenderEnum.values()).noneMatch(genderEnum -> genderEnum.name().equals(userProfileDTO.getGender()));
+        if(isGenderNotFound) {
+            this.setGender(null);
+        } else {
+            this.setGender(
+                    GenderEnum.valueOf(
+                            userProfileDTO.getGender().toUpperCase(Locale.getDefault())
+                    ));
+        }
+
         this.setPhoneNumber(userProfileDTO.getPhoneNumber());
         this.setAddress(userProfileDTO.getAddress());
         this.setSecondaryAddress(userProfileDTO.getSecondaryAddress());

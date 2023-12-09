@@ -94,7 +94,7 @@ public class UserProfileDTO {
     }
 
     public void setGender(String gender) {
-        this.gender = gender.trim();
+        this.gender = gender == null ? gender : gender.trim();
     }
 
     public String getPhoneNumber() {

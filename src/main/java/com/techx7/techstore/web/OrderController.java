@@ -70,7 +70,7 @@ public class OrderController {
                              @AuthenticationPrincipal TechStoreUserDetails loggedUser) {
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("orderDTO", orderDTO);
-            redirectAttributes.addFlashAttribute("org.springframework.validation.BingingResult.orderDTO", bindingResult);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.orderDTO", bindingResult);
 
             return "redirect:/orders/checkout";
         }
