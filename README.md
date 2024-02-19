@@ -75,7 +75,7 @@ Carrier: Access orders, user's address info
 ```
 
 # Database Diagram
-![image](https://github.com/AlexanderKK/techstore/assets/80641156/ccaaff1e-6cd1-40a7-8099-dc39ffa44f41)
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/b40a0156-1570-404a-8c2a-643fd3f41bae)
 
 # Test
 
@@ -116,6 +116,10 @@ Carrier: Access orders, user's address info
 ![img_11](https://github.com/AlexanderKK/techstore/assets/80641156/521f1c09-da86-4d78-9422-9b99544b603d)
 
 ![img_18](https://github.com/AlexanderKK/techstore/assets/80641156/dec0ca8a-b139-4ef9-b0ed-49e6de177552)
+
+* Checkout
+  
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/c7d3b04a-d249-422a-bf42-10a8652bfcf5)
 
 * Add Product
 
