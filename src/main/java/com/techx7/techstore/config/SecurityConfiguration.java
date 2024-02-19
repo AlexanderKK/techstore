@@ -47,17 +47,17 @@ public class SecurityConfiguration {
                         .requestMatchers("/", "/products", "/contact").permitAll()
                         .requestMatchers("/products/detail/**").permitAll()
 
+                        .requestMatchers(
+                                "/cart/add/**",
+                                "/cart/update/**"
+                        ).permitAll()
+
                         // Any role
                         .requestMatchers(
                                 "/users/profile/**",
                                 "/users/credentials/**",
                                 "/users/password/**"
                         ).hasAnyRole("CARRIER", "USER", "SUPPORT", "MANAGER", "ADMIN")
-
-                        .requestMatchers(
-                                "/cart/add/**",
-                                "/cart/update/**"
-                        ).permitAll()
 
                         // User
                         .requestMatchers(

@@ -11,6 +11,7 @@ import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.repository.*;
 import com.techx7.techstore.service.CloudinaryService;
 import com.techx7.techstore.service.UserService;
+import com.techx7.techstore.service.aop.UserLoginsAOP;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +95,7 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteByUuid(uuid);
     }
 
+    @UserLoginsAOP(timeInMilliseconds = 1000L)
     @Override
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()

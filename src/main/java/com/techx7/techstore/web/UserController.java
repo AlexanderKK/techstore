@@ -219,8 +219,8 @@ public class UserController {
     }
 
     @ExceptionHandler(UsernameFoundException.class)
-    public String handleEmailFoundError(UsernameFoundException ex,
-                                        RedirectAttributes redirectAttributes) {
+    public String handleUsernameFoundError(UsernameFoundException ex,
+                                           RedirectAttributes redirectAttributes) {
         System.out.println(ex.getMessage());
 
         redirectAttributes.addFlashAttribute("usernameError", ex.getMessage());

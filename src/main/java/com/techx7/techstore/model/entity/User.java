@@ -78,7 +78,7 @@ public class User extends BaseEntity {
     @Column(name = "lock_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime lockTime;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "users_metadata",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "user_metadata_id"))

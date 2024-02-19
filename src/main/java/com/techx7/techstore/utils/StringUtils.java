@@ -19,10 +19,6 @@ public class StringUtils {
                 text.substring(1).toLowerCase(Locale.getDefault());
     }
 
-    public static String getClassNameLowerCase(Class<?> clazz) {
-        return clazz.getSimpleName().toLowerCase();
-    }
-
     public static String replaceAllWhiteSpacesWithUnderscores(String text) {
         return text.toLowerCase().replaceAll("\\s+", "_");
     }

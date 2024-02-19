@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "user_activation_code")
@@ -22,8 +21,9 @@ public class UserActivationCode extends BaseEntity {
     private LocalDateTime created = LocalDateTime.now();
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-    @Column
-    private Calendar modified;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime modified;
 
     @NotNull(message = "Should not be empty")
     @ManyToOne(optional = false)
@@ -47,11 +47,11 @@ public class UserActivationCode extends BaseEntity {
         this.created = created;
     }
 
-    public Calendar getModified() {
+    public LocalDateTime getModified() {
         return modified;
     }
 
-    public void setModified(Calendar modified) {
+    public void setModified(LocalDateTime modified) {
         this.modified = modified;
     }
 

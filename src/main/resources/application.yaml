@@ -50,14 +50,14 @@ server:
 
 logging:
   level:
-    web: DEBUG
+    web: OFF
     org:
       hibernate:
         type:
-          descriptor: TRACE
+          descriptor: OFF
         SQL: OFF
-      nodeValue: WARN
-    blog: WARN
+      nodeValue: OFF
+    blog: OFF
 
 techstore:
   rememberme:
