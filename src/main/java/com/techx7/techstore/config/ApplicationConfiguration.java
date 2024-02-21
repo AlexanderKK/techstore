@@ -15,6 +15,7 @@ import com.techx7.techstore.model.dto.model.ModelDTO;
 import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.order.OrderDTO;
 import com.techx7.techstore.model.dto.product.*;
+import com.techx7.techstore.model.dto.review.ReviewDTO;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
@@ -22,10 +23,7 @@ import com.techx7.techstore.model.dto.user.UserDTO;
 import com.techx7.techstore.model.dto.user.UserProfileDTO;
 import com.techx7.techstore.model.entity.*;
 import com.techx7.techstore.model.enums.GenderEnum;
-import com.techx7.techstore.repository.CategoryRepository;
-import com.techx7.techstore.repository.ManufacturerRepository;
-import com.techx7.techstore.repository.ModelRepository;
-import com.techx7.techstore.repository.RoleRepository;
+import com.techx7.techstore.repository.*;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
@@ -54,6 +52,7 @@ public class ApplicationConfiguration {
     private final CategoryRepository categoryRepository;
     private final ModelRepository modelRepository;
     private final RoleRepository roleRepository;
+    private final ProductRepository productRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -61,12 +60,14 @@ public class ApplicationConfiguration {
                                     CategoryRepository categoryRepository,
                                     ModelRepository modelRepository,
                                     RoleRepository roleRepository,
-                                    PasswordEncoder passwordEncoder) {
+                                    PasswordEncoder passwordEncoder,
+                                    ProductRepository productRepository) {
         this.manufacturerRepository = manufacturerRepository;
         this.categoryRepository = categoryRepository;
         this.modelRepository = modelRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.productRepository = productRepository;
     }
 
     @Bean
@@ -431,6 +432,13 @@ public class ApplicationConfiguration {
                 .addMappings(mapper -> mapper
                         .using(toImageUrl)
                         .map(AddRoleDTO::getImage, Role::setImageUrl));
+
+        // Review -> ReviewDTO
+        modelMapper
+                .createTypeMap(Review.class, ReviewDTO.class)
+                .addMappings(mapper -> mapper
+                        .using(localDateTimeToString)
+                        .map(Review::getCreated, ReviewDTO::setDate));
 
         return modelMapper;
     }

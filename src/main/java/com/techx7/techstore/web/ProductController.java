@@ -6,9 +6,12 @@ import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
+import com.techx7.techstore.model.dto.review.AddReviewDTO;
+import com.techx7.techstore.model.dto.review.ReviewDTO;
 import com.techx7.techstore.service.CategoryService;
 import com.techx7.techstore.service.ManufacturerService;
 import com.techx7.techstore.service.ProductService;
+import com.techx7.techstore.service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -38,14 +42,17 @@ public class ProductController {
     private final ProductService productService;
     private final ManufacturerService manufacturerService;
     private final CategoryService categoryService;
+    private final ReviewService reviewService;
 
     @Autowired
     public ProductController(ProductService productService,
                              ManufacturerService manufacturerService,
-                             CategoryService categoryService) {
+                             CategoryService categoryService,
+                             ReviewService reviewService) {
         this.productService = productService;
         this.manufacturerService = manufacturerService;
         this.categoryService = categoryService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping
@@ -95,10 +102,17 @@ public class ProductController {
 
     @GetMapping("/detail/{uuid}")
     public String productDetails(Model model,
-                                 @PathVariable("uuid") UUID uuid) {
+                                 @PathVariable("uuid") UUID uuid,
+                                 Principal principal) {
         ProductDetailsDTO productDetailsDTO = productService.getProductDetailsByUuid(uuid);
+        List<ReviewDTO> reviewDTOs = reviewService.getAllReviewsByProductUuid(productDetailsDTO.getUuid(), principal);
+        model.addAttribute("reviews", reviewDTOs);
 
         model.addAttribute("product", productDetailsDTO);
+
+        if(!model.containsAttribute("addReviewDTO")) {
+            model.addAttribute("addReviewDTO", new AddReviewDTO());
+        }
 
         return "products/product-details";
     }

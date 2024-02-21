@@ -41,10 +41,10 @@
                         </th-block>
                     </div>
 
-                    <div th:unless="*{description?.isBlank()}"
-                         class="fs-5 my-3 row">
-                        <p th:text="*{description}"></p>
-                    </div>
+<!--                    <div th:unless="*{description?.isBlank()}"-->
+<!--                         class="fs-5 my-3 row">-->
+<!--                        <p th:text="*{description}"></p>-->
+<!--                    </div>-->
 
                     <div class="fs-5 my-3 row">
                         <div th:unless="*{#lists.isEmpty(specificationsList)}" th:each="specification : *{specificationsList}"
@@ -76,6 +76,141 @@
 
                     <div class="mb-4">
                         <button id="btnAddToCartProductDetails" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row px-xl-5">
+            <div class="col">
+                <div class="bg-light p-30">
+                    <div class="nav nav-tabs mb-4">
+                        <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Description</a>
+                        <a th:text="|Reviews (${reviews.size()})|"
+                                class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2"></a>
+                    </div>
+
+                    <div class="tab-content">
+                        <div class="col-6 tab-pane fade show active" id="tab-pane-1">
+                            <h4 class="mb-3">Product Description</h4>
+
+                            <div th:unless="${product.description?.isBlank()}"
+                                 class="my-3 row">
+                                <p th:text="${product.description}"></p>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="tab-pane-2">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4 th:text="|${reviews.size()} reviews for ${product.name}|" class="mb-4"></h4>
+
+                                    <div th:each="review : ${reviews}"
+                                         th:object="${review}"
+                                         class="media mb-4">
+                                        <object class="img-fluid mr-3 mt-1" style="width: 45px;" th:data="@{|*{imageUrl}|}">
+                                            <img src="https://placehold.co/45x45" alt="User Image">
+                                        </object>
+
+                                        <div class="media-body">
+                                            <h6>
+                                                <th-block th:text="*{name}"></th-block>
+                                                <small> - <i th:text="*{date}"></i></small>
+                                            </h6>
+
+                                            <div class="text-primary mb-2 rating" th:data-rating="*{rating}">
+                                                <i data-vote="1" class="far fa-star"></i>
+                                                <i data-vote="2" class="far fa-star"></i>
+                                                <i data-vote="3" class="far fa-star"></i>
+                                                <i data-vote="4" class="far fa-star"></i>
+                                                <i data-vote="5" class="far fa-star"></i>
+                                            </div>
+
+                                            <p th:text="*{content}"></p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <form th:action="@{/reviews/add}"
+                                          th:method="POST"
+                                          th:object="${addReviewDTO}">
+
+                                        <h4 class="mb-4">Leave a review</h4>
+
+                                        <small>Your email address will not be published. Required fields are marked *</small>
+
+                                        <div class="my-3">
+                                            <div class="d-flex">
+                                                <p class="mb-0 mr-2">Your Rating * :</p>
+
+                                                <div class="text-primary rating rating-stars">
+                                                    <i data-vote="1" class="far fa-star"></i>
+                                                    <i data-vote="2" class="far fa-star"></i>
+                                                    <i data-vote="3" class="far fa-star"></i>
+                                                    <i data-vote="4" class="far fa-star"></i>
+                                                    <i data-vote="5" class="far fa-star"></i>
+                                                </div>
+                                            </div>
+
+                                            <input th:name="rating"
+                                                   th:field="*{rating}"
+                                                   type="hidden" class="ratingInput">
+                                            <small th:if="${#fields.hasErrors('rating')}"
+                                                   th:errors="*{rating}"
+                                                   class="text-danger"></small>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="message">Your Review</label>
+
+                                            <textarea th:name="content"
+                                                      th:field="*{content}"
+                                                      th:errorclass="is-invalid"
+                                                      id="message" cols="30" rows="5" class="form-control"></textarea>
+
+                                            <small th:if="${#fields.hasErrors('content')}"
+                                                   th:errors="*{content}"
+                                                   class="text-danger"></small>
+
+                                            <input type="hidden" th:name="product" th:value="${product.uuid}">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="name">Your Name *</label>
+
+                                            <input th:name="name"
+                                                   th:field="*{name}"
+                                                   th:errorclass="is-invalid"
+                                                   type="text" class="form-control" id="name">
+
+                                            <small th:if="${#fields.hasErrors('name')}"
+                                                   th:errors="*{name}"
+                                                   class="text-danger"></small>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="email">Your Email *</label>
+
+                                            <input th:name="email"
+                                                   th:field="*{email}"
+                                                   th:errorclass="is-invalid"
+                                                   type="email" class="form-control" id="email">
+
+                                            <small th:if="${#fields.hasErrors('email')}"
+                                                   th:errors="*{email}"
+                                                   class="text-danger"></small>
+                                        </div>
+
+                                        <div class="form-group mb-0">
+                                            <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
+                                        </div>
+
+                                        <div th:if="${existingReviewError}" class="my-2 text-danger">You can only add one review per product</div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

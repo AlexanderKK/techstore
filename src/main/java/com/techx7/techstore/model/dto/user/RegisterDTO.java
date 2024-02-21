@@ -1,6 +1,6 @@
 package com.techx7.techstore.model.dto.user;
 
-import com.techx7.techstore.validation.user.UniqueEmail;
+import com.techx7.techstore.validation.user.ExistingEmail;
 import com.techx7.techstore.validation.user.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 public class RegisterDTO {
 
-    @UniqueEmail
+    @ExistingEmail
     @NotNull(message = "Please enter an email")
     @Size(min = 5, max = 35, message = "Email should have from 5 to 35 characters")
     @Email(message = "Please enter a valid email", regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")

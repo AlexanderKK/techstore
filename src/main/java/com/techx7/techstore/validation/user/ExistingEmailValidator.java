@@ -5,22 +5,24 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class UniqueEmailValidator implements ConstraintValidator<ExistingEmail, String> {
+import static com.techx7.techstore.utils.StringUtils.isNullOrEmpty;
+
+public class ExistingEmailValidator implements ConstraintValidator<ExistingEmail, String> {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public UniqueEmailValidator(UserRepository userRepository) {
+    public ExistingEmailValidator(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        if(value == null) {
+        if(isNullOrEmpty(value)) {
             return true;
         }
 
-        return userRepository.findByEmail(value).isEmpty();
+        return userRepository.findByEmail(value).isPresent();
     }
 
 }
