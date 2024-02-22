@@ -58,6 +58,12 @@ const ratingAvgDivs = document.querySelectorAll('.rating-average');
 ratingAvgDivs.forEach((stars) => {
 	let averageRating = stars.getAttribute('data-rating-average');
 
+	if(isNaN(Number(averageRating))) {
+		return;
+	}
+
+	console.log(averageRating);
+
 	averageRating = Math.round(Number(averageRating));
 
 	for (let i = 0; i < stars.children.length; i++) {
