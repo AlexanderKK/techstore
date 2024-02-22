@@ -17,7 +17,7 @@ public class Review extends BaseEntity {
     @Min(1)
     @Max(5)
     @Column
-    private double rating;
+    private Double rating;
 
     @NotNull(message = "Please enter a name")
     @Size(min = 3, max = 25, message = "Name should have from 3 to 25 characters")
@@ -47,11 +47,11 @@ public class Review extends BaseEntity {
 
     public Review() {}
 
-    public double getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(double rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
