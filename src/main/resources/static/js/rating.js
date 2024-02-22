@@ -2,7 +2,9 @@ const ratingStars = document.querySelectorAll(".rating-stars i");
 const ratingInput = document.querySelector(".ratingInput");
 const ratingStartContainer = document.querySelector(".rating-stars");
 
-ratingInput.value = '';
+if(ratingInput !== null) {
+	ratingInput.value = '';
+}
 
 const ratings = document.querySelectorAll('.rating');
 ratings.forEach(function(rating) {
@@ -18,9 +20,11 @@ ratings.forEach(function(rating) {
 	}
 });
 
-ratingStartContainer.addEventListener('mouseover', function(evt) {
-	this.style.cursor = 'pointer';
-});
+if(ratingStartContainer !== null) {
+	ratingStartContainer.addEventListener('mouseover', function(evt) {
+		this.style.cursor = 'pointer';
+	});
+}
 
 ratingStars.forEach(function(star) {
 	star.addEventListener("mouseover", function() {
@@ -47,3 +51,21 @@ function highlightStars(value) {
 		}
 	});
 }
+
+// Average rating
+const ratingAvgDivs = document.querySelectorAll('.rating-average');
+
+ratingAvgDivs.forEach((stars) => {
+	let averageRating = stars.getAttribute('data-rating-average');
+
+	averageRating = Math.round(Number(averageRating));
+
+	for (let i = 0; i < stars.children.length; i++) {
+		if(i === averageRating) {
+			break;
+		}
+
+		const star = stars.children[i];
+		star.className = 'fas fa-star';
+	}
+});

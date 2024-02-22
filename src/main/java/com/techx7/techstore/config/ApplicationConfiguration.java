@@ -16,6 +16,7 @@ import com.techx7.techstore.model.dto.model.ModelWithManufacturerDTO;
 import com.techx7.techstore.model.dto.order.OrderDTO;
 import com.techx7.techstore.model.dto.product.*;
 import com.techx7.techstore.model.dto.review.ReviewDTO;
+import com.techx7.techstore.model.dto.review.ReviewsDataForProductDTO;
 import com.techx7.techstore.model.dto.role.AddRoleDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
 import com.techx7.techstore.model.dto.user.RegisterDTO;
@@ -284,6 +285,23 @@ public class ApplicationConfiguration {
                 ? null
                 : context.getSource().getName();
 
+        Converter<Set<Review>, ReviewsDataForProductDTO> fromReviewsToReviewsDataForProductDTO
+                = context -> {
+            Set<Review> reviews = context.getSource();
+
+            if(reviews == null) {
+                return null;
+            }
+
+            Double sumProductRating = reviews.stream().mapToDouble(Review::getRating).sum();
+            int reviewsCount = reviews.size();
+            Double averageRating = sumProductRating / reviewsCount;
+
+            ReviewsDataForProductDTO reviewsDataForProductDTO = new ReviewsDataForProductDTO(reviewsCount, averageRating);
+
+            return reviewsDataForProductDTO;
+        };
+
         modelMapper
                 .createTypeMap(Product.class, ProductDTO.class)
                 .addMappings(mapper -> mapper
@@ -296,7 +314,10 @@ public class ApplicationConfiguration {
                         .using(toModelName)
                         .map(Product::getModel, ProductDTO::setModel))
                 .addMappings(mapper -> mapper
-                        .map(Product::getDiscountPrice, ProductDTO::setDiscountPrice));
+                        .map(Product::getDiscountPrice, ProductDTO::setDiscountPrice))
+                .addMappings(mapper -> mapper
+                        .using(fromReviewsToReviewsDataForProductDTO)
+                        .map(Product::getReviews, ProductDTO::setReviewDataForProductDTO));
 
         // Product -> ProductCartItemDTO
         Converter<Model, String> toProductName = context -> {
@@ -340,7 +361,10 @@ public class ApplicationConfiguration {
                         .map(Product::getModel, ProductDetailsDTO::setModel))
                 .addMappings(mapper -> mapper
                         .using(toProductName)
-                        .map(Product::getModel, ProductDetailsDTO::setName));
+                        .map(Product::getModel, ProductDetailsDTO::setName))
+                .addMappings(mapper -> mapper
+                        .using(fromReviewsToReviewsDataForProductDTO)
+                        .map(Product::getReviews, ProductDetailsDTO::setReviewDataForProductDTO));
 
         // RegisterDTO -> User
         Provider<User> newUserWithRoleProvider = req -> {

@@ -57,6 +57,9 @@ public class Product extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String specification;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private Set<Review> reviews;
+
     @NotNull(message = "Should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
@@ -148,6 +151,14 @@ public class Product extends BaseEntity {
 
     public void setSpecification(String specification) {
         this.specification = specification;
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 
     public LocalDateTime getCreated() {

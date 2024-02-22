@@ -1,5 +1,6 @@
 package com.techx7.techstore.model.dto.product;
 
+import com.techx7.techstore.model.dto.review.ReviewsDataForProductDTO;
 import com.techx7.techstore.service.converters.StringTrimConverter;
 import com.techx7.techstore.validation.product.ProductPrice;
 import jakarta.persistence.Convert;
@@ -36,6 +37,8 @@ public class ProductDTO {
 
     @ProductPrice
     private BigDecimal discountPrice;
+
+    private ReviewsDataForProductDTO reviewsDataForProductDTO;
 
     public ProductDTO() {
         this.categories = new HashSet<>();
@@ -95,6 +98,14 @@ public class ProductDTO {
 
     public void setDiscountPrice(BigDecimal discountPrice) {
         this.discountPrice = discountPrice;
+    }
+
+    public ReviewsDataForProductDTO getReviewDataForProductDTO() {
+        return reviewsDataForProductDTO;
+    }
+
+    public void setReviewDataForProductDTO(ReviewsDataForProductDTO reviewsDataForProductDTO) {
+        this.reviewsDataForProductDTO = reviewsDataForProductDTO;
     }
 
 }

@@ -20,15 +20,18 @@
                 <div class="h-100 bg-light p-30">
                     <h3 th:text="*{name}"></h3>
 
-                    <div class="d-flex mb-3">
-                        <div class="text-primary mr-2">
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fa fa-star-half-alt"></small>
+                    <div class="d-flex align-items-center mb-1">
+                        <div class="rating-average text-warning" th:data-rating-average="*{reviewDataForProductDTO.averageRating}">
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <i class="far fa-star"></i>
                         </div>
-                        <small class="pt-1">(77 Reviews)</small>
+
+                        <div>
+                            <small class="mt-0 ml-1" th:text="|(*{reviewDataForProductDTO.reviews})|"></small>
+                        </div>
                     </div>
 
                     <div class="d-flex align-items-center my-2">
@@ -102,31 +105,33 @@
 
                         <div class="tab-pane fade" id="tab-pane-2">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 mb-2">
                                     <h4 th:text="|${reviews.size()} reviews for ${product.name}|" class="mb-4"></h4>
 
-                                    <div th:each="review : ${reviews}"
-                                         th:object="${review}"
-                                         class="media mb-4">
-                                        <object class="img-fluid mr-3 mt-1" style="width: 45px;" th:data="@{|*{imageUrl}|}">
-                                            <img src="https://placehold.co/45x45" alt="User Image">
-                                        </object>
+                                    <div style="max-height: 500px; overflow: auto;">
+                                        <div th:each="review : ${reviews}"
+                                             th:object="${review}"
+                                             class="media mb-4">
+                                            <object class="img-fluid mr-3 mt-1" style="width: 45px;" th:data="@{|*{imageUrl}|}">
+                                                <img src="https://placehold.co/45x45" alt="User Image">
+                                            </object>
 
-                                        <div class="media-body">
-                                            <h6>
-                                                <th-block th:text="*{name}"></th-block>
-                                                <small> - <i th:text="*{date}"></i></small>
-                                            </h6>
+                                            <div class="media-body">
+                                                <h6>
+                                                    <th-block th:text="*{name}"></th-block>
+                                                    <small> - <i th:text="*{date}"></i></small>
+                                                </h6>
 
-                                            <div class="text-primary mb-2 rating" th:data-rating="*{rating}">
-                                                <i data-vote="1" class="far fa-star"></i>
-                                                <i data-vote="2" class="far fa-star"></i>
-                                                <i data-vote="3" class="far fa-star"></i>
-                                                <i data-vote="4" class="far fa-star"></i>
-                                                <i data-vote="5" class="far fa-star"></i>
+                                                <div class="text-primary mb-2 rating" th:data-rating="*{rating}">
+                                                    <i data-vote="1" class="far fa-star"></i>
+                                                    <i data-vote="2" class="far fa-star"></i>
+                                                    <i data-vote="3" class="far fa-star"></i>
+                                                    <i data-vote="4" class="far fa-star"></i>
+                                                    <i data-vote="5" class="far fa-star"></i>
+                                                </div>
+
+                                                <p th:text="*{content}"></p>
                                             </div>
-
-                                            <p th:text="*{content}"></p>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +141,7 @@
                                           th:method="POST"
                                           th:object="${addReviewDTO}">
 
-                                        <h4 class="mb-4">Leave a review</h4>
+                                        <h4 class="mb-4 pt-2">Leave a review</h4>
 
                                         <small>Your email address will not be published. Required fields are marked *</small>
 
