@@ -2,11 +2,13 @@ const ratingStars = document.querySelectorAll(".rating-stars i");
 const ratingInput = document.querySelector(".ratingInput");
 const ratingStartContainer = document.querySelector(".rating-stars");
 
+const ratings = document.querySelectorAll('.rating');
+const ratingAvgDivs = document.querySelectorAll('.rating-average');
+
 if(ratingInput !== null) {
 	ratingInput.value = '';
 }
 
-const ratings = document.querySelectorAll('.rating');
 ratings.forEach(function(rating) {
 	const ratingValue = rating.getAttribute('data-rating');
 
@@ -36,9 +38,39 @@ ratingStars.forEach(function(star) {
 		const value = parseFloat(this.getAttribute("data-vote"));
 		highlightStars(value);
 		ratingInput.value = value;
-
-		// alert("You rated this " + value + " stars!");
 	});
+});
+
+/**
+ * Calculating average rating for every product and displaying it with stars
+ */
+ratingAvgDivs.forEach((stars) => {
+	let averageRating = Number(
+		stars.getAttribute('data-rating-average')
+	);
+
+	if(isNaN(averageRating)) {
+		return;
+	}
+
+	averageRating = parseFloat(averageRating.toFixed(1));
+
+	const wholeAverageRating = Math.floor(averageRating);
+
+	for (let i = 0; i < stars.children.length; i++) {
+		const currentRating = i + 1;
+		const star = stars.children[i];
+
+		if(currentRating > wholeAverageRating) {
+			if(averageRating >= currentRating - 0.5) {
+				star.className = 'fas fa-star-half-alt';
+			}
+
+			break;
+		}
+
+		star.className = 'fas fa-star';
+	}
 });
 
 function highlightStars(value) {
@@ -51,27 +83,3 @@ function highlightStars(value) {
 		}
 	});
 }
-
-// Average rating
-const ratingAvgDivs = document.querySelectorAll('.rating-average');
-
-ratingAvgDivs.forEach((stars) => {
-	let averageRating = stars.getAttribute('data-rating-average');
-
-	if(isNaN(Number(averageRating))) {
-		return;
-	}
-
-	console.log(averageRating);
-
-	averageRating = Math.round(Number(averageRating));
-
-	for (let i = 0; i < stars.children.length; i++) {
-		if(i === averageRating) {
-			break;
-		}
-
-		const star = stars.children[i];
-		star.className = 'fas fa-star';
-	}
-});
