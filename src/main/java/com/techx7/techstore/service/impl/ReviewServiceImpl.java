@@ -52,7 +52,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Optional<Review> existingReview = reviewRepository.findByUserAndProduct(user, product);
         if(existingReview.isPresent()) {
-            throw new ReviewAlreadyExistingException(REVIEW_ALREADY_EXISTING, product.getUuid());
+            throw new ReviewAlreadyExistingException(REVIEW_ALREADY_EXISTING);
         }
 
         Review review = mapper.map(addReviewDTO, Review.class);
