@@ -1,8 +1,10 @@
 package com.techx7.techstore.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 @Entity(name = "user_metadata")
 public class UserMetadata extends BaseEntity {
@@ -17,6 +19,13 @@ public class UserMetadata extends BaseEntity {
 
     @Column(name = "is_restricted")
     private boolean isRestricted;
+
+    @ManyToMany
+    @JoinTable(name = "users_metadata",
+            joinColumns = @JoinColumn(name = "user_metadata_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @Valid
+    private List<User> users;
 
     public UserMetadata() {}
 
@@ -42,6 +51,14 @@ public class UserMetadata extends BaseEntity {
 
     public void setRestricted(boolean restricted) {
         isRestricted = restricted;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
 }

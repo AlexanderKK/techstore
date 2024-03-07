@@ -82,7 +82,11 @@ public class User extends BaseEntity {
     @JoinTable(name = "users_metadata",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "user_metadata_id"))
+    @Valid
     private List<UserMetadata> usersMetaData;
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user")
+    private Set<Review> reviews;
 
     public User() {
         this.roles = new HashSet<>();
@@ -218,6 +222,14 @@ public class User extends BaseEntity {
         this.setEmail(userCredentialsDTO.getEmail());
         this.setUsername(userCredentialsDTO.getUsername());
         this.setModified(LocalDateTime.now());
+    }
+
+    public Set<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(Set<Review> reviews) {
+        this.reviews = reviews;
     }
 
 }

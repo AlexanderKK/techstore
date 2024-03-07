@@ -15,12 +15,13 @@ public class AddReviewDTO {
     @Size(max = 255, message = "Please do not exceed the maximum length of 255 characters")
     private String content;
 
-    @NotNull(message = "Please enter a name")
+    @NotNull(message = "Please enter your name")
     @Size(min = 3, max = 25, message = "Name should have from 3 to 25 characters")
     private String name;
 
+    @NotNull(message = "Please enter your email")
+    @Email(message = "Please enter a valid email", regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     @ExistingEmail
-    @NotBlank(message = "Please enter your email")
     private String email;
 
     @NotNull(message = "Product id should not be empty")
