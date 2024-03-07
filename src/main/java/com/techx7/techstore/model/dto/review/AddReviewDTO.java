@@ -15,7 +15,8 @@ public class AddReviewDTO {
     @Size(max = 255, message = "Please do not exceed the maximum length of 255 characters")
     private String content;
 
-    @NotBlank(message = "Please enter a name")
+    @NotNull(message = "Please enter a name")
+    @Size(min = 3, max = 25, message = "Name should have from 3 to 25 characters")
     private String name;
 
     @ExistingEmail

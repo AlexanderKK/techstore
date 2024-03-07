@@ -10,6 +10,10 @@ if(ratingInput !== null) {
 }
 
 ratings.forEach(function(rating) {
+	calculateRating(rating);
+});
+
+function calculateRating(rating) {
 	const ratingValue = rating.getAttribute('data-rating');
 
 	for (let star of rating.children) {
@@ -20,7 +24,8 @@ ratings.forEach(function(rating) {
 			star.className = "far fa-star";
 		}
 	}
-});
+}
+
 
 if(ratingStartContainer !== null) {
 	ratingStartContainer.addEventListener('mouseover', function(evt) {
@@ -41,37 +46,41 @@ ratingStars.forEach(function(star) {
 	});
 });
 
+refreshAverageRating();
+
 /**
  * Calculating average rating for every product and displaying it with stars
  */
-ratingAvgDivs.forEach((stars) => {
-	let averageRating = Number(
-		stars.getAttribute('data-rating-average')
-	);
+function refreshAverageRating() {
+	ratingAvgDivs.forEach((stars) => {
+		let averageRating = Number(
+			stars.getAttribute('data-rating-average')
+		);
 
-	if(isNaN(averageRating)) {
-		return;
-	}
-
-	averageRating = parseFloat(averageRating.toFixed(1));
-
-	const wholeAverageRating = Math.floor(averageRating);
-
-	for (let i = 0; i < stars.children.length; i++) {
-		const currentRating = i + 1;
-		const star = stars.children[i];
-
-		if(currentRating > wholeAverageRating) {
-			if(averageRating >= currentRating - 0.5) {
-				star.className = 'fas fa-star-half-alt';
-			}
-
-			break;
+		if(isNaN(averageRating)) {
+			return;
 		}
 
-		star.className = 'fas fa-star';
-	}
-});
+		averageRating = parseFloat(averageRating.toFixed(1));
+
+		const wholeAverageRating = Math.floor(averageRating);
+
+		for (let i = 0; i < stars.children.length; i++) {
+			const currentRating = i + 1;
+			const star = stars.children[i];
+
+			if(currentRating > wholeAverageRating) {
+				if(averageRating >= currentRating - 0.5) {
+					star.className = 'fas fa-star-half-alt';
+				}
+
+				break;
+			}
+
+			star.className = 'fas fa-star';
+		}
+	});
+}
 
 function highlightStars(value) {
 	ratingStars.forEach(function(star) {

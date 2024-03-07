@@ -67,7 +67,11 @@ public class ReviewServiceImpl implements ReviewService {
     public List<ReviewDTO> getAllReviewsByProductUuid(UUID productUuid, Principal principal) {
         Product product = getProductByUuidOrThrow(productUuid);
 
-        List<Review> reviews = reviewRepository.findAllByProduct(product);
+        List<Review> reviews = reviewRepository
+                .findAllByProduct(product)
+                .stream()
+                .sorted((f, s) -> s.getCreated().compareTo(f.getCreated()))
+                .toList();
 
         List<ReviewDTO> reviewDTOs = reviews.stream()
                 .map(review -> {

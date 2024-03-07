@@ -20,7 +20,7 @@
                 <div class="h-100 bg-light p-30">
                     <h3 th:text="*{name}"></h3>
 
-                    <div class="d-flex align-items-center mb-1">
+                    <div class="productRating d-flex align-items-center mb-1">
                         <div class="rating-average text-warning" th:data-rating-average="*{reviewDataForProductDTO.averageRating}">
                             <i class="far fa-star"></i>
                             <i class="far fa-star"></i>
@@ -90,7 +90,7 @@
                     <div class="nav nav-tabs mb-4">
                         <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Description</a>
                         <a th:text="|Reviews (${reviews.size()})|"
-                                class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2"></a>
+                                class="reviewBadge nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-2"></a>
                     </div>
 
                     <div class="tab-content">
@@ -106,9 +106,9 @@
                         <div class="tab-pane fade" id="tab-pane-2">
                             <div class="row">
                                 <div class="col-md-6 mb-2">
-                                    <h4 th:text="|${reviews.size()} reviews for ${product.name}|" class="mb-4"></h4>
+                                    <h4 th:text="|${reviews.size()} ${reviews.size() == 1 ? 'review' : 'reviews'} for ${product.name}|" class="reviewCounter mb-4" th:product-name="${product.name}"></h4>
 
-                                    <div style="max-height: 500px; overflow: auto;">
+                                    <div class="reviews" style="max-height: 500px; overflow: auto;">
                                         <div th:each="review : ${reviews}"
                                              th:object="${review}"
                                              class="media mb-4">

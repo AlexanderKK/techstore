@@ -44,24 +44,24 @@ function registerUser(evt) {
 
 			return response.json();
 		})
-		.then(fields => {
-			if(typeof fields === 'undefined' || fields.length === 0) {
+		.then(json => {
+			const subErrors = json.subErrors;
+
+			if(typeof subErrors === 'undefined' || subErrors === null || subErrors.length === 0) {
 				return;
 			}
 
 			clearPopupsFieldsErrors();
 
-			for (let field in fields) {
-				const errorMessage = fields[field];
-				// console.log(field, errorMessage);
+			for (const subError of subErrors) {
+				const field = subError.object;
+				const message = subError.message;
 
-				document.querySelector(`.${field}Register-error`).innerText += `${errorMessage}\n`;
+				let element = document.querySelector(`.${field}Register-error`);
+				element.innerText += `${message}\n`;
 			}
 		})
-		.catch(error => console.log('error', error))
-		.finally(() => {
-			// console.clear();
-		});
+		.catch(error => console.log('error', error));
 }
 
 function clearPopupsFieldsErrors() {

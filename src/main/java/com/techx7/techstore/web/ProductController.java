@@ -6,7 +6,6 @@ import com.techx7.techstore.model.dto.manufacturer.ManufacturerWithModelsDTO;
 import com.techx7.techstore.model.dto.product.AddProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDTO;
 import com.techx7.techstore.model.dto.product.ProductDetailsDTO;
-import com.techx7.techstore.model.dto.review.AddReviewDTO;
 import com.techx7.techstore.model.dto.review.ReviewDTO;
 import com.techx7.techstore.service.CategoryService;
 import com.techx7.techstore.service.ManufacturerService;
@@ -106,13 +105,9 @@ public class ProductController {
                                  Principal principal) {
         ProductDetailsDTO productDetailsDTO = productService.getProductDetailsByUuid(uuid);
         List<ReviewDTO> reviewDTOs = reviewService.getAllReviewsByProductUuid(productDetailsDTO.getUuid(), principal);
+
         model.addAttribute("reviews", reviewDTOs);
-
         model.addAttribute("product", productDetailsDTO);
-
-        if(!model.containsAttribute("addReviewDTO")) {
-            model.addAttribute("addReviewDTO", new AddReviewDTO());
-        }
 
         return "products/product-details";
     }
