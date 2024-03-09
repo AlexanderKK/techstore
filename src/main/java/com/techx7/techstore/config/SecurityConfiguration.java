@@ -42,7 +42,8 @@ public class SecurityConfiguration {
                                 "/users/login-rest",
                                 "/users/activate/**",
                                 "/users/register",
-                                "/users/register/success").permitAll()
+                                "/users/register/success",
+                                "/users/forgottenpassword/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/", "/products", "/contact").permitAll()
                         .requestMatchers("/products/detail/**").permitAll()

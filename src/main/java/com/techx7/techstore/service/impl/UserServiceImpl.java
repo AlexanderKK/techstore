@@ -270,6 +270,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean isUserPresent(String emailOrUsername) {
+        Optional<User> user = userRepository.findByEmailOrUsername(emailOrUsername);
+
+        return user.isPresent();
+    }
+
     private void editImageUrl(UserProfileDTO userProfileDTO, User user, UserInfo userInfo) throws IOException {
         if(userProfileDTO.getImage().getSize() > 1) {
             String imageUrl = cloudinaryService.uploadFile(

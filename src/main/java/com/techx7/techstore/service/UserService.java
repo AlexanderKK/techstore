@@ -42,4 +42,6 @@ public interface UserService {
 
     void createUserMetadata(UserMetadataDTO userMetadataDTO);
 
+    boolean isUserPresent(String emailOrUsername);
+
 }

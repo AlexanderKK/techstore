@@ -1,5 +1,8 @@
 package com.techx7.techstore.service.impl;
 
+import com.techx7.techstore.exception.EntityNotFoundException;
+import com.techx7.techstore.model.entity.User;
+import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -12,26 +15,30 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.StringTemplateResolver;
 
+import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
+
 @Service
 public class EmailServiceImpl implements EmailService {
 
     private final TemplateEngine templateEngine;
     private final JavaMailSender javaMailSender;
     private final String techstoreEmail;
+    private final UserRepository userRepository;
 
     @Autowired
     public EmailServiceImpl(TemplateEngine templateEngine,
                             JavaMailSender javaMailSender,
-                            @Value("${spring.mail.username}") String techstoreEmail) {
+                            @Value("${spring.mail.username}") String techstoreEmail,
+                            UserRepository userRepository) {
         this.templateEngine = templateEngine;
         this.javaMailSender = javaMailSender;
         this.techstoreEmail = techstoreEmail;
+        this.userRepository = userRepository;
     }
 
     @Override
     public void sendRegistrationEmail(String userEmail, String userName, String activationCode) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
         try {
@@ -43,6 +50,32 @@ public class EmailServiceImpl implements EmailService {
                     generateRegistrationEmailBody(userName, activationCode),
                     true
             );
+
+            javaMailSender.send(mimeMessageHelper.getMimeMessage());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void sendPasswordRecoveryEmail(String emailOrUsername) {
+        User user = userRepository.findByEmailOrUsername(emailOrUsername)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
+
+        String userEmail = user.getEmail();
+        String userName = user.getUsername();
+
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+
+        try {
+            mimeMessageHelper.setTo(userEmail);
+            mimeMessageHelper.setFrom(techstoreEmail);
+            mimeMessageHelper.setReplyTo(techstoreEmail);
+            mimeMessageHelper.setSubject("Hello, " + userName);
+            mimeMessageHelper.setText(
+                    "A request has been received to change the password for your Techx7 account.\n" +
+                    "http://localhost:8080/users/recoverpassword/" + user.getUuid());
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException e) {

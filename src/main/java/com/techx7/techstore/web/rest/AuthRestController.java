@@ -27,8 +27,6 @@ public class AuthRestController {
 
         userService.register(registerDTO);
 
-        System.out.println("main");
-
         return ResponseEntity.ok().build();
     }
 

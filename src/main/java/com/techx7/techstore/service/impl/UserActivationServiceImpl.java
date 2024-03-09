@@ -69,11 +69,10 @@ public class UserActivationServiceImpl implements UserActivationService {
         String activationCode = generateActivationCode();
 
         UserActivationCode userActivationCode = new UserActivationCode();
-
         userActivationCode.setActivationCode(activationCode);
-        userActivationCode.setUser(
-                userRepository.findByEmail(userEmail)
-                        .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User"))));
+
+        userActivationCode.setUser(userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User"))));
 
         userActivationCodeRepository.save(userActivationCode);
 
@@ -94,7 +93,6 @@ public class UserActivationServiceImpl implements UserActivationService {
         }
 
         user.setActive(true);
-
         userRepository.save(user);
 
         return user.getUsername();
@@ -102,7 +100,6 @@ public class UserActivationServiceImpl implements UserActivationService {
 
     private static String generateActivationCode() {
         StringBuilder activationCode = new StringBuilder();
-
         Random random = new SecureRandom();
 
         for (int i = 0; i < ACTIVATION_CODE_LENGTH; i++) {

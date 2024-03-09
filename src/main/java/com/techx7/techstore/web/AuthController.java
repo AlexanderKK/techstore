@@ -3,6 +3,7 @@ package com.techx7.techstore.web;
 import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.exception.UserAlreadyActivatedException;
 import com.techx7.techstore.exception.UserNotActivatedException;
+import com.techx7.techstore.service.EmailService;
 import com.techx7.techstore.service.UserActivationService;
 import com.techx7.techstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,15 @@ public class AuthController {
 
     private final UserActivationService userActivationService;
     private final UserService userService;
+    private final EmailService emailService;
 
     @Autowired
     public AuthController(UserActivationService userActivationService,
-                          UserService userService) {
+                          UserService userService,
+                          EmailService emailService) {
         this.userActivationService = userActivationService;
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/login")
@@ -66,6 +70,28 @@ public class AuthController {
         redirectAttributes.addFlashAttribute("userActivated", USER_VERIFIED);
 
         return "redirect:/users/login";
+    }
+
+    @GetMapping("/forgottenpassword")
+    public String forgottenPassword() {
+        return "forgotten-password";
+    }
+
+    @PostMapping("/forgottenpassword/sendmail")
+    public String forgottenPasswordSendMail(@RequestParam String emailOrUsername,
+                                            RedirectAttributes redirectAttributes) {
+        if(!userService.isUserPresent(emailOrUsername)) {
+            redirectAttributes.addFlashAttribute("emailOrUsername", emailOrUsername);
+            redirectAttributes.addFlashAttribute("bad_credentials", true);
+
+            return "redirect:/users/forgottenpassword";
+        }
+
+        redirectAttributes.addFlashAttribute("verificationMessage", "Password recovery link has been sent to your email");
+
+        emailService.sendPasswordRecoveryEmail(emailOrUsername);
+
+        return "redirect:/users/forgottenpassword";
     }
 
     @ExceptionHandler(UserNotActivatedException.class)
