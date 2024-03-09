@@ -43,7 +43,8 @@ public class SecurityConfiguration {
                                 "/users/activate/**",
                                 "/users/register",
                                 "/users/register/success",
-                                "/users/forgottenpassword/**").permitAll()
+                                "/users/password/recover",
+                                "/users/password/reset/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/", "/products", "/contact").permitAll()
                         .requestMatchers("/products/detail/**").permitAll()

@@ -35,7 +35,7 @@
                             <div class="form__head">
                                 <p>Not Registered? <a href="#" class="link-register">Sign up from here</a></p>
 
-                                <p th:if="${bad_credentials}" class="errors text-danger">Invalid username or password.</p>
+                                <p th:if="${badCredentials}" class="errors text-danger">Invalid username or password.</p>
 
                                 <p th:text="${accountNotVerified}" class="errors text-danger"></p>
                             </div>
@@ -58,7 +58,7 @@
                                     </div>
 
                                     <div class="mt-1">
-                                        <a th:href="@{/users/forgottenpassword}" class="btn-link">Forgot password?</a>
+                                        <a th:href="@{/users/password/recover}" class="btn-link">Forgot password?</a>
                                     </div>
                                 </div>
                             </div>

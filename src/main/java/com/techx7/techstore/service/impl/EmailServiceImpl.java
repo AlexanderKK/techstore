@@ -15,6 +15,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.StringTemplateResolver;
 
+import java.util.UUID;
+
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
 
 @Service
@@ -75,7 +77,7 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setSubject("Hello, " + userName);
             mimeMessageHelper.setText(
                     "A request has been received to change the password for your Techx7 account.\n" +
-                    "http://localhost:8080/users/recoverpassword/" + user.getUuid());
+                    "http://localhost:8080/users/password/reset/" + UUID.randomUUID() + "?email=" + userEmail);
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException e) {

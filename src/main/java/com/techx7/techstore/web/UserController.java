@@ -36,18 +36,21 @@ public class UserController {
     private final GenderService genderService;
     private final CountryService countryService;
     private final MonitoringService monitoringService;
+    private final EmailService emailService;
 
     @Autowired
     public UserController(UserService userService,
                           RoleService roleService,
                           GenderService genderService,
                           CountryService countryService,
-                          MonitoringService monitoringService) {
+                          MonitoringService monitoringService,
+                          EmailService emailService) {
         this.userService = userService;
         this.roleService = roleService;
         this.genderService = genderService;
         this.countryService = countryService;
         this.monitoringService = monitoringService;
+        this.emailService = emailService;
     }
 
     @PreAuthorize("@hasAnyRole('ADMIN')")
@@ -196,6 +199,47 @@ public class UserController {
         userService.editUserPassword(userPasswordDTO, principal);
 
         return "redirect:/users/profile";
+    }
+
+    @GetMapping("/password/recover")
+    public String forgottenPassword() {
+        return "password-recover";
+    }
+
+    @PostMapping("/password/recover")
+    public String forgottenPasswordSendMail(@RequestParam String emailOrUsername,
+                                            RedirectAttributes redirectAttributes) {
+        if(!userService.isUserPresent(emailOrUsername)) {
+            redirectAttributes.addFlashAttribute("emailOrUsername", emailOrUsername);
+            redirectAttributes.addFlashAttribute("badCredentials", true);
+
+            return "redirect:/users/password/recover";
+        }
+
+        redirectAttributes.addFlashAttribute("verificationMessage", "Password recovery link has been sent to your email");
+
+        emailService.sendPasswordRecoveryEmail(emailOrUsername);
+
+        return "redirect:/users/password/recover";
+    }
+
+    @GetMapping("/password/reset/{uuid}")
+    public String resetPassword(@RequestParam("email") String userEmail,
+                                  Model model) {
+        model.addAttribute("originalEmail", userEmail);
+
+        return "password-reset";
+    }
+
+    @PostMapping("/password/reset")
+    public String resetPassword(UserPasswordDTO userPasswordDTO) {
+        // TODO: 1) Check if input email equals the original one
+        //       2) Reset password using the UserService instance
+        //       3) Set a 'Password Reset Code' i.e. "00fd26c431f3ad9db14c5245bffefe8fed993e797177e2a8faf7f4cd403a0935"
+        //          that expires after 1 minute so that the current link cannot be accessed anymore
+
+
+        return "redirect:/users/login";
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

@@ -33,11 +33,11 @@ public class AuthController {
 
     @GetMapping("/login")
     public String login(Model model) {
-        if (!model.containsAttribute("bad_credentials")) {
-            model.addAttribute("bad_credentials", null);
+        if (!model.containsAttribute("badCredentials")) {
+            model.addAttribute("badCredentials", null);
         }
 
-        return "auth-login";
+        return "login";
     }
 
     @PostMapping("/login-error")
@@ -48,7 +48,7 @@ public class AuthController {
         if(isUserNonActive) {
             redirectAttributes.addFlashAttribute("accountNotVerified", "Account not verified. Check your email for verification code");
         } else {
-            redirectAttributes.addFlashAttribute("bad_credentials", "true");
+            redirectAttributes.addFlashAttribute("badCredentials", "true");
         }
 
         return "redirect:login";
@@ -70,28 +70,6 @@ public class AuthController {
         redirectAttributes.addFlashAttribute("userActivated", USER_VERIFIED);
 
         return "redirect:/users/login";
-    }
-
-    @GetMapping("/forgottenpassword")
-    public String forgottenPassword() {
-        return "forgotten-password";
-    }
-
-    @PostMapping("/forgottenpassword/sendmail")
-    public String forgottenPasswordSendMail(@RequestParam String emailOrUsername,
-                                            RedirectAttributes redirectAttributes) {
-        if(!userService.isUserPresent(emailOrUsername)) {
-            redirectAttributes.addFlashAttribute("emailOrUsername", emailOrUsername);
-            redirectAttributes.addFlashAttribute("bad_credentials", true);
-
-            return "redirect:/users/forgottenpassword";
-        }
-
-        redirectAttributes.addFlashAttribute("verificationMessage", "Password recovery link has been sent to your email");
-
-        emailService.sendPasswordRecoveryEmail(emailOrUsername);
-
-        return "redirect:/users/forgottenpassword";
     }
 
     @ExceptionHandler(UserNotActivatedException.class)
