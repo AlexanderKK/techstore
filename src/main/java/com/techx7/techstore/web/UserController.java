@@ -213,7 +213,12 @@ public class UserController {
             return "redirect:/users/password/recover";
         }
 
-        // TODO: Check if your is activated and if not do not send this user an email
+        if(userService.isUserNonActive(emailOrUsername)) {
+            redirectAttributes.addFlashAttribute("emailOrUsername", emailOrUsername);
+            redirectAttributes.addFlashAttribute("accountNotVerified", true);
+
+            return "redirect:/users/password/recover";
+        }
 
         redirectAttributes.addFlashAttribute("verificationMessage", "Password recovery link has been sent to your email");
 
