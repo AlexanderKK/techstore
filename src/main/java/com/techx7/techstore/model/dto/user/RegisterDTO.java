@@ -19,7 +19,7 @@ public class RegisterDTO {
     @Size(min = 5, max = 20, message = "Username should have from 5 to 20 characters")
     private String username;
 
-    @NotNull(message = "Please enter an password")
+    @NotNull(message = "Please enter a password")
     @Size(min = 8, max = 20, message = "Password should have from 8 to 20 characters")
     private String password;
 

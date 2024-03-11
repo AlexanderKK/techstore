@@ -1,4 +1,4 @@
-package com.techx7.techstore.validation.comparison;
+package com.techx7.techstore.validation.matches;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
@@ -8,16 +8,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Constraint(validatedBy = FieldMatchValidator.class)
-public @interface FieldMatch {
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = PasswordMatchValidator.class)
+public @interface PasswordMatch {
 
     String first();
 
     String second();
 
-    String message() default "Fields should match!";
+    String message() default "Passwords should match!";
 
     Class<?>[] groups() default {};
 

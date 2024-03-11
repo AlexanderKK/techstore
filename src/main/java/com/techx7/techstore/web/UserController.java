@@ -1,16 +1,13 @@
 package com.techx7.techstore.web;
 
 import com.techx7.techstore.exception.EmailFoundException;
-import com.techx7.techstore.exception.UsernameFoundException;
-import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.exception.EntityNotFoundException;
-import com.techx7.techstore.model.dto.gender.GenderDTO;
+import com.techx7.techstore.exception.UsernameFoundException;
 import com.techx7.techstore.model.dto.country.CountryDTO;
+import com.techx7.techstore.model.dto.gender.GenderDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
-import com.techx7.techstore.model.dto.user.UserCredentialsDTO;
-import com.techx7.techstore.model.dto.user.UserDTO;
-import com.techx7.techstore.model.dto.user.UserPasswordDTO;
-import com.techx7.techstore.model.dto.user.UserProfileDTO;
+import com.techx7.techstore.model.dto.user.*;
+import com.techx7.techstore.model.session.TechStoreUserDetails;
 import com.techx7.techstore.service.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -216,6 +213,8 @@ public class UserController {
             return "redirect:/users/password/recover";
         }
 
+        // TODO: Check if your is activated and if not do not send this user an email
+
         redirectAttributes.addFlashAttribute("verificationMessage", "Password recovery link has been sent to your email");
 
         emailService.sendPasswordRecoveryEmail(emailOrUsername);
@@ -224,20 +223,39 @@ public class UserController {
     }
 
     @GetMapping("/password/reset/{uuid}")
-    public String resetPassword(@RequestParam("email") String userEmail,
-                                  Model model) {
+    public String resetPassword(@PathVariable("uuid") UUID uuid,
+                                @RequestParam("email") String userEmail,
+                                Model model) {
+        if(!model.containsAttribute("resetPasswordDTO")) {
+            model.addAttribute("resetPasswordDTO", new ResetPasswordDTO());
+        }
+
         model.addAttribute("originalEmail", userEmail);
+        model.addAttribute("uuid", uuid);
 
         return "password-reset";
     }
 
     @PostMapping("/password/reset")
-    public String resetPassword(UserPasswordDTO userPasswordDTO) {
-        // TODO: 1) Check if input email equals the original one
-        //       2) Reset password using the UserService instance
-        //       3) Set a 'Password Reset Code' i.e. "00fd26c431f3ad9db14c5245bffefe8fed993e797177e2a8faf7f4cd403a0935"
-        //          that expires after 1 minute so that the current link cannot be accessed anymore
+    public String resetPassword(@Valid ResetPasswordDTO resetPasswordDTO,
+                                BindingResult bindingResult,
+                                RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("resetPasswordDTO", resetPasswordDTO);
+            redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.resetPasswordDTO", bindingResult);
 
+            UUID uuid = resetPasswordDTO.getUuid();
+
+            return "redirect:/users/password/reset/" + uuid + "?email=" + resetPasswordDTO.getOriginalEmail();
+        }
+
+        userService.resetPassword(resetPasswordDTO);
+
+        // TODO: 3) Set a 'Password Reset Code' i.e. "00fd26c431f3ad9db14c5245bffefe8fed993e797177e2a8faf7f4cd403a0935"
+        //          that expires after 1 minute so that the current link cannot be accessed anymore
+        //       4) Set a scheduler for cleaning expired 'Password Reset Code's
+        //       5) Set a scheduler for cleaning newly registered users that have not been activated after i.e. 2 hours
+        //       6) Fix gender saving and retrieving
 
         return "redirect:/users/login";
     }

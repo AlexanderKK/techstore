@@ -332,7 +332,7 @@
 
 	$(window).on('load', function() {
 		$('.alert').each(function() {
-			$(this).delay(4000).fadeOut(500, function () {
+			$(this).delay(7000).fadeOut(500, function () {
 				$(this).remove();
 			});
 		});
