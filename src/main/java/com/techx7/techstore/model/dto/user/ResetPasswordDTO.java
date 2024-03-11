@@ -5,8 +5,6 @@ import com.techx7.techstore.validation.matches.PasswordMatch;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.UUID;
-
 @EmailMatch(
         first = "email",
         second = "originalEmail",
@@ -29,7 +27,7 @@ public class ResetPasswordDTO {
 
     private String confirmPassword;
 
-    private UUID uuid;
+    private String resetCode;
 
     public ResetPasswordDTO() {}
 
@@ -65,12 +63,12 @@ public class ResetPasswordDTO {
         this.confirmPassword = confirmPassword;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public String getResetCode() {
+        return resetCode;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
     }
 
 }

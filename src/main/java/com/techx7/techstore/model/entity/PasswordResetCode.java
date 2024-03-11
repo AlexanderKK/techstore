@@ -8,12 +8,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_activation_codes")
-public class UserActivationCode extends BaseEntity {
+@Table(name = "password_reset_codes")
+public class PasswordResetCode extends BaseEntity {
 
     @NotBlank(message = "Should not be empty")
     @Column(nullable = false)
-    private String activationCode;
+    private String passwordResetCode;
+
+    @NotNull(message = "Should not be empty")
+    @ManyToOne(optional = false)
+    private User user;
 
     @NotNull(message = "Should not be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
@@ -26,18 +30,27 @@ public class UserActivationCode extends BaseEntity {
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime modified;
 
-    @NotNull(message = "Should not be empty")
-    @ManyToOne(optional = false)
-    private User user;
+    public PasswordResetCode() {}
 
-    public UserActivationCode() {}
-
-    public String getActivationCode() {
-        return activationCode;
+    public PasswordResetCode(String passwordResetCode, User user) {
+        this.passwordResetCode = passwordResetCode;
+        this.user = user;
     }
 
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
+    public String getPasswordResetCode() {
+        return passwordResetCode;
+    }
+
+    public void setPasswordResetCode(String passwordResetCode) {
+        this.passwordResetCode = passwordResetCode;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public LocalDateTime getCreated() {
@@ -54,14 +67,6 @@ public class UserActivationCode extends BaseEntity {
 
     public void setModified(LocalDateTime modified) {
         this.modified = modified;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
 }

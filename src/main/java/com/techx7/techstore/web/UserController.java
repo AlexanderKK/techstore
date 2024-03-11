@@ -24,6 +24,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
+import static com.techx7.techstore.constant.Messages.PASSWORD_RECOVERY_LINK_SENT;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -220,15 +222,15 @@ public class UserController {
             return "redirect:/users/password/recover";
         }
 
-        redirectAttributes.addFlashAttribute("verificationMessage", "Password recovery link has been sent to your email");
+        redirectAttributes.addFlashAttribute("verificationMessage", PASSWORD_RECOVERY_LINK_SENT);
 
         emailService.sendPasswordRecoveryEmail(emailOrUsername);
 
         return "redirect:/users/password/recover";
     }
 
-    @GetMapping("/password/reset/{uuid}")
-    public String resetPassword(@PathVariable("uuid") UUID uuid,
+    @GetMapping("/password/reset/{resetCode}")
+    public String resetPassword(@PathVariable("resetCode") String resetCode,
                                 @RequestParam("email") String userEmail,
                                 Model model) {
         if(!model.containsAttribute("resetPasswordDTO")) {
@@ -236,7 +238,7 @@ public class UserController {
         }
 
         model.addAttribute("originalEmail", userEmail);
-        model.addAttribute("uuid", uuid);
+        model.addAttribute("resetCode", resetCode);
 
         return "password-reset";
     }
@@ -249,9 +251,9 @@ public class UserController {
             redirectAttributes.addFlashAttribute("resetPasswordDTO", resetPasswordDTO);
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.resetPasswordDTO", bindingResult);
 
-            UUID uuid = resetPasswordDTO.getUuid();
+            String resetCode = resetPasswordDTO.getResetCode();
 
-            return "redirect:/users/password/reset/" + uuid + "?email=" + resetPasswordDTO.getOriginalEmail();
+            return "redirect:/users/password/reset/" + resetCode + "?email=" + resetPasswordDTO.getOriginalEmail();
         }
 
         userService.resetPassword(resetPasswordDTO);
@@ -261,6 +263,8 @@ public class UserController {
         //       4) Set a scheduler for cleaning expired 'Password Reset Code's
         //       5) Set a scheduler for cleaning newly registered users that have not been activated after i.e. 2 hours
         //       6) Fix gender saving and retrieving
+
+        redirectAttributes.addFlashAttribute("passwordResetSuccess", "Your password has been reset successfully");
 
         return "redirect:/users/login";
     }

@@ -4,6 +4,7 @@ import com.techx7.techstore.exception.EntityNotFoundException;
 import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.EmailService;
+import com.techx7.techstore.service.PasswordResetService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.StringTemplateResolver;
 
-import java.util.UUID;
-
 import static com.techx7.techstore.constant.Messages.ENTITY_NOT_FOUND;
 
 @Service
@@ -26,16 +25,19 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender javaMailSender;
     private final String techstoreEmail;
     private final UserRepository userRepository;
+    private final PasswordResetService passwordResetService;
 
     @Autowired
     public EmailServiceImpl(TemplateEngine templateEngine,
                             JavaMailSender javaMailSender,
                             @Value("${spring.mail.username}") String techstoreEmail,
-                            UserRepository userRepository) {
+                            UserRepository userRepository,
+                            PasswordResetService passwordResetService) {
         this.templateEngine = templateEngine;
         this.javaMailSender = javaMailSender;
         this.techstoreEmail = techstoreEmail;
         this.userRepository = userRepository;
+        this.passwordResetService = passwordResetService;
     }
 
     @Override
@@ -70,6 +72,8 @@ public class EmailServiceImpl implements EmailService {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
+        String passwordResetCode = passwordResetService.createPasswordResetCode(userEmail);
+
         try {
             mimeMessageHelper.setTo(userEmail);
             mimeMessageHelper.setFrom(techstoreEmail);
@@ -77,7 +81,7 @@ public class EmailServiceImpl implements EmailService {
             mimeMessageHelper.setSubject("Hello, " + userName);
             mimeMessageHelper.setText(
                     "A request has been received to change the password for your Techx7 account.\n" +
-                    "http://localhost:8080/users/password/reset/" + UUID.randomUUID() + "?email=" + userEmail);
+                    "http://localhost:8080/users/password/reset/" + passwordResetCode + "?email=" + userEmail);
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException e) {

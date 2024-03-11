@@ -27,7 +27,6 @@ public class TechStoreUserDetails implements UserDetails {
         Set<Role> roles = user.getRoles();
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
         for (Role role : roles) {
             authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
         }
@@ -47,12 +46,12 @@ public class TechStoreUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return user.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return user.isAccountNonLocked();
     }
 
     @Override

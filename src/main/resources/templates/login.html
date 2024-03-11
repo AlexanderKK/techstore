@@ -18,6 +18,13 @@
         <div th:text=" ${userActivated}"></div>
     </div>
 
+    <div th:if="${passwordResetSuccess}"
+         class="alert alert-auth d-flex">
+        <div>✔️</div>
+
+        <div th:text=" ${passwordResetSuccess}"></div>
+    </div>
+
     <header th:replace="~{fragments/commons::header(activeLink = 'login', loginPage = 'true')}"></header>
 
     <div class="container">

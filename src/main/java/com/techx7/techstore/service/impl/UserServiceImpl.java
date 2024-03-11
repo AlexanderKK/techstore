@@ -223,6 +223,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setPassword(passwordEncoder.encode(userPasswordDTO.getNewPassword()));
+        user.setModified(LocalDateTime.now());
 
         userRepository.save(user);
     }
@@ -286,6 +287,7 @@ public class UserServiceImpl implements UserService {
         String newPassword = passwordEncoder.encode(newRawPassword);
 
         user.setPassword(newPassword);
+        user.setModified(LocalDateTime.now());
 
         userRepository.save(user);
     }
