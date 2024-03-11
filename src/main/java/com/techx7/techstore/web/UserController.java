@@ -1,8 +1,6 @@
 package com.techx7.techstore.web;
 
-import com.techx7.techstore.exception.EmailFoundException;
-import com.techx7.techstore.exception.EntityNotFoundException;
-import com.techx7.techstore.exception.UsernameFoundException;
+import com.techx7.techstore.exception.*;
 import com.techx7.techstore.model.dto.country.CountryDTO;
 import com.techx7.techstore.model.dto.gender.GenderDTO;
 import com.techx7.techstore.model.dto.role.RoleDTO;
@@ -24,7 +22,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
-import static com.techx7.techstore.constant.Messages.PASSWORD_RECOVERY_LINK_SENT;
+import static com.techx7.techstore.constant.Messages.*;
 
 @Controller
 @RequestMapping("/users")
@@ -36,6 +34,7 @@ public class UserController {
     private final CountryService countryService;
     private final MonitoringService monitoringService;
     private final EmailService emailService;
+    private final PasswordResetService passwordResetService;
 
     @Autowired
     public UserController(UserService userService,
@@ -43,13 +42,15 @@ public class UserController {
                           GenderService genderService,
                           CountryService countryService,
                           MonitoringService monitoringService,
-                          EmailService emailService) {
+                          EmailService emailService,
+                          PasswordResetService passwordResetService) {
         this.userService = userService;
         this.roleService = roleService;
         this.genderService = genderService;
         this.countryService = countryService;
         this.monitoringService = monitoringService;
         this.emailService = emailService;
+        this.passwordResetService = passwordResetService;
     }
 
     @PreAuthorize("@hasAnyRole('ADMIN')")
@@ -232,7 +233,20 @@ public class UserController {
     @GetMapping("/password/reset/{resetCode}")
     public String resetPassword(@PathVariable("resetCode") String resetCode,
                                 @RequestParam("email") String userEmail,
-                                Model model) {
+                                Model model,
+                                RedirectAttributes redirectAttributes) {
+        if(!passwordResetService.isUserPresent(userEmail)) {
+            redirectAttributes.addFlashAttribute("userNotPresent", USER_WITH_THIS_EMAIL_NOT_PRESENT);
+
+            return "redirect:/users/password/recover";
+        }
+
+        if(!passwordResetService.isResetCodeValid(resetCode, userEmail)) {
+            redirectAttributes.addFlashAttribute("passwordResetCodeExpired", PASSWORD_RESET_CODE_EXPIRED);
+
+            return "redirect:/users/password/recover";
+        }
+
         if(!model.containsAttribute("resetPasswordDTO")) {
             model.addAttribute("resetPasswordDTO", new ResetPasswordDTO());
         }
@@ -256,7 +270,7 @@ public class UserController {
             return "redirect:/users/password/reset/" + resetCode + "?email=" + resetPasswordDTO.getOriginalEmail();
         }
 
-        userService.resetPassword(resetPasswordDTO);
+        passwordResetService.resetPassword(resetPasswordDTO);
 
         // TODO: 3) Set a 'Password Reset Code' i.e. "00fd26c431f3ad9db14c5245bffefe8fed993e797177e2a8faf7f4cd403a0935"
         //          that expires after 1 minute so that the current link cannot be accessed anymore
@@ -264,39 +278,49 @@ public class UserController {
         //       5) Set a scheduler for cleaning newly registered users that have not been activated after i.e. 2 hours
         //       6) Fix gender saving and retrieving
 
-        redirectAttributes.addFlashAttribute("passwordResetSuccess", "Your password has been reset successfully");
+        redirectAttributes.addFlashAttribute("passwordResetSuccess", PASSWORD_RESET_SUCCESS);
 
         return "redirect:/users/login";
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public String handleEntityNotFoundError(EntityNotFoundException ex,
+    public String handleEntityNotFound(EntityNotFoundException ex,
                                        RedirectAttributes redirectAttributes) {
-        System.out.println(ex.getMessage());
-
         redirectAttributes.addFlashAttribute("passwordError", ex.getMessage());
 
         return "redirect:/users/profile";
     }
 
     @ExceptionHandler(EmailFoundException.class)
-    public String handleEmailFoundError(EmailFoundException ex,
+    public String handleEmailFound(EmailFoundException ex,
                                         RedirectAttributes redirectAttributes) {
-        System.out.println(ex.getMessage());
-
         redirectAttributes.addFlashAttribute("emailError", ex.getMessage());
 
         return "redirect:/users/profile";
     }
 
     @ExceptionHandler(UsernameFoundException.class)
-    public String handleUsernameFoundError(UsernameFoundException ex,
-                                           RedirectAttributes redirectAttributes) {
-        System.out.println(ex.getMessage());
-
+    public String handleUsernameFound(UsernameFoundException ex,
+                                      RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("usernameError", ex.getMessage());
 
         return "redirect:/users/profile";
+    }
+
+    @ExceptionHandler(PasswordResetCodeExpiredException.class)
+    public String handlePasswordResetCodeExpired(PasswordResetCodeExpiredException ex,
+                                            RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("passwordResetCodeExpired", ex.getMessage());
+
+        return "redirect:/users/password/recover";
+    }
+
+    @ExceptionHandler(PasswordResetUserNotExistingException.class)
+    public String handlePasswordResetCodeExpired(PasswordResetUserNotExistingException ex,
+                                                 RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("userNotPresent", ex.getMessage());
+
+        return "redirect:/users/password/recover";
     }
 
 }

@@ -61,7 +61,7 @@ public class AuthController {
     public String activateUserAccount(
             @RequestParam("activation_code") String activationCode,
             RedirectAttributes redirectAttributes) {
-        String userName = userActivationService.activateUser(activationCode);
+        userActivationService.activateUser(activationCode);
 
         redirectAttributes.addFlashAttribute("userActivated", USER_VERIFIED);
 

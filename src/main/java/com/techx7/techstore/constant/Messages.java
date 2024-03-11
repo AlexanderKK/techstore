@@ -21,5 +21,8 @@ public enum Messages {
     public static final String ACCOUNT_NOT_VERIFIED = "Account not verified. Check your email for verification code";
     public static final String VERIFICATION_LINK_SENT = "Verification link has been sent to your email";
     public static final String PASSWORD_RECOVERY_LINK_SENT = "Password recovery link has been sent to your email";
+    public static final String PASSWORD_RESET_CODE_EXPIRED = "Password recovery link has expired";
+    public static final String PASSWORD_RESET_SUCCESS = "Your password has been reset successfully";
+    public static final String USER_WITH_THIS_EMAIL_NOT_PRESENT = "User with this email does not exist";
 
 }

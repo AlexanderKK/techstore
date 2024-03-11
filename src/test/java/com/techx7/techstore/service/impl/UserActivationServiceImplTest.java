@@ -105,11 +105,9 @@ class UserActivationServiceImplTest {
         when(userRepository.findByActivationCodesIn(Set.of(userActivationCode))).thenReturn(Optional.of(user));
 
         // Act
-        String username = userActivationService.activateUser(activationCode);
+        userActivationService.activateUser(activationCode);
 
         // Assert
-        assertNotNull(username);
-
         verify(userRepository).save(any(User.class));
     }
 

@@ -278,20 +278,6 @@ public class UserServiceImpl implements UserService {
         return user.isPresent();
     }
 
-    @Override
-    public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
-        User user = userRepository.findByEmail(resetPasswordDTO.getEmail())
-                .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_FOUND, "User")));
-
-        String newRawPassword = resetPasswordDTO.getPassword();
-        String newPassword = passwordEncoder.encode(newRawPassword);
-
-        user.setPassword(newPassword);
-        user.setModified(LocalDateTime.now());
-
-        userRepository.save(user);
-    }
-
     private void editImageUrl(UserProfileDTO userProfileDTO, User user, UserInfo userInfo) throws IOException {
         if(userProfileDTO.getImage().getSize() > 1) {
             String imageUrl = cloudinaryService.uploadFile(

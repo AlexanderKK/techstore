@@ -44,6 +44,4 @@ public interface UserService {
 
     boolean isUserPresent(String emailOrUsername);
 
-    void resetPassword(ResetPasswordDTO resetPasswordDTO);
-
 }

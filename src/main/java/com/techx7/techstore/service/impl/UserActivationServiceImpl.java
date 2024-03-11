@@ -80,7 +80,7 @@ public class UserActivationServiceImpl implements UserActivationService {
     }
 
     @Override
-    public String activateUser(String activationCode) {
+    public void activateUser(String activationCode) {
         UserActivationCode userActivationCode = userActivationCodeRepository.findByActivationCode(activationCode)
                 .orElseThrow(() -> new EntityNotFoundException(VERIFICATION_CODE_NOT_VALID));
 
@@ -93,9 +93,8 @@ public class UserActivationServiceImpl implements UserActivationService {
         }
 
         user.setActive(true);
-        userRepository.save(user);
 
-        return user.getUsername();
+        userRepository.save(user);
     }
 
     private static String generateActivationCode() {

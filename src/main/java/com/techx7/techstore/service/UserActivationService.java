@@ -11,6 +11,6 @@ public interface UserActivationService {
 
     String createActivationCode(String userEmail);
 
-    String activateUser(String activationCode) throws UserAlreadyActivatedException;
+    void activateUser(String activationCode) throws UserAlreadyActivatedException;
 
 }
