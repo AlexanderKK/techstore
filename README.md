@@ -44,6 +44,8 @@ The web application follows the best practices for Object-Oriented design and hi
 * Adding product to cart
 * Updating quantity of product in cart
 * Removing product from cart
+* Checkout with items in cart
+* Order functionality
 * Product CRUD operations
 * Category CRUD operations
 * Model CRUD operations
