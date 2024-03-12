@@ -111,15 +111,29 @@ Carrier: Access orders, user's address info
 
 ![img_10](https://github.com/AlexanderKK/techstore/assets/80641156/e4696152-2229-451c-821e-97fe05eb7756)
 
-# Register Popup
+* Register Popup
+
 ![image](https://github.com/AlexanderKK/techstore/assets/80641156/fd0ab3b0-8895-4720-98d6-8ebb92fe592f)
 
-# Login Page
+* Activation e-mail
+
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/a15f8539-149b-4e35-a141-fadd32e9c288)
+
+* Login Page
+
 ![image](https://github.com/AlexanderKK/techstore/assets/80641156/22fa9744-83b1-4e9a-81fe-9e52e3079bf9)
+
+* Password Recovery Page
+
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/914918fe-53f0-42b4-ae04-1b5843bc9993)
+
+* Password Reset Page
+
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/7b35dc0c-f181-4d45-84e1-2fc878522d46)
 
 * Profile
 
-![img_19](https://github.com/AlexanderKK/techstore/assets/80641156/0a07017d-ef06-46ab-967d-078703c3f6d8)
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/cc852f6a-8715-44b7-afa2-a53c3885367f)
 
 * Cart
 
