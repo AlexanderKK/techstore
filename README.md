@@ -117,7 +117,7 @@ Carrier: Access orders, user's address info
 
 * Activation e-mail
 
-![image](![activation-mail](https://github.com/AlexanderKK/techstore/assets/80641156/e4dc31db-36b6-47e7-b2da-75493d66df57))
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/e4dc31db-36b6-47e7-b2da-75493d66df57))
 
 * Login Page
 
