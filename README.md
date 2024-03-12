@@ -37,11 +37,15 @@ The web application follows the best practices for Object-Oriented design and hi
 
 * User login and registration
 * User profile
+* Account activation by email
+* Password recovery by email
 * Administrator management of users
 * Administrator management of roles
 * Adding product to cart
 * Updating quantity of product in cart
 * Removing product from cart
+* Checkout with items in cart
+* Order functionality
 * Product CRUD operations
 * Category CRUD operations
 * Model CRUD operations
@@ -75,7 +79,7 @@ Carrier: Access orders, user's address info
 ```
 
 # Database Diagram
-![image](https://github.com/AlexanderKK/techstore/assets/80641156/b40a0156-1570-404a-8c2a-643fd3f41bae)
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/3a97c2a4-1816-41fa-93ae-b994d2b60606)
 
 # Test
 
@@ -107,9 +111,29 @@ Carrier: Access orders, user's address info
 
 ![img_10](https://github.com/AlexanderKK/techstore/assets/80641156/e4696152-2229-451c-821e-97fe05eb7756)
 
+* Register Popup
+
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/fd0ab3b0-8895-4720-98d6-8ebb92fe592f)
+
+* Activation e-mail
+
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/e4dc31db-36b6-47e7-b2da-75493d66df57)
+
+* Login Page
+
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/22fa9744-83b1-4e9a-81fe-9e52e3079bf9)
+
+* Password Recovery Page
+
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/914918fe-53f0-42b4-ae04-1b5843bc9993)
+
+* Password Reset Page
+
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/7b35dc0c-f181-4d45-84e1-2fc878522d46)
+
 * Profile
 
-![img_19](https://github.com/AlexanderKK/techstore/assets/80641156/0a07017d-ef06-46ab-967d-078703c3f6d8)
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/cc852f6a-8715-44b7-afa2-a53c3885367f)
 
 * Cart
 
