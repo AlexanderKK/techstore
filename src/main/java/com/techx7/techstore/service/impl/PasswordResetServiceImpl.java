@@ -9,11 +9,14 @@ import com.techx7.techstore.model.entity.User;
 import com.techx7.techstore.repository.PasswordResetCodeRepository;
 import com.techx7.techstore.repository.UserRepository;
 import com.techx7.techstore.service.PasswordResetService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import static com.techx7.techstore.constant.Messages.*;
 
@@ -46,12 +49,13 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         return passwordResetCode;
     }
 
+    @Transactional
     @Override
     public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
         User user = userRepository.findByEmail(resetPasswordDTO.getEmail())
                 .orElseThrow(() -> new PasswordResetUserNotExistingException(USER_WITH_THIS_EMAIL_NOT_PRESENT));
 
-        passwordResetCodeRepository.findByPasswordResetCodeAndUser(resetPasswordDTO.getResetCode(), user)
+        PasswordResetCode passwordResetCode = passwordResetCodeRepository.findByPasswordResetCodeAndUser(resetPasswordDTO.getResetCode(), user)
                 .orElseThrow(() -> new PasswordResetCodeExpiredException(PASSWORD_RESET_CODE_EXPIRED));
 
         String newRawPassword = resetPasswordDTO.getPassword();
@@ -61,6 +65,8 @@ public class PasswordResetServiceImpl implements PasswordResetService {
         user.setModified(LocalDateTime.now());
 
         userRepository.save(user);
+
+        passwordResetCodeRepository.deleteAllByPasswordResetCode(passwordResetCode.getPasswordResetCode());
     }
 
     @Override
@@ -74,6 +80,26 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     @Override
     public boolean isUserPresent(String userEmail) {
         return userRepository.findByEmail(userEmail).isPresent();
+    }
+
+    @Override
+    public void cleanUpExpiredPasswordResetLinks(int minutesUntilExpiration) {
+        List<PasswordResetCode> expiredPasswordResetCodes = passwordResetCodeRepository.findAll()
+                .stream()
+                .filter(passwordResetCode -> {
+                    long minutesLifetime = ChronoUnit.MINUTES.between(passwordResetCode.getCreated(), LocalDateTime.now());
+
+                    return minutesLifetime >= minutesUntilExpiration;
+                })
+                .toList();
+
+        if(expiredPasswordResetCodes.isEmpty()) {
+            return;
+        }
+
+        System.out.println("Deleting expired password reset links...");
+
+        passwordResetCodeRepository.deleteAll(expiredPasswordResetCodes);
     }
 
 }

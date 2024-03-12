@@ -10,8 +10,8 @@ import java.util.Optional;
 @Repository
 public interface PasswordResetCodeRepository extends JpaRepository<PasswordResetCode, Long> {
 
-    Optional<PasswordResetCode> findByPasswordResetCode(String resetCode);
-
     Optional<PasswordResetCode> findByPasswordResetCodeAndUser(String resetCode, User user);
+
+    void deleteAllByPasswordResetCode(String resetCode);
 
 }

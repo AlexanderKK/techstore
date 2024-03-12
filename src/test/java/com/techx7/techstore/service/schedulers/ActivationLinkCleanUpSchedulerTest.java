@@ -11,13 +11,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class ActivationLinkCleanupSchedulerTest {
+class ActivationLinkCleanUpSchedulerTest {
 
     @Mock
     private UserActivationService userActivationService;
 
     @InjectMocks
-    private ActivationLinkCleanupScheduler activationLinkCleanupScheduler;
+    private ActivationLinkCleanUpScheduler activationLinkCleanupScheduler;
 
     @Test
     void testCleanUp() {

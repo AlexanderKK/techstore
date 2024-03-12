@@ -12,4 +12,6 @@ public interface PasswordResetService {
 
     boolean isUserPresent(String userEmail);
 
+    void cleanUpExpiredPasswordResetLinks(int minutesUntilExpiration);
+
 }

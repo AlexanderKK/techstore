@@ -49,19 +49,23 @@ public class UserActivationServiceImpl implements UserActivationService {
 
     @Override
     public void cleanUpObsoleteActivationLinks(Integer minutesLifetime) {
-        List<UserActivationCode> userActivationCodes = userActivationCodeRepository.findAll().stream()
+        List<UserActivationCode> expiredUserActivationCodes = userActivationCodeRepository.findAll().stream()
                 .filter(userActivationCode -> {
                     LocalDateTime createdTime = userActivationCode.getCreated();
                     LocalDateTime currentTime = LocalDateTime.now();
 
                     long existingTimeInMinutes = ChronoUnit.MINUTES.between(createdTime, currentTime);
 
-                    return existingTimeInMinutes > minutesLifetime;
+                    return existingTimeInMinutes >= minutesLifetime;
                 }).toList();
 
-        System.out.println("Deleting expired activation codes...");
+        if(expiredUserActivationCodes.isEmpty()) {
+            return;
+        }
 
-        userActivationCodeRepository.deleteAll(userActivationCodes);
+        System.out.println("Deleting expired activation links...");
+
+        userActivationCodeRepository.deleteAll(expiredUserActivationCodes);
     }
 
     @Override

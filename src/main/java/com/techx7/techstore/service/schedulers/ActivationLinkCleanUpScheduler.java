@@ -6,16 +6,16 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ActivationLinkCleanupScheduler {
+public class ActivationLinkCleanUpScheduler {
 
     private final UserActivationService userActivationService;
 
     @Autowired
-    public ActivationLinkCleanupScheduler(UserActivationService userActivationService) {
+    public ActivationLinkCleanUpScheduler(UserActivationService userActivationService) {
         this.userActivationService = userActivationService;
     }
 
-    @Scheduled(cron = "0 0/15 * * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
 //    @Scheduled(fixedRate = 10_000, initialDelay = 10_000)
     public void cleanUp() {
         userActivationService.cleanUpObsoleteActivationLinks(30);
