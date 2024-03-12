@@ -79,7 +79,7 @@ Carrier: Access orders, user's address info
 ```
 
 # Database Diagram
-![image](https://github.com/AlexanderKK/techstore/assets/80641156/b40a0156-1570-404a-8c2a-643fd3f41bae)
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/3a97c2a4-1816-41fa-93ae-b994d2b60606)
 
 # Test
 
