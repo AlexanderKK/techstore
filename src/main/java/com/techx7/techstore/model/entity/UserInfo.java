@@ -155,14 +155,18 @@ public class UserInfo extends BaseEntity {
         this.setFirstName(userProfileDTO.getFirstName());
         this.setLastName(userProfileDTO.getLastName());
 
-        boolean isGenderNotFound = Arrays.stream(GenderEnum.values()).noneMatch(genderEnum -> genderEnum.name().equals(userProfileDTO.getGender()));
+        boolean isGenderNotFound = Arrays
+                .stream(GenderEnum.values())
+                .noneMatch(
+                        genderEnum -> genderEnum.name().equals(userProfileDTO.getGender().toUpperCase())
+                );
+
         if(isGenderNotFound) {
             this.setGender(null);
         } else {
             this.setGender(
                     GenderEnum.valueOf(
-                            userProfileDTO.getGender().toUpperCase(Locale.getDefault())
-                    ));
+                            userProfileDTO.getGender().toUpperCase(Locale.getDefault())));
         }
 
         this.setPhoneNumber(userProfileDTO.getPhoneNumber());

@@ -272,8 +272,6 @@ public class UserController {
 
         passwordResetService.resetPassword(resetPasswordDTO);
 
-        // TODO 6) Fix gender saving and retrieving
-
         redirectAttributes.addFlashAttribute("passwordResetSuccess", PASSWORD_RESET_SUCCESS);
 
         return "redirect:/users/login";
