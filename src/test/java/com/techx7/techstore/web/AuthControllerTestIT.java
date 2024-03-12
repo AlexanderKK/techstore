@@ -33,7 +33,7 @@ class AuthControllerTestIT {
         mockMvc.perform(post("/users/login-error").param("emailOrUsername", "test@example.com"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("login"))
-                .andExpect(flash().attribute("bad_credentials", "true"))
+                .andExpect(flash().attribute("badCredentials", "true"))
                 .andExpect(flash().attribute("emailOrUsername", "test@example.com"));
     }
 
