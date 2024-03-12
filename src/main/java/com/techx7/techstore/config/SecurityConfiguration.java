@@ -97,7 +97,7 @@ public class SecurityConfiguration {
                         .requireCsrfProtectionMatcher(matcher -> new CsrfRequestMatcher().buildMatcher(matcher))
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 ).rememberMe(rememberMe -> rememberMe
-//                        .alwaysRemember(true)
+                        .alwaysRemember(true)
                         .key(rememberMeKey)
                         .rememberMeParameter("rememberme")
                         .rememberMeCookieName("rememberme")
