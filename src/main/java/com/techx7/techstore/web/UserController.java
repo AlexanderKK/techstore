@@ -202,13 +202,13 @@ public class UserController {
     }
 
     @GetMapping("/password/recover")
-    public String forgottenPassword() {
+    public String recoverPassword() {
         return "password-recover";
     }
 
     @PostMapping("/password/recover")
-    public String forgottenPasswordSendMail(@RequestParam String emailOrUsername,
-                                            RedirectAttributes redirectAttributes) {
+    public String recoverPassword(@RequestParam String emailOrUsername,
+                                  RedirectAttributes redirectAttributes) {
         if(!userService.isUserPresent(emailOrUsername)) {
             redirectAttributes.addFlashAttribute("emailOrUsername", emailOrUsername);
             redirectAttributes.addFlashAttribute("badCredentials", true);
@@ -227,7 +227,7 @@ public class UserController {
 
         emailService.sendPasswordRecoveryEmail(emailOrUsername);
 
-        return "redirect:/users/password/recover";
+        return "redirect:/users/login";
     }
 
     @GetMapping("/password/reset/{resetCode}")
@@ -272,11 +272,7 @@ public class UserController {
 
         passwordResetService.resetPassword(resetPasswordDTO);
 
-        // TODO: 3) Set a 'Password Reset Code' i.e. "00fd26c431f3ad9db14c5245bffefe8fed993e797177e2a8faf7f4cd403a0935"
-        //          that expires after 1 minute so that the current link cannot be accessed anymore
-        //       4) Set a scheduler for cleaning expired 'Password Reset Code's
-        //       5) Set a scheduler for cleaning newly registered users that have not been activated after i.e. 2 hours
-        //       6) Fix gender saving and retrieving
+        // TODO 6) Fix gender saving and retrieving
 
         redirectAttributes.addFlashAttribute("passwordResetSuccess", PASSWORD_RESET_SUCCESS);
 

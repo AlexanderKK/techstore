@@ -48,7 +48,7 @@ public class UserActivationServiceImpl implements UserActivationService {
     }
 
     @Override
-    public void cleanUpObsoleteActivationLinks(Integer minutesLifetime) {
+    public void cleanUpObsoleteActivationLinks(int minutesUntilExpiration) {
         List<UserActivationCode> expiredUserActivationCodes = userActivationCodeRepository.findAll().stream()
                 .filter(userActivationCode -> {
                     LocalDateTime createdTime = userActivationCode.getCreated();
@@ -56,7 +56,7 @@ public class UserActivationServiceImpl implements UserActivationService {
 
                     long existingTimeInMinutes = ChronoUnit.MINUTES.between(createdTime, currentTime);
 
-                    return existingTimeInMinutes >= minutesLifetime;
+                    return existingTimeInMinutes >= minutesUntilExpiration;
                 }).toList();
 
         if(expiredUserActivationCodes.isEmpty()) {
@@ -99,6 +99,25 @@ public class UserActivationServiceImpl implements UserActivationService {
         user.setActive(true);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public void cleanUpObsoleteNonActiveUsers(int minutesUntilExpiration) {
+        List<User> expiredNonActiveUsers = userRepository.findAll().stream()
+                .filter(user -> {
+                    long minutesLifetime = ChronoUnit.MINUTES.between(user.getCreated(), LocalDateTime.now());
+
+                    return !user.isActive() && minutesLifetime >= minutesUntilExpiration;
+                })
+                .toList();
+
+        if(expiredNonActiveUsers.isEmpty()) {
+            return;
+        }
+
+        System.out.println("Deleting expired non-active users...");
+
+        userRepository.deleteAll(expiredNonActiveUsers);
     }
 
     private static String generateActivationCode() {

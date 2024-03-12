@@ -7,10 +7,12 @@ public interface UserActivationService {
 
     void userRegistered(UserRegisteredEvent event);
 
-    void cleanUpObsoleteActivationLinks(Integer minutesLifetime);
+    void cleanUpObsoleteActivationLinks(int minutesUntilExpiration);
 
     String createActivationCode(String userEmail);
 
     void activateUser(String activationCode) throws UserAlreadyActivatedException;
+
+    void cleanUpObsoleteNonActiveUsers(int minutesUntilExpiration);
 
 }
