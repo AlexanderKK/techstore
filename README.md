@@ -37,6 +37,8 @@ The web application follows the best practices for Object-Oriented design and hi
 
 * User login and registration
 * User profile
+* Account activation by email
+* Password recovery by email
 * Administrator management of users
 * Administrator management of roles
 * Adding product to cart
