@@ -111,6 +111,12 @@ Carrier: Access orders, user's address info
 
 ![img_10](https://github.com/AlexanderKK/techstore/assets/80641156/e4696152-2229-451c-821e-97fe05eb7756)
 
+# Register Popup
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/fd0ab3b0-8895-4720-98d6-8ebb92fe592f)
+
+# Login Page
+![image](https://github.com/AlexanderKK/techstore/assets/80641156/22fa9744-83b1-4e9a-81fe-9e52e3079bf9)
+
 * Profile
 
 ![img_19](https://github.com/AlexanderKK/techstore/assets/80641156/0a07017d-ef06-46ab-967d-078703c3f6d8)
