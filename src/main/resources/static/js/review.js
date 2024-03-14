@@ -26,7 +26,6 @@ function calculateRating(rating) {
 	}
 }
 
-
 if(ratingStartContainer !== null) {
 	ratingStartContainer.addEventListener('mouseover', function(evt) {
 		this.style.cursor = 'pointer';
